@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Números complejos · Explorador interactivo · Vibraciones</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45}
+  header{background:var(--navy);color:#fff;padding:16px 22px;border-bottom:4px solid var(--orange)}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:3px 0 0;font-size:13px;color:var(--ice);opacity:.9}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px;display:grid;grid-template-columns:minmax(340px,1fr) minmax(420px,1.25fr);gap:18px}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 4px rgba(31,56,100,.06);margin-bottom:16px}
+  .card h2{margin:0 0 12px;font-size:15px;color:var(--navy);font-weight:700;letter-spacing:.2px}
+  .tabs{display:flex;gap:6px;margin-bottom:12px}
+  .tab{flex:1;padding:8px 6px;border:1px solid var(--line);background:var(--ice2);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--blue);text-align:center;transition:.15s}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .inputs{display:none;gap:10px;align-items:end;flex-wrap:wrap}
+  .inputs.active{display:flex}
+  .fld{display:flex;flex-direction:column;gap:3px}
+  .fld label{font-size:12px;color:var(--grey);font-weight:600}
+  .fld input{width:96px;padding:8px 9px;border:1.5px solid var(--line);border-radius:7px;font-size:15px;font-family:'Cambria Math',Georgia,serif}
+  .fld input:focus{outline:none;border-color:var(--steel)}
+  .hint{font-size:12px;color:var(--grey);margin:8px 0 0}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .chip{padding:5px 11px;border:1px solid var(--line);background:#fff;border-radius:20px;cursor:pointer;font-size:12.5px;color:var(--navy);font-family:'Cambria Math',Georgia,serif}
+  .chip:hover{background:var(--ice);border-color:var(--steel)}
+  .forms .row{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .forms .row:last-child{border-bottom:none}
+  .forms .tag{font-size:11.5px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.4px;min-width:66px}
+  .forms .val{font-family:'Cambria Math',Georgia,serif;font-size:17px;color:var(--ink)}
+  .roots .val{color:var(--orange)}
+  canvas{width:100%;height:auto;display:block;border-radius:10px;background:linear-gradient(180deg,#fbfdff,#f3f7fc);border:1px solid var(--line);touch-action:none;cursor:grab}
+  .diagctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-size:13px}
+  .btn{padding:7px 12px;border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:7px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn.ghost{background:#fff;color:var(--navy)}
+  .btn.small{padding:5px 9px;font-size:12px}
+  .btn:hover{opacity:.92}
+  .toggle{display:flex;align-items:center;gap:6px;color:var(--grey)}
+  .practico{background:var(--ice2);border-color:var(--ice)}
+  .practico p{margin:8px 0;font-size:13.5px}
+  .practico .k{font-weight:700;color:var(--navy)}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;margin-left:4px}
+  .lectura{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:8px;padding:10px 12px;font-size:13.5px;margin-bottom:12px}
+  .ro{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+  .ro>div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 10px;display:flex;flex-direction:column;gap:1px}
+  .ro .s{font-family:'Cambria Math',Georgia,serif;color:var(--navy);font-weight:700;font-size:14px}
+  .ro .v{font-size:15px;font-weight:700}
+  .ro em{color:var(--grey);font-size:11px;font-style:normal;line-height:1.2}
+  canvas#resp{width:100%;height:190px;border:1px solid var(--line);border-radius:8px;background:#fff;margin:4px 0 2px;cursor:default;touch-action:auto}
+  #respinfo{font-size:12px;color:var(--grey);background:#fff;border:1px solid var(--line);border-radius:7px;padding:6px 9px;margin:2px 0 2px;line-height:1.5}
+  #respinfo b{color:var(--navy)}
+  canvas#wing{width:100%;height:210px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#f7fbff,#edf3fb);display:block}
+  #wingcap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  canvas#wave{width:100%;height:170px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#fffaf3,#fef3e6);display:block}
+  #wavecap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  canvas#tower{width:100%;height:210px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#f7f9fc,#eef2f8);display:block}
+  #towercap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  canvas#swing{width:100%;height:210px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#eef7ef,#e2f0ea);display:block}
+  #swingcap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  details.gloss{margin-top:8px;font-size:13px}
+  details.gloss summary{cursor:pointer;color:var(--blue);font-weight:600;outline:none}
+  details.gloss ul{margin:8px 0 0;padding-left:18px}
+  details.gloss li{margin:5px 0}
+  .challenge{background:#fff}
+  .qbox{background:var(--ice2);border:1px solid var(--ice);border-radius:9px;padding:12px 14px;font-family:'Cambria Math',Georgia,serif;font-size:16px;margin-bottom:12px}
+  .ans{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+  .feedback{margin-top:12px;font-size:14px;font-weight:600;min-height:20px}
+  .ok{color:var(--green)} .no{color:var(--red)}
+  .sol{margin-top:8px;font-size:13px;color:var(--grey);font-family:'Cambria Math',Georgia,serif;display:none}
+  .sol.show{display:block}
+  .legend{display:flex;gap:16px;font-size:12.5px;margin-top:8px;color:var(--grey)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:50%}
+  footer{max-width:1180px;margin:0 auto;padding:6px 18px 26px;color:var(--grey);font-size:12px}
+  /* --- refinamiento didáctico (recorrido, aeronáutica, accesibilidad) --- */
+  .pilarnav{max-width:1180px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  .aero{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:10px;padding:13px 15px;margin-bottom:16px}
+  .aero h3{margin:0 0 6px;font-size:14px;color:var(--navy)}
+  .aero p{margin:6px 0;font-size:13px}
+  .aero ul{margin:6px 0 0;padding-left:18px} .aero li{margin:5px 0;font-size:13px}
+  .aero .num{font-family:'Cambria Math',Georgia,serif;color:var(--orange);font-weight:700}
+  .aero .src{font-size:11.5px;color:var(--grey);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+  .crosslink{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;margin-bottom:16px;font-size:13px}
+  .crosslink b{color:var(--navy)} .crosslink a{color:var(--blue);font-weight:700;text-decoration:none} .crosslink a:hover{text-decoration:underline}
+  .reglegend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:12px;background:var(--ice2);border:1px solid var(--ice);border-radius:8px;padding:8px 10px}
+  .reglegend .it{display:inline-flex;align-items:center;gap:5px;color:#33455f}
+  .reglegend .gl{font-weight:800;font-size:14px;font-family:'Cambria Math',Georgia,serif;min-width:22px;text-align:center}
+  .tipsym{border-bottom:1px dotted var(--steel);cursor:help}
+  canvas:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
+  .kbd{font-size:11.5px;color:var(--grey);margin-top:7px}
+  .kbd kbd{background:#eef2fb;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;font-family:monospace;font-size:11px;color:var(--navy)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @media(max-width:520px){ .wrap{padding:12px;gap:12px} .card{padding:12px 13px} header h1{font-size:18px} header p{font-size:12px} .pilarnav{font-size:11.5px} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Números complejos — Explorador interactivo</h1>
+  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 1) — arrastra el punto o edita cualquiera de las tres formas</p>
+</header>
+<nav class="pilarnav" aria-label="Recorrido por los tres pilares">
+  <span class="lab">Recorrido:</span>
+  <a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a>
+  <span class="arw">→</span>
+  <a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a>
+  <span class="arw">→</span>
+  <span class="cur">Pilar 1 · Números complejos</span>
+</nav>
+
+<div class="wrap">
+  <!-- ================= COLUMNA IZQUIERDA ================= -->
+  <div>
+    <div class="aero">
+      <h3>🛩️ En la aeronave · ¿por qué me importa?</h3>
+      <p>Los números complejos son el <b>idioma</b> con el que se escribe la vibración. Cada modo estructural amortiguado es una raíz compleja <span class="num">s = −ζω<sub>n</sub> ± iω<sub>d</sub></span>, y la respuesta en frecuencia es un número complejo.</p>
+      <ul>
+        <li><b>Fasor</b> <span class="num">z = |z|∠θ</span>: al analizar la respuesta a una ráfaga o al flameo, <b>|z| es la amplificación</b> y <b>θ el desfase</b> respecto de la excitación.</li>
+        <li><b>Modos del ala</b> (flexión, torsión): frecuencias del orden de <span class="num">1–10 Hz</span>, amortiguamiento estructural ζ ≈ <span class="num">0.01–0.03</span>.</li>
+        <li><b>Análisis de flameo</b>: se sigue el movimiento de estas raíces al subir la velocidad; cuando una cruza al semiplano derecho, aparece el <b>flutter</b>.</li>
+      </ul>
+      <div class="src">Valores ilustrativos (órdenes de magnitud); bibliografía: Fung, <i>An Introduction to the Theory of Aeroelasticity</i>; Rao, <i>Mechanical Vibrations</i>.</div>
+    </div>
+    <div class="card">
+      <h2>1 · Entra un número complejo</h2>
+      <div class="tabs">
+        <div class="tab active" data-mode="bin">Binómica</div>
+        <div class="tab" data-mode="pol">Polar</div>
+        <div class="tab" data-mode="eul">Euler</div>
+      </div>
+      <div class="inputs active" data-mode="bin">
+        <div class="fld"><label>parte real  a</label><input id="in-a" type="number" step="any" value="1"></div>
+        <div class="fld"><label>parte imag.  b</label><input id="in-b" type="number" step="any" value="1.7320508"></div>
+        <div class="hint">z = a + b·i</div>
+      </div>
+      <div class="inputs" data-mode="pol">
+        <div class="fld"><label>módulo  r</label><input id="in-pr" type="number" step="any" min="0" value="2"></div>
+        <div class="fld"><label>ángulo  θ (°)</label><input id="in-pt" type="number" step="any" value="60"></div>
+        <div class="hint">z = r·(cos θ + i·sin θ) = r∠θ</div>
+      </div>
+      <div class="inputs" data-mode="eul">
+        <div class="fld"><label>módulo  r</label><input id="in-er" type="number" step="any" min="0" value="2"></div>
+        <div class="fld"><label>ángulo  θ (rad)</label><input id="in-et" type="number" step="any" value="1.0472"></div>
+        <div class="hint">z = r·e<sup>iθ</sup> &nbsp;(θ en radianes)</div>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="card forms">
+      <h2>2 · Las tres formas (en vivo)</h2>
+      <div class="row"><span class="tag">Binómica</span><span class="val" id="f-bin"></span></div>
+      <div class="row"><span class="tag">Polar</span><span class="val" id="f-pol"></span></div>
+      <div class="row"><span class="tag">Euler</span><span class="val" id="f-eul"></span></div>
+    </div>
+
+    <div class="card forms roots">
+      <h2>3 · Raíces cuadradas &nbsp;√z</h2>
+      <div class="row"><span class="tag">w₀</span><span class="val" id="r0"></span></div>
+      <div class="row"><span class="tag">w₁ = −w₀</span><span class="val" id="r1"></span></div>
+      <div class="hint">wₖ = √r · e<sup>i(θ+2πk)/2</sup>, &nbsp;k = 0,1. &nbsp; Comprueba: (w₀)² = z.</div>
+    </div>
+
+    <div style="font-size:12.5px;color:var(--grey);background:var(--ice2);border:1px solid var(--ice);border-radius:9px;padding:9px 12px;margin-bottom:16px">
+      <b style="color:var(--navy)">Cuatro miradas al mismo z</b>, de lo abstracto a lo aplicado. La <b>rueda</b> ilustra el concepto matemático; el <b>columpio</b>, la <b>torre</b> y el <b>ala</b> muestran la respuesta como vibración y <b>van sincronizados con la gráfica x(t)</b> del panel «Significado en Vibraciones».
+    </div>
+
+    <div class="card">
+      <h2>🎡 Concepto matemático · El giro que se vuelve onda</h2>
+      <canvas id="wave"></canvas>
+      <div id="wavecap"></div>
+    </div>
+
+    <div class="card">
+      <h2>🛝 Vida cotidiana · El columpio</h2>
+      <canvas id="swing"></canvas>
+      <div id="swingcap"></div>
+    </div>
+
+    <div class="card">
+      <h2>🧱 Vibraciones · Torre en mesa vibradora</h2>
+      <canvas id="tower"></canvas>
+      <div id="towercap"></div>
+    </div>
+
+    <div class="card">
+      <h2>✈️ Aeronáutica · Cabeceo del ala (flutter)</h2>
+      <canvas id="wing"></canvas>
+      <div id="wingcap"></div>
+    </div>
+  </div>
+
+  <!-- ================= COLUMNA DERECHA ================= -->
+  <div>
+    <div class="card">
+      <h2>Plano de Argand</h2>
+      <canvas id="cv" width="720" height="560" tabindex="0" role="application" aria-label="Plano de Argand. Usa las flechas para mover el número complejo z."></canvas>
+      <div class="kbd">⌨ Con el foco en el plano: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> mueven z, <kbd>Shift</kbd>+flecha paso mayor.</div>
+      <div class="sr" aria-live="polite" id="live"></div>
+      <div class="legend">
+        <span><span class="dot" style="background:#1F3864"></span> z (arrástralo)</span>
+        <span><span class="dot" style="background:#C55A11"></span> raíces √z</span>
+        <span><span class="dot" style="background:#8AA0C0"></span> excitación / respuesta (al reproducir)</span>
+      </div>
+      <div class="reglegend" aria-label="Regímenes (según la raíz característica): color y símbolo">
+        <span class="it" style="width:100%;color:#5B5B5B">Si z = raíz característica s, su posición marca el régimen:</span>
+        <span class="it"><span class="gl" style="color:#2E7D46">~↘</span> subamortiguado (Re&lt;0)</span>
+        <span class="it"><span class="gl" style="color:#4472C4">~</span> no amortiguado (Re=0)</span>
+        <span class="it"><span class="gl" style="color:#B23A3A">~↗</span> inestable (Re&gt;0)</span>
+        <span class="it"><span class="gl" style="color:#5B5B5B">↘</span> sin oscilar (Im=0)</span>
+      </div>
+      <div class="diagctrls">
+        <label class="toggle"><input type="checkbox" id="ck-roots" checked> mostrar raíces</label>
+        <label class="toggle"><input type="checkbox" id="ck-deg" checked> ángulos en grados</label>
+        <button class="btn small ghost" id="zoom-in">＋</button>
+        <button class="btn small ghost" id="zoom-out">－</button>
+        <button class="btn small ghost" id="fit">ajustar</button>
+        <button class="btn small" id="play">▶ excitación vs respuesta</button>
+      </div>
+    </div>
+
+    <div class="card practico">
+      <h2>Significado en Vibraciones</h2>
+      <div class="lectura" id="lectura"></div>
+      <div id="practico"></div>
+      <div style="font-size:12.5px;color:var(--grey);margin:6px 0 4px">Respuesta libre implicada &nbsp;x(t) = e<sup>Re·t</sup>·cos(Im·t)&nbsp; (interpretando z como raíz característica s = Re + i·Im):</div>
+      <canvas id="resp"></canvas>
+      <div id="respinfo"></div>
+      <details class="gloss">
+        <summary>📖 Glosario de símbolos (ωₙ, ω_d, ζ, σ, T_d)</summary>
+        <ul>
+          <li><b>ω<sub>n</sub></b> — <b>frecuencia natural</b>: a qué frecuencia oscilaría el sistema <em>sin</em> amortiguamiento. Aquí ω<sub>n</sub> = |z|.</li>
+          <li><b>ω<sub>d</sub></b> — <b>frecuencia amortiguada</b>: a la que <em>realmente</em> oscila el sistema amortiguado. ω<sub>d</sub> = ω<sub>n</sub>·√(1−ζ²) = |Im(z)|, siempre ≤ ω<sub>n</sub>.</li>
+          <li><b>ζ</b> — <b>factor de amortiguamiento</b>: cuánto se apaga la oscilación. ζ=0 no amortiguado; 0&lt;ζ&lt;1 subamortiguado; ζ≥1 sin oscilación; ζ&lt;0 inestable.</li>
+          <li><b>σ = ζ·ω<sub>n</sub></b> — <b>tasa de decaimiento</b> = |Re(z)|. La envolvente de la respuesta es e<sup>−σt</sup>.</li>
+          <li><b>T<sub>d</sub> = 2π/ω<sub>d</sub></b> — <b>periodo</b> de la oscilación amortiguada.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="card challenge">
+      <h2>4 · Retos <span style="font-weight:400;color:var(--grey);font-size:12px">(alineados con los ejercicios del Pilar 1)</span></h2>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="reto-types"></div>
+      <div class="qbox" id="q"></div>
+      <div class="ans" id="ansbox"></div>
+      <div class="feedback" id="fb"></div>
+      <div class="sol" id="sol"></div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button class="btn" id="check">Comprobar</button>
+        <button class="btn ghost" id="newq">Nuevo reto</button>
+        <button class="btn ghost" id="showsol">Ver solución</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wrap" style="padding-top:0">
+  <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
+    🧭 <b>Tu recorrido.</b> ⬅ <b>Antes:</b> estas raíces salen de la ecuación auxiliar de la <a href="edo_interactivo.html">EDO (Pilar 2)</a>, que a su vez viene de <a href="edo3_interactivo.html">ΣF = ma (Pilar 3)</a>. Aquí cierras el círculo: <b>interpretas</b> qué significan esas raíces complejas como vibración.
+    <span style="color:#5B5B5B">(Mantén los tres archivos en la misma carpeta para que los enlaces funcionen.)</span>
+  </div>
+</div>
+<footer>Explorador didáctico de números complejos · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</footer>
+
+<script>
+"use strict";
+// ---------- estado ----------
+let z = {a:1, b:Math.sqrt(3)};
+let mode = 'bin', showRoots = true, useDeg = true, scale = 90;
+let respColor='#2E7D46', respT0=null;
+const TAU = Math.PI*2;
+
+// ---------- utilidades matemáticas ----------
+const hypot=(a,b)=>Math.hypot(a,b);
+const modOf=z=>hypot(z.a,z.b);
+const argOf=z=>Math.atan2(z.b,z.a);
+function fmt(x,d=4){ let r=+(+x).toFixed(d); if(Object.is(r,-0))r=0; if(d<=0) return String(Math.round(r)); let s=r.toFixed(d).replace(/0+$/,'').replace(/\.$/,''); return s===''||s==='-0'?'0':s; }
+function angStr(rad){ return useDeg ? fmt(rad*180/Math.PI,2)+'°' : fmt(rad,4)+' rad'; }
+function binStr(a,b,d=4){
+  const ra=+a.toFixed(d), rb=+b.toFixed(d);
+  if(Math.abs(rb)<1e-12) return fmt(ra,d);
+  if(Math.abs(ra)<1e-12){ if(rb===1)return 'i'; if(rb===-1)return '−i'; return fmt(rb,d)+'i'; }
+  const sg = rb>0?'+':'−'; const mag=Math.abs(rb);
+  const pi = Math.abs(mag-1)<1e-12?'i':fmt(mag,d)+'i';
+  return fmt(ra,d)+' '+sg+' '+pi;
+}
+function polStr(z){ const r=fmt(modOf(z)); return r+'·(cos '+angStr(argOf(z))+' + i·sin '+angStr(argOf(z))+')  =  '+r+'∠'+angStr(argOf(z)); }
+function eulStr(z){ return fmt(modOf(z))+'·e^(i·'+angStr(argOf(z))+')'; }
+function sqrtRoots(z){ const r=Math.sqrt(modOf(z)); const t=argOf(z)/2; return [ {a:r*Math.cos(t),b:r*Math.sin(t)}, {a:r*Math.cos(t+Math.PI),b:r*Math.sin(t+Math.PI)} ]; }
+
+// ---------- render de las formas ----------
+function refreshForms(){
+  document.getElementById('f-bin').textContent = 'z = '+binStr(z.a,z.b);
+  document.getElementById('f-pol').textContent = 'z = '+polStr(z);
+  document.getElementById('f-eul').textContent = 'z = '+eulStr(z);
+  const [w0,w1]=sqrtRoots(z);
+  document.getElementById('r0').textContent = binStr(w0.a,w0.b)+'  =  '+fmt(modOf(w0))+'∠'+angStr(argOf(w0));
+  document.getElementById('r1').textContent = binStr(w1.a,w1.b)+'  =  '+fmt(modOf(w1))+'∠'+angStr(argOf(w1));
+  // sincroniza campos de entrada del modo activo
+  syncInputs();
+  practico();
+}
+function syncInputs(){
+  document.getElementById('in-a').value = fmt(z.a);
+  document.getElementById('in-b').value = fmt(z.b);
+  document.getElementById('in-pr').value = fmt(modOf(z));
+  document.getElementById('in-pt').value = fmt(argOf(z)*180/Math.PI,2);
+  document.getElementById('in-er').value = fmt(modOf(z));
+  document.getElementById('in-et').value = fmt(argOf(z),4);
+}
+
+// ---------- significado en Vibraciones ----------
+function practico(){
+  const r=modOf(z), th=argOf(z), a=z.a, b=z.b, thg=th*180/Math.PI;
+  // --- Lectura vibratoria (fasor) ---
+  document.getElementById('lectura').innerHTML =
+    '🔎 <b>Lectura vibratoria:</b> si z representa una respuesta armónica, <b>|z| = '+fmt(r)+'</b> es su '+
+    '<b>amplitud</b> y <b>θ = '+fmt(thg,1)+'°</b> es el <b>desfase</b> respecto de la excitación. '+
+    'Al girar el fasor: <b>x(t) = '+fmt(r)+'·cos(ωt + '+fmt(thg,1)+'°)</b>. Pulsa «fasor» para verlo.';
+  // --- Interpretación como raíz característica ---
+  const wn=r, wd=Math.abs(b), sigma=Math.abs(a);
+  let cls, col, imp, zeta=null;
+  if(Math.abs(b)<1e-9){
+    col='var(--grey)';
+    if(a<0){ cls='raíz real — sin oscilación'; imp='Vuelve al equilibrio sin oscilar (contribución sobreamortiguada o crítica).'; zeta=1; }
+    else   { cls='real positiva — inestable'; imp='Crece sin oscilar: divergencia monótona (inestable).'; zeta=-1; }
+  } else if(Math.abs(a)<1e-9){
+    cls='no amortiguado (ζ = 0)'; col='#4472C4'; zeta=0;
+    imp='Oscila indefinidamente sin perder amplitud: resonancia sin pérdidas, situación peligrosa a evitar.';
+  } else if(a<0){
+    cls='subamortiguado'; col='var(--green)'; zeta=sigma/wn;
+    imp='Oscila y se va apagando poco a poco. Es el caso típico de estructuras ligeras: paneles solares desplegables, antenas, soportes de aviónica.';
+  } else {
+    cls='inestable'; col='var(--red)'; zeta=-sigma/wn;
+    imp='La amplitud crece sin límite y la estructura falla. Hay que evitarlo (por ejemplo, el flameo o flutter aeroelástico).';
+  }
+  const td = wd>1e-9 ? (2*Math.PI/wd) : null;
+  let ro='<div class="ro">'
+    +tile('ω<sub>n</sub>', fmt(wn)+' rad/s','frecuencia natural = |z|')
+    +tile('ω<sub>d</sub>', fmt(wd)+' rad/s','frec. amortiguada = |Im(z)| ≤ ω_n')
+    +tile('ζ', (zeta===null?'—':fmt(zeta,3)),'factor de amortiguamiento')
+    +tile('σ', fmt(sigma,3)+' 1/s','decaimiento = |Re(z)|; envolvente e^(−σt)')
+    +'</div>';
+  document.getElementById('practico').innerHTML =
+    '<p style="margin:2px 0"><span class="k">Como raíz característica</span> s = Re + i·Im '+
+    '<span class="pill" style="background:'+col+'">'+cls+'</span></p>'+ro+
+    '<p style="margin:4px 0 2px"><span class="k">¿Qué implica?</span> '+imp
+    +(td?' &nbsp;Periodo T<sub>d</sub> = '+fmt(td)+' s.':'')+'</p>';
+  respColor=col; drawResponse(a,b,col);
+}
+function tile(s,v,e){ return '<div title="'+e.replace(/"/g,'')+'"><span class="s">'+s+'</span><span class="v">'+v+'</span><em>'+e+'</em></div>'; }
+function cssColor(c){ return c.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(c.slice(4,-1)).trim() : c; }
+// paso "bonito" para las marcas del eje (1,2,5 ×10^n)
+function niceStep(range, target){ const raw=range/Math.max(1,target); const mag=Math.pow(10,Math.floor(Math.log10(raw))); const n=raw/mag; const s=n<1.5?1:(n<3?2:(n<7?5:10)); return s*mag; }
+// mini-gráfica de la respuesta libre x(t) = e^{-σ t}·cos(ω_d t), con auto-escala y anotaciones
+// ventana de tiempo de x(t) (compartida por la gráfica y las animaciones sincronizadas)
+function tviewOf(a,b){
+  const wd=Math.abs(b), sig=Math.max(Math.abs(a),1e-9), Td=wd>1e-6?TAU/wd:null;
+  if(Td){ if(a<-1e-9) return Math.min(12*Td, Math.max(4*Td, 6/sig));
+          if(a>1e-9)  return Math.min(6*Td, Math.log(20)/sig);
+          return 8*Td; }
+  return a<-1e-9 ? 7/sig : (a>1e-9 ? Math.log(20)/sig : 12);
+}
+// reloj compartido: mismo tiempo simulado para x(t), columpio, torre y ala
+let simT0=null;
+function simState(now){
+  const a=z.a,b=z.b,wd=Math.abs(b), Tv=tviewOf(a,b);
+  const Td=wd>1e-6?TAU/wd:Tv, periods=Math.max(1,Tv/Td);
+  const Wms=Math.min(16000,Math.max(7000,periods*950));   // duración de reproducción (lenta)
+  if(simT0===null)simT0=now;
+  const frac=((now-simT0)%Wms)/Wms;
+  return {a,b,wd,th:argOf(z),Tv,tSim:frac*Tv,frac,envMax:Math.max(1,Math.exp(a*Tv))};
+}
+function drawResponse(a,b,color,phFrac){
+  const rcv=document.getElementById('resp'); if(!rcv)return;
+  const c=rcv.getContext('2d'), dpr=window.devicePixelRatio||1;
+  const W=rcv.clientWidth||360, Hh=190;
+  rcv.width=W*dpr; rcv.height=Hh*dpr; rcv.style.height=Hh+'px'; c.setTransform(dpr,0,0,dpr,0,0);
+  c.clearRect(0,0,W,Hh);
+  const x0=30, x1=W-14, padT=30, padB=26, midY=padT+(Hh-padB-padT)/2;
+  const wd=Math.abs(b), sig=Math.abs(a);
+  const Td  = wd>1e-6 ? TAU/wd : null;   // periodo amortiguado
+  const tau = sig>1e-6 ? 1/sig : null;   // constante de tiempo
+  const env=t=>Math.exp(a*t), col=cssColor(color)||'#2E7D46';
+  // --- AUTO-ESCALA del eje t según el régimen ---
+  const Tmax = tviewOf(a,b);
+  let ymax=1; for(let i=0;i<=160;i++) ymax=Math.max(ymax, env(Tmax*i/160));
+  ymax=Math.min(ymax,16);
+  const sy=(Hh-padB-padT)/2/(ymax*1.06);
+  const px=t=>x0+(x1-x0)*t/Tmax, py=y=>midY-y*sy;
+  // --- rejilla temporal + etiquetas en segundos ---
+  const step=niceStep(Tmax,5);
+  c.font='10px Segoe UI'; c.textAlign='center';
+  for(let t=0; t<=Tmax+1e-9; t+=step){ const X=px(t);
+    c.strokeStyle='#EEF3FA'; c.lineWidth=1; c.beginPath(); c.moveTo(X,padT); c.lineTo(X,Hh-padB); c.stroke();
+    c.fillStyle='#9FB0C6'; c.fillText(fmt(t,2), X, Hh-padB+13);
+  }
+  c.textAlign='left'; c.fillStyle='#8A9BB5'; c.fillText('x(t)',4,padT-16); c.fillText('t (s)',x1-26,Hh-4);
+  // eje cero
+  c.strokeStyle='#C9D6EA'; c.lineWidth=1.2; c.beginPath(); c.moveTo(x0,midY); c.lineTo(x1,midY); c.stroke();
+  // envolvente ±e^{-σt}
+  c.strokeStyle='rgba(120,120,120,.6)'; c.setLineDash([4,3]);
+  for(const s of [1,-1]){ c.beginPath(); for(let i=0;i<=240;i++){ const t=Tmax*i/240; const y=Math.max(-ymax,Math.min(ymax,s*env(t))); i?c.lineTo(px(t),py(y)):c.moveTo(px(t),py(y)); } c.stroke(); }
+  c.setLineDash([]);
+  c.fillStyle='#8A8A8A'; c.font='italic 10px Segoe UI';
+  { const te=Tmax*0.68; c.fillText(a>1e-9?'e^(+σt)':'e^(−σt)', px(te)+3, py(Math.min(env(te),ymax))-4); }
+  // respuesta
+  c.strokeStyle=col; c.lineWidth=2.3;
+  c.beginPath(); for(let i=0;i<=480;i++){ const t=Tmax*i/480; const y=Math.max(-ymax,Math.min(ymax,env(t)*Math.cos(wd*t))); i?c.lineTo(px(t),py(y)):c.moveTo(px(t),py(y)); } c.stroke();
+  // --- ANOTACIÓN del PERIODO T_d entre dos picos consecutivos ---
+  if(Td && Td<Tmax*0.98){
+    let p1=0, p2=Td; if(2*Td<Tmax*0.98){ p1=Td; p2=2*Td; }
+    const yA=14, xA=px(p1), xB=px(p2);
+    c.strokeStyle='rgba(197,90,17,.5)'; c.setLineDash([3,3]); c.lineWidth=1;
+    for(const X of [xA,xB]){ c.beginPath(); c.moveTo(X,yA+2); c.lineTo(X,midY); c.stroke(); } c.setLineDash([]);
+    c.strokeStyle='#C55A11'; c.lineWidth=1.6; c.beginPath(); c.moveTo(xA,yA); c.lineTo(xB,yA); c.stroke();
+    for(const X of [xA,xB]){ c.beginPath(); c.moveTo(X,yA-4); c.lineTo(X,yA+4); c.stroke(); }
+    c.fillStyle='#C55A11'; c.font='bold 11px Segoe UI'; c.textAlign='center';
+    c.fillText('T_d = '+fmt(Td,2)+' s', (xA+xB)/2, yA-4); c.textAlign='left';
+  }
+  // --- MARCA de la constante de tiempo τ ---
+  if(tau && tau<Tmax*0.98){
+    const X=px(tau); c.strokeStyle='rgba(46,125,70,.75)'; c.setLineDash([3,3]); c.lineWidth=1.4;
+    c.beginPath(); c.moveTo(X,padT); c.lineTo(X,Hh-padB); c.stroke(); c.setLineDash([]);
+    c.fillStyle='#2E7D46'; c.font='bold 10px Segoe UI'; c.fillText('τ', X+3, a<0?Hh-padB-3:padT+9);
+  }
+  if(a>1e-6){ c.fillStyle=col; c.font='bold 11px Segoe UI'; c.fillText('crece →',x1-52,padT-16); }
+  // --- PIE con las relaciones ---
+  const info=document.getElementById('respinfo');
+  if(info){ let s='';
+    if(Td && a<-1e-9){ const ts=4/sig, delta=sig*Td;
+      s='<b>T<sub>d</sub></b> = 2π/ω<sub>d</sub> = '+fmt(Td,3)+' s &nbsp;·&nbsp; <b>τ</b> = 1/σ = '+fmt(tau,3)+
+        ' s &nbsp;·&nbsp; <b>t<sub>s</sub></b> ≈ 4/σ = '+fmt(ts,2)+' s (asentamiento 2%) &nbsp;·&nbsp; <b>δ</b> = σ·T<sub>d</sub> = '+
+        fmt(delta,3)+' (decremento logarítmico = 2πζ/√(1−ζ²)).'; }
+    else if(Td && Math.abs(a)<1e-9){ s='<b>T</b> = 2π/ω<sub>n</sub> = '+fmt(Td,3)+' s &nbsp;·&nbsp; σ = 0 → no decae: oscila indefinidamente.'; }
+    else if(Td && a>1e-9){ const t2=Math.log(2)/sig;
+      s='<b>T<sub>d</sub></b> = '+fmt(Td,3)+' s &nbsp;·&nbsp; <b>t₂</b> = ln2/σ = '+fmt(t2,3)+' s (tiempo de duplicación) &nbsp;·&nbsp; la envolvente crece como e^(+σt).'; }
+    else if(!Td && a<-1e-9){ const ts=4/sig; s='Sin oscilación (respuesta exponencial) &nbsp;·&nbsp; <b>τ</b> = 1/σ = '+fmt(tau,3)+' s &nbsp;·&nbsp; <b>t<sub>s</sub></b> ≈ 4/σ = '+fmt(ts,2)+' s.'; }
+    else if(!Td && a>1e-9){ const t2=Math.log(2)/sig; s='Sin oscilación · crece: <b>t₂</b> = ln2/σ = '+fmt(t2,3)+' s (tiempo de duplicación).'; }
+    else s='Introduce un z ≠ 0 para ver la respuesta.';
+    if(info.__k!==s){info.innerHTML=s; info.__k=s;}
+  }
+  // --- cursor animado (playhead) que recorre la respuesta armónica ---
+  if(phFrac!=null){
+    const tp=phFrac*Tmax, yv=Math.max(-ymax,Math.min(ymax,env(tp)*Math.cos(wd*tp)));
+    const Xp=px(tp), Yp=py(yv);
+    c.strokeStyle='rgba(150,150,150,.4)'; c.setLineDash([2,3]); c.beginPath(); c.moveTo(Xp,padT); c.lineTo(Xp,Hh-padB); c.stroke(); c.setLineDash([]);
+    c.fillStyle=col; c.beginPath(); c.arc(Xp,Yp,4.5,0,TAU); c.fill(); c.lineWidth=1.6; c.strokeStyle='#fff'; c.stroke();
+  }
+}
+
+// ---------- CANVAS ----------
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let CW=720, CH=560, cx=CW/2, cy=CH/2;
+function setupCanvas(){
+  const dpr=window.devicePixelRatio||1;
+  const rect=cv.getBoundingClientRect();
+  CW=rect.width; CH=rect.width*0.78;
+  cv.width=CW*dpr; cv.height=CH*dpr; cv.style.height=CH+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cx=CW/2; cy=CH/2;
+  draw();
+}
+const toPx=(a,b)=>[cx+a*scale, cy-b*scale];
+const toXY=(px,py)=>[(px-cx)/scale, (cy-py)/scale];
+function fit(){
+  const r=modOf(z), rr=Math.sqrt(r);
+  const maxMag=Math.max(1.2, r*1.18, rr*1.18);
+  scale=Math.min(cx,cy)*0.82/maxMag; draw();
+}
+function arrow(x1,y1,x2,y2,color,w){
+  ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=w||2.5;
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  const ang=Math.atan2(y2-y1,x2-x1), h=9;
+  ctx.beginPath(); ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-h*Math.cos(ang-0.4),y2-h*Math.sin(ang-0.4));
+  ctx.lineTo(x2-h*Math.cos(ang+0.4),y2-h*Math.sin(ang+0.4));
+  ctx.closePath(); ctx.fill();
+}
+let anim=null, t0=0;
+function draw(){
+  ctx.clearRect(0,0,CW,CH);
+  // grid
+  ctx.strokeStyle='#E7EEF7'; ctx.lineWidth=1;
+  const step=scale;
+  for(let x=cx%step; x<CW; x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,CH);ctx.stroke();}
+  for(let y=cy%step; y<CH; y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(CW,y);ctx.stroke();}
+  // axes
+  ctx.strokeStyle='#9FB2CC'; ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(CW,cy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,CH);ctx.stroke();
+  ctx.fillStyle='#7488A3'; ctx.font='12px Segoe UI,Arial';
+  ctx.fillText('Re',CW-24,cy-8); ctx.fillText('Im',cx+8,14);
+  // unit ticks
+  ctx.fillStyle='#8A9BB5'; ctx.font='11px Segoe UI,Arial';
+  for(let k=-6;k<=6;k++){ if(k===0)continue;
+    const [px]=toPx(k,0); if(px>14&&px<CW-14){ctx.beginPath();ctx.moveTo(px,cy-3);ctx.lineTo(px,cy+3);ctx.strokeStyle='#9FB2CC';ctx.stroke();ctx.fillText(k,px-3,cy+15);}
+    const [,py]=toPx(0,k); if(py>10&&py<CH-10){ctx.beginPath();ctx.moveTo(cx-3,py);ctx.lineTo(cx+3,py);ctx.stroke();ctx.fillText(k,cx+7,py+4);}
+  }
+  const th=argOf(z), r=modOf(z);
+  // angle arc
+  if(r>0.05){
+    ctx.strokeStyle='rgba(197,90,17,.55)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(cx,cy,34,0,-th,th>0); ctx.stroke();
+    ctx.fillStyle='var(--orange)'; ctx.fillStyle='#C55A11'; ctx.font='bold 12px Segoe UI';
+    ctx.fillText('θ='+angStr(th), cx+40, cy-14*Math.sign(th||1));
+  }
+  // roots
+  if(showRoots){
+    for(const w of sqrtRoots(z)){
+      const [px,py]=toPx(w.a,w.b);
+      arrow(cx,cy,px,py,'#C55A11',2);
+      ctx.fillStyle='#C55A11'; ctx.beginPath(); ctx.arc(px,py,4.5,0,TAU); ctx.fill();
+    }
+  }
+  // animación: EXCITACIÓN vs RESPUESTA (dos fasores girando; el ángulo entre ellos = desfase θ)
+  if(anim!==null){
+    const A=anim.r, ang=anim.ang, ph=anim.ph;
+    const ex=toPx(A*Math.cos(ang), A*Math.sin(ang));
+    const rs=toPx(A*Math.cos(ph+ang), A*Math.sin(ph+ang));
+    ctx.setLineDash([5,4]);
+    arrow(cx,cy,ex[0],ex[1],'#8AA0C0',2);       // excitación (referencia)
+    arrow(cx,cy,rs[0],rs[1],'#1F3864',2.6);      // respuesta z
+    ctx.setLineDash([]);
+    for(const [pt,col] of [[ex,'#8AA0C0'],[rs,'#1F3864']]){
+      ctx.strokeStyle='rgba(120,140,170,.35)'; ctx.beginPath(); ctx.moveTo(pt[0],pt[1]); ctx.lineTo(pt[0],cy); ctx.stroke();
+      ctx.fillStyle=col; ctx.beginPath(); ctx.arc(pt[0],cy,4,0,TAU); ctx.fill();
+    }
+    // arco del desfase θ entre ambos fasores
+    if(Math.abs(ph)>0.01){
+      ctx.strokeStyle='rgba(197,90,17,.85)'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.arc(cx,cy,50,-ang,-(ang+ph),ph>0); ctx.stroke();
+      const mid=ang+ph/2; ctx.fillStyle='#C55A11'; ctx.font='bold 13px Segoe UI';
+      ctx.fillText('θ', cx+62*Math.cos(mid), cy-62*Math.sin(mid));
+    }
+    ctx.fillStyle='#5B5B5B'; ctx.font='12px Segoe UI';
+    ctx.fillText('excitación (gris) vs respuesta (azul) — el ángulo constante es el desfase θ', 12, 16);
+  }
+  // vector z
+  const [zx,zy]=toPx(z.a,z.b);
+  arrow(cx,cy,zx,zy,'#1F3864',3);
+  // modulus label
+  ctx.fillStyle='#1F3864'; ctx.font='bold 12px Segoe UI';
+  ctx.fillText('|z|='+fmt(r), (cx+zx)/2+6, (cy+zy)/2-6);
+  // draggable handle
+  ctx.fillStyle='#1F3864'; ctx.strokeStyle='#fff'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(zx,zy,7,0,TAU); ctx.fill(); ctx.stroke();
+}
+
+// ---------- interacción: arrastrar z ----------
+let dragging=false;
+function evtXY(e){ const rect=cv.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [t.clientX-rect.left, t.clientY-rect.top]; }
+function pointerDown(e){ const [px,py]=evtXY(e); const [zx,zy]=toPx(z.a,z.b); if(Math.hypot(px-zx,py-zy)<18){dragging=true;cv.style.cursor='grabbing';e.preventDefault();} }
+function pointerMove(e){ if(!dragging)return; const [px,py]=evtXY(e); const [a,b]=toXY(px,py); z={a:+a.toFixed(3),b:+b.toFixed(3)}; refreshForms(); draw(); e.preventDefault(); }
+function pointerUp(){ dragging=false; cv.style.cursor='grab'; }
+cv.addEventListener('mousedown',pointerDown); window.addEventListener('mousemove',pointerMove); window.addEventListener('mouseup',pointerUp);
+cv.addEventListener('touchstart',pointerDown,{passive:false}); cv.addEventListener('touchmove',pointerMove,{passive:false}); cv.addEventListener('touchend',pointerUp);
+// --- accesibilidad por teclado: mover z ---
+function announce(){ const el=document.getElementById('live'); if(!el)return; const ri=regInfo(z.a,z.b);
+  el.textContent='z = '+binStr(z.a,z.b)+'. |z| = '+fmt(modOf(z),2)+', θ = '+fmt(argOf(z)*180/Math.PI,1)+'°. Como raíz: '+ri.l+'.'; }
+cv.addEventListener('keydown',e=>{
+  const s=(e.shiftKey?0.5:0.1);
+  if(e.key==='ArrowRight')z.a=+(z.a+s).toFixed(3); else if(e.key==='ArrowLeft')z.a=+(z.a-s).toFixed(3);
+  else if(e.key==='ArrowUp')z.b=+(z.b+s).toFixed(3); else if(e.key==='ArrowDown')z.b=+(z.b-s).toFixed(3);
+  else return; e.preventDefault(); refreshForms(); draw(); announce();
+});
+
+// ---------- controles ----------
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  mode=t.dataset.mode;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));
+  document.querySelectorAll('.inputs').forEach(x=>x.classList.toggle('active',x.dataset.mode===mode));
+}));
+function readInputs(){
+  if(mode==='bin'){ z={a:parseFloat(document.getElementById('in-a').value)||0, b:parseFloat(document.getElementById('in-b').value)||0}; }
+  else if(mode==='pol'){ const r=parseFloat(document.getElementById('in-pr').value)||0, t=(parseFloat(document.getElementById('in-pt').value)||0)*Math.PI/180; z={a:r*Math.cos(t),b:r*Math.sin(t)}; }
+  else { const r=parseFloat(document.getElementById('in-er').value)||0, t=parseFloat(document.getElementById('in-et').value)||0; z={a:r*Math.cos(t),b:r*Math.sin(t)}; }
+  refreshForms(); fit();
+}
+['in-a','in-b','in-pr','in-pt','in-er','in-et'].forEach(id=>document.getElementById(id).addEventListener('input',readInputs));
+document.getElementById('ck-roots').addEventListener('change',e=>{showRoots=e.target.checked;draw();});
+document.getElementById('ck-deg').addEventListener('change',e=>{useDeg=e.target.checked;refreshForms();draw();});
+document.getElementById('zoom-in').addEventListener('click',()=>{scale*=1.2;draw();});
+document.getElementById('zoom-out').addEventListener('click',()=>{scale/=1.2;draw();});
+document.getElementById('fit').addEventListener('click',fit);
+
+// presets (chips)
+const presets=[
+  ['1 + i√3',{a:1,b:Math.sqrt(3)}], ['−9',{a:-9,b:0}], ['3 − 3i',{a:3,b:-3}],
+  ['2∠45°',{a:2*Math.cos(Math.PI/4),b:2*Math.sin(Math.PI/4)}], ['e^{iπ/3}',{a:Math.cos(Math.PI/3),b:Math.sin(Math.PI/3)}],
+  ['−2 − 2i',{a:-2,b:-2}], ['i',{a:0,b:1}]
+];
+const chips=document.getElementById('chips');
+presets.forEach(([lbl,val])=>{ const c=document.createElement('span'); c.className='chip'; c.innerHTML=lbl; c.onclick=()=>{z={...val};refreshForms();fit();}; chips.appendChild(c); });
+
+// fasor animation
+document.getElementById('play').addEventListener('click',function(){
+  if(anim!==null){ cancelAnimationFrame(anim.raf); anim=null; this.innerHTML='▶ excitación vs respuesta'; draw(); return; }
+  this.innerHTML='■ detener'; const w=1.4; t0=performance.now(); anim={r:modOf(z), ph:argOf(z), ang:0, raf:0};
+  const loop=(now)=>{ anim.r=modOf(z); anim.ph=argOf(z); anim.ang=w*(now-t0)/1000; draw(); anim.raf=requestAnimationFrame(loop); };
+  anim.raf=requestAnimationFrame(loop);
+});
+
+// ================= RETOS =================
+const R = Math.round;
+function rint(lo,hi){ return Math.floor(Math.random()*(hi-lo+1))+lo; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function angleEq(u,v){ let d=Math.abs(((u-v)%360+540)%360-180); return d<1.2; }
+
+const retoTypes=[
+  {id:'b2p', name:'Binómica→Polar'},
+  {id:'p2b', name:'Polar→Binómica'},
+  {id:'prod', name:'Producto (polar)'},
+  {id:'sqrt', name:'Raíces √z'},
+  {id:'aux', name:'Ecuación auxiliar'},
+  {id:'eul', name:'Euler→Binómica'},
+  {id:'reg', name:'Régimen (interpretar)'},
+];
+function regimen(a,b){
+  if(Math.abs(b)<1e-9) return a<0 ? 'Sobreamortiguado (sin oscilar)' : 'Inestable';
+  if(Math.abs(a)<1e-9) return 'No amortiguado';
+  return a<0 ? 'Subamortiguado' : 'Inestable';
+}
+let curType='b2p', cur=null;
+
+const rtBox=document.getElementById('reto-types');
+retoTypes.forEach(rt=>{ const b=document.createElement('button'); b.className='btn ghost small'; b.textContent=rt.name;
+  b.onclick=()=>{ curType=rt.id; document.querySelectorAll('#reto-types .btn').forEach(x=>x.classList.toggle('ghost',x!==b)); newQ(); };
+  rtBox.appendChild(b); });
+
+function inputField(id,label,w){ return '<div class="fld"><label>'+label+'</label><input id="'+id+'" type="number" step="any" style="width:'+(w||80)+'px"></div>'; }
+
+function newQ(){
+  const q=document.getElementById('q'), ans=document.getElementById('ansbox');
+  document.getElementById('fb').textContent=''; document.getElementById('sol').classList.remove('show');
+  if(curType==='b2p'){
+    const a=pick([1,2,3,-1,-2,3,-3]), b=pick([1,2,3,-2,-3,3]);
+    cur={a,b}; q.innerHTML='Expresa en forma polar (r y θ en grados):  <b>z = '+binStr(a,b)+'</b>';
+    ans.innerHTML=inputField('q-r','r')+inputField('q-t','θ (°)');
+  } else if(curType==='p2b'){
+    const r=pick([2,3,4,5]), tg=pick([30,45,60,90,120,135,150,180]);
+    cur={r,tg}; q.innerHTML='Expresa en forma binómica (a y b):  <b>z = '+r+'∠'+tg+'°</b>';
+    ans.innerHTML=inputField('q-a','a')+inputField('q-b','b');
+  } else if(curType==='prod'){
+    const r1=pick([2,3]), t1=pick([30,45,60]), r2=pick([2,3,4]), t2=pick([30,45,90]);
+    cur={r1,t1,r2,t2}; q.innerHTML='Multiplica en forma polar (da r y θ):  <b>('+r1+'∠'+t1+'°)·('+r2+'∠'+t2+'°)</b>';
+    ans.innerHTML=inputField('q-r','r')+inputField('q-t','θ (°)');
+  } else if(curType==='sqrt'){
+    const opt=pick([{a:0,b:0,r:9,t:180,lab:'−9'},{a:0,b:0,r:4,t:180,lab:'−4'},{a:0,b:0,r:2,t:90,lab:'2i'},{a:0,b:0,r:8,t:90,lab:'8i'}]);
+    cur=opt; q.innerHTML='Halla UNA raíz cuadrada (forma binómica a+bi):  <b>z = '+opt.lab+'</b>';
+    ans.innerHTML=inputField('q-a','a')+inputField('q-b','b');
+  } else if(curType==='aux'){
+    const alpha=pick([-1,-2,-3,-1]), beta=pick([1,2,3]);
+    const p=-2*alpha, q0=alpha*alpha+beta*beta;
+    cur={alpha,beta}; q.innerHTML='Resuelve la ecuación auxiliar (raíces α ± βi):  <b>r² '+(p>=0?'+ '+p:'− '+(-p))+'r + '+q0+' = 0</b>';
+    ans.innerHTML=inputField('q-al','α')+inputField('q-be','β (>0)');
+  } else if(curType==='eul'){
+    const r=pick([1,2,3]), frac=pick([[Math.PI/6,'π/6'],[Math.PI/4,'π/4'],[Math.PI/3,'π/3'],[Math.PI/2,'π/2'],[Math.PI,'π']]);
+    cur={r,t:frac[0]}; q.innerHTML='Pasa a forma binómica (a y b):  <b>z = '+r+'·e^(i'+frac[1]+')</b>';
+    ans.innerHTML=inputField('q-a','a')+inputField('q-b','b');
+  } else if(curType==='reg'){
+    const kind=pick(['sub','ine','noa','sob']); let a,b;
+    if(kind==='sub'){a=-rint(1,3); b=pick([-1,1])*rint(1,3);}
+    else if(kind==='ine'){a=rint(1,3); b=pick([-1,1])*rint(1,3);}
+    else if(kind==='noa'){a=0; b=pick([-1,1])*rint(1,3);}
+    else {a=-rint(1,4); b=0;}
+    cur={a,b,sel:null,correct:regimen(a,b)};
+    q.innerHTML='Si z fuese una raíz característica s = a + b·i, ¿qué régimen representa?  <b>z = '+binStr(a,b)+'</b>';
+    const opts=['Subamortiguado','No amortiguado','Sobreamortiguado (sin oscilar)','Inestable'];
+    ans.innerHTML=opts.map(o=>'<button type="button" class="opt btn ghost small" style="flex:0 0 auto">'+o+'</button>').join(' ');
+    ans.querySelectorAll('.opt').forEach(btn=>btn.addEventListener('click',()=>{
+      cur.sel=btn.textContent; ans.querySelectorAll('.opt').forEach(x=>x.classList.toggle('ghost',x!==btn));
+    }));
+  }
+}
+function val(id){ const el=document.getElementById(id); return el?parseFloat(el.value):NaN; }
+function check(){
+  const fb=document.getElementById('fb'); let ok=false, sol='';
+  const near=(u,v,tol)=>Math.abs(u-v)<(tol||0.06*Math.max(1,Math.abs(v))+0.06);
+  if(curType==='b2p'){
+    const r=Math.hypot(cur.a,cur.b), tg=Math.atan2(cur.b,cur.a)*180/Math.PI;
+    ok=near(val('q-r'),r)&&angleEq(val('q-t'),tg); sol='r='+fmt(r)+', θ='+fmt(tg,1)+'°';
+  } else if(curType==='p2b'){
+    const t=cur.tg*Math.PI/180, a=cur.r*Math.cos(t), b=cur.r*Math.sin(t);
+    ok=near(val('q-a'),a)&&near(val('q-b'),b); sol='a='+fmt(a)+', b='+fmt(b);
+  } else if(curType==='prod'){
+    const r=cur.r1*cur.r2, tg=cur.t1+cur.t2; ok=near(val('q-r'),r)&&angleEq(val('q-t'),tg); sol='r='+r+', θ='+tg+'°';
+  } else if(curType==='sqrt'){
+    const rr=Math.sqrt(cur.r), t=cur.t*Math.PI/180/2;
+    const roots=[[rr*Math.cos(t),rr*Math.sin(t)],[rr*Math.cos(t+Math.PI),rr*Math.sin(t+Math.PI)]];
+    ok=roots.some(w=>near(val('q-a'),w[0])&&near(val('q-b'),w[1]));
+    sol='±('+binStr(roots[0][0],roots[0][1])+')';
+  } else if(curType==='aux'){
+    ok=near(val('q-al'),cur.alpha)&&near(Math.abs(val('q-be')),Math.abs(cur.beta)); sol='α='+cur.alpha+', β='+Math.abs(cur.beta);
+  } else if(curType==='eul'){
+    const a=cur.r*Math.cos(cur.t), b=cur.r*Math.sin(cur.t); ok=near(val('q-a'),a)&&near(val('q-b'),b); sol='a='+fmt(a)+', b='+fmt(b);
+  } else if(curType==='reg'){
+    ok = cur.sel===cur.correct; sol=cur.correct+(cur.sel?'':'  (elige una opción primero)');
+  }
+  fb.textContent = ok?'¡Correcto!  ✓':'Aún no. Revisa el procedimiento e inténtalo otra vez.';
+  fb.className='feedback '+(ok?'ok':'no');
+  document.getElementById('sol').textContent='Solución: '+sol;
+}
+document.getElementById('check').addEventListener('click',check);
+document.getElementById('newq').addEventListener('click',newQ);
+document.getElementById('showsol').addEventListener('click',()=>document.getElementById('sol').classList.add('show'));
+
+// ================= ANALOGÍA AEROELÁSTICA: cabeceo de un ala =================
+const wcv=document.getElementById('wing');
+// perfil (distribución de espesor tipo NACA de 4 dígitos, cuerda unitaria)
+const AF=(function(){const pts=[],T=0.13,N=26;
+  const yt=x=>5*T*(0.2969*Math.sqrt(x)-0.126*x-0.3516*x*x+0.2843*x*x*x-0.1036*x*x*x*x);
+  for(let i=0;i<=N;i++){const x=i/N;pts.push([x,yt(x)]);}
+  for(let i=N;i>=0;i--){const x=i/N;pts.push([x,-yt(x)]);}
+  return pts;})();
+let wingT0=null;
+function regInfo(a,b){const r=regimen(a,b);
+  if(r==='Inestable')return{c:'#B23A3A',l:'inestable',g:'~↗'};
+  if(r==='No amortiguado')return{c:'#4472C4',l:'no amortiguado',g:'~'};
+  if(r.indexOf('Sobre')===0)return{c:'#5B5B5B',l:'sin oscilar',g:'↘'};
+  return{c:'#2E7D46',l:'subamortiguado',g:'~↘'};}
+function vArrow(c,x,y,len,col){ c.strokeStyle=col;c.fillStyle=col;c.lineWidth=2.6;
+  const ay=y-len,d=len>=0?1:-1; c.beginPath();c.moveTo(x,y);c.lineTo(x,ay);c.stroke();
+  c.beginPath();c.moveTo(x,ay);c.lineTo(x-4,ay+d*7);c.lineTo(x+4,ay+d*7);c.closePath();c.fill(); }
+function drawWing(now){
+  if(!wcv){requestAnimationFrame(drawWing);return;}
+  const c=wcv.getContext('2d'),dpr=window.devicePixelRatio||1;
+  const W=wcv.clientWidth||340,H=210;
+  if(wcv.width!==Math.round(W*dpr)){wcv.width=W*dpr;wcv.height=H*dpr;wcv.style.height=H+'px';}
+  c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H);
+  const a=z.a,b=z.b,wd=Math.abs(b),ri=regInfo(a,b);
+  const S=simState(now), tSim=S.tSim, th=S.th;
+  const kdeg=20/S.envMax;
+  const alpha=(kdeg*Math.exp(a*tSim)*Math.cos(wd*tSim))*Math.PI/180;   // cabeceo = x(t) (sincronizado)
+  const ref=Math.cos(wd*tSim - th);                                    // ráfaga (excitación) desfasada −θ
+  const cx=W*0.53, cy=H*0.5, chord=Math.min(158,W*0.5);
+  // flujo libre (freestream)
+  c.strokeStyle='#C3D3EA';c.fillStyle='#C3D3EA';c.lineWidth=2;
+  [-52,-20,20,52].forEach(oy=>{const y=cy+oy,xs=8,xe=cx-0.52*chord;c.beginPath();c.moveTo(xs,y);c.lineTo(xe,y);c.stroke();c.beginPath();c.moveTo(xe,y);c.lineTo(xe-7,y-4);c.lineTo(xe-7,y+4);c.closePath();c.fill();});
+  c.fillStyle='#9FB0C6';c.font='10px Segoe UI';c.fillText('flujo',10,cy-58);
+  // excitación (ráfaga oscilante, amplitud constante)
+  const xE=cx-0.40*chord; vArrow(c,xE,cy,24*ref,'#C55A11');
+  c.fillStyle='#C55A11';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('excitación (ráfaga)',xE,H-7);c.textAlign='left';
+  // ala (cabeceo torsional alrededor del pivote)
+  c.save();c.translate(cx,cy);c.rotate(-alpha);
+  c.beginPath();AF.forEach(([x,y],i)=>{const X=(x-0.25)*chord,Y=-y*chord;i?c.lineTo(X,Y):c.moveTo(X,Y);});c.closePath();
+  c.fillStyle='rgba(31,56,100,0.93)';c.fill();c.lineWidth=1.5;c.strokeStyle='#12203c';c.stroke();
+  c.strokeStyle='rgba(255,255,255,.45)';c.lineWidth=1;c.beginPath();c.moveTo(-0.25*chord,0);c.lineTo(0.75*chord,0);c.stroke();
+  c.restore();
+  c.fillStyle='#fff';c.strokeStyle=ri.c;c.lineWidth=2;c.beginPath();c.arc(cx,cy,4,0,TAU);c.fill();c.stroke();
+  // respuesta (borde de salida)
+  const teX=cx+0.75*chord*Math.cos(alpha), teY=cy-0.75*chord*Math.sin(alpha);
+  c.strokeStyle='rgba(120,140,170,.4)';c.setLineDash([3,3]);c.beginPath();c.moveTo(teX,cy-60);c.lineTo(teX,cy+60);c.stroke();c.setLineDash([]);
+  c.fillStyle=ri.c;c.beginPath();c.arc(teX,teY,5,0,TAU);c.fill();
+  c.fillStyle=ri.c;c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('respuesta (cabeceo)',teX,H-7);c.textAlign='left';
+  // etiqueta de régimen + aviso de flameo
+  c.fillStyle=ri.c;c.font='bold 12px Segoe UI';c.fillText(ri.g+' '+ri.l,10,16);
+  if(ri.l==='inestable'){c.fillStyle='#B23A3A';c.font='bold 12px Segoe UI';c.textAlign='right';c.fillText('⚠ flameo (flutter)',W-10,16);c.textAlign='left';}
+  requestAnimationFrame(drawWing);
+}
+
+// ============= ILUSTRACIÓN DIVERTIDA: la rueda que dibuja una onda =============
+const vcv=document.getElementById('wave');
+let waveT0=null;
+function smiley(c,x,y,rad,col){
+  c.fillStyle=col;c.beginPath();c.arc(x,y,rad,0,TAU);c.fill();
+  c.fillStyle='#fff';c.beginPath();c.arc(x-rad*0.33,y-rad*0.18,rad*0.15,0,TAU);c.arc(x+rad*0.33,y-rad*0.18,rad*0.15,0,TAU);c.fill();
+  c.strokeStyle='#fff';c.lineWidth=Math.max(1.3,rad*0.15);c.beginPath();c.arc(x,y+rad*0.05,rad*0.45,0.15*Math.PI,0.85*Math.PI);c.stroke();
+}
+function drawWave(now){
+  if(!vcv){requestAnimationFrame(drawWave);return;}
+  const c=vcv.getContext('2d'),dpr=window.devicePixelRatio||1;
+  const W=vcv.clientWidth||340,H=170;
+  if(vcv.width!==Math.round(W*dpr)){vcv.width=W*dpr;vcv.height=H*dpr;vcv.style.height=H+'px';}
+  c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+  const r=modOf(z),th=argOf(z);
+  const R=Math.max(10,Math.min(H*0.36, r*18));      // radio de la rueda = amplitud |z|
+  const ccx=66,ccy=H*0.5, wx0=ccx+R+22;
+  if(waveT0===null)waveT0=now;
+  const wdisp=0.9, t=(now-waveT0)/1000, phi=th+wdisp*t;   // ángulo que gira: θ + ωt
+  // eje de la onda
+  c.strokeStyle='#F0DDC4';c.lineWidth=1;c.beginPath();c.moveTo(wx0-8,ccy);c.lineTo(W-8,ccy);c.stroke();
+  // rueda + asientos
+  c.strokeStyle='#E0B98E';c.lineWidth=2;c.beginPath();c.arc(ccx,ccy,R,0,TAU);c.stroke();
+  for(let k=0;k<6;k++){const ang=phi+k*TAU/6;c.fillStyle='#E9C9A0';c.beginPath();c.arc(ccx+R*Math.cos(ang),ccy-R*Math.sin(ang),3,0,TAU);c.fill();}
+  // radio hacia la cabina
+  const pxp=ccx+R*Math.cos(phi), pyp=ccy-R*Math.sin(phi);
+  c.strokeStyle='#C55A11';c.lineWidth=2;c.beginPath();c.moveTo(ccx,ccy);c.lineTo(pxp,pyp);c.stroke();
+  c.fillStyle='#fff';c.strokeStyle='#E0B98E';c.lineWidth=1.5;c.beginPath();c.arc(ccx,ccy,3,0,TAU);c.fill();c.stroke();
+  // onda que se desplaza (la "sombra" de la altura de la cabina)
+  c.strokeStyle='#C55A11';c.lineWidth=2.4;c.beginPath();
+  const wend=W-8; for(let s=0;s<=wend-wx0;s++){const ph=phi-wdisp*(s*0.03); const y=ccy-R*Math.sin(ph); s?c.lineTo(wx0+s,y):c.moveTo(wx0+s,y);} c.stroke();
+  // conexión cabina→inicio de la onda (misma altura)
+  c.strokeStyle='rgba(197,90,17,.45)';c.setLineDash([3,3]);c.beginPath();c.moveTo(pxp,pyp);c.lineTo(wx0,pyp);c.stroke();c.setLineDash([]);
+  c.fillStyle='#C55A11';c.beginPath();c.arc(wx0,pyp,3.2,0,TAU);c.fill();
+  // cabina con carita
+  smiley(c,pxp,pyp,7.5,'#1F3864');
+  // etiquetas
+  c.fillStyle='#B07A3C';c.font='bold 10px Segoe UI';c.fillText('altura = |z|·sin(θ+ωt)',wx0,14);
+  requestAnimationFrame(drawWave);
+}
+
+// ============= EJEMPLO TANGIBLE: torre de bloques de juguete sobre mesa vibradora =============
+const tcv=document.getElementById('tower');
+let towerT0=null;
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function drawTower(now){
+  if(!tcv){requestAnimationFrame(drawTower);return;}
+  const c=tcv.getContext('2d'),dpr=window.devicePixelRatio||1;
+  const W=tcv.clientWidth||340,H=210;
+  if(tcv.width!==Math.round(W*dpr)){tcv.width=W*dpr;tcv.height=H*dpr;tcv.style.height=H+'px';}
+  c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+  const a=z.a,b=z.b,wd=Math.abs(b),th=argOf(z),ri=regInfo(a,b);
+  const S=simState(now), tSim=S.tSim;
+  const kpx=34/S.envMax;
+  const relSway=kpx*Math.exp(a*tSim)*Math.cos(wd*tSim);      // respuesta (azotea) = x(t) (sincronizada)
+  const baseX=15*Math.cos(wd*tSim - th);                     // sacudida de la base (excitación) desfasada −θ
+  const cxT=W*0.5, groundY=H-14, tableTop=groundY-10;
+  // suelo con textura
+  c.strokeStyle='#CBD8E6';c.lineWidth=2;c.beginPath();c.moveTo(6,groundY);c.lineTo(W-6,groundY);c.stroke();
+  c.strokeStyle='#DDE6F0';c.lineWidth=1;for(let x=12;x<W-6;x+=12){c.beginPath();c.moveTo(x,groundY);c.lineTo(x-6,groundY+6);c.stroke();}
+  // referencia fija (centro) para apreciar el desplazamiento de la base
+  c.strokeStyle='#D7E0EC';c.setLineDash([2,3]);c.lineWidth=1;c.beginPath();c.moveTo(cxT,tableTop-2);c.lineTo(cxT,groundY);c.stroke();c.setLineDash([]);
+  // mesa vibradora (base) que se desplaza
+  const tW=Math.min(150,W*0.52), tX=cxT+baseX;
+  c.fillStyle='#9fb0c6';c.strokeStyle='#7e90a8';c.lineWidth=1.5;roundRect(c,tX-tW/2,tableTop,tW,10,2);c.fill();c.stroke();
+  // doble flecha ↔ SOBRE la mesa (se mueve con ella): la base se sacude de lado a lado
+  {const y=tableTop+5, aw=16; c.strokeStyle='#41506a';c.fillStyle='#41506a';c.lineWidth=2;
+   c.beginPath();c.moveTo(tX-aw,y);c.lineTo(tX+aw,y);c.stroke();
+   c.beginPath();c.moveTo(tX-aw,y);c.lineTo(tX-aw+5,y-4);c.lineTo(tX-aw+5,y+4);c.closePath();c.fill();
+   c.beginPath();c.moveTo(tX+aw,y);c.lineTo(tX+aw-5,y-4);c.lineTo(tX+aw-5,y+4);c.closePath();c.fill();}
+  // torre de bloques que se mece (base fija a la mesa, la punta se desplaza más)
+  const N=5, floorH=Math.min(30,(tableTop-30)/N), cols=['#E0457B','#F4A62A','#3AAFA9','#7A5AA6','#4472C4'];
+  let topCX=tX, topCY=tableTop, topBW=44;
+  for(let i=0;i<N;i++){ const hf=(i+1)/N, shape=Math.pow(hf,1.55);
+    const cxi=tX+relSway*shape, cyi=tableTop-(i+0.5)*floorH, bw=44-8*hf, bh=floorH-4;
+    c.fillStyle=cols[i%cols.length];c.strokeStyle='rgba(0,0,0,.12)';c.lineWidth=1;
+    roundRect(c,cxi-bw/2,cyi-bh/2,bw,bh,4);c.fill();c.stroke();
+    topCX=cxi; topCY=cyi; topBW=bw;
+  }
+  // azotea: carita + antena
+  c.fillStyle='#fff';c.beginPath();c.arc(topCX-4,topCY-2,1.7,0,TAU);c.arc(topCX+4,topCY-2,1.7,0,TAU);c.fill();
+  c.strokeStyle='#fff';c.lineWidth=1.4;c.beginPath();c.arc(topCX,topCY+1,4,0.12*Math.PI,0.88*Math.PI);c.stroke();
+  const antX=topCX+relSway*0.05;
+  c.strokeStyle='#5B5B5B';c.lineWidth=1.5;c.beginPath();c.moveTo(topCX,topCY-floorH/2+2);c.lineTo(antX,topCY-floorH/2-10);c.stroke();
+  c.fillStyle='#B23A3A';c.beginPath();c.arc(antX,topCY-floorH/2-11,2,0,TAU);c.fill();
+  // etiquetas
+  c.fillStyle=ri.c;c.font='bold 12px Segoe UI';c.fillText(ri.g+' '+ri.l,10,16);
+  c.fillStyle='#5B5B5B';c.font='bold 11px Segoe UI';c.textAlign='right';c.fillText('desfase θ = '+fmt(th*180/Math.PI,0)+'°',W-10,16);c.textAlign='left';
+  if(ri.l==='inestable' && Math.abs(relSway)>24){c.fillStyle='#B23A3A';c.font='bold 11px Segoe UI';c.textAlign='center';c.fillText('¡resonancia! 🌀',W*0.5,34);c.textAlign='left';}
+  c.fillStyle='#41506a';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('base: se sacude ↔ (excitación)',tX,H-2);c.textAlign='left';
+  c.fillStyle='#B8355F';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('azotea (respuesta)',Math.min(W-54,Math.max(54,topCX)),Math.max(14,topCY-floorH/2-20));c.textAlign='left';
+  requestAnimationFrame(drawTower);
+}
+// ============= EJEMPLO TANGIBLE: el columpio (sincronizado con x(t)) =============
+const scv=document.getElementById('swing');
+function drawSwing(now){
+  if(!scv){requestAnimationFrame(drawSwing);return;}
+  const c=scv.getContext('2d'),dpr=window.devicePixelRatio||1;
+  const W=scv.clientWidth||340,H=210;
+  if(scv.width!==Math.round(W*dpr)){scv.width=W*dpr;scv.height=H*dpr;scv.style.height=H+'px';}
+  c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+  const a=z.a,wd=Math.abs(z.b),ri=regInfo(z.a,z.b);
+  const S=simState(now), tSim=S.tSim, th=S.th;
+  const kdeg=30/S.envMax;
+  const beta=(kdeg*Math.exp(a*tSim)*Math.cos(wd*tSim))*Math.PI/180;   // respuesta = x(t) (sincronizada)
+  const exc=Math.cos(wd*tSim - th);                                   // empujón (excitación) desfasado −θ
+  const px=W*0.55, topY=24, L=H*0.44;
+  c.strokeStyle='#CBD8E6';c.lineWidth=2;c.beginPath();c.moveTo(6,H-12);c.lineTo(W-6,H-12);c.stroke();
+  c.strokeStyle='#8a7a63';c.lineWidth=4;
+  c.beginPath();c.moveTo(px-48,H-12);c.lineTo(px-8,topY);c.moveTo(px+48,H-12);c.lineTo(px+8,topY);c.stroke();
+  c.beginPath();c.moveTo(px-26,topY);c.lineTo(px+26,topY);c.stroke();
+  const bx=px+L*Math.sin(beta), by=topY+L*Math.cos(beta);
+  const ux=Math.cos(beta), uy=-Math.sin(beta), sh=15;
+  const sLx=bx-sh*ux, sLy=by-sh*uy, sRx=bx+sh*ux, sRy=by+sh*uy;
+  c.strokeStyle='#9a7b53';c.lineWidth=1.6;c.beginPath();c.moveTo(px-6,topY+2);c.lineTo(sLx,sLy);c.moveTo(px+6,topY+2);c.lineTo(sRx,sRy);c.stroke();
+  c.strokeStyle='#7a5a33';c.lineWidth=5;c.lineCap='round';c.beginPath();c.moveTo(sLx,sLy);c.lineTo(sRx,sRy);c.stroke();c.lineCap='butt';
+  const upx=(px-bx), upy=(topY-by), ul=Math.hypot(upx,upy)||1, uxn=upx/ul, uyn=upy/ul;
+  const hipX=bx, hipY=by-1, headX=hipX+uxn*20, headY=hipY+uyn*20;
+  c.strokeStyle='#1F3864';c.lineWidth=5;c.lineCap='round';c.beginPath();c.moveTo(hipX,hipY);c.lineTo(headX-uxn*7,headY-uyn*7);c.stroke();c.lineCap='butt';
+  c.fillStyle='#E0A86B';c.beginPath();c.arc(headX,headY,7,0,TAU);c.fill();
+  c.strokeStyle='#2E5496';c.lineWidth=3;c.beginPath();c.moveTo(hipX,hipY);c.lineTo(hipX+ux*12,hipY+uy*12+9);c.stroke();
+  const pm=Math.max(0,exc), hX=px-L*0.66, hY=topY+L*0.86;
+  c.strokeStyle='#C55A11';c.fillStyle='#C55A11';c.lineWidth=3;
+  c.beginPath();c.moveTo(hX-6,hY);c.lineTo(hX+20*pm,hY);c.stroke();
+  if(pm>0.05){const axx=hX+20*pm;c.beginPath();c.moveTo(axx,hY);c.lineTo(axx-6,hY-4);c.lineTo(axx-6,hY+4);c.closePath();c.fill();}
+  c.fillStyle=ri.c;c.font='bold 12px Segoe UI';c.fillText(ri.g+' '+ri.l,10,16);
+  c.fillStyle='#5B5B5B';c.font='bold 11px Segoe UI';c.textAlign='right';c.fillText('desfase θ = '+fmt(th*180/Math.PI,0)+'°',W-10,16);c.textAlign='left';
+  if(ri.l==='inestable' && Math.abs(beta)>0.34){c.fillStyle='#B23A3A';c.font='bold 11px Segoe UI';c.textAlign='center';c.fillText('¡cada vez más alto! 🎉',W*0.5,H-22);c.textAlign='left';}
+  c.fillStyle='#C55A11';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('empujón (excitación)',hX+6,H-2);c.textAlign='left';
+  c.fillStyle='#1F3864';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('columpio (respuesta)',Math.min(W-62,Math.max(62,bx)),Math.min(H-2,by+30));c.textAlign='left';
+  requestAnimationFrame(drawSwing);
+}
+// bucle del cursor animado de x(t) (mismo reloj que las ilustraciones)
+function respLoop(now){
+  const S=simState(now);
+  drawResponse(z.a,z.b,respColor,S.frac);
+  requestAnimationFrame(respLoop);
+}
+
+// ---------- init ----------
+window.addEventListener('resize',()=>{setupCanvas();practico();});
+refreshForms(); setupCanvas(); fit(); newQ();
+document.querySelector('#reto-types .btn').classList.remove('ghost');
+document.getElementById('wavecap').innerHTML='<b>Concepto matemático.</b> Una <b>rueda de la fortuna</b>: la cabina gira en el plano complejo (e<sup>iωt</sup>) y su altura va dibujando una <b>onda armónica</b>. El radio es la <b>amplitud |z|</b> y el punto de partida, el <b>desfase θ</b> — ¡así un giro se convierte en una señal!';
+requestAnimationFrame(drawWave);
+document.getElementById('swingcap').innerHTML='<b>Vida cotidiana.</b> Alguien <span style="color:#C55A11;font-weight:600">empuja</span> (excitación) y el columpio <span style="color:#1F3864;font-weight:600">responde</span> con un <b>retraso: el desfase θ</b>. Si empujas <b>a tiempo</b> (en fase) crece; a destiempo, se apaga. El columpio va <b>sincronizado con la gráfica x(t)</b>.';
+requestAnimationFrame(drawSwing);
+document.getElementById('towercap').innerHTML='<b>Vibraciones.</b> La <span style="color:#41506a;font-weight:600">mesa (base)</span> se sacude ↔ y la <span style="color:#B8355F;font-weight:600">azotea</span> responde con un <b>desfase θ</b>. En <b>resonancia</b> se mece cada vez más; con amortiguamiento, se calma. Es —a pequeña escala y con un juguete— lo que estudian los ingenieros para que un <b>edificio resista un sismo</b> (por eso se añaden amortiguadores o una masa sintonizada). Va <b>sincronizada con x(t)</b>.';
+requestAnimationFrame(drawTower);
+document.getElementById('wingcap').innerHTML='<b>Aeronáutica.</b> La <span style="color:#C55A11;font-weight:600">ráfaga (excitación)</span> entra por el borde de ataque y el ala responde con <b>cabeceo</b> (desfase θ). En el semiplano <b>izquierdo</b> se apaga; en el <b>derecho</b> crece → <span style="color:#B23A3A;font-weight:600">flameo (flutter)</span>. Va <b>sincronizada con x(t)</b>.';
+requestAnimationFrame(drawWing);
+requestAnimationFrame(respLoop);
+</script>
+</body>
+</html>

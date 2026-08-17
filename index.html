@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibraciones · Exploradores interactivos · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:22px 22px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1080px;margin:0 auto}
+  header h1{margin:0;font-size:25px;font-weight:700}
+  header p{margin:5px 0 0;font-size:14px;color:var(--ice);opacity:.92}
+  .wrap{max-width:1080px;margin:0 auto;padding:22px 18px 40px}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:16px 18px;margin-bottom:20px;box-shadow:0 1px 4px rgba(31,56,100,.06)}
+  .intro h2{margin:0 0 6px;font-size:16px;color:var(--navy)}
+  .intro p{margin:6px 0;font-size:14px}
+  .route{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 6px;font-size:13px}
+  .route .lab{color:var(--grey);font-weight:700}
+  .route .node{padding:6px 12px;border-radius:20px;background:var(--ice2);border:1px solid var(--line);color:var(--navy);font-weight:700}
+  .route .node b{color:var(--orange)}
+  .route .arw{color:#98a7bd;font-weight:700}
+  .route .role{color:var(--grey)}
+  h3.sec{font-size:15px;color:var(--navy);margin:24px 4px 12px;letter-spacing:.2px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0;box-shadow:0 1px 5px rgba(31,56,100,.07);display:flex;flex-direction:column;overflow:hidden;transition:transform .12s,box-shadow .12s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(31,56,100,.13)}
+  .card .top{padding:16px 18px 10px;border-top:5px solid var(--accent)}
+  .card .pil{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#fff;background:var(--accent);border-radius:20px;padding:3px 11px;margin-bottom:8px}
+  .card h4{margin:2px 0 4px;font-size:18px;color:var(--navy)}
+  .card .role2{font-size:12.5px;color:var(--orange);font-weight:700;margin-bottom:8px}
+  .card p{margin:6px 0;font-size:13.5px;color:var(--ink)}
+  .card ul{margin:8px 0 0;padding-left:18px} .card li{font-size:13px;margin:4px 0;color:#33455f}
+  .card .body{padding:0 18px 8px;flex:1}
+  .card .foot{padding:12px 18px 16px;border-top:1px solid var(--line);background:#fbfcfe}
+  .open{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:10px 16px;border-radius:9px;border:1px solid var(--navy)}
+  .open:hover{background:#182c4f}
+  .open:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
+  .mats{margin-top:10px;font-size:12.5px;color:var(--grey)}
+  .mats a{color:var(--blue);text-decoration:none;font-weight:600} .mats a:hover{text-decoration:underline}
+  .mats .m{display:block;margin:3px 0}
+  .note{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:12px 14px;margin-top:22px;font-size:13px}
+  .note b{color:var(--navy)}
+  footer{max-width:1080px;margin:0 auto;padding:8px 18px 30px;color:var(--grey);font-size:12px}
+  a.plain{color:var(--blue);text-decoration:none} a.plain:hover{text-decoration:underline}
+  @media(max-width:520px){ header h1{font-size:21px} .wrap{padding:16px 12px 30px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Vibraciones — Exploradores interactivos</h1>
+    <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Los tres pilares de fundamentos, para explorar en el navegador</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="intro">
+    <h2>👋 ¿Qué es esto?</h2>
+    <p>Tres exploradores interactivos que repasan los <b>pilares de conocimiento previo</b> del curso de Vibraciones, cada uno visto desde la ingeniería aeronáutica. Son la misma historia contada en tres pasos: primero <b>armamos</b> la ecuación de un sistema, luego la <b>resolvemos</b> y por último <b>interpretamos</b> sus raíces como vibración.</p>
+    <div class="route" aria-label="Ruta sugerida">
+      <span class="lab">Ruta sugerida:</span>
+      <span class="node"><b>Pilar 3</b> · Dinámica</span>
+      <span class="role">(armar ΣF=ma)</span>
+      <span class="arw">→</span>
+      <span class="node"><b>Pilar 2</b> · EDO</span>
+      <span class="role">(resolver)</span>
+      <span class="arw">→</span>
+      <span class="node"><b>Pilar 1</b> · Complejos</span>
+      <span class="role">(interpretar)</span>
+    </div>
+    <p style="font-size:12.5px;color:var(--grey);margin-top:8px">Puedes empezar por cualquiera: cada explorador enlaza con el anterior y el siguiente. Todos funcionan <b>sin conexión</b>; mantén los archivos en la misma carpeta.</p>
+  </div>
+
+  <h3 class="sec">Elige un explorador</h3>
+  <div class="cards">
+
+    <!-- PILAR 3 -->
+    <div class="card" style="--accent:#2E7D46">
+      <div class="top">
+        <span class="pil">Pilar 3 · empieza aquí</span>
+        <h4>🛩️ Dinámica de la partícula</h4>
+        <div class="role2">ARMAR · del DCL a la ecuación de movimiento</div>
+      </div>
+      <div class="body">
+        <p>Arrastra la masa, observa el diagrama de cuerpo libre en vivo y arma <span style="font-family:'Cambria Math',serif">ΣF = ma → m·x″ + c·x′ + k·x = 0</span>.</p>
+        <ul>
+          <li>Frecuencia natural ω<sub>n</sub> = √(k/m)</li>
+          <li>Energía T ↔ V, resorte equivalente</li>
+          <li>Péndulo y acelerómetro (masa sísmica)</li>
+        </ul>
+      </div>
+      <div class="foot">
+        <a class="open" href="edo3_interactivo.html">Abrir explorador →</a>
+        <div class="mats">
+          <span class="m">📄 <a href="Hoja_alumno_Pilar3_Dinamica.docx">Hoja del alumno</a></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILAR 2 -->
+    <div class="card" style="--accent:#2E5496">
+      <div class="top">
+        <span class="pil">Pilar 2</span>
+        <h4>📐 EDO lineal de 2.º orden</h4>
+        <div class="role2">RESOLVER · el discriminante decide el régimen</div>
+      </div>
+      <div class="body">
+        <p>Mueve los coeficientes o arrastra las raíces en el plano <i>s</i>; observa Δ = b²−4ac y los cuatro regímenes.</p>
+        <ul>
+          <li>Subamortiguado, crítico, sobreamortiguado</li>
+          <li>Inestable = flameo (frontera Re = 0)</li>
+          <li>Respuesta x(t) con condiciones iniciales</li>
+        </ul>
+      </div>
+      <div class="foot">
+        <a class="open" href="edo_interactivo.html">Abrir explorador →</a>
+        <div class="mats">
+          <span class="m">📄 <a href="Hoja_alumno_Pilar2_EDO.docx">Hoja del alumno</a></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILAR 1 -->
+    <div class="card" style="--accent:#C55A11">
+      <div class="top">
+        <span class="pil">Pilar 1</span>
+        <h4>🔢 Números complejos</h4>
+        <div class="role2">INTERPRETAR · el idioma de la vibración</div>
+      </div>
+      <div class="body">
+        <p>Arrastra <i>z</i> en el plano de Argand; lee |z| como amplitud y θ como desfase, y sus raíces como régimen.</p>
+        <ul>
+          <li>Formas binómica, polar y de Euler</li>
+          <li>Raíces cuadradas y ecuación auxiliar</li>
+          <li>Fasor: excitación vs. respuesta (desfase θ)</li>
+        </ul>
+      </div>
+      <div class="foot">
+        <a class="open" href="complejos_interactivo.html">Abrir explorador →</a>
+        <div class="mats">
+          <span class="m">📄 <a href="Hoja_alumno_Pilar1_Complejos.docx">Hoja del alumno</a></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note">
+    <b>Cómo usarlo.</b> Descarga esta carpeta completa y ábrela en cualquier navegador (funciona sin internet, también en tablet). Abre <span style="font-family:'Cambria Math',serif">index.html</span> como punto de partida. Los enlaces «Hoja del alumno» abren el documento Word correspondiente si está en la misma carpeta. Cada explorador incluye, en su parte inferior, un mapa de recorrido para saltar entre pilares.
+  </div>
+</div>
+
+<footer>Portal de exploradores · material de apoyo del curso de Vibraciones · UNAM · ENES Juriquilla · Ingeniería Aeroespacial · funciona sin conexión.</footer>
+</body>
+</html>
