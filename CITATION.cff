@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "Si usas este material, por favor cítalo con los datos siguientes."
+title: "Vibraciones — Exploradores interactivos"
+abstract: >-
+  Recurso educativo abierto para el curso de Vibraciones (Ingeniería
+  Aeroespacial): tres exploradores interactivos que repasan los pilares de
+  números complejos, la EDO lineal de 2.º orden y la dinámica de la partícula,
+  con contexto aeronáutico. Portal HTML autocontenido más hojas de trabajo.
+type: software
+version: "1.0"
+date-released: "2026-01-01"
+license: CC-BY-4.0
+url: "https://TU-USUARIO.github.io/vibraciones-exploradores/"
+repository-code: "https://github.com/TU-USUARIO/vibraciones-exploradores"
+authors:
+  - family-names: "Strupiechonski"
+    given-names: "Elodie"
+    orcid: "https://orcid.org/0000-0001-8991-8499"
+    affiliation: "Escuela Nacional de Estudios Superiores Unidad Juriquilla, Universidad Nacional Autónoma de México"
+  - family-names: "de Luna Bugallo"
+    given-names: "Andrés"
+    orcid: "https://orcid.org/0000-0002-7591-5235"
+    affiliation: "Centro de Física Aplicada y Tecnología Avanzada, Universidad Nacional Autónoma de México"
+keywords:
+  - vibraciones
+  - recurso educativo abierto
+  - ingeniería aeroespacial
+  - números complejos
+  - ecuaciones diferenciales
+  - dinámica
+  - aeroelasticidad

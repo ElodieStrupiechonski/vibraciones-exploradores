@@ -1,21 +1,40 @@
 # Vibraciones — Exploradores interactivos
 
-Material de apoyo del curso de **Vibraciones** · UNAM · ENES Juriquilla · Ingeniería Aeroespacial.
+Recurso educativo abierto del curso de **Vibraciones** · UNAM · ENES Juriquilla · Ingeniería Aeroespacial.
 
 Tres exploradores interactivos que repasan los pilares de conocimiento previo del curso,
 cada uno visto desde la ingeniería aeronáutica. Son la misma historia en tres pasos:
 
 **Pilar 3 · Dinámica** (armar ΣF = ma) → **Pilar 2 · EDO** (resolver) → **Pilar 1 · Números complejos** (interpretar).
 
+## Autoría
+
+- **Elodie Strupiechonski** — ENES Juriquilla, UNAM — ORCID [0000-0001-8991-8499](https://orcid.org/0000-0001-8991-8499)
+- **Andrés de Luna Bugallo** — CFATA, UNAM — ORCID [0000-0002-7591-5235](https://orcid.org/0000-0002-7591-5235)
+
+## Licencia
+
+Publicado bajo **Creative Commons Atribución 4.0 Internacional (CC BY 4.0)**.
+Puedes compartir y adaptar el material citando la fuente. Ver [`LICENSE`](LICENSE).
+
+## Cómo citar
+
+> Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones — Exploradores interactivos*
+> (Versión 1.0) [Recurso educativo abierto]. Universidad Nacional Autónoma de México, ENES Juriquilla.
+> https://doi.org/10.5281/zenodo.XXXXXXX
+
+*(El DOI se completa al publicar la versión en Zenodo; ver la guía incluida. GitHub muestra un botón
+“Cite this repository” a partir del archivo [`CITATION.cff`](CITATION.cff).)*
+
 ## 🌐 Sitio en vivo
 
-Una vez publicado con GitHub Pages, el portal queda en:
+Con GitHub Pages, el portal queda en:
 
 ```
 https://TU-USUARIO.github.io/vibraciones-exploradores/
 ```
 
-Comparte ese enlace en Google Classroom. El alumno trabaja en el navegador (Chromebook, tablet o PC), sin instalar nada.
+Comparte ese enlace en Google Classroom. El alumno trabaja en el navegador, sin instalar nada.
 
 ## 📂 Contenido
 
@@ -28,24 +47,15 @@ Comparte ese enlace en Google Classroom. El alumno trabaja en el navegador (Chro
 | `Hoja_alumno_Pilar3_Dinamica.docx` | Hoja de trabajo del alumno (Pilar 3) |
 | `Hoja_alumno_Pilar2_EDO.docx` | Hoja de trabajo del alumno (Pilar 2) |
 | `Hoja_alumno_Pilar1_Complejos.docx` | Hoja de trabajo del alumno (Pilar 1) |
+| `LICENSE` · `CITATION.cff` | Licencia CC BY 4.0 y metadatos de cita |
 
-## 🚀 Cómo publicarlo (GitHub Pages)
+## 🚀 Publicar (GitHub Pages)
 
-1. Crea un repositorio **público** (p. ej. `vibraciones-exploradores`) y sube estos archivos a la raíz.
-2. En el repositorio: **Settings → Pages**.
-3. En **Build and deployment → Source**, elige **Deploy from a branch**.
-4. En **Branch**, selecciona `main` y la carpeta `/ (root)`; pulsa **Save**.
-5. Espera 1–2 minutos y recarga: aparecerá la URL pública del sitio.
-
-Para actualizar el contenido después, vuelve a subir los archivos (commit) y GitHub Pages
-se vuelve a publicar solo.
+1. Repositorio **público** con estos archivos en la raíz.
+2. **Settings → Pages → Source: Deploy from a branch → `main` / `/ (root)` → Save.**
+3. En 1–2 minutos aparece la URL pública.
 
 ## 🧩 Notas
 
-- Funcionan **sin conexión** y **sin servidor**: son archivos autocontenidos (HTML + JS en un solo archivo, sin base de datos ni llamadas externas).
+- Funcionan **sin conexión** y **sin servidor**: archivos autocontenidos (HTML + JS), sin base de datos ni llamadas externas.
 - Los valores aeronáuticos son **órdenes de magnitud ilustrativos**; los datos de diseño se toman de la normativa (CS-25 / FAR-25) y de la bibliografía citada en cada explorador.
-- El archivo `.nojekyll` evita que GitHub Pages procese el sitio con Jekyll (no es necesario para estos archivos, pero se incluye por seguridad).
-
-## Licencia / uso
-
-Material educativo del curso. Adáptalo libremente para tu grupo.
