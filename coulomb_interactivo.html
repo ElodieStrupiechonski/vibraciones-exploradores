@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fricción de Coulomb · Explorador interactivo · Vibraciones</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45}
+  header{background:var(--navy);color:#fff;padding:16px 22px;border-bottom:4px solid var(--orange)}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:3px 0 0;font-size:13px;color:var(--ice);opacity:.9}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px;display:grid;grid-template-columns:minmax(340px,1fr) minmax(420px,1.25fr);gap:18px}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 4px rgba(31,56,100,.06);margin-bottom:16px}
+  .card h2{margin:0 0 12px;font-size:15px;color:var(--navy);font-weight:700;letter-spacing:.2px}
+  .fld{display:flex;flex-direction:column;gap:3px}
+  .fld label{font-size:12px;color:var(--grey);font-weight:600}
+  .fld input{width:84px;padding:8px 9px;border:1.5px solid var(--line);border-radius:7px;font-size:15px;font-family:'Cambria Math',Georgia,serif}
+  .fld input:focus{outline:none;border-color:var(--steel)}
+  .grid3{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+  .hint{font-size:12px;color:var(--grey);margin:8px 0 0}
+  .keq{margin-top:12px;padding:10px 12px;background:var(--ice2);border:1px solid var(--ice);border-radius:9px}
+  .keq .rowk{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+  .keq .radios{display:flex;gap:12px;align-items:center;font-size:13px;color:var(--navy)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .chip{padding:5px 11px;border:1px solid var(--line);background:#fff;border-radius:20px;cursor:pointer;font-size:12.5px;color:var(--navy);font-family:'Cambria Math',Georgia,serif}
+  .chip:hover{background:var(--ice);border-color:var(--steel)}
+  .forms .row{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .forms .row:last-child{border-bottom:none}
+  .forms .tag{font-size:11.5px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.4px;min-width:74px}
+  .forms .val{font-family:'Cambria Math',Georgia,serif;font-size:17px;color:var(--ink)}
+  canvas{width:100%;height:auto;display:block;border-radius:10px;background:linear-gradient(180deg,#fbfdff,#f3f7fc);border:1px solid var(--line);touch-action:none}
+  canvas#cv{cursor:grab}
+  .diagctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-size:13px}
+  .btn{padding:7px 12px;border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:7px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn.ghost{background:#fff;color:var(--navy)}
+  .btn.small{padding:5px 9px;font-size:12px}
+  .btn:hover{opacity:.92}
+  .toggle{display:flex;align-items:center;gap:6px;color:var(--grey)}
+  .practico{background:var(--ice2);border-color:var(--ice)}
+  .practico p{margin:8px 0;font-size:13.5px}
+  .practico .k{font-weight:700;color:var(--navy)}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;margin-left:4px}
+  .lectura{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:8px;padding:10px 12px;font-size:13.5px;margin-bottom:12px}
+  .eqbox{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-family:'Cambria Math',Georgia,serif;font-size:17px;text-align:center;margin:6px 0 10px;color:var(--navy)}
+  .ro{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+  .ro>div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 10px;display:flex;flex-direction:column;gap:1px}
+  .ro .s{font-family:'Cambria Math',Georgia,serif;color:var(--navy);font-weight:700;font-size:14px}
+  .ro .v{font-size:15px;font-weight:700}
+  .ro em{color:var(--grey);font-size:11px;font-style:normal;line-height:1.2}
+  canvas#resp{width:100%;height:180px;border:1px solid var(--line);border-radius:8px;background:#fff;margin:4px 0 2px;cursor:default;touch-action:auto}
+  #respinfo{font-size:12px;color:var(--grey);background:#fff;border:1px solid var(--line);border-radius:7px;padding:6px 9px;margin:2px 0 2px;line-height:1.5}
+  #respinfo b{color:var(--navy)}
+  canvas#dcl{width:100%;height:200px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#fffaf3,#fef3e6);display:block}
+  #dclcap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  canvas#energy{width:100%;height:200px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#f7f9fc,#eef2f8);display:block}
+  #energycap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  canvas#pend{width:100%;height:210px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#eef7ef,#e2f0ea);display:block}
+  #pendcap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  canvas#accel{width:100%;height:200px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#f7fbff,#edf3fb);display:block}
+  #accelcap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+  details.gloss{margin-top:8px;font-size:13px}
+  details.gloss summary{cursor:pointer;color:var(--blue);font-weight:600;outline:none}
+  details.gloss ul{margin:8px 0 0;padding-left:18px}
+  details.gloss li{margin:5px 0}
+  .challenge{background:#fff}
+  .qbox{background:var(--ice2);border:1px solid var(--ice);border-radius:9px;padding:12px 14px;font-family:'Cambria Math',Georgia,serif;font-size:16px;margin-bottom:12px}
+  .ans{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+  .feedback{margin-top:12px;font-size:14px;font-weight:600;min-height:20px}
+  .ok{color:var(--green)} .no{color:var(--red)}
+  .sol{margin-top:8px;font-size:13px;color:var(--grey);font-family:'Cambria Math',Georgia,serif;display:none}
+  .sol.show{display:block}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;margin-top:8px;color:var(--grey)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:50%}
+  footer{max-width:1180px;margin:0 auto;padding:6px 18px 26px;color:var(--grey);font-size:12px}
+  /* --- refinamiento didáctico (recorrido, aeronáutica, accesibilidad) --- */
+  .pilarnav{max-width:1180px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  .aero{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:10px;padding:13px 15px;margin-bottom:16px}
+  .aero h3{margin:0 0 6px;font-size:14px;color:var(--navy)}
+  .aero p{margin:6px 0;font-size:13px}
+  .aero ul{margin:6px 0 0;padding-left:18px} .aero li{margin:5px 0;font-size:13px}
+  .aero .num{font-family:'Cambria Math',Georgia,serif;color:var(--orange);font-weight:700}
+  .aero .src{font-size:11.5px;color:var(--grey);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+  .crosslink{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;margin-bottom:16px;font-size:13px}
+  .crosslink b{color:var(--navy)} .crosslink a{color:var(--blue);font-weight:700;text-decoration:none} .crosslink a:hover{text-decoration:underline}
+  .reglegend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:12px;background:var(--ice2);border:1px solid var(--ice);border-radius:8px;padding:8px 10px}
+  .reglegend .it{display:inline-flex;align-items:center;gap:5px;color:#33455f}
+  .reglegend .gl{font-weight:800;font-size:14px;font-family:'Cambria Math',Georgia,serif;min-width:22px;text-align:center}
+  .tipsym{border-bottom:1px dotted var(--steel);cursor:help}
+  canvas:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
+  .kbd{font-size:11.5px;color:var(--grey);margin-top:7px}
+  .kbd kbd{background:#eef2fb;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;font-family:monospace;font-size:11px;color:var(--navy)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @media(max-width:520px){ .wrap{padding:12px;gap:12px} .card{padding:12px 13px} header h1{font-size:18px} header p{font-size:12px} .pilarnav{font-size:11.5px} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Fricción de Coulomb — Explorador interactivo</h1>
+  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 4) — masa sobre superficie con fricción seca: la amplitud decae en línea recta (no exponencial), la frecuencia no cambia y el bloque se detiene dentro de una banda de reposo ±F<sub>f</sub>/k</p>
+</header>
+<nav class="pilarnav" aria-label="Recorrido por los cinco pilares">
+  <span class="lab">Recorrido:</span>
+  <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
+  <span class="arw">→</span>
+  <a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a>
+  <span class="arw">→</span>
+  <a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a>
+  <span class="arw">→</span>
+  <span class="cur">Pilar 4 · Fricción de Coulomb</span>
+  <span class="arw">→</span>
+  <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+</nav>
+
+<div class="wrap">
+  <!-- ================= COLUMNA IZQUIERDA ================= -->
+  <div>
+    <div class="aero">
+      <h3>🛩️ En la aeronave · ¿por qué me importa?</h3>
+      <p>La fricción seca no es solo el bloque de la clase: es un <b>mecanismo real de disipación de energía</b> en la estructura. En un fuselaje con miles de <b>uniones remachadas y atornilladas</b>, las láminas frotan una contra otra con un <b>microdeslizamiento</b> (microslip) cada vez que la estructura vibra.</p>
+      <ul>
+        <li><b>Amortiguamiento estructural:</b> ese roce en las juntas convierte energía de vibración en calor. Por eso las uniones <b>aportan amortiguamiento</b> a la estructura, incluso sin ningún amortiguador dedicado.</li>
+        <li><b>Modelo de Coulomb:</b> la fuerza de fricción tiene <b>magnitud casi constante</b> <span class="num">F<sub>f</sub> = μ·N</span> y solo <b>cambia de signo</b> con la velocidad — igual que en este explorador.</li>
+        <li><b>Firma característica:</b> la amplitud cae de forma <b>lineal</b> (una recta), no exponencial; los ingenieros usan esa firma para identificar cuándo domina la fricción seca en un ensayo de vibración.</li>
+        <li><b>Diseño:</b> demasiado apriete reduce el microslip y el amortiguamiento; muy poco, genera fatiga por rozamiento (<i>fretting</i>). Hay un óptimo.</li>
+      </ul>
+      <div class="src">Valores y mecanismos ilustrativos; el amortiguamiento por fricción en juntas se trata en bibliografía como Rao, <i>Mechanical Vibrations</i>; Den Hartog, <i>Mechanical Vibrations</i>; y en estudios de <i>joint damping / microslip</i>.</div>
+    </div>
+
+    <div class="card">
+      <h2>1 · Define el sistema &nbsp;m · x″ + k · x = ∓F<sub>f</sub></h2>
+      <div class="grid3">
+        <div class="fld"><label>m &nbsp;masa (kg)</label><input id="in-m" type="number" step="any" min="0.01" value="2"></div>
+        <div class="fld"><label>k &nbsp;rigidez (N/m)</label><input id="in-k" type="number" step="any" min="0" value="800"></div>
+        <div class="fld"><label>μ &nbsp;coef. fricción</label><input id="in-mu" type="number" step="any" min="0" value="0.20"></div>
+        <div class="fld"><label>x₀ &nbsp;despl. inicial (mm)</label><input id="in-x0" type="number" step="any" value="60"></div>
+      </div>
+      <div class="hint">La masa se suelta desde x₀ con velocidad cero (g = 9.81 m/s²). Usa ▶ para soltarla; con el foco en el diagrama, ←/→ ajustan x₀.</div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="card">
+      <h2>¿Por qué N ciclos? · el conteo de semiciclos</h2>
+      <div class="lectura" id="lectura"></div>
+      <div class="qbox" id="qbox"></div>
+      <div class="hint">Cada semiciclo la amplitud pierde <b>2F<sub>f</sub>/k</b> (una cantidad fija). El bloque se detiene en el primer extremo cuyo desplazamiento cabe dentro de la <b>banda de reposo</b> ±F<sub>f</sub>/k, porque ahí la fuerza del resorte ya no vence a la fricción estática.</div>
+    </div>
+
+    <div class="card">
+      <h2>2 · Respuesta x(t) · decaimiento LINEAL</h2>
+      <div style="font-size:12.5px;color:var(--grey);margin:2px 0 6px">Sinusoide a trozos (SHM a ω<sub>n</sub> alrededor de un centro ±F<sub>f</sub>/k que alterna). La <b>envolvente es recta</b>: une los picos con líneas, no con una exponencial.</div>
+      <canvas id="resp"></canvas>
+      <div class="diagctrls" style="margin-top:6px">
+        <label class="toggle"><input type="checkbox" id="ck-visc"> comparar con viscoso (exponencial)</label>
+      </div>
+      <div id="respinfo"></div>
+    </div>
+  </div>
+
+  <!-- ================= COLUMNA DERECHA ================= -->
+  <div>
+    <div class="card">
+      <h2>Masa – resorte con fricción seca &nbsp;·&nbsp; F<sub>f</sub> = μ·N en vivo</h2>
+      <canvas id="cv" width="720" height="440" tabindex="0" role="application" aria-label="Bloque sobre superficie con fricción, unido a un resorte y una pared. Usa las flechas para cambiar el desplazamiento inicial."></canvas>
+      <div class="kbd">⌨ Con el foco en el diagrama: <kbd>←</kbd> <kbd>→</kbd> cambian x₀, <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> suelta/pausa.</div>
+      <div class="sr" aria-live="polite" id="live"></div>
+      <div class="legend">
+        <span><span class="dot" style="background:#C55A11"></span> F<sub>k</sub> = −k·x (resorte)</span>
+        <span><span class="dot" style="background:#B23A3A"></span> F<sub>f</sub> = ∓μ·N (fricción, se opone a v)</span>
+        <span><span class="dot" style="background:#1F3864"></span> centro ±F<sub>f</sub>/k del semiciclo</span>
+      </div>
+      <div class="diagctrls">
+        <button class="btn small" id="play">⏸ pausar</button>
+        <button class="btn small ghost" id="release">▶ soltar desde x₀</button>
+        <label class="toggle"><input type="checkbox" id="ck-forces" checked> mostrar fuerzas</label>
+      </div>
+      <div class="hint">La flecha roja (fricción) <b>voltea de sentido</b> cada vez que el bloque cambia de dirección: siempre se opone a la velocidad. La banda sombreada es la zona de reposo ±F<sub>f</sub>/k.</div>
+    </div>
+
+    <div class="card practico">
+      <h2>Lecturas en vivo</h2>
+      <div class="eqbox" id="eom"></div>
+      <div id="practico"></div>
+      <details class="gloss">
+        <summary>📖 Glosario (F<sub>f</sub>=μN, banda de reposo, lineal vs exponencial, ω)</summary>
+        <ul>
+          <li><b>F<sub>f</sub> = μ·N = μ·m·g</b> — fuerza de fricción de Coulomb (seca): magnitud <b>constante</b>, solo cambia de signo para oponerse a la velocidad. No depende de la velocidad ni del desplazamiento.</li>
+          <li><b>Banda de reposo (zona muerta)</b> — intervalo ±F<sub>f</sub>/k alrededor del equilibrio. Si el bloque se detiene ahí, la fuerza del resorte k·x no supera la fricción estática y <b>ya no arranca</b>: queda en reposo permanente (no necesariamente en x = 0).</li>
+          <li><b>Decaimiento lineal vs exponencial</b> — con fricción seca la amplitud pierde <b>2F<sub>f</sub>/k por semiciclo</b> (cantidad fija) → los picos caen sobre una <b>recta</b>. Con amortiguamiento <b>viscoso</b> pierde una <b>fracción</b> fija → caída <b>exponencial</b>.</li>
+          <li><b>¿Por qué ω no cambia?</b> — en cada semiciclo la EOM es m·x″ + k·x = ∓F<sub>f</sub>: es SHM a <b>ω<sub>n</sub> = √(k/m)</b> solo que alrededor de un centro corrido ±F<sub>f</sub>/k. El término de fricción mueve el centro pero <b>no toca</b> la frecuencia. Por eso <b>T no cambia</b> con la fricción (a diferencia de ω<sub>d</sub> en el caso viscoso).</li>
+          <li><b>Nº de semiciclos hasta el paro</b> — n = ⌈(x₀ − F<sub>f</sub>/k)/(2F<sub>f</sub>/k)⌉ (techo, porque completa el semiciclo en curso). Ciclos completos = n/2.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="wrap" style="padding-top:0">
+  <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
+    🧭 <b>Tu recorrido.</b> Aquí viste un tipo de amortiguamiento <b>no viscoso</b>: la fricción seca, con caída <b>lineal</b> y frecuencia intacta.
+    ➡ <b>Siguiente:</b> el <a href="forzada_interactivo.html">Pilar 5</a> añade una <b>fuerza externa</b> y estudia la respuesta forzada y la resonancia; regresa al <a href="edo3_interactivo.html">Pilar 3</a> para recordar cómo se arma ΣF = ma.
+    <span style="color:#5B5B5B">(Mantén los archivos en la misma carpeta para que los enlaces funcionen.)</span>
+  </div>
+</div>
+<footer>
+  <div style="margin:2px 0 10px;color:var(--grey)">Explorador didáctico de la fricción de Coulomb · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</div>
+  <div style="border-top:3px solid var(--orange);padding-top:8px;max-width:820px">
+    <div style="font-weight:700;color:var(--navy);font-size:14px;margin-bottom:4px">Créditos y cómo citar</div>
+    <div style="color:#333;line-height:1.5">
+      <b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.
+    </div>
+    <div style="font-weight:700;color:var(--navy);margin:8px 0 4px">Cómo citar:</div>
+    <div style="background:var(--ice);border-left:4px solid var(--steel);border-radius:4px;padding:8px 10px;font-style:italic;color:#333;line-height:1.5">
+      Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.XXXXXXX (se completa al publicar en Zenodo).
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+const NAVY='#1F3864',BLUE='#2E5496',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',RED='#B23A3A',GREY='#5B5B5B';
+const TAU=Math.PI*2, G=9.81;
+// ---------- estado (SI: metros internos; x0 se captura en mm) ----------
+let sys={m:2,k:800,mu:0.20};
+let ic={x0:0.060};          // metros
+let showForces=true, playing=true, showVisc=false;
+let simT0=null, frozenFrac=0;
+
+// ---------- utilidades ----------
+function fmt(x,d=4){ let r=+(+x).toFixed(d); if(Object.is(r,-0))r=0; if(d<=0) return String(Math.round(r)); let s=r.toFixed(d).replace(/0+$/,'').replace(/\.$/,''); return s===''||s==='-0'?'0':s; }
+
+// ---------- física de Coulomb ----------
+// m x'' + k x = -F_f sign(v).  En cada semiciclo: SHM a ω_n alrededor de un centro ±d, d=F_f/k.
+function coulomb(){
+  const m=sys.m, k=sys.k, mu=sys.mu, x0=Math.abs(ic.x0);
+  const Ff=mu*m*G;
+  const wn=(k/m>0)?Math.sqrt(k/m):0;
+  const d=(k>0)?Ff/k:0;                       // semiancho de la banda de reposo
+  const perHalf=2*d, perCycle=4*d;
+  const halfT=(wn>0)?Math.PI/wn:0;            // T/2, igual en todos los semiciclos
+  const s0=Math.sign(ic.x0)||1;              // signo del desplazamiento inicial
+  // nº de semiciclos hasta detenerse
+  let nHalf=0;
+  if(x0>d && d>0){ nHalf=Math.ceil((x0-d)/(2*d)); }
+  else if(d<=0){ nHalf=Infinity; }            // sin fricción: no se detiene
+  const totalTime=(isFinite(nHalf))?nHalf*halfT:Infinity;
+  // pico tras j semiciclos (magnitud x0-2 j d), signo alterna partiendo de s0
+  function peak(j){ return s0*Math.pow(-1,j)*(x0-2*j*d); }
+  const finalX=(isFinite(nHalf))?peak(nHalf):0;
+  // posición y velocidad
+  function f(t){
+    if(!isFinite(nHalf)){ // sin fricción: SHM puro alrededor de 0 (centro no importa, d=0)
+      return ic.x0*Math.cos(wn*t);
+    }
+    if(t>=totalTime||halfT<=0) return finalX;
+    const kk=Math.floor(t/halfT)+1;          // semiciclo actual (1-indexado)
+    const tau=t-(kk-1)*halfT;
+    const pPrev=peak(kk-1);
+    const ck=s0*Math.pow(-1,kk-1)*d;          // centro: +s0*d en semiciclo 1, luego alterna
+    return ck+(pPrev-ck)*Math.cos(wn*tau);
+  }
+  function df(t){
+    if(!isFinite(nHalf)) return -ic.x0*wn*Math.sin(wn*t);
+    if(t>=totalTime||halfT<=0) return 0;
+    const kk=Math.floor(t/halfT)+1;
+    const tau=t-(kk-1)*halfT;
+    const pPrev=peak(kk-1);
+    const ck=s0*Math.pow(-1,kk-1)*d;
+    return -wn*(pPrev-ck)*Math.sin(wn*tau);
+  }
+  return {m,k,mu,Ff,wn,fn:wn/TAU,T:wn>0?TAU/wn:null,d,perHalf,perCycle,halfT,nHalf,cycles:isFinite(nHalf)?nHalf/2:Infinity,totalTime,finalX,x0,s0,peak,f,df};
+}
+
+// ---------- reloj de simulación ----------
+function tview(M){
+  if(!isFinite(M.totalTime)||M.totalTime<=0){ return M.T?8*M.T:4; }
+  return M.totalTime;
+}
+function simState(now){
+  const M=coulomb(), Tv=tview(M);
+  const motionMs=Math.min(11000,Math.max(4500,Tv*1000));   // duración en pantalla del movimiento
+  const holdMs=motionMs*0.30;                              // pausa mostrando el reposo
+  const Wms=motionMs+holdMs;
+  if(simT0===null)simT0=now;
+  let frac;
+  if(!playing){ frac=frozenFrac; }
+  else { frac=((now-simT0)%Wms)/Wms; frozenFrac=frac; }
+  const w=frac*Wms;
+  let tSim=(w<motionMs)?(w/motionMs)*Tv:Tv;                // se congela en el reposo
+  if(!isFinite(M.totalTime)){ tSim=(playing?((now-(simT0||now))/1000):0)%Tv; }
+  return {M,Tv,tSim,frac};
+}
+
+// ---------- lecturas / conteo ----------
+function tile(s,v,e){ return '<div title="'+e.replace(/"/g,'')+'"><span class="s">'+s+'</span><span class="v">'+v+'</span><em>'+e+'</em></div>'; }
+function syncInputs(){
+  document.getElementById('in-m').value=fmt(sys.m);
+  document.getElementById('in-k').value=fmt(sys.k);
+  document.getElementById('in-mu').value=fmt(sys.mu);
+  document.getElementById('in-x0').value=fmt(ic.x0*1000,2);
+}
+function refresh(){
+  const M=coulomb();
+  const mm=v=>fmt(v*1000,2);                 // metros -> mm con 2 dec
+  // ecuación
+  document.getElementById('eom').innerHTML=fmt(M.m)+'·x″ + '+fmt(M.k)+'·x = ∓F<sub>f</sub> = ∓'+fmt(M.Ff,3)+' N';
+  // lectura + conteo
+  document.getElementById('lectura').innerHTML =
+    '🔎 <b>Lectura:</b> F<sub>f</sub> = μ·m·g = '+fmt(M.Ff,3)+' N. Banda de reposo F<sub>f</sub>/k = <b>'+mm(M.d)+' mm</b>. '+
+    'Cada semiciclo la amplitud pierde 2F<sub>f</sub>/k = <b>'+mm(M.perHalf)+' mm</b>; cada ciclo completo 4F<sub>f</sub>/k = <b>'+mm(M.perCycle)+' mm</b>.';
+  let qb;
+  if(isFinite(M.nHalf)){
+    qb='<div style="font-weight:700;color:var(--navy);margin-bottom:6px">n<sub>semiciclos</sub> = ⌈(x₀ − F<sub>f</sub>/k) / (2F<sub>f</sub>/k)⌉</div>'+
+       '= ⌈('+mm(M.x0)+' − '+mm(M.d)+') / (2·'+mm(M.d)+')⌉ mm<br>'+
+       '= ⌈'+mm(M.x0-M.d)+' / '+mm(M.perHalf)+'⌉'+
+       ' = ⌈'+fmt((M.x0-M.d)/M.perHalf,3)+'⌉ = <b style="color:var(--orange);font-size:18px">'+M.nHalf+'</b> semiciclos<br>'+
+       '<span style="color:var(--grey)">→ ciclos completos = n/2 = <b style="color:var(--orange)">'+fmt(M.cycles,2)+'</b> · reposo final en x = <b>'+mm(M.finalX)+' mm</b> (dentro de ±'+mm(M.d)+' mm)</span>';
+  } else {
+    qb='<div style="font-weight:700;color:var(--navy)">Sin fricción (μ = 0):</div> no hay banda de reposo, la amplitud <b>no decae</b> y el bloque oscila indefinidamente a ω<sub>n</sub>.';
+  }
+  document.getElementById('qbox').innerHTML=qb;
+  // tiles
+  let ro='<div class="ro">'
+    +tile('F<sub>f</sub>', fmt(M.Ff,3)+' N','fricción de Coulomb = μ·m·g')
+    +tile('ω<sub>n</sub>', fmt(M.wn,3)+' rad/s','frecuencia natural = √(k/m)')
+    +tile('f<sub>n</sub>', fmt(M.fn,3)+' Hz','f_n = ω_n / 2π')
+    +tile('T', (M.T?fmt(M.T,3)+' s':'—'),'periodo = 2π/ω_n — NO cambia con la fricción')
+    +tile('caída / ciclo', mm(M.perCycle)+' mm','4F_f/k (decaimiento LINEAL)')
+    +tile('banda reposo', '±'+mm(M.d)+' mm','F_f/k (zona muerta)')
+    +tile('nº semiciclos', (isFinite(M.nHalf)?M.nHalf:'∞'),'⌈(x0−F_f/k)/(2F_f/k)⌉')
+    +tile('nº ciclos ≈', (isFinite(M.cycles)?fmt(M.cycles,2):'∞'),'n_semiciclos / 2')
+    +tile('reposo final', (isFinite(M.nHalf)?mm(M.finalX)+' mm':'—'),'posición de paro (dentro de la banda)')
+    +tile('x₀', mm(M.x0)+' mm','desplazamiento inicial (v₀ = 0)')
+    +'</div>';
+  document.getElementById('practico').innerHTML =
+    '<p style="margin:2px 0"><span class="k">La frecuencia NO cambia con la fricción</span> <span class="pill" style="background:var(--navy)">ω_n = √(k/m)</span></p>'+ro+
+    '<p style="margin:4px 0 2px">La fricción seca corre el <b>centro</b> de cada semiciclo a ±F<sub>f</sub>/k, pero la EOM sigue siendo SHM a <b>ω<sub>n</sub></b>: por eso <b>T no cambia</b> y la envolvente cae en <b>línea recta</b>, no exponencial.</p>';
+  syncInputs();
+  drawResponse();
+}
+
+function niceStep(range,target){ const raw=range/Math.max(1,target); const mag=Math.pow(10,Math.floor(Math.log10(raw))); const n=raw/mag; const s=n<1.5?1:(n<3?2:(n<7?5:10)); return s*mag; }
+
+// ---------- gráfica x(t) ----------
+function drawResponse(phFrac){
+  const rcv=document.getElementById('resp'); if(!rcv)return;
+  const c=rcv.getContext('2d'), dpr=window.devicePixelRatio||1;
+  const W=rcv.clientWidth||360, Hh=180;
+  rcv.width=W*dpr; rcv.height=Hh*dpr; rcv.style.height=Hh+'px'; c.setTransform(dpr,0,0,dpr,0,0);
+  c.clearRect(0,0,W,Hh);
+  const M=coulomb();
+  const x0=34,x1=W-14,padT=22,padB=24, midY=padT+(Hh-padB-padT)/2;
+  let Tmax=isFinite(M.totalTime)&&M.totalTime>0 ? M.totalTime*1.12 : (M.T?8*M.T:4);
+  const ymax=Math.max(Math.abs(M.x0)*1.12, M.d*1.5, 1e-6);
+  const sy=(Hh-padB-padT)/2/ymax, px=t=>x0+(x1-x0)*t/Tmax, py=y=>midY-y*sy;
+  // banda de reposo sombreada ±d
+  const yb1=py(M.d), yb2=py(-M.d);
+  c.fillStyle='rgba(197,90,17,.10)'; c.fillRect(x0,yb1,x1-x0,yb2-yb1);
+  c.strokeStyle='rgba(197,90,17,.45)'; c.setLineDash([4,3]); c.lineWidth=1;
+  c.beginPath(); c.moveTo(x0,yb1); c.lineTo(x1,yb1); c.moveTo(x0,yb2); c.lineTo(x1,yb2); c.stroke(); c.setLineDash([]);
+  c.fillStyle='rgba(197,90,17,.85)'; c.font='10px Segoe UI'; c.textAlign='left'; c.fillText('banda ±F_f/k',x0+4,yb1-3);
+  // grilla t
+  const step=niceStep(Tmax,5); c.font='10px Segoe UI'; c.textAlign='center';
+  for(let t=0;t<=Tmax+1e-9;t+=step){ const X=px(t);
+    c.strokeStyle='#EEF3FA'; c.lineWidth=1; c.beginPath(); c.moveTo(X,padT); c.lineTo(X,Hh-padB); c.stroke();
+    c.fillStyle='#9FB0C6'; c.fillText(fmt(t,2),X,Hh-padB+13); }
+  c.textAlign='left'; c.fillStyle='#8A9BB5'; c.fillText('x (mm)',4,padT-8); c.fillText('t (s)',x1-26,Hh-4);
+  c.strokeStyle='#C9D6EA'; c.lineWidth=1.2; c.beginPath(); c.moveTo(x0,midY); c.lineTo(x1,midY); c.stroke();
+  // ---- comparación viscosa (exponencial) ----
+  if(showVisc && isFinite(M.totalTime) && M.x0>0){
+    // ζ tal que la caída del 1.er ciclo sea similar a la de Coulomb (4F_f/k)
+    let ratio=(M.x0-M.perCycle)/M.x0; ratio=Math.min(0.999,Math.max(0.02,ratio));
+    const zeta=Math.min(0.9,Math.max(0.001,-Math.log(ratio)/TAU));
+    const wd=M.wn*Math.sqrt(Math.max(1e-6,1-zeta*zeta));
+    const env=t=>M.x0*Math.exp(-zeta*M.wn*t);
+    // envolvente viscosa
+    c.strokeStyle='rgba(68,114,196,.55)'; c.setLineDash([5,3]); c.lineWidth=1.2;
+    for(const s of[1,-1]){ c.beginPath(); for(let i=0;i<=240;i++){ const t=Tmax*i/240,y=Math.max(-ymax,Math.min(ymax,s*env(t))); i?c.lineTo(px(t),py(y)):c.moveTo(px(t),py(y)); } c.stroke(); }
+    c.setLineDash([]);
+    // curva viscosa
+    c.strokeStyle=STEEL; c.lineWidth=1.6; c.beginPath();
+    for(let i=0;i<=480;i++){ const t=Tmax*i/480, y=Math.max(-ymax,Math.min(ymax,env(t)*Math.cos(wd*t))); i?c.lineTo(px(t),py(y)):c.moveTo(px(t),py(y)); } c.stroke();
+    c.fillStyle=STEEL; c.font='bold 10px Segoe UI'; c.textAlign='right'; c.fillText('viscoso: exponencial (ζ='+fmt(zeta,3)+')',x1-2,padT+2); c.textAlign='left';
+  }
+  // ---- envolvente LINEAL (recta que une los picos) ----
+  if(isFinite(M.totalTime) && M.d>0){
+    const ampAt=t=>Math.max(M.finalX!==undefined?Math.abs(M.finalX):0, M.x0-M.perHalf*(t/M.halfT));
+    const tStop=M.totalTime;
+    c.strokeStyle='rgba(178,58,58,.7)'; c.setLineDash([6,3]); c.lineWidth=1.5;
+    for(const s of[1,-1]){ c.beginPath();
+      c.moveTo(px(0),py(s*M.x0));
+      c.lineTo(px(tStop),py(s*Math.abs(M.finalX)));
+      c.lineTo(px(Tmax),py(s*Math.abs(M.finalX)));
+      c.stroke(); }
+    c.setLineDash([]);
+    c.fillStyle='rgba(178,58,58,.9)'; c.font='bold 10px Segoe UI'; c.textAlign='left'; c.fillText('envolvente LINEAL',x0+70,py(M.x0)-2);
+  }
+  // ---- x(t) exacta (a trozos) ----
+  c.strokeStyle=NAVY; c.lineWidth=2.3; c.beginPath();
+  for(let i=0;i<=640;i++){ const t=Tmax*i/640, y=Math.max(-ymax,Math.min(ymax,M.f(t))); i?c.lineTo(px(t),py(y)):c.moveTo(px(t),py(y)); } c.stroke();
+  // marcador de paro
+  if(isFinite(M.totalTime)&&M.totalTime<=Tmax){ const Xs=px(M.totalTime),Ys=py(M.finalX);
+    c.strokeStyle='rgba(46,125,70,.6)'; c.setLineDash([2,3]); c.lineWidth=1.2; c.beginPath(); c.moveTo(Xs,padT); c.lineTo(Xs,Hh-padB); c.stroke(); c.setLineDash([]);
+    c.fillStyle=GREEN; c.beginPath(); c.arc(Xs,Ys,4.5,0,TAU); c.fill(); c.strokeStyle='#fff'; c.lineWidth=1.6; c.stroke();
+    c.fillStyle=GREEN; c.font='bold 10px Segoe UI'; c.textAlign='center'; c.fillText('se detiene',Xs, padT+10); c.textAlign='left'; }
+  // marcador de fase (animación)
+  if(phFrac!=null){ const tp=phFrac*Tmax, yv=Math.max(-ymax,Math.min(ymax,M.f(tp))), Xp=px(tp),Yp=py(yv);
+    c.strokeStyle='rgba(150,150,150,.4)'; c.setLineDash([2,3]); c.beginPath(); c.moveTo(Xp,padT); c.lineTo(Xp,Hh-padB); c.stroke(); c.setLineDash([]);
+    c.fillStyle=NAVY; c.beginPath(); c.arc(Xp,Yp,4.5,0,TAU); c.fill(); c.lineWidth=1.6; c.strokeStyle='#fff'; c.stroke(); }
+  const info=document.getElementById('respinfo');
+  if(info){ let s;
+    if(isFinite(M.totalTime)){
+      s='<b>Lineal:</b> los picos caen sobre una recta. Se detiene tras <b>'+M.nHalf+' semiciclos</b> ('+fmt(M.cycles,2)+' ciclos) en <b>x = '+fmt(M.finalX*1000,2)+' mm</b>, dentro de la banda ±'+fmt(M.d*1000,2)+' mm. <b>T = '+fmt(M.T,3)+' s</b> (no cambia con la fricción).';
+    } else { s='<b>Sin fricción</b> (μ = 0): oscila indefinidamente a ω<sub>n</sub> = '+fmt(M.wn,3)+' rad/s, T = '+fmt(M.T,3)+' s.'; }
+    if(showVisc) s+=' <span style="color:'+STEEL+'">La curva azul (viscoso) cae de forma <b>exponencial</b> — contraste clave.</span>';
+    if(info.__k!==s){info.innerHTML=s; info.__k=s;}
+  }
+}
+
+// ---------- CANVAS PRINCIPAL ----------
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let CW=720,CH=440;
+function setupCanvas(){
+  const dpr=window.devicePixelRatio||1, rect=cv.getBoundingClientRect();
+  CW=rect.width; CH=rect.width*0.6;
+  cv.width=CW*dpr; cv.height=CH*dpr; cv.style.height=CH+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function coil(c,x1,y,x2,turns,amp){ c.beginPath(); c.moveTo(x1,y); const n=turns*2, dx=(x2-x1)/n; for(let i=1;i<n;i++){ c.lineTo(x1+dx*i, y+(i%2?-amp:amp)); } c.lineTo(x2,y); c.stroke(); }
+function harrow(c,x1,x2,y,col,w){ c.strokeStyle=col; c.fillStyle=col; c.lineWidth=w||2.6;
+  c.beginPath(); c.moveTo(x1,y); c.lineTo(x2,y); c.stroke(); const d=x2>=x1?1:-1;
+  c.beginPath(); c.moveTo(x2,y); c.lineTo(x2-d*8,y-4); c.lineTo(x2-d*8,y+4); c.closePath(); c.fill(); }
+function pxPerUnit(){ const half=CW*0.30; const M=coulomb(); return half/Math.max(0.01,Math.abs(ic.x0),M.d*2,0.005); }
+let curX=ic.x0, curV=0;
+function drawMain(now){
+  const dpr=window.devicePixelRatio||1;
+  if(cv.width!==Math.round(CW*dpr)) setupCanvas();
+  ctx.clearRect(0,0,CW,CH);
+  const St=simState(now), M=St.M;
+  curX=M.f(St.tSim); curV=M.df(St.tSim);
+  const ppu=pxPerUnit(), eqX=CW*0.55, groundY=CH*0.72, wallX=CW*0.10;
+  const massW=Math.min(90,CW*0.16), massH=Math.min(70,CH*0.28);
+  let mx=eqX + curX*ppu;
+  const massCY=groundY-massH/2;
+  // suelo con rayado (superficie con fricción)
+  ctx.strokeStyle='#CBD8E6'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(8,groundY); ctx.lineTo(CW-8,groundY); ctx.stroke();
+  for(let x=14;x<CW-8;x+=13){ctx.strokeStyle='#D4A98A';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,groundY);ctx.lineTo(x-8,groundY+8);ctx.stroke();}
+  ctx.fillStyle='#B98A66'; ctx.font='11px Segoe UI'; ctx.textAlign='left'; ctx.fillText('superficie con fricción (μ = '+fmt(sys.mu)+')',12,groundY+22);
+  // pared
+  ctx.fillStyle='#8598b0'; ctx.fillRect(wallX-10,groundY-CH*0.42,10,CH*0.42);
+  for(let y=groundY-CH*0.42;y<groundY;y+=12){ctx.strokeStyle='#6f83a0';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(wallX-10,y);ctx.lineTo(wallX-2,y-8);ctx.stroke();}
+  // banda de reposo sombreada ±d
+  const bandL=eqX-M.d*ppu, bandR=eqX+M.d*ppu;
+  ctx.fillStyle='rgba(197,90,17,.12)'; ctx.fillRect(bandL,groundY-CH*0.5,bandR-bandL,CH*0.5);
+  ctx.strokeStyle='rgba(197,90,17,.5)'; ctx.setLineDash([3,3]); ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(bandL,groundY-CH*0.5); ctx.lineTo(bandL,groundY); ctx.moveTo(bandR,groundY-CH*0.5); ctx.lineTo(bandR,groundY); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='rgba(197,90,17,.9)'; ctx.font='10px Segoe UI'; ctx.textAlign='center'; ctx.fillText('banda ±F_f/k',eqX,groundY-CH*0.5-4);
+  // referencia de equilibrio
+  ctx.strokeStyle='rgba(120,140,170,.6)'; ctx.setLineDash([4,5]); ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.moveTo(eqX,groundY-CH*0.5); ctx.lineTo(eqX,groundY); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#7d8ba3'; ctx.font='11px Segoe UI'; ctx.textAlign='center'; ctx.fillText('x = 0',eqX,groundY+34);
+  // resorte de la pared a la masa
+  const springY=massCY;
+  ctx.strokeStyle=ORANGE; ctx.lineWidth=2.2; coil(ctx,wallX,springY,mx-massW/2,11,8);
+  ctx.fillStyle=ORANGE; ctx.font='bold 12px Segoe UI'; ctx.textAlign='center'; ctx.fillText('k = '+fmt(sys.k)+' N/m',(wallX+mx-massW/2)/2,springY-massH/2-6);
+  // masa
+  ctx.fillStyle=NAVY; ctx.strokeStyle='rgba(0,0,0,.18)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.rect(mx-massW/2,massCY-massH/2,massW,massH); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.font='bold 16px Segoe UI'; ctx.textAlign='center'; ctx.fillText('m',mx,massCY+6);
+  // desplazamiento x (mm)
+  if(Math.abs(mx-eqX)>2){ ctx.strokeStyle=NAVY; ctx.setLineDash([2,3]); ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.moveTo(eqX,groundY-CH*0.5+4); ctx.lineTo(mx,groundY-CH*0.5+4); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=NAVY; ctx.font='bold 11px Segoe UI'; ctx.textAlign='center'; ctx.fillText('x = '+fmt(curX*1000,1)+' mm',(eqX+mx)/2,groundY-CH*0.5-2); }
+  // ---- fuerzas ----
+  if(showForces){
+    const Fk=-sys.k*curX;
+    const moving=Math.abs(curV)>1e-5;
+    const Ff = moving ? -Math.sign(curV)*M.Ff : 0;   // se opone a la velocidad
+    const fscale=42/Math.max(1e-6, sys.k*Math.max(0.01,Math.abs(ic.x0)));
+    const yk=massCY-16, yf=massCY+16;
+    if(Math.abs(Fk)>1e-6){ harrow(ctx,mx,mx+Fk*fscale,yk,ORANGE,2.8); }
+    if(Math.abs(Ff)>1e-6){ harrow(ctx,mx,mx+Ff*fscale*3,yf,RED,2.8); }  // fricción magnitud fija (escala visual x3)
+    ctx.font='11px Segoe UI'; ctx.textAlign='left';
+    ctx.fillStyle=ORANGE; ctx.fillText('F_k = −k·x = '+fmt(Fk,2)+' N', 12, CH-42);
+    ctx.fillStyle=RED;    ctx.fillText('F_f = ∓μ·N = '+(moving?(Ff>0?'+':'−'):'±')+fmt(M.Ff,2)+' N '+(moving?'(se opone a v)':'(reposo)'), 12, CH-26);
+    ctx.fillStyle=NAVY;   ctx.fillText('v = '+fmt(curV,3)+' m/s', 12, CH-10);
+  }
+  // estado
+  const stopped=isFinite(M.totalTime)&&St.tSim>=M.totalTime-1e-9;
+  ctx.fillStyle=stopped?GREEN:NAVY; ctx.font='bold 13px Segoe UI'; ctx.textAlign='right';
+  ctx.fillText(stopped?'■ en reposo (dentro de la banda)':(playing?'▶ oscilando':'⏸ en pausa'),CW-12,18); ctx.textAlign='left';
+  requestAnimationFrame(drawMain);
+}
+
+// ---------- accesibilidad por teclado ----------
+function announce(){ const M=coulomb(); const el=document.getElementById('live');
+  if(el) el.textContent='x₀ = '+fmt(ic.x0*1000,1)+' mm. Se detiene tras '+(isFinite(M.nHalf)?M.nHalf+' semiciclos':'nunca (sin fricción)')+'. La frecuencia no cambia: ω_n = '+fmt(M.wn,2)+' rad/s.'; }
+cv.addEventListener('keydown',e=>{
+  const stp=(e.shiftKey?0.010:0.002); // metros (10 mm / 2 mm)
+  if(e.key==='ArrowRight'||e.key==='ArrowUp'){ ic.x0=+(Math.min(0.25,ic.x0+stp)).toFixed(5); }
+  else if(e.key==='ArrowLeft'||e.key==='ArrowDown'){ ic.x0=+(Math.max(-0.25,ic.x0-stp)).toFixed(5); }
+  else if(e.key===' '||e.code==='Space'){ playing=!playing; document.getElementById('play').textContent=playing?'⏸ pausar':'▶ reanudar'; if(playing)simT0=null; e.preventDefault(); announce(); return; }
+  else return;
+  e.preventDefault(); simT0=null; playing=true; document.getElementById('play').textContent='⏸ pausar'; refresh(); announce();
+});
+
+// ---------- controles ----------
+function readSys(){ let m=parseFloat(document.getElementById('in-m').value)||0; if(m<0.01)m=0.01;
+  let mu=parseFloat(document.getElementById('in-mu').value); if(!(mu>=0))mu=0;
+  sys={m, k:parseFloat(document.getElementById('in-k').value)||0, mu}; simT0=null; refresh(); }
+['in-m','in-k','in-mu'].forEach(id=>document.getElementById(id).addEventListener('input',readSys));
+function readIC(){ let x0mm=parseFloat(document.getElementById('in-x0').value); if(!isFinite(x0mm))x0mm=0; ic={x0:x0mm/1000}; simT0=null; refresh(); }
+document.getElementById('in-x0').addEventListener('input',readIC);
+document.getElementById('ck-forces').addEventListener('change',e=>{showForces=e.target.checked;});
+document.getElementById('ck-visc').addEventListener('change',e=>{showVisc=e.target.checked; drawResponse();});
+document.getElementById('play').addEventListener('click',function(){ playing=!playing; this.textContent=playing?'⏸ pausar':'▶ reanudar'; if(playing)simT0=null; });
+document.getElementById('release').addEventListener('click',()=>{ simT0=null; playing=true; document.getElementById('play').textContent='⏸ pausar'; });
+
+const presets=[
+  ['m=2,k=800,μ=0.20,x₀=60mm',{m:2,k:800,mu:0.20,x0:0.060}],
+  ['m=1,k=400,μ=0.10,x₀=50mm',{m:1,k:400,mu:0.10,x0:0.050}],
+  ['m=3,k=1200,μ=0.30,x₀=80mm',{m:3,k:1200,mu:0.30,x0:0.080}],
+  ['m=2,k=600,μ=0 (sin fricción)',{m:2,k:600,mu:0,x0:0.060}],
+];
+const chips=document.getElementById('chips');
+presets.forEach(([lbl,val])=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=lbl; c.onclick=()=>{sys={m:val.m,k:val.k,mu:val.mu};ic={x0:val.x0};simT0=null;playing=true;document.getElementById('play').textContent='⏸ pausar';refresh();}; chips.appendChild(c); });
+
+// ---------- autoevaluación ----------
+function selftest(){
+  const out=[];
+  sys={m:2,k:800,mu:0.20}; ic={x0:0.060};
+  const M=coulomb();
+  out.push(['Ff=3.92', Math.abs(M.Ff-3.924)<0.01]);
+  out.push(['banda=4.9mm', Math.abs(M.d*1000-4.905)<0.02]);
+  out.push(['perHalf=9.8mm', Math.abs(M.perHalf*1000-9.81)<0.03]);
+  out.push(['perCycle=19.6mm', Math.abs(M.perCycle*1000-19.62)<0.05]);
+  out.push(['nHalf=6', M.nHalf===6]);
+  out.push(['cycles=3', Math.abs(M.cycles-3)<1e-9]);
+  out.push(['wn=20', Math.abs(M.wn-20)<1e-6]);
+  out.push(['x(0)=x0', Math.abs(M.f(0)-0.060)<1e-9]);
+  out.push(['v(0)=0', Math.abs(M.df(0))<1e-9]);
+  // primer pico tras 1 semiciclo: -(x0-2d)
+  out.push(['peak1', Math.abs(M.f(M.halfT)-(-(0.060-2*M.d)))<1e-6]);
+  // reposo final dentro de la banda
+  out.push(['|final|<=d', Math.abs(M.finalX)<=M.d+1e-9]);
+  // T = 2pi/wn no cambia con mu
+  const s2=JSON.parse(JSON.stringify(sys)); sys.mu=0.5; const M2=coulomb(); sys.mu=s2.mu;
+  out.push(['T const en mu', Math.abs(M2.T-M.T)<1e-9]);
+  const bad=out.filter(o=>!o[1]);
+  console.log('SELFTEST '+(bad.length?'FAIL: '+JSON.stringify(bad):'OK ('+out.length+' checks)'));
+  sys={m:2,k:800,mu:0.20}; ic={x0:0.060};
+}
+
+// ---------- init ----------
+window.addEventListener('resize',()=>{setupCanvas();refresh();});
+selftest();
+refresh(); setupCanvas();
+requestAnimationFrame(drawMain);
+function respLoop(now){ const St=simState(now); drawResponse(St.frac); requestAnimationFrame(respLoop); }
+requestAnimationFrame(respLoop);
+</script>
+</body>
+</html>
