@@ -1,6 +1,6 @@
 # Vibraciones — Exploradores interactivos
 
-Colección de **cinco exploradores interactivos** (HTML, funcionan sin conexión) de apoyo al curso de **Vibraciones** · Ingeniería Aeroespacial · **ENES Juriquilla, UNAM**.
+Colección de **siete exploradores interactivos** (HTML, funcionan sin conexión) de apoyo al curso de **Vibraciones** · Ingeniería Aeroespacial · **ENES Juriquilla, UNAM**.
 
 🔗 **Portal en línea:** https://elodiestrupiechonski.github.io/vibraciones-exploradores/
 
@@ -17,6 +17,8 @@ Colección de **cinco exploradores interactivos** (HTML, funcionan sin conexión
 **Temas del curso**
 4. `coulomb_interactivo.html` — Fricción de Coulomb (U2)
 5. `forzada_interactivo.html` — Respuesta forzada y resonancia (U3)
+6. `mediapotencia_interactivo.html` — Media potencia y factor Q (U3)
+7. `espectro_interactivo.html` — Del espectro de ensayo a la carga de diseño (U4)
 
 Punto de partida: `index.html`.
 

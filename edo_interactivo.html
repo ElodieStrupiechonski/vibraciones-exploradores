@@ -113,9 +113,9 @@
 <body>
 <header>
   <h1>EDO lineal de 2.º orden — Explorador interactivo</h1>
-  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 2) — mueve los coeficientes (o arrastra las raíces) y observa el discriminante, los tres regímenes y la respuesta x(t)</p>
+  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 2) — al mover los coeficientes (o arrastrar las raíces) se observan el discriminante, los tres regímenes y la respuesta x(t)</p>
 </header>
-<nav class="pilarnav" aria-label="Recorrido por los cinco pilares">
+<nav class="pilarnav" aria-label="Recorrido por los pilares">
   <span class="lab">Recorrido:</span>
   <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
   <span class="arw">→</span>
@@ -126,6 +126,10 @@
   <a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a>
   <span class="arw">→</span>
   <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+  <span class="arw">→</span>
+  <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
+  <span class="arw">→</span>
+  <a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a>
 </nav>
 
 <div class="wrap">
@@ -178,7 +182,7 @@
       <h2>3 · Las dos raíces &nbsp;r₁, r₂</h2>
       <div class="row"><span class="tag">r₁</span><span class="val" id="r0"></span></div>
       <div class="row"><span class="tag">r₂</span><span class="val" id="r1"></span></div>
-      <div class="hint">Son las <b>mismas raíces</b> que colocabas como <b>z</b> en el explorador del Pilar 1: r = (−b ± √Δ)/(2a).</div>
+      <div class="hint">Son las <b>mismas raíces</b> que en el Pilar 1 se colocaban como <b>z</b>: r = (−b ± √Δ)/(2a).</div>
     </div>
 
     <div style="font-size:12.5px;color:var(--grey);background:var(--ice2);border:1px solid var(--ice);border-radius:9px;padding:9px 12px;margin-bottom:16px">
@@ -214,7 +218,7 @@
   <div>
     <div class="card">
       <h2>Plano de raíces (plano s)</h2>
-      <canvas id="cv" width="720" height="560" tabindex="0" role="application" aria-label="Plano de raíces. Usa las flechas para mover la raíz r1."></canvas>
+      <canvas id="cv" width="720" height="560" tabindex="0" role="application" aria-label="Plano de raíces. Las flechas mueven la raíz r1."></canvas>
       <div class="kbd">⌨ Con el foco en el plano: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> mueven r₁ (la conjugada se ajusta sola), <kbd>Shift</kbd>+flecha paso mayor.</div>
       <div class="sr" aria-live="polite" id="live"></div>
       <div class="legend">
@@ -236,7 +240,7 @@
         <button class="btn small ghost" id="zoom-out">－</button>
         <button class="btn small ghost" id="fit">ajustar</button>
       </div>
-      <div class="hint">Arrastra una raíz fuera del eje real → el sistema exige su <b>conjugada</b> (oscila). Cruza al <b>semiplano derecho</b> (Re&gt;0) → inestable.</div>
+      <div class="hint">Al arrastrar una raíz fuera del eje real → el sistema exige su <b>conjugada</b> (oscila). Al cruzar al <b>semiplano derecho</b> (Re&gt;0) → inestable.</div>
     </div>
 
     <div class="card practico">
@@ -282,8 +286,8 @@
 <div class="wrap" style="padding-top:0">
   <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
     🧭 <b>Tu recorrido.</b> ⬅ <b>Antes:</b> esta ecuación viene de <a href="edo3_interactivo.html">ΣF = ma (Pilar 3)</a>.
-    ➡ <b>Siguiente:</b> sus <b>raíces</b> son los mismos números complejos que exploras en el <a href="complejos_interactivo.html">Pilar 1</a> (ahí, |z| es amplitud y θ es desfase).
-    <span style="color:#5B5B5B">(Mantén los tres archivos en la misma carpeta para que los enlaces funcionen.)</span>
+    ➡ <b>Siguiente:</b> sus <b>raíces</b> son los mismos números complejos del <a href="complejos_interactivo.html">Pilar 1</a> (ahí, |z| es amplitud y θ es desfase).
+    <span style="color:#5B5B5B">(Conviene mantener los tres archivos en la misma carpeta para que los enlaces funcionen.)</span>
   </div>
 </div>
 <div class="wrap" style="padding-top:0">

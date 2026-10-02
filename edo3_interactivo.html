@@ -110,9 +110,9 @@
 <body>
 <header>
   <h1>Dinámica de la partícula — Explorador interactivo</h1>
-  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 3) — arrastra la masa para ver el DCL, arma ΣF = ma → m·x″ + c·x′ + k·x = 0 y observa ω<sub>n</sub>, la energía y la respuesta</p>
+  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 3) — al arrastrar la masa se ve el DCL, se arma ΣF = ma → m·x″ + c·x′ + k·x = 0 y se observan ω<sub>n</sub>, la energía y la respuesta</p>
 </header>
-<nav class="pilarnav" aria-label="Recorrido por los cinco pilares">
+<nav class="pilarnav" aria-label="Recorrido por los pilares">
   <span class="lab">Recorrido:</span>
   <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
   <span class="arw">→</span>
@@ -123,6 +123,10 @@
   <a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a>
   <span class="arw">→</span>
   <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+  <span class="arw">→</span>
+  <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
+  <span class="arw">→</span>
+  <a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a>
 </nav>
 
 <div class="wrap">
@@ -146,7 +150,7 @@
         <div class="fld"><label>k &nbsp;rigidez (N/m)</label><input id="in-k" type="number" step="any" min="0" value="13"></div>
         <div class="fld"><label>c &nbsp;amortig. (N·s/m)</label><input id="in-c" type="number" step="any" value="4"></div>
       </div>
-      <div class="hint">Arrastra la masa en el diagrama de la derecha para fijar el desplazamiento inicial x₀; usa ▶ para soltarla.</div>
+      <div class="hint">Al arrastrar la masa en el diagrama de la derecha se fija el desplazamiento inicial x₀; con ▶ se suelta.</div>
       <div class="keq">
         <div style="font-weight:700;color:var(--navy);font-size:13px;margin-bottom:6px">🔗 Resorte equivalente → k</div>
         <div class="rowk">
@@ -206,7 +210,7 @@
   <div>
     <div class="card">
       <h2>Sistema masa–resorte–amortiguador &nbsp;·&nbsp; DCL en vivo</h2>
-      <canvas id="cv" width="720" height="440" tabindex="0" role="application" aria-label="Sistema masa-resorte-amortiguador. Usa las flechas para desplazar la masa."></canvas>
+      <canvas id="cv" width="720" height="440" tabindex="0" role="application" aria-label="Sistema masa-resorte-amortiguador. Las flechas desplazan la masa."></canvas>
       <div class="kbd">⌨ Con el foco en el diagrama: <kbd>←</kbd> <kbd>→</kbd> desplazan la masa (x₀), <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> suelta/pausa.</div>
       <div class="sr" aria-live="polite" id="live"></div>
       <div class="legend">
@@ -226,7 +230,7 @@
         <button class="btn small ghost" id="release">▶ soltar desde x₀</button>
         <label class="toggle"><input type="checkbox" id="ck-forces" checked> mostrar fuerzas</label>
       </div>
-      <div class="hint">Arrastra la masa (◀▶) para desplazarla: el resorte tira de vuelta con F<sub>k</sub> = −k·x. Suéltala y la EOM decide cómo vuelve al equilibrio.</div>
+      <div class="hint">Al arrastrar la masa (◀▶) se desplaza: el resorte tira de vuelta con F<sub>k</sub> = −k·x. Al soltarla, la EOM decide cómo vuelve al equilibrio.</div>
     </div>
 
     <div class="card practico">
@@ -273,7 +277,7 @@
   <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
     🧭 <b>Tu recorrido.</b> Aquí <b>armaste</b> la ecuación de movimiento <span style="font-family:Cambria Math,serif">m·x″ + c·x′ + k·x = 0</span> a partir de ΣF = ma.
     ➡ <b>Siguiente:</b> el <a href="edo_interactivo.html">Pilar 2</a> la <b>resuelve</b> y clasifica su régimen por el discriminante; luego el <a href="complejos_interactivo.html">Pilar 1</a> <b>interpreta</b> sus raíces complejas.
-    <span style="color:#5B5B5B">(Mantén los tres archivos en la misma carpeta para que los enlaces funcionen.)</span>
+    <span style="color:#5B5B5B">(Conviene mantener los tres archivos en la misma carpeta para que los enlaces funcionen.)</span>
   </div>
 </div>
 <div class="wrap" style="padding-top:0">

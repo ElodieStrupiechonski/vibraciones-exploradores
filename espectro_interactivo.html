@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Del espectro a la carga de diseño · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1180px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .pilarnav{max-width:1180px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  .wrap{max-width:1180px;margin:0 auto;padding:16px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:960px){ .wrap{grid-template-columns:1.45fr .85fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .card h3{margin:14px 0 6px;font-size:13.5px;color:var(--blue)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:11px}
+  .grp{border:1px solid var(--line);border-radius:10px;padding:10px 11px 11px}
+  .grp>.t{font-size:11.5px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px}
+  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+  .row:last-child{margin-bottom:0}
+  .row label{font-weight:700;color:var(--navy);font-size:12.5px;min-width:112px}
+  input[type=range]{flex:1;min-width:84px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:62px;text-align:right;font-size:14px}
+  .btns{display:flex;gap:7px;flex-wrap:wrap}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12px;border-radius:8px;padding:6px 10px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:8px 10px}
+  .tile .k{font-size:11px;color:var(--grey);font-weight:600;line-height:1.3}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:19px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .tile.gr{background:#F1F6EE;border-color:#BFD8C6} .tile.gr .v{color:var(--green)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:10px 12px;font-family:'Cambria Math',Georgia,serif;font-size:14.5px;color:#233;margin-bottom:9px}
+  .eqbox:last-child{margin-bottom:0}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:11.5px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px;text-transform:none}
+  .eqbox b{color:var(--navy)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  .mth{font-family:'Cambria Math',Georgia,serif}
+  table.db{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:4px}
+  table.db th{background:var(--navy);color:#fff;font-weight:600;text-align:left;padding:6px 9px;font-size:12px}
+  table.db td{border-bottom:1px solid var(--ice);padding:6px 9px;vertical-align:top}
+  table.db tr:nth-child(even) td{background:#F7FAFD}
+  table.db td:first-child{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);white-space:nowrap}
+  .two{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:760px){ .two{grid-template-columns:1fr 1fr} }
+  footer{max-width:1180px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  @media(max-width:520px){ .wrap{padding:12px;gap:12px} .card{padding:12px 13px} header h1{font-size:18px} header p{font-size:12px} .pilarnav{font-size:11.5px} .row label{min-width:100%} }
+</style>
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Del espectro a la carga de diseño — Explorador</h1>
+    <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (U4) — al modificar el perfil de la norma y la resonancia del equipo se observa cómo W(f), |H(f)|² y W<sub>resp</sub>(f) producen el G<sub>rms</sub> y la carga de diseño</p>
+  </div>
+</header>
+
+<nav class="pilarnav" aria-label="Recorrido por los pilares">
+  <span class="lab">Recorrido:</span>
+  <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
+  <span class="arw">→</span>
+  <a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a>
+  <span class="arw">→</span>
+  <a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a>
+  <span class="arw">→</span>
+  <a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a>
+  <span class="arw">→</span>
+  <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+  <span class="arw">→</span>
+  <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
+  <span class="arw">→</span>
+  <span class="cur">Pilar 7 · Espectro y carga de diseño</span>
+</nav>
+
+<div class="wrap">
+  <div class="intro full">
+    <b>¿Qué muestra?</b> Tres gráficas apiladas sobre el mismo eje de frecuencias. Arriba, <span class="mth">W(f)</span>: lo que la <b>norma impone</b> en la base, en g²/Hz. En medio, <span class="mth">|H(f)|²</span>: lo que el <b>equipo aporta</b> con su resonancia — es exactamente el factor de amplificación <span class="mth">M(r)</span> elevado al cuadrado. Abajo, la respuesta <span class="mth">W<sub>resp</sub> = |H|²·W</span>, cuya área da el <span class="mth">G<sub>rms</sub></span> que realmente sufre el componente. Toda la cadena se controla con dos cosas ya conocidas: <b>f<sub>n</sub></b> y <b>ζ</b> (o su equivalente <b>Q</b>).
+  </div>
+
+  <div class="card">
+    <canvas id="cv" width="820" height="620" aria-label="Tres paneles: densidad espectral de entrada, respuesta en frecuencia del equipo y densidad espectral de respuesta"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="border-top-color:var(--orange)"></i> W(f) de la norma</span>
+      <span><i class="sw" style="border-top-color:var(--steel)"></i> |H(f)|² del equipo</span>
+      <span><i class="sw" style="border-top-color:var(--navy)"></i> W<sub>resp</sub>(f)</span>
+      <span><i class="sw" style="border-top-color:var(--green);border-top-style:dashed"></i> nivel −3 dB (media potencia)</span>
+      <span><i class="sw" style="border-top-color:var(--purple);border-top-style:dashed"></i> curva congelada</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Controles</h2>
+    <div class="ctl">
+      <div class="grp">
+        <div class="t">Perfil de la norma</div>
+        <div class="row"><label>Meseta W₀</label><input id="sw0" type="range" min="0.01" max="0.30" step="0.005" value="0.16"><span class="val" id="vw0">0.160</span></div>
+        <div class="row"><label>Inicio de meseta</label><input id="sfa" type="range" min="30" max="300" step="5" value="50"><span class="val" id="vfa">50 Hz</span></div>
+        <div class="row"><label>Fin de meseta</label><input id="sfb" type="range" min="400" max="1600" step="20" value="800"><span class="val" id="vfb">800 Hz</span></div>
+        <div class="btns" style="margin-top:8px">
+          <button class="btn" id="bm3">−3 dB</button>
+          <button class="btn" id="bp3">+3 dB (cualificación)</button>
+          <button class="btn" id="bp6">+6 dB</button>
+          <button class="btn" id="brst">Perfil tipo GEVS</button>
+        </div>
+      </div>
+      <div class="grp">
+        <div class="t">Equipo montado</div>
+        <div class="row"><label>Frecuencia natural f<sub>n</sub></label><input id="sfn" type="range" min="0" max="1000" step="1" value="500"><span class="val" id="vfn">100 Hz</span></div>
+        <div class="row"><label>Amortiguamiento ζ</label><input id="sz" type="range" min="0.01" max="0.20" step="0.002" value="0.05"><span class="val" id="vz">0.050</span></div>
+        <div class="btns" style="margin-top:8px">
+          <button class="btn" data-z="0.01">ζ = 0.01</button>
+          <button class="btn on" data-z="0.05">ζ = 0.05</button>
+          <button class="btn" data-z="0.10">ζ = 0.10</button>
+          <button class="btn" data-z="0.20">ζ = 0.20</button>
+        </div>
+      </div>
+      <div class="grp">
+        <div class="t">Vista</div>
+        <div class="btns">
+          <button class="btn on" id="blogx">Eje f logarítmico</button>
+          <button class="btn on" id="blogy">Eje vertical logarítmico</button>
+          <button class="btn" id="bdb">Mostrar en dB</button>
+          <button class="btn" id="bfrz">Congelar comparación</button>
+        </div>
+      </div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><div class="k">G<sub>rms</sub> de entrada (área de W)</div><div class="v" id="oGin">14.1 g</div></div>
+      <div class="tile"><div class="k">Q = 1/(2ζ)</div><div class="v" id="oQ">10.0</div></div>
+      <div class="tile"><div class="k">W(f<sub>n</sub>) que ve el equipo</div><div class="v" id="oWfn">0.160</div></div>
+      <div class="tile"><div class="k">Ancho de banda a −3 dB</div><div class="v" id="oBW">10.0 Hz</div></div>
+      <div class="tile gr"><div class="k">G<sub>rms</sub> respuesta (integración)</div><div class="v" id="oGn">15.7 g</div></div>
+      <div class="tile hl"><div class="k">G<sub>rms</sub> por Miles</div><div class="v" id="oGm">15.9 g</div></div>
+      <div class="tile hl"><div class="k">Carga de diseño 3σ</div><div class="v" id="oG3">47 g</div></div>
+      <div class="tile"><div class="k">Amplificación respuesta/entrada</div><div class="v" id="oAmp">1.11</div></div>
+    </div>
+  </div>
+
+  <div class="card full">
+    <h2>Las fórmulas en pantalla</h2>
+    <div class="two">
+      <div>
+        <div class="eqbox">
+          <span class="lab">1 · Lo que impone la norma</span>
+          W(f) en <b>g²/Hz</b> &nbsp;·&nbsp; tramos rectos en log–log: W ∝ f<sup> n</sup>, con <b>n = ±2</b> para ±6 dB/octava
+        </div>
+        <div class="eqbox">
+          <span class="lab">2 · Valor eficaz del ensayo</span>
+          G<sub>rms</sub> = √( ∫ W(f) df ) &nbsp;·&nbsp; tramo plano: G<sub>rms</sub> = √(W₀·Δf)
+        </div>
+        <div class="eqbox">
+          <span class="lab">3 · Lo que aporta el equipo (ya conocido)</span>
+          |H(f)| = M(r) = 1 / √[(1−r²)² + (2ζr)²],&nbsp; r = f/f<sub>n</sub> &nbsp;·&nbsp; |H(f<sub>n</sub>)| ≈ <b>Q</b> = 1/(2ζ)
+        </div>
+      </div>
+      <div>
+        <div class="eqbox">
+          <span class="lab">4 · Respuesta: se multiplican potencias, no amplitudes</span>
+          W<sub>resp</sub>(f) = <b>|H(f)|²</b> · W(f)
+        </div>
+        <div class="eqbox">
+          <span class="lab">5 · Ecuación de Miles (PSD plana en torno a f<sub>n</sub>)</span>
+          G<sub>rms,resp</sub> = √( (π/2)·f<sub>n</sub>·Q·W(f<sub>n</sub>) ) = √( π·f<sub>n</sub>·W(f<sub>n</sub>) / 4ζ )
+        </div>
+        <div class="eqbox">
+          <span class="lab">6 · Carga de diseño</span>
+          3σ = 3·G<sub>rms,resp</sub> &nbsp;·&nbsp; fuerza de inercia: F = m·(3σ)·g
+        </div>
+      </div>
+    </div>
+    <div class="intro" style="margin-top:12px;border-left-color:var(--green)">
+      <b style="color:var(--green)">Por qué (π/2)·f<sub>n</sub>/Q.</b> Esa cantidad es el <b>ancho de banda equivalente de ruido</b>: el ancho que tendría un filtro rectangular ideal que dejara pasar la misma potencia que la resonancia real. La resonancia no es rectangular sino una campana, y al integrar <span class="mth">|H(f)|²</span> sobre todas las frecuencias el resultado es exactamente <span class="mth">(π/2)·f<sub>n</sub>·Q</span> veces el valor de la PSD en el pico. Por eso Miles solo necesita tres datos: dónde está la resonancia, qué tan picuda es y cuánta energía hay justo ahí.
+    </div>
+  </div>
+
+  <div class="card full">
+    <h2>Recordatorio: la escala de decibeles, la escala logarítmica y la unidad g</h2>
+
+    <h3>El decibel no es una unidad, es una razón</h3>
+    <p style="font-size:13.5px;margin:4px 0 8px">El decibel compara dos cantidades. Si la cantidad es de tipo <b>potencia</b> —y una PSD lo es, porque está en g²/Hz— la razón se expresa como <span class="mth">ΔdB = 10·log₁₀(W₂/W₁)</span>. Si la cantidad es de tipo <b>amplitud</b> —una aceleración en g, un desplazamiento— se usa <span class="mth">ΔdB = 20·log₁₀(G₂/G₁)</span>. No son dos convenios distintos: como la potencia va con el cuadrado de la amplitud, ambas expresiones dan el mismo número.</p>
+
+    <table class="db">
+      <tr><th style="width:18%">Valor</th><th style="width:30%">Qué significa</th><th>Por qué aparece en el curso</th></tr>
+      <tr><td>−3 dB</td><td>la potencia se reduce a la <b>mitad</b>; la amplitud, a 1/√2 = 0.707</td><td>Es exactamente la definición de los <b>puntos de media potencia</b> f₁ y f₂. El «ancho de banda a −3 dB» es el Δf del Pilar 6, y de ahí salen ζ = Δf/(2f<sub>n</sub>) y Q = f<sub>n</sub>/Δf.</td></tr>
+      <tr><td>+3 dB</td><td>la potencia se <b>duplica</b>; la amplitud sube un factor √2 ≈ 1.41</td><td>Es el margen habitual entre el nivel de <b>aceptación</b> y el de <b>cualificación</b>: se duplica la PSD, pero el G<sub>rms</sub> solo sube un 41 %.</td></tr>
+      <tr><td>+6 dB</td><td>la potencia se <b>cuadruplica</b>; la amplitud se <b>duplica</b></td><td>Es el margen de cualificación severo, y sobre todo la pendiente típica de los perfiles: <b>+6 dB por octava</b> significa que al duplicar la frecuencia la PSD se multiplica por 4, es decir W ∝ f².</td></tr>
+      <tr><td>+10 dB</td><td>la potencia se multiplica por <b>10</b>; la amplitud, por √10 ≈ 3.16</td><td>Una década de PSD. Sirve para leer de un vistazo cuántos órdenes de magnitud separan dos ensayos.</td></tr>
+      <tr><td>+20 dB</td><td>la potencia ×100; la amplitud ×10</td><td>Un factor de calidad Q = 10 equivale a un pico de 20 dB sobre el nivel de base en |H|².</td></tr>
+    </table>
+
+    <h3>Por qué conviene la escala logarítmica</h3>
+    <p style="font-size:13.5px;margin:4px 0 0">Hay tres razones, y las tres se pueden comprobar con los botones de la vista. <b>Primera:</b> el ensayo abarca de 20 a 2000 Hz, dos décadas, y la PSD de respuesta cubre cinco o seis órdenes de magnitud; en escala lineal todo lo que ocurre por debajo de 200 Hz se aplasta contra el eje y desaparece. <b>Segunda:</b> en escala log–log una ley de potencia <span class="mth">W ∝ f<sup> n</sup></span> se dibuja como una <b>recta</b> de pendiente n, de modo que las pendientes en dB/octava de la norma son literalmente rectas y se pueden medir con una regla. <b>Tercera:</b> lo que importa en vibración son <b>razones</b>, no diferencias: que una PSD sea el doble de otra significa lo mismo a 50 Hz que a 1500 Hz, y en escala logarítmica esa razón es siempre la misma distancia vertical. Al activar «Mostrar en dB» el eje se vuelve lineal en decibeles, que es otra forma de decir logarítmico en potencia: los márgenes de ±3 y ±6 dB pasan a ser desplazamientos rígidos de la curva.</p>
+
+    <h3>¿Qué es exactamente la unidad «g»?</h3>
+    <p style="font-size:13.5px;margin:4px 0 0">La <b>g</b> es la aceleración de la gravedad al nivel del mar, 9.81 m/s², usada aquí como <b>unidad de aceleración</b>, no de fuerza ni de masa. Decir que un componente sufre 36 g significa que su aceleración vale 36 × 9.81 = 353 m/s². Las normas la prefieren porque la fuerza de inercia se obtiene de inmediato: un componente de masa m sometido a n g siente <span class="mth">F = m·n·g</span>, es decir <b>n veces su propio peso</b>, que es la forma natural de dimensionar tornillos, insertos y soldaduras. De ahí que la PSD se dé en <b>g²/Hz</b>: su integral es el valor cuadrático medio de una aceleración, y su raíz, el G<sub>rms</sub>, es una aceleración eficaz. Conviene no confundir la g de aceleración con el gramo; en los documentos técnicos se escribe en cursiva o se aclara «g de aceleración».</p>
+  </div>
+
+  <div class="card full">
+    <h2>Puente con la ecuación de movimiento que ya se sabe resolver</h2>
+    <div class="eqbox">
+      <span class="lab">Lo de siempre: régimen permanente ante una armónica</span>
+      m·x″ + c·x′ + k·x = F₀ cos ωt &nbsp;&nbsp;⇒&nbsp;&nbsp; x(t) = X·cos(ωt − φ),&nbsp; X = (F₀/k)·M(r),&nbsp; φ = atan2(2ζr, 1−r²)
+    </div>
+    <p style="font-size:13.5px;margin:8px 0 0">La función de respuesta en frecuencia <span class="mth">H(f)</span> no es un objeto nuevo: <b>es esa misma solución de régimen, vista como función de la frecuencia</b>. Su módulo es el factor de amplificación <span class="mth">M(r)</span> que ya se calcula desde la Unidad 3, y su argumento es el desfase <span class="mth">φ</span>. El panel central de la gráfica es, literalmente, la curva del Pilar 5 elevada al cuadrado.</p>
+    <p style="font-size:13.5px;margin:8px 0 0">Una vibración aleatoria es una <b>superposición de infinitas armónicas</b> de amplitudes y fases impredecibles. Como la ecuación de movimiento es <b>lineal</b>, cada armónica se resuelve por separado con la fórmula de arriba y los efectos se suman: no hace falta ninguna teoría nueva. Lo único que cambia es la contabilidad. Sumar amplitudes no tendría sentido, porque las fases son aleatorias y se cancelarían entre sí; lo que sí se conserva y se suma es la <b>potencia</b>. Por eso la relación de entrada a salida se escribe con el módulo al cuadrado, <span class="mth">W<sub>resp</sub> = |H|²·W</span>, y el área bajo esa curva es la <b>varianza</b> de la aceleración de respuesta, cuya raíz cuadrada es el <span class="mth">G<sub>rms</sub></span>.</p>
+    <p style="font-size:13.5px;margin:8px 0 0">En resumen, la cadena completa usa tres piezas que ya estaban sobre la mesa: la <b>solución de régimen</b> de la EDO da <span class="mth">|H|</span>; los <b>puntos de media potencia</b> dan <span class="mth">Q</span> y <span class="mth">ζ</span>; y la <b>norma</b> aporta el único dato externo, <span class="mth">W(f<sub>n</sub>)</span>. Con esos tres números, la ecuación de Miles entrega la carga con la que se dimensiona la estructura.</p>
+    <div class="takeaway" style="margin-top:12px">
+      <b>Cómo explorar:</b> conviene empezar moviendo <b>f<sub>n</sub></b> y observar los tres paneles a la vez: mientras la resonancia cae dentro de la meseta, la respuesta apenas cambia; al sacarla hacia los extremos del perfil, donde W(f<sub>n</sub>) es menor, la carga baja de golpe — y esa es la verdadera estrategia de diseño. Después conviene variar <b>ζ</b> y comprobar que la carga solo baja como 1/√ζ, mucho menos de lo que suele suponerse. Los botones <b>−3 dB</b>, <b>+3 dB</b> y <b>+6 dB</b> desplazan el perfil completo y permiten ver qué significa un margen de cualificación. Con <b>Congelar comparación</b> se deja una curva de referencia, y con los botones de vista se puede comprobar por qué la escala logarítmica y los decibeles son la forma natural de mirar estos espectros. La diferencia entre el valor por integración y el de Miles indica hasta qué punto la hipótesis de «PSD plana en torno a f<sub>n</sub>» es razonable en cada caso.
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Explorador didáctico del paso del espectro de ensayo a la carga de diseño · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.XXXXXXX (se completa al publicar en Zenodo).</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+const NAVY='#1F3864',BLUE='#2E5496',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',PURPLE='#6B3FA0',RED='#B23A3A';
+const F_LO=20, F_HI=2000;
+let W0=0.16, fA=50, fB=800, fn=100, z=0.05;
+let logx=true, logy=true, dbMode=false, frozen=null;
+
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ---------- perfil PSD: 4 quiebres, pendientes +-6 dB/oct ---------- */
+function breaks(){
+  return [[F_LO, W0*Math.pow(F_LO/fA,2)], [fA, W0], [fB, W0], [F_HI, W0*Math.pow(fB/F_HI,2)]];
+}
+function psd(f){
+  if(f<F_LO||f>F_HI) return 0;
+  const B=breaks();
+  for(let i=0;i<B.length-1;i++){
+    const [f1,w1]=B[i], [f2,w2]=B[i+1];
+    if(f>=f1 && f<=f2){
+      if(Math.abs(f2-f1)<1e-9) return w1;
+      const n=Math.log(w2/w1)/Math.log(f2/f1);
+      return w1*Math.pow(f/f1,n);
+    }
+  }
+  return 0;
+}
+function segArea(f1,w1,f2,w2){
+  if(f2<=f1) return 0;
+  if(Math.abs(w2-w1)<1e-12) return w1*(f2-f1);
+  const n=Math.log(w2/w1)/Math.log(f2/f1);
+  if(Math.abs(n+1)<1e-9) return w1*Math.pow(f1,-n)*Math.log(f2/f1);
+  return w1*Math.pow(f1,-n)*(Math.pow(f2,n+1)-Math.pow(f1,n+1))/(n+1);
+}
+function areaIn(){ const B=breaks(); let s=0; for(let i=0;i<B.length-1;i++) s+=segArea(B[i][0],B[i][1],B[i+1][0],B[i+1][1]); return s; }
+
+/* ---------- respuesta ---------- */
+function H2(f){ const r=f/fn; return 1/((1-r*r)*(1-r*r)+(2*z*r)*(2*z*r)); }
+function grid(){
+  const g=[], N=3000;
+  for(let i=0;i<=N;i++) g.push(F_LO*Math.pow(F_HI/F_LO, i/N));
+  const half=fn/(2*(1/(2*z)));             // fn*zeta
+  for(let i=0;i<=800;i++) g.push(clamp(fn-8*half + (16*half)*i/800, F_LO, F_HI));
+  g.sort((a,b)=>a-b);
+  return g;
+}
+function areaResp(){
+  const g=grid(); let s=0;
+  for(let i=1;i<g.length;i++){
+    const a=g[i-1], b=g[i];
+    if(b<=a) continue;
+    s+=0.5*(psd(a)*H2(a)+psd(b)*H2(b))*(b-a);
+  }
+  return s;
+}
+function miles(){ const W=psd(fn); if(W<=0) return 0; return Math.sqrt(Math.PI/2*fn*(1/(2*z))*W); }
+
+/* ---------- ejes ---------- */
+function logTicks(lo,hi){
+  const dec=Math.log10(hi/lo), mult = dec>3.2 ? [1] : (dec>1.8 ? [1,3] : [1,2,5]);
+  const out=[];
+  for(let e=Math.floor(Math.log10(lo)); e<=Math.ceil(Math.log10(hi)); e++)
+    for(const m of mult){ const v=m*Math.pow(10,e); if(v>=lo*0.999 && v<=hi*1.001) out.push(v); }
+  return out;
+}
+function niceNum(v){
+  const a=Math.abs(v);
+  if(a===0) return '0';
+  if(a>=1000) return (v/1000)+'k';
+  if(a>=1) return String(+v.toFixed(a<10?1:0)).replace(/\.0$/,'');
+  if(a>=0.001) return String(+v.toPrecision(2));
+  return v.toExponential(0).replace('e-','e−');
+}
+const toDB=(v,ref)=>10*Math.log10(Math.max(v,1e-30)/ref);
+
+/* ---------- dibujo ---------- */
+function draw(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const W=cv.clientWidth||820, H=620;
+  cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+
+  const mL=62, mR=14, pw=W-mL-mR;
+  const ph=162, gap=36, top0=24;
+  const X = f => logx ? mL + pw*Math.log(f/F_LO)/Math.log(F_HI/F_LO)
+                      : mL + pw*(f-F_LO)/(F_HI-F_LO);
+
+  const Qv=1/(2*z), Ain=areaIn(), Gin=Math.sqrt(Ain);
+  const Aout=areaResp(), Gout=Math.sqrt(Aout), Gm=miles();
+  const Wfn=psd(fn);
+  const maxW=Math.max(W0, breaks()[0][1], breaks()[3][1]);
+  const maxR=Math.max(1e-9, W0*Qv*Qv);
+
+  const panels=[
+    {title:'1 · Lo que impone la norma:  W(f)  en g²/Hz', col:ORANGE, fill:'rgba(197,90,17,.12)',
+     fx:psd, lo:Math.min(breaks()[0][1],breaks()[3][1])/3, hi:maxW*2.6, ref:1, unit:'g²/Hz', db:'dB ref 1 g²/Hz'},
+    {title:'2 · Lo que aporta el equipo:  |H(f)|²   (es M(r)²)', col:STEEL, fill:'rgba(68,114,196,.10)',
+     fx:H2, lo:1e-3, hi:maxR>0?Qv*Qv*3:10, ref:1, unit:'', db:'dB'},
+    {title:'3 · Lo que realmente sufre:  W_resp = |H|²·W', col:NAVY, fill:'rgba(31,56,100,.10)',
+     fx:f=>psd(f)*H2(f), lo:Math.max(1e-7,maxW*Qv*Qv/2e5), hi:maxW*Qv*Qv*2.2, ref:1, unit:'g²/Hz', db:'dB ref 1 g²/Hz'}
+  ];
+  panels[1].hi=Qv*Qv*3;
+
+  panels.forEach((P,pi)=>{
+    const t=top0+pi*(ph+gap);
+    const lo=P.lo, hi=P.hi;
+    const Yv = v => {
+      if(dbMode){ const d=toDB(v,P.ref), dl=toDB(lo,P.ref), dh=toDB(hi,P.ref);
+        return t+ph*(1-(clamp(d,dl,dh)-dl)/(dh-dl)); }
+      if(logy){ const l=Math.log(Math.max(v,lo*1e-3)), a=Math.log(lo), b=Math.log(hi);
+        return t+ph*(1-clamp((l-a)/(b-a),-0.05,1.05)); }
+      return t+ph*(1-clamp(v/hi,0,1.05));
+    };
+    // marco y rejilla
+    ctx.strokeStyle='#EDF1F8'; ctx.lineWidth=1;
+    const xt = logx ? logTicks(F_LO,F_HI) : [0,250,500,750,1000,1250,1500,1750,2000].filter(v=>v>=F_LO);
+    ctx.font='10.5px Segoe UI,sans-serif'; ctx.fillStyle=GREY;
+    xt.forEach(f=>{ const x=X(f); if(x<mL-1||x>mL+pw+1) return;
+      ctx.beginPath();ctx.moveTo(x,t);ctx.lineTo(x,t+ph);ctx.stroke();
+      if(pi===2){ ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillText(niceNum(f),x,t+ph+5); } });
+    // eje Y
+    ctx.textAlign='right'; ctx.textBaseline='middle';
+    let yt;
+    if(dbMode){ const dl=toDB(lo,P.ref), dh=toDB(hi,P.ref), step=Math.max(10,Math.ceil((dh-dl)/5/10)*10);
+      yt=[]; for(let d=Math.ceil(dl/step)*step; d<=dh; d+=step) yt.push({v:Math.pow(10,d/10)*P.ref, lab:(d>0?'+':'')+d}); }
+    else if(logy){ yt=logTicks(lo,hi).map(v=>({v, lab:niceNum(v)})); }
+    else { yt=[]; for(let k=0;k<=4;k++) yt.push({v:hi*k/4, lab:niceNum(hi*k/4)}); }
+    yt.forEach(o=>{ const y=Yv(o.v); if(y<t-1||y>t+ph+1) return;
+      ctx.strokeStyle='#EDF1F8'; ctx.beginPath();ctx.moveTo(mL,y);ctx.lineTo(mL+pw,y);ctx.stroke();
+      ctx.fillStyle=GREY; ctx.fillText(o.lab,mL-6,y); });
+    ctx.strokeStyle='#C9D4E6'; ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(mL,t);ctx.lineTo(mL,t+ph);ctx.lineTo(mL+pw,t+ph);ctx.stroke();
+    // título y unidad
+    ctx.fillStyle=NAVY; ctx.font='bold 12.5px Segoe UI,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='bottom';
+    ctx.fillText(P.title, mL, t-6);
+    ctx.fillStyle=GREY; ctx.font='10.5px Segoe UI,sans-serif'; ctx.textAlign='right';
+    ctx.fillText(dbMode?P.db:(P.unit||'adimensional'), mL+pw, t-6);
+    // línea vertical fn
+    ctx.strokeStyle=GREY; ctx.setLineDash([4,4]); ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(X(fn),t);ctx.lineTo(X(fn),t+ph);ctx.stroke(); ctx.setLineDash([]);
+    if(pi===0){ ctx.fillStyle=GREY; ctx.font='10.5px Segoe UI,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='top';
+      ctx.fillText('fₙ', X(fn)+3, t+3); }
+    // curva congelada
+    if(frozen){
+      ctx.strokeStyle='rgba(107,63,160,.5)'; ctx.setLineDash([5,4]); ctx.lineWidth=1.8; ctx.beginPath();
+      let st=false;
+      for(let px=0;px<=pw;px++){
+        const f = logx ? F_LO*Math.pow(F_HI/F_LO,px/pw) : F_LO+(F_HI-F_LO)*px/pw;
+        const v = frozen.fx[pi](f); if(v<=0 && logy) {st=false; continue;}
+        const x=mL+px, y=Yv(v); st?ctx.lineTo(x,y):ctx.moveTo(x,y); st=true;
+      }
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+    // relleno + curva
+    ctx.beginPath(); let started=false;
+    for(let px=0;px<=pw;px++){
+      const f = logx ? F_LO*Math.pow(F_HI/F_LO,px/pw) : F_LO+(F_HI-F_LO)*px/pw;
+      const v=P.fx(f); const x=mL+px, y=Yv(Math.max(v,lo*1e-3));
+      started?ctx.lineTo(x,y):ctx.moveTo(x,y); started=true;
+    }
+    ctx.lineTo(mL+pw,t+ph); ctx.lineTo(mL,t+ph); ctx.closePath();
+    ctx.fillStyle=P.fill; ctx.fill();
+    ctx.beginPath(); started=false;
+    for(let px=0;px<=pw;px++){
+      const f = logx ? F_LO*Math.pow(F_HI/F_LO,px/pw) : F_LO+(F_HI-F_LO)*px/pw;
+      const v=P.fx(f); if(v<=0){ started=false; continue; }
+      const x=mL+px, y=Yv(v); started?ctx.lineTo(x,y):ctx.moveTo(x,y); started=true;
+    }
+    ctx.strokeStyle=P.col; ctx.lineWidth=2.4; ctx.stroke();
+
+    // anotaciones por panel
+    ctx.font='11px Segoe UI,sans-serif'; ctx.textBaseline='bottom';
+    if(pi===0){
+      const B=breaks();
+      B.forEach(([f,w])=>{ const x=X(f), y=Yv(w);
+        ctx.beginPath();ctx.arc(x,y,3.6,0,7);ctx.fillStyle='#fff';ctx.fill();
+        ctx.strokeStyle=ORANGE;ctx.lineWidth=1.8;ctx.stroke(); });
+      ctx.fillStyle=ORANGE; ctx.textAlign='center'; ctx.textBaseline='top';
+      ctx.fillText('+6 dB/oct', clamp(X(Math.sqrt(F_LO*fA)),mL+34,mL+pw-34), Yv(W0*Math.pow(Math.sqrt(F_LO*fA)/fA,2))+17);
+      ctx.fillText('−6 dB/oct', clamp(X(Math.sqrt(fB*F_HI)),mL+34,mL+pw-34), Yv(W0*Math.pow(fB/Math.sqrt(fB*F_HI),2))+17);
+      ctx.textBaseline='bottom';
+      ctx.fillStyle=NAVY; ctx.fillText('meseta W₀ = '+W0.toFixed(3)+' g²/Hz', clamp(X(Math.sqrt(fA*fB)),mL+78,mL+pw-78), Yv(W0)-8);
+      // marcador W(fn)
+      if(Wfn>0){ const x=X(fn), y=Yv(Wfn); ctx.beginPath();ctx.arc(x,y,4.5,0,7);ctx.fillStyle=NAVY;ctx.fill();
+        ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke(); }
+    }
+    if(pi===1){
+      // nivel -3 dB y puntos de media potencia
+      const peak=Qv*Qv, lvl=peak/2;             // -3 dB en potencia
+      const y=Yv(lvl);
+      if(y>t && y<t+ph){
+        ctx.strokeStyle=GREEN; ctx.setLineDash([6,4]); ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(mL,y);ctx.lineTo(mL+pw,y);ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle=GREEN; ctx.textAlign='left'; ctx.textBaseline='bottom';
+        ctx.fillText('−3 dB  (media potencia)', mL+5, y-3);
+      }
+      const f1=fn*(1-z), f2=fn*(1+z);
+      [f1,f2].forEach(f=>{ if(f<F_LO||f>F_HI) return; const x=X(f);
+        ctx.beginPath();ctx.arc(x,Yv(lvl),3.6,0,7);ctx.fillStyle=GREEN;ctx.fill(); });
+      ctx.fillStyle=STEEL; ctx.textAlign='center'; ctx.textBaseline='bottom';
+      ctx.fillText('|H|²máx ≈ Q² = '+(Qv*Qv).toFixed(0), X(fn), Yv(peak)-6);
+    }
+    if(pi===2){
+      ctx.fillStyle=NAVY; ctx.textAlign='right'; ctx.textBaseline='top'; ctx.font='11.5px Segoe UI,sans-serif';
+      ctx.fillText('área bajo la curva = σ² = '+Aout.toFixed(1)+' g²', mL+pw-6, t+4);
+      ctx.fillText('Grms = √σ² = '+Gout.toFixed(2)+' g', mL+pw-6, t+19);
+    }
+  });
+  // etiqueta eje x
+  ctx.fillStyle=NAVY; ctx.font='bold 12px Segoe UI,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText('frecuencia f (Hz)' + (logx?'  ·  escala logarítmica':'  ·  escala lineal'), mL+pw/2, H-17);
+
+  // lecturas
+  $('oGin').textContent=Gin.toFixed(2)+' g';
+  $('oQ').textContent=Qv.toFixed(1);
+  $('oWfn').textContent=Wfn>0?Wfn.toFixed(3):'0 (fuera)';
+  $('oBW').textContent=(2*z*fn).toFixed(1)+' Hz';
+  $('oGn').textContent=Gout.toFixed(2)+' g';
+  $('oGm').textContent=Gm>0?Gm.toFixed(2)+' g':'—';
+  $('oG3').textContent=(3*Gout).toFixed(0)+' g';
+  $('oAmp').textContent=(Gin>0?(Gout/Gin):0).toFixed(2)+'×';
+}
+
+/* ---------- controles ---------- */
+const FN_MIN=25, FN_MAX=1500;
+const fnFromSlider=s=>FN_MIN*Math.pow(FN_MAX/FN_MIN, s/1000);
+const sliderFromFn=f=>1000*Math.log(f/FN_MIN)/Math.log(FN_MAX/FN_MIN);
+
+function setW0(v){ W0=clamp(+v,0.002,0.60); $('sw0').value=clamp(W0,0.01,0.30); $('vw0').textContent=W0.toFixed(3); draw(); }
+function setZ(v){ z=+v; $('sz').value=v; $('vz').textContent=(+v).toFixed(3);
+  document.querySelectorAll('.btn[data-z]').forEach(b=>b.classList.toggle('on',Math.abs(+b.dataset.z-z)<1e-9)); draw(); }
+function tog(el,state){ el.classList.toggle('on',state); }
+
+$('sw0').addEventListener('input',e=>setW0(e.target.value));
+$('sfa').addEventListener('input',e=>{ fA=Math.min(+e.target.value,fB-50); $('vfa').textContent=fA+' Hz'; draw(); });
+$('sfb').addEventListener('input',e=>{ fB=Math.max(+e.target.value,fA+50); $('vfb').textContent=fB+' Hz'; draw(); });
+$('sfn').addEventListener('input',e=>{ fn=Math.round(fnFromSlider(+e.target.value)); $('vfn').textContent=fn+' Hz'; draw(); });
+$('sz').addEventListener('input',e=>setZ(e.target.value));
+document.querySelectorAll('.btn[data-z]').forEach(b=>b.addEventListener('click',()=>setZ(b.dataset.z)));
+$('bm3').addEventListener('click',()=>setW0(W0/2));
+$('bp3').addEventListener('click',()=>setW0(W0*2));
+$('bp6').addEventListener('click',()=>setW0(W0*4));
+$('brst').addEventListener('click',()=>{ W0=0.16; fA=50; fB=800;
+  $('sfa').value=50; $('vfa').textContent='50 Hz'; $('sfb').value=800; $('vfb').textContent='800 Hz'; setW0(0.16); });
+$('blogx').addEventListener('click',function(){ logx=!logx; tog(this,logx);
+  this.textContent=logx?'Eje f logarítmico':'Eje f lineal'; draw(); });
+$('blogy').addEventListener('click',function(){ logy=!logy; tog(this,logy);
+  this.textContent=logy?'Eje vertical logarítmico':'Eje vertical lineal'; if(logy===false) dbMode=false, tog($('bdb'),false), $('bdb').textContent='Mostrar en dB'; draw(); });
+$('bdb').addEventListener('click',function(){ dbMode=!dbMode; tog(this,dbMode);
+  this.textContent=dbMode?'Ocultar dB':'Mostrar en dB'; if(dbMode){ logy=true; tog($('blogy'),true); $('blogy').textContent='Eje vertical logarítmico'; } draw(); });
+$('bfrz').addEventListener('click',function(){
+  if(frozen){ frozen=null; tog(this,false); this.textContent='Congelar comparación'; }
+  else {
+    const w0=W0,a=fA,b=fB,f0=fn,zz=z;
+    const P=f=>{ if(f<F_LO||f>F_HI) return 0;
+      const B=[[F_LO,w0*Math.pow(F_LO/a,2)],[a,w0],[b,w0],[F_HI,w0*Math.pow(b/F_HI,2)]];
+      for(let i=0;i<B.length-1;i++){ const [f1,w1]=B[i],[f2,w2]=B[i+1];
+        if(f>=f1&&f<=f2){ if(Math.abs(f2-f1)<1e-9) return w1;
+          const n=Math.log(w2/w1)/Math.log(f2/f1); return w1*Math.pow(f/f1,n); } }
+      return 0; };
+    const Hh=f=>{ const r=f/f0; return 1/((1-r*r)*(1-r*r)+(2*zz*r)*(2*zz*r)); };
+    frozen={fx:[P,Hh,f=>P(f)*Hh(f)]};
+    tog(this,true); this.textContent='Quitar comparación';
+  }
+  draw();
+});
+window.addEventListener('resize',draw);
+$('sfn').value=sliderFromFn(100); $('vfn').textContent='100 Hz';
+draw();
+</script>
+</body>
+</html>

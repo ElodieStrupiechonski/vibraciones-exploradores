@@ -109,7 +109,7 @@
 <body>
 <header>
   <h1>Respuesta forzada y resonancia — Explorador interactivo</h1>
-  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 5) — excita el sistema con F(t) = F₀·cos(ωt), recorre la curva del factor de amplificación M(r) y observa cómo la amplitud X y el desfase φ cambian al cruzar la resonancia</p>
+  <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 5) — el sistema se excita con F(t) = F₀·cos(ωt); al recorrer la curva del factor de amplificación M(r) se observa cómo la amplitud X y el desfase φ cambian al cruzar la resonancia</p>
 </header>
 <nav class="pilarnav" aria-label="Recorrido por los pilares">
   <span class="lab">Recorrido:</span>
@@ -122,6 +122,10 @@
   <a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a>
   <span class="arw">→</span>
   <span class="cur">Pilar 5 · Respuesta forzada</span>
+  <span class="arw">→</span>
+  <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
+  <span class="arw">→</span>
+  <a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a>
 </nav>
 
 <div class="wrap">
@@ -156,7 +160,7 @@
           <span style="font-family:'Cambria Math',serif;font-size:14px">ζ = <b id="echo-z" style="color:var(--orange)"></b></span>
           <span style="font-family:'Cambria Math',serif;font-size:14px">r = ω/ω<sub>n</sub> = <b id="echo-r" style="color:var(--orange)"></b></span>
         </div>
-        <div class="hint" style="margin-top:6px">Arrastra el marcador sobre la curva M(r) (o usa ▶ / las flechas) para barrer ω. Al fijar r se recalcula ω = r·ω<sub>n</sub>.</div>
+        <div class="hint" style="margin-top:6px">Al arrastrar el marcador sobre la curva M(r) (o con ▶ / las flechas) se barre ω. Al fijar r se recalcula ω = r·ω<sub>n</sub>.</div>
       </div>
       <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <button class="btn small" id="preset">Cargar Problema 3.1</button>
@@ -181,8 +185,8 @@
 
     <div class="card">
       <h2>📈 Curva de respuesta en frecuencia (FRF)</h2>
-      <canvas id="frf" width="720" height="300" tabindex="0" role="application" aria-label="Curva del factor de amplificación M contra r. Usa las flechas para mover la frecuencia y Espacio para el barrido."></canvas>
-      <div class="kbd">⌨ Con el foco en la gráfica: <kbd>←</kbd> <kbd>→</kbd> mueven ω (r), <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> inicia/detiene el barrido. También puedes <b>arrastrar</b> el marcador.</div>
+      <canvas id="frf" width="720" height="300" tabindex="0" role="application" aria-label="Curva del factor de amplificación M contra r. Las flechas mueven la frecuencia; Espacio inicia el barrido."></canvas>
+      <div class="kbd">⌨ Con el foco en la gráfica: <kbd>←</kbd> <kbd>→</kbd> mueven ω (r), <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> inicia/detiene el barrido. El marcador también se puede <b>arrastrar</b>.</div>
       <div class="sr" aria-live="polite" id="live"></div>
       <div class="legend">
         <span><span class="dot" style="background:#2E5496"></span> M(r) factor de amplificación</span>
@@ -198,7 +202,7 @@
   <div>
     <div class="card">
       <h2>Sistema forzado &nbsp;·&nbsp; fuerza vs respuesta (desfase φ)</h2>
-      <canvas id="cv" width="720" height="420" tabindex="0" role="application" aria-label="Masa sobre resorte forzada. Usa las flechas para cambiar la frecuencia de excitación y Espacio para el barrido."></canvas>
+      <canvas id="cv" width="720" height="420" tabindex="0" role="application" aria-label="Masa sobre resorte forzada. Las flechas cambian la frecuencia de excitación; Espacio inicia el barrido."></canvas>
       <div class="kbd">⌨ Con el foco aquí: <kbd>←</kbd> <kbd>→</kbd> cambian ω, <kbd>Espacio</kbd> inicia/detiene el barrido.</div>
       <div class="legend">
         <span><span class="dot" style="background:#C55A11"></span> F(t) = F₀·cos(ωt) fuerza motriz</span>
@@ -240,7 +244,7 @@
   <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
     🧭 <b>Tu recorrido.</b> En el <a href="edo3_interactivo.html">Pilar 3</a> armaste <span style="font-family:Cambria Math,serif">m·x″ + c·x′ + k·x = 0</span> con ΣF = ma; el <a href="edo_interactivo.html">Pilar 2</a> la resolvió y el <a href="complejos_interactivo.html">Pilar 1</a> interpretó sus raíces.
     Aquí <b>añadimos la fuerza</b> del lado derecho: <span style="font-family:Cambria Math,serif">= F₀·cos(ωt)</span>, y aparece la <b>solución particular estacionaria</b> con su amplificación M y su desfase φ.
-    <span style="color:#5B5B5B">(Mantén los archivos en la misma carpeta para que los enlaces funcionen.)</span>
+    <span style="color:#5B5B5B">(Conviene mantener los archivos en la misma carpeta para que los enlaces funcionen.)</span>
   </div>
 </div>
 <footer>

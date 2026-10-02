@@ -111,7 +111,7 @@
   <h1>Fricción de Coulomb — Explorador interactivo</h1>
   <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 4) — masa sobre superficie con fricción seca: la amplitud decae en línea recta (no exponencial), la frecuencia no cambia y el bloque se detiene dentro de una banda de reposo ±F<sub>f</sub>/k</p>
 </header>
-<nav class="pilarnav" aria-label="Recorrido por los cinco pilares">
+<nav class="pilarnav" aria-label="Recorrido por los pilares">
   <span class="lab">Recorrido:</span>
   <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
   <span class="arw">→</span>
@@ -122,6 +122,10 @@
   <span class="cur">Pilar 4 · Fricción de Coulomb</span>
   <span class="arw">→</span>
   <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+  <span class="arw">→</span>
+  <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
+  <span class="arw">→</span>
+  <a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a>
 </nav>
 
 <div class="wrap">
@@ -147,7 +151,7 @@
         <div class="fld"><label>μ &nbsp;coef. fricción</label><input id="in-mu" type="number" step="any" min="0" value="0.20"></div>
         <div class="fld"><label>x₀ &nbsp;despl. inicial (mm)</label><input id="in-x0" type="number" step="any" value="60"></div>
       </div>
-      <div class="hint">La masa se suelta desde x₀ con velocidad cero (g = 9.81 m/s²). Usa ▶ para soltarla; con el foco en el diagrama, ←/→ ajustan x₀.</div>
+      <div class="hint">La masa se suelta desde x₀ con velocidad cero (g = 9.81 m/s²). Con ▶ se suelta; con el foco en el diagrama, ←/→ ajustan x₀.</div>
       <div class="chips" id="chips"></div>
     </div>
 
@@ -173,7 +177,7 @@
   <div>
     <div class="card">
       <h2>Masa – resorte con fricción seca &nbsp;·&nbsp; F<sub>f</sub> = μ·N en vivo</h2>
-      <canvas id="cv" width="720" height="440" tabindex="0" role="application" aria-label="Bloque sobre superficie con fricción, unido a un resorte y una pared. Usa las flechas para cambiar el desplazamiento inicial."></canvas>
+      <canvas id="cv" width="720" height="440" tabindex="0" role="application" aria-label="Bloque sobre superficie con fricción, unido a un resorte y una pared. Las flechas cambian el desplazamiento inicial."></canvas>
       <div class="kbd">⌨ Con el foco en el diagrama: <kbd>←</kbd> <kbd>→</kbd> cambian x₀, <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> suelta/pausa.</div>
       <div class="sr" aria-live="polite" id="live"></div>
       <div class="legend">
@@ -210,7 +214,7 @@
   <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
     🧭 <b>Tu recorrido.</b> Aquí viste un tipo de amortiguamiento <b>no viscoso</b>: la fricción seca, con caída <b>lineal</b> y frecuencia intacta.
     ➡ <b>Siguiente:</b> el <a href="forzada_interactivo.html">Pilar 5</a> añade una <b>fuerza externa</b> y estudia la respuesta forzada y la resonancia; regresa al <a href="edo3_interactivo.html">Pilar 3</a> para recordar cómo se arma ΣF = ma.
-    <span style="color:#5B5B5B">(Mantén los archivos en la misma carpeta para que los enlaces funcionen.)</span>
+    <span style="color:#5B5B5B">(Conviene mantener los archivos en la misma carpeta para que los enlaces funcionen.)</span>
   </div>
 </div>
 <footer>

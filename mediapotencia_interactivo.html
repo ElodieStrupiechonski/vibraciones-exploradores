@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Media potencia y factor Q · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1120px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:900px){ .wrap{grid-template-columns:1.35fr .9fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .row label{font-weight:700;color:var(--navy);font-size:13.5px;min-width:150px}
+  input[type=range]{flex:1;min-width:160px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:76px;text-align:right;font-size:15px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12.5px;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:9px 11px}
+  .tile .k{font-size:11.5px;color:var(--grey);font-weight:600}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:20px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;font-family:'Cambria Math',Georgia,serif;font-size:15px;color:#233}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:12px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  footer{max-width:1120px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  .eqbox b{color:var(--navy)}
+  .pilarnav{max-width:1120px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  @media(max-width:520px){ .pilarnav{font-size:11.5px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Media potencia y factor Q — Explorador</h1>
+    <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (Pilar 6 · U3) — al variar el amortiguamiento se observa cómo se mueve la curva de respuesta, el ancho de banda de media potencia y el factor Q</p>
+  </div>
+</header>
+
+<nav class="pilarnav" aria-label="Recorrido por los pilares">
+  <span class="lab">Recorrido:</span>
+  <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
+  <span class="arw">→</span>
+  <a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a>
+  <span class="arw">→</span>
+  <a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a>
+  <span class="arw">→</span>
+  <a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a>
+  <span class="arw">→</span>
+  <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+  <span class="arw">→</span>
+  <span class="cur">Pilar 6 · Media potencia y Q</span>
+  <span class="arw">→</span>
+  <a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a>
+</nav>
+
+<div class="wrap">
+  <div class="intro full">
+    <b>¿Qué muestra?</b> La curva es el factor de amplificación <span style="font-family:'Cambria Math',serif">M(f)</span> de un sistema forzado. Al bajar el amortiguamiento <span style="font-family:'Cambria Math',serif">ζ</span>, el pico <b>sube y se hace más angosto</b>: eso es un <b>Q</b> más alto. Los <b>puntos de media potencia</b> <span style="font-family:'Cambria Math',serif">f₁, f₂</span> son donde la amplitud cae a <span style="font-family:'Cambria Math',serif">M<sub>máx</sub>/√2</span> (potencia mitad); su separación <span style="font-family:'Cambria Math',serif">Δf</span> mide el amortiguamiento sin conocer <span style="font-family:'Cambria Math',serif">c</span>.
+  </div>
+
+  <div class="card">
+    <canvas id="cv" width="760" height="420" aria-label="Curva de respuesta con puntos de media potencia"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="border-top-color:var(--steel)"></i> M(f)</span>
+      <span><i class="sw" style="border-top-color:var(--orange);border-top-style:dashed"></i> nivel M<sub>máx</sub>/√2</span>
+      <span><i class="sw" style="border-top-color:var(--green)"></i> banda Δf (f₁–f₂)</span>
+      <span><i class="sw" style="border-top-color:var(--grey);border-top-style:dashed"></i> f<sub>n</sub></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Controles</h2>
+    <div class="ctl">
+      <div class="row"><label>Amortiguamiento ζ</label><input id="sz" type="range" min="0.02" max="0.30" step="0.005" value="0.05"><span class="val" id="vz">0.050</span></div>
+      <div class="row"><label>Frecuencia natural f<sub>n</sub></label><input id="sf" type="range" min="5" max="50" step="1" value="20"><span class="val" id="vf">20 Hz</span></div>
+      <div class="btns">
+        <button class="btn" data-z="0.02">ζ = 0.02</button>
+        <button class="btn on" data-z="0.05">ζ = 0.05</button>
+        <button class="btn" data-z="0.10">ζ = 0.10</button>
+        <button class="btn" data-z="0.20">ζ = 0.20</button>
+        <button class="btn" id="ghost">Comparar (congelar)</button>
+      </div>
+    </div>
+    <div class="tiles" style="margin-top:14px">
+      <div class="tile hl"><div class="k">Factor Q = 1/(2ζ)</div><div class="v" id="oQ">10.0</div></div>
+      <div class="tile hl"><div class="k">M<sub>máx</sub> (pico)</div><div class="v" id="oM">10.0</div></div>
+      <div class="tile"><div class="k">f₁ · f₂ (media potencia)</div><div class="v" id="oF">19.0 · 21.0</div></div>
+      <div class="tile"><div class="k">Ancho de banda Δf</div><div class="v" id="oB">2.00 Hz</div></div>
+      <div class="tile"><div class="k">ζ medido = Δf/(2f<sub>n</sub>)</div><div class="v" id="oZ">0.050</div></div>
+      <div class="tile"><div class="k">f pico</div><div class="v" id="oFp">20.0 Hz</div></div>
+    </div>
+  </div>
+
+  <div class="card full">
+    <h2>Las fórmulas en pantalla</h2>
+    <div class="eqbox">
+      <span class="lab">Factor de amplificación</span>
+      M(r) = 1 / √[(1−r²)² + (2ζr)²],   r = f / f<sub>n</sub>
+    </div>
+    <div class="eqbox" style="margin-top:10px">
+      <span class="lab">Resonancia y factor Q</span>
+      M<sub>máx</sub> ≈ 1/(2ζ) = <b>Q</b>   ·   puntos de media potencia: M = M<sub>máx</sub>/√2
+    </div>
+    <div class="eqbox" style="margin-top:10px">
+      <span class="lab">Medir el amortiguamiento desde la curva</span>
+      Δf = f₂ − f₁ = 2ζ f<sub>n</sub>   ⇒   <b>ζ = Δf/(2f<sub>n</sub>)</b>   ·   Q = f<sub>n</sub>/Δf = 1/(2ζ)
+    </div>
+    <div class="intro" style="margin-top:12px;border-left-color:var(--steel)"><b style="color:var(--navy)">¿De dónde viene la asimetría de la curva?</b> La respuesta no es simétrica respecto de <span style="font-family:'Cambria Math',serif">r = 1</span> porque <span style="font-family:'Cambria Math',serif">M</span> depende de la frecuencia a través de <span style="font-family:'Cambria Math',serif">(1−r²)² + (2ζr)²</span>, que no es simétrico. A baja frecuencia domina la <b>rigidez</b> (<span style="font-family:'Cambria Math',serif">M → 1</span>); a alta frecuencia domina la <b>masa</b> (<span style="font-family:'Cambria Math',serif">M → 0</span> como <span style="font-family:'Cambria Math',serif">1/r²</span>). Además el término de amortiguamiento <span style="font-family:'Cambria Math',serif">2ζr</span> crece con la frecuencia: amortigua más el lado derecho y corre el pico un poco por debajo de la natural, a <span style="font-family:'Cambria Math',serif">r = √(1−2ζ²)</span>. Por eso <span style="font-family:'Cambria Math',serif">f₁</span> y <span style="font-family:'Cambria Math',serif">f₂</span> no quedan exactamente equidistantes del pico.</div>
+      <div class="takeaway" style="margin-top:10px">
+      <b>Cómo explorar:</b> variar ζ con el deslizador y observar cómo el pico sube y la banda Δf se angosta (Q aumenta). El botón «Comparar (congelar)» deja fija una curva de referencia para contrastar dos amortiguamientos. El valor <b>«ζ medido»</b> se obtiene leyendo Δf de la gráfica y siempre coincide con el ζ real: así es como en pruebas modales se determina el amortiguamiento de una estructura sin medir <span style="font-family:'Cambria Math',serif">c</span>.
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Explorador didáctico de media potencia y factor Q · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.XXXXXXX (se completa al publicar en Zenodo).</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+const NAVY='#1F3864',BLUE='#2E5496',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',ICE='#DCE6F1',RED='#B23A3A';
+let z=0.05, fn=20, ghost=null;
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+
+function M(r,zz){ return 1/Math.sqrt((1-r*r)**2 + (2*zz*r)**2); }
+// exact peak (rp) and half-power crossings via bisection
+function analyze(zz){
+  const rp = Math.sqrt(Math.max(1e-9, 1-2*zz*zz));   // valid for zz<1/√2
+  const Mmax = M(rp,zz);
+  const L = Mmax/Math.SQRT2;
+  const bis=(a,bb)=>{ let fa=M(a,zz)-L; for(let i=0;i<80;i++){ const m=(a+bb)/2, fm=M(m,zz)-L; if(fa*fm<=0){bb=m;} else {a=m; fa=fm;} } return (a+bb)/2; };
+  const r1 = bis(1e-3, rp);      // left crossing (M rises to L)
+  const r2 = bis(rp, 6);         // right crossing (M falls to L)
+  return {rp,Mmax,L,r1,r2};
+}
+function fmt(x,d){ let s=(+x).toFixed(d); return s; }
+
+function draw(){
+  const A=analyze(z);
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const W=cv.clientWidth||760, H=420;
+  cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  // plot area
+  const mL=52, mR=16, mT=16, mB=40;
+  const pw=W-mL-mR, ph=H-mT-mB;
+  const fMax=2.2*fn;
+  const yMax=Math.max(A.Mmax*1.15, 2);
+  const X=f=> mL + (f/fMax)*pw;
+  const Y=m=> mT + (1 - m/yMax)*ph;
+  // grid
+  ctx.strokeStyle='#EDF1F8'; ctx.lineWidth=1; ctx.fillStyle=GREY; ctx.font='11px Segoe UI,sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  for(let k=0;k<=Math.ceil(fMax/10);k++){ const f=k*10; if(f>fMax)break; const x=X(f); ctx.beginPath();ctx.moveTo(x,mT);ctx.lineTo(x,mT+ph);ctx.stroke(); ctx.fillText(f+'',x,mT+ph+6); }
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  const yst=yMax>12?4:(yMax>6?2:1);
+  for(let m=0;m<=yMax;m+=yst){ const y=Y(m); ctx.strokeStyle='#EDF1F8'; ctx.beginPath();ctx.moveTo(mL,y);ctx.lineTo(mL+pw,y);ctx.stroke(); ctx.fillStyle=GREY; ctx.fillText(m+'',mL-7,y); }
+  // axis titles
+  ctx.fillStyle=NAVY; ctx.font='bold 12px Segoe UI,sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillText('frecuencia f (Hz)', mL+pw/2, H-16);
+  ctx.save(); ctx.translate(14,mT+ph/2); ctx.rotate(-Math.PI/2); ctx.textBaseline='alphabetic'; ctx.fillText('amplificación M', 0,0); ctx.restore();
+  // band Δf shaded
+  const f1=A.r1*fn, f2=A.r2*fn;
+  ctx.fillStyle='rgba(46,125,70,.10)';
+  ctx.fillRect(X(f1),mT, X(f2)-X(f1), ph);
+  // half-power level line
+  ctx.strokeStyle=ORANGE; ctx.setLineDash([6,4]); ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(mL,Y(A.L));ctx.lineTo(mL+pw,Y(A.L));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=ORANGE; ctx.font='11px Segoe UI,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='bottom';
+  ctx.fillText('M_máx/√2', mL+4, Y(A.L)-2);
+  // fn dashed vertical
+  ctx.strokeStyle=GREY; ctx.setLineDash([4,4]); ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(X(fn),mT);ctx.lineTo(X(fn),mT+ph);ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=GREY; ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillText('fₙ',X(fn),mT+2);
+  // ghost curve (frozen comparison)
+  if(ghost){ ctx.strokeStyle='rgba(107,63,160,.45)'; ctx.lineWidth=2; ctx.beginPath();
+    for(let px=0;px<=pw;px++){ const f=(px/pw)*fMax, m=Math.min(M(f/fn,ghost),yMax); const x=mL+px,y=Y(m); px?ctx.lineTo(x,y):ctx.moveTo(x,y);} ctx.stroke();
+    ctx.fillStyle='#6B3FA0'; ctx.font='11px Segoe UI,sans-serif'; ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillText('ζ = '+ghost.toFixed(3)+' (congelada)', mL+pw-150, mT+2);
+  }
+  // main curve
+  ctx.strokeStyle=STEEL; ctx.lineWidth=2.6; ctx.beginPath();
+  for(let px=0;px<=pw;px++){ const f=(px/pw)*fMax, m=Math.min(M(f/fn,z),yMax); const x=mL+px,y=Y(m); px?ctx.lineTo(x,y):ctx.moveTo(x,y);} ctx.stroke();
+  // f1,f2 markers
+  ctx.strokeStyle=GREEN; ctx.lineWidth=1.6; ctx.setLineDash([3,3]);
+  [f1,f2].forEach(f=>{ ctx.beginPath();ctx.moveTo(X(f),Y(A.L));ctx.lineTo(X(f),mT+ph);ctx.stroke(); });
+  ctx.setLineDash([]);
+  ctx.fillStyle=GREEN; ctx.font='bold 11px Segoe UI,sans-serif'; ctx.textBaseline='top';
+  ctx.textAlign='center'; ctx.fillText('f₁',X(f1),mT+ph-16); ctx.fillText('f₂',X(f2),mT+ph-16);
+  [f1,f2].forEach(f=>{ ctx.beginPath();ctx.arc(X(f),Y(A.L),3.5,0,7);ctx.fillStyle=GREEN;ctx.fill(); });
+  // peak marker
+  const fp=A.rp*fn; ctx.beginPath();ctx.arc(X(fp),Y(A.Mmax),4.5,0,7);ctx.fillStyle=RED;ctx.fill();
+  ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+  // readouts
+  const Q=1/(2*z), df=f2-f1, zmed=df/(2*fn);
+  $('oQ').textContent=fmt(Q,1);
+  $('oM').textContent=fmt(A.Mmax,1);
+  $('oF').textContent=fmt(f1,1)+' · '+fmt(f2,1);
+  $('oB').textContent=fmt(df,2)+' Hz';
+  $('oZ').textContent=fmt(zmed,3);
+  $('oFp').textContent=fmt(fp,1)+' Hz';
+}
+function setZ(v){ z=+v; $('sz').value=v; $('vz').textContent=(+v).toFixed(3);
+  document.querySelectorAll('.btn[data-z]').forEach(b=>b.classList.toggle('on', Math.abs(+b.dataset.z - z)<1e-6)); draw(); }
+$('sz').addEventListener('input',e=>{ setZ(e.target.value); });
+$('sf').addEventListener('input',e=>{ fn=+e.target.value; $('vf').textContent=fn+' Hz'; draw(); });
+document.querySelectorAll('.btn[data-z]').forEach(b=>b.addEventListener('click',()=>setZ(b.dataset.z)));
+$('ghost').addEventListener('click',function(){ if(ghost){ghost=null;this.classList.remove('on');this.textContent='Comparar (congelar)';}
+  else{ghost=z;this.classList.add('on');this.textContent='Quitar comparación';} draw(); });
+window.addEventListener('resize',draw);
+draw();
+</script>
+</body>
+</html>
