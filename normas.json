@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "actualizado": "2026-10-07",
+  "nota": "Fuente única de las referencias normativas de los exploradores. Para actualizar un enlace, un precio o el estado de una revisión, basta con editar este archivo en GitHub: las páginas en línea lo leen al cargar y se actualizan solas. Las copias descargadas conservan los datos del día en que se bajaron.",
+  "normas": [
+    {
+      "clave": "RTCA DO-160G, Cambio 1 (2014)",
+      "parte": "Sección 8 — Vibration",
+      "nombre": "Environmental Conditions and Test Procedures for Airborne Equipment",
+      "ambito": "Aviónica y equipo embarcado de aviación civil",
+      "acceso": "pago",
+      "precio": "desde unos 1 019 USD (revendedor Accuris, consultado 10/2026)",
+      "estado": "Revisión H en preparación por el comité SC-135 de RTCA junto con el grupo WG-14 de EUROCAE; la gemela europea ED-14H es técnicamente idéntica.",
+      "enlaces": [
+        {"t": "Página oficial de RTCA", "u": "https://www.rtca.org/do-160/"},
+        {"t": "Comprar (Accuris)", "u": "https://store.accuristech.com/publishers/rtca"}
+      ]
+    },
+    {
+      "clave": "MIL-STD-810H, Cambio 1 (2022)",
+      "parte": "Método 514.8 — Vibration",
+      "nombre": "Environmental Engineering Considerations and Laboratory Tests",
+      "ambito": "Material militar terrestre, naval y aéreo",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. El documento completo pasa de las mil páginas y pesa unos 62 MB; el método 514.8 está en la Parte Dos.",
+      "enlaces": [
+        {"t": "Buscador oficial del Departamento de Defensa (ASSIST)", "u": "https://quicksearch.dla.mil/"},
+        {"t": "Descarga directa (EverySpec)", "u": "https://everyspec.com/MIL-STD/MIL-STD-0800-0899/MIL-STD-810H_55998/"}
+      ]
+    },
+    {
+      "clave": "NASA GSFC-STD-7000B (2021)",
+      "parte": "Sección 2.4 — Structural and mechanical verification",
+      "nombre": "General Environmental Verification Standard (GEVS)",
+      "ambito": "Instrumentos y componentes de vuelo espacial",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. Marcada «Internet Public», es decir liberada para su consulta pública. De aquí sale el perfil generalizado de vibración aleatoria que usa el explorador.",
+      "enlaces": [
+        {"t": "Ficha y descarga en NASA Technical Standards", "u": "https://standards.nasa.gov/standard/gsfc/gsfc-std-7000"}
+      ]
+    },
+    {
+      "clave": "ECSS-E-ST-10-03C Rev.1 (31 may 2022)",
+      "parte": "Campaña de ensayos completa",
+      "nombre": "Space engineering — Testing",
+      "ambito": "Segmento espacial europeo (ESA y su cadena de proveedores)",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. La descarga es libre; el sitio pide registrarse y aceptar el acuerdo de licencia de ECSS.",
+      "enlaces": [
+        {"t": "PDF directo", "u": "https://ecss.nl/wp-content/uploads/2022/05/ECSS-E-ST-10-03-Rev.1(31May2022).pdf"},
+        {"t": "Catálogo de normas activas", "u": "https://ecss.nl/standards/active-standards/"}
+      ]
+    },
+    {
+      "clave": "ISO 20816-1:2016",
+      "parte": "Parte 1 — Directrices generales",
+      "nombre": "Mechanical vibration — Measurement and evaluation of machine vibration",
+      "ambito": "Máquinas rotativas ya en servicio (sustituye a ISO 10816-1)",
+      "acceso": "pago",
+      "precio": "CHF 159, 34 páginas (iso.org, consultado 10/2026)",
+      "estado": "Vigente pero en revisión: se espera que la sustituya ISO/FDIS 20816-1.",
+      "enlaces": [
+        {"t": "Ficha en ISO (con vista previa gratuita)", "u": "https://www.iso.org/standard/63180.html"}
+      ]
+    },
+    {
+      "clave": "ISO 2631-1:1997 / Enm. 1:2010",
+      "parte": "Parte 1 — Requisitos generales",
+      "nombre": "Mechanical vibration and shock — Evaluation of human exposure to whole-body vibration",
+      "ambito": "Personas expuestas: tripulación y pasajeros",
+      "acceso": "pago",
+      "precio": "CHF 159, 31 páginas (iso.org, consultado 10/2026)",
+      "estado": "En proceso de sustitución: la tercera edición quedó registrada como FDIS el 24 de septiembre de 2026.",
+      "enlaces": [
+        {"t": "Ficha en ISO (con vista previa gratuita)", "u": "https://www.iso.org/standard/7612.html"},
+        {"t": "Nueva edición en aprobación", "u": "https://www.iso.org/standard/85768.html"}
+      ]
+    },
+    {
+      "clave": "14 CFR parte 25 (FAA)",
+      "parte": "§ 25.251 Vibration and buffeting · § 25.629 Aeroelastic stability",
+      "nombre": "Airworthiness Standards: Transport Category Airplanes",
+      "ambito": "Requisito legal de aeronavegabilidad en Estados Unidos",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Texto legal vigente, actualizado a diario en el Code of Federal Regulations electrónico.",
+      "enlaces": [
+        {"t": "Parte 25 completa (eCFR)", "u": "https://www.ecfr.gov/current/title-14/part-25"},
+        {"t": "§ 25.251 Vibration and buffeting", "u": "https://www.ecfr.gov/current/title-14/section-25.251"}
+      ]
+    },
+    {
+      "clave": "EASA CS-25",
+      "parte": "Certification Specifications",
+      "nombre": "Certification Specifications and Acceptable Means of Compliance for Large Aeroplanes",
+      "ambito": "Requisito de aeronavegabilidad en la Unión Europea",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. EASA publica cada enmienda como PDF descargable.",
+      "enlaces": [
+        {"t": "Biblioteca de Certification Specifications", "u": "https://www.easa.europa.eu/en/document-library/certification-specifications"}
+      ]
+    }
+  ]
+}

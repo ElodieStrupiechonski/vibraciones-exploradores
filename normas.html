@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Dónde consultar las normas · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1000px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .pilarnav{max-width:1000px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  .wrap{max-width:1000px;margin:0 auto;padding:16px 18px 40px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:15px 17px;margin-bottom:16px}
+  .card h2{margin:0 0 9px;font-size:16px;color:var(--navy)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px;margin-bottom:16px}
+  .intro b{color:var(--navy)}
+  .warn{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px;margin-top:12px}
+  .warn b{color:var(--navy)}
+  p{font-size:13.5px;margin:0 0 9px} p:last-child{margin-bottom:0}
+  .mth{font-family:'Cambria Math',Georgia,serif}
+  code{background:var(--ice2);border:1px solid var(--ice);border-radius:4px;padding:1px 5px;font-size:12.5px}
+  footer{max-width:1000px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+
+  .pill{font-size:10.5px;font-weight:700;border-radius:20px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+  .pill.pg{background:#E7F2EA;color:var(--green);border:1px solid #BFD8C6}
+  .pill.pp{background:#FBF3E4;color:var(--orange);border:1px solid var(--amberb)}
+  .ncard{border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:10px;padding:11px 13px;margin-bottom:10px;background:#fff}
+  .ncard.g{border-left-color:var(--green)} .ncard.p{border-left-color:var(--orange)}
+  .ncard .nh{font-weight:700;color:var(--navy);font-size:14px}
+  .ncard .nn{font-size:12.5px;color:var(--grey);font-style:italic;margin:2px 0 6px}
+  .ncard .nm{font-size:13px;margin-bottom:3px}
+  .nl{margin-top:7px;display:flex;gap:8px;flex-wrap:wrap}
+  .nl a{font-size:12.5px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--line);
+        background:var(--ice2);border-radius:8px;padding:5px 10px}
+  .nl a:hover{background:var(--ice)}
+  .nrow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+        border-bottom:1px solid var(--ice);padding:7px 0}
+  .nrow:last-child{border-bottom:0}
+  .nrow .nk{font-size:13px;font-weight:600;color:var(--navy)}
+  .sello{font-size:12px;color:var(--grey);background:var(--ice2);border:1px solid var(--ice);
+         border-radius:8px;padding:7px 10px;margin-bottom:12px}
+  .sello.old{background:var(--amber);border-color:var(--amberb)}
+  .stale{color:var(--orange);font-weight:700}
+
+  @media(max-width:520px){ .wrap{padding:12px} .card{padding:12px 13px} header h1{font-size:18px} .pilarnav{font-size:11.5px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Dónde consultar las normas</h1>
+    <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (U4) — guía rápida de acceso a las normas citadas en el curso</p>
+  </div>
+</header>
+
+<nav class="pilarnav" aria-label="Recorrido por los pilares">
+  <span class="lab">Recorrido:</span>
+  <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
+  <span class="arw">→</span>
+  <a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a>
+  <span class="arw">→</span>
+  <a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a>
+  <span class="arw">→</span>
+  <a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a>
+  <span class="arw">→</span>
+  <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+  <span class="arw">→</span>
+  <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
+  <span class="arw">→</span>
+  <a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a>
+  <span class="arw">·</span>
+  <span class="cur" style="border-style:dashed">Normas: dónde consultarlas</span>
+</nav>
+
+<div class="wrap">
+
+  <div class="intro">
+    <b>Para qué sirve esta página.</b> Reúne las normas que se citan en la Unidad 4 e indica, para cada una, si el documento se puede <b>descargar gratis</b> o si hay que <b>comprarlo</b>, con el enlace que corresponde. No sustituye a las normas: son documentos con licencia y lo único que se comparte aquí son las referencias y las direcciones oficiales.
+  </div>
+
+  <div id="sello" class="sello">Cargando la lista de normas…</div>
+
+  <div class="card">
+    <h2>Cómo se cita una norma</h2>
+    <p>Una referencia normativa completa tiene siempre tres piezas: la <b>clave</b> del documento, su <b>revisión</b> y la <b>sección o método</b> concreto que se aplicó. Decir «cumple MIL-STD-810» no permite verificar nada; lo correcto es «ensayado conforme a MIL-STD-810H, Cambio 1, Método 514.8, Procedimiento I». La razón es práctica: entre dos revisiones los niveles cambian, y un informe de cualificación sin revisión es inauditable.</p>
+    <p>Por eso, en la lista de abajo, cada entrada incluye la revisión vigente a la fecha de revisión de esta página y, cuando corresponde, el aviso de que ya se está preparando una revisión posterior.</p>
+  </div>
+
+  <div class="card">
+    <h2>Las normas, una por una</h2>
+    <div id="lista"></div>
+  </div>
+
+  <div class="card">
+    <h2>Si hay que comprar una norma</h2>
+    <p>Las normas de pago se consiguen por tres vías. La primera es el <b>editor</b>: RTCA e ISO venden directamente desde sus propios sitios, y es la opción más fiable porque garantiza la revisión correcta. La segunda son los <b>revendedores autorizados</b> —Accuris, antes IHS Markit, o Techstreet—, que a veces ofrecen formatos o licencias distintas; conviene comparar, pero verificando siempre que la revisión sea la que se necesita. La tercera, y la más razonable en un entorno universitario, es la <b>licencia institucional</b>: muchas universidades mantienen suscripciones a catálogos completos de normas, de modo que antes de pagar una copia individual vale la pena preguntar en la biblioteca si ya existe acceso.</p>
+    <p>Un detalle que ahorra dinero: para entender un método de ensayo casi nunca hace falta el documento completo. Las fichas de ISO ofrecen <b>vista previa gratuita</b> con el alcance y el índice, suficiente para citar correctamente, y los conceptos que se evalúan en el curso —la densidad espectral, el valor eficaz, la ecuación de Miles, los márgenes en decibeles— son públicos y están cubiertos por las normas gratuitas.</p>
+    <div class="warn"><b>Sobre la licencia.</b> Los documentos de pago se adquieren con una licencia de uso personal o institucional y <b>no se pueden redistribuir</b>. Compartir el PDF de una norma comprada, aunque sea con fines docentes, infringe esa licencia. Lo que sí se puede hacer, y es lo que hacemos en el curso, es citar la norma, explicar su contenido y trabajar con los perfiles publicados en las normas de acceso libre.</div>
+  </div>
+
+  <div class="card">
+    <h2>Cómo se mantiene actualizada esta lista</h2>
+    <p>Las revisiones de las normas cambian y los enlaces se mueven, así que la lista no está escrita dentro de las páginas: vive en un archivo aparte llamado <code>normas.json</code>, en la misma carpeta del sitio. Las páginas lo leen al abrirse, de modo que <b>editar ese único archivo actualiza a la vez esta guía y el recuadro del explorador del Pilar 7</b>, sin tocar ningún otro archivo.</p>
+    <p>En la práctica, actualizar un enlace consiste en abrir <code>normas.json</code> en GitHub, pulsar el lápiz, cambiar la línea correspondiente, cambiar también la fecha del campo <code>actualizado</code> y confirmar. Quien abra el sitio en línea verá el cambio de inmediato.</p>
+    <p>Cuando una página se usa <b>sin conexión</b> —descargada en una memoria o abierta desde el disco— no hay forma de consultar el archivo, así que se muestra la copia incorporada el día en que se descargó, y el sello de arriba lo indica. Además, si han pasado <b>más de doce meses</b> desde la última revisión, el sello cambia de color y avisa de que conviene comprobar si alguna norma cambió de edición. Esa comprobación la hace la propia página con la fecha del equipo, así que funciona también sin conexión.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Guía de acceso a las normas citadas · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.XXXXXXX (se completa al publicar en Zenodo).</div>
+  </div>
+</footer>
+
+<script type="application/json" id="normas-fallback">{
+  "version": 1,
+  "actualizado": "2026-10-07",
+  "nota": "Fuente única de las referencias normativas de los exploradores. Para actualizar un enlace, un precio o el estado de una revisión, basta con editar este archivo en GitHub: las páginas en línea lo leen al cargar y se actualizan solas. Las copias descargadas conservan los datos del día en que se bajaron.",
+  "normas": [
+    {
+      "clave": "RTCA DO-160G, Cambio 1 (2014)",
+      "parte": "Sección 8 — Vibration",
+      "nombre": "Environmental Conditions and Test Procedures for Airborne Equipment",
+      "ambito": "Aviónica y equipo embarcado de aviación civil",
+      "acceso": "pago",
+      "precio": "desde unos 1 019 USD (revendedor Accuris, consultado 10/2026)",
+      "estado": "Revisión H en preparación por el comité SC-135 de RTCA junto con el grupo WG-14 de EUROCAE; la gemela europea ED-14H es técnicamente idéntica.",
+      "enlaces": [
+        {"t": "Página oficial de RTCA", "u": "https://www.rtca.org/do-160/"},
+        {"t": "Comprar (Accuris)", "u": "https://store.accuristech.com/publishers/rtca"}
+      ]
+    },
+    {
+      "clave": "MIL-STD-810H, Cambio 1 (2022)",
+      "parte": "Método 514.8 — Vibration",
+      "nombre": "Environmental Engineering Considerations and Laboratory Tests",
+      "ambito": "Material militar terrestre, naval y aéreo",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. El documento completo pasa de las mil páginas y pesa unos 62 MB; el método 514.8 está en la Parte Dos.",
+      "enlaces": [
+        {"t": "Buscador oficial del Departamento de Defensa (ASSIST)", "u": "https://quicksearch.dla.mil/"},
+        {"t": "Descarga directa (EverySpec)", "u": "https://everyspec.com/MIL-STD/MIL-STD-0800-0899/MIL-STD-810H_55998/"}
+      ]
+    },
+    {
+      "clave": "NASA GSFC-STD-7000B (2021)",
+      "parte": "Sección 2.4 — Structural and mechanical verification",
+      "nombre": "General Environmental Verification Standard (GEVS)",
+      "ambito": "Instrumentos y componentes de vuelo espacial",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. Marcada «Internet Public», es decir liberada para su consulta pública. De aquí sale el perfil generalizado de vibración aleatoria que usa el explorador.",
+      "enlaces": [
+        {"t": "Ficha y descarga en NASA Technical Standards", "u": "https://standards.nasa.gov/standard/gsfc/gsfc-std-7000"}
+      ]
+    },
+    {
+      "clave": "ECSS-E-ST-10-03C Rev.1 (31 may 2022)",
+      "parte": "Campaña de ensayos completa",
+      "nombre": "Space engineering — Testing",
+      "ambito": "Segmento espacial europeo (ESA y su cadena de proveedores)",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. La descarga es libre; el sitio pide registrarse y aceptar el acuerdo de licencia de ECSS.",
+      "enlaces": [
+        {"t": "PDF directo", "u": "https://ecss.nl/wp-content/uploads/2022/05/ECSS-E-ST-10-03-Rev.1(31May2022).pdf"},
+        {"t": "Catálogo de normas activas", "u": "https://ecss.nl/standards/active-standards/"}
+      ]
+    },
+    {
+      "clave": "ISO 20816-1:2016",
+      "parte": "Parte 1 — Directrices generales",
+      "nombre": "Mechanical vibration — Measurement and evaluation of machine vibration",
+      "ambito": "Máquinas rotativas ya en servicio (sustituye a ISO 10816-1)",
+      "acceso": "pago",
+      "precio": "CHF 159, 34 páginas (iso.org, consultado 10/2026)",
+      "estado": "Vigente pero en revisión: se espera que la sustituya ISO/FDIS 20816-1.",
+      "enlaces": [
+        {"t": "Ficha en ISO (con vista previa gratuita)", "u": "https://www.iso.org/standard/63180.html"}
+      ]
+    },
+    {
+      "clave": "ISO 2631-1:1997 / Enm. 1:2010",
+      "parte": "Parte 1 — Requisitos generales",
+      "nombre": "Mechanical vibration and shock — Evaluation of human exposure to whole-body vibration",
+      "ambito": "Personas expuestas: tripulación y pasajeros",
+      "acceso": "pago",
+      "precio": "CHF 159, 31 páginas (iso.org, consultado 10/2026)",
+      "estado": "En proceso de sustitución: la tercera edición quedó registrada como FDIS el 24 de septiembre de 2026.",
+      "enlaces": [
+        {"t": "Ficha en ISO (con vista previa gratuita)", "u": "https://www.iso.org/standard/7612.html"},
+        {"t": "Nueva edición en aprobación", "u": "https://www.iso.org/standard/85768.html"}
+      ]
+    },
+    {
+      "clave": "14 CFR parte 25 (FAA)",
+      "parte": "§ 25.251 Vibration and buffeting · § 25.629 Aeroelastic stability",
+      "nombre": "Airworthiness Standards: Transport Category Airplanes",
+      "ambito": "Requisito legal de aeronavegabilidad en Estados Unidos",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Texto legal vigente, actualizado a diario en el Code of Federal Regulations electrónico.",
+      "enlaces": [
+        {"t": "Parte 25 completa (eCFR)", "u": "https://www.ecfr.gov/current/title-14/part-25"},
+        {"t": "§ 25.251 Vibration and buffeting", "u": "https://www.ecfr.gov/current/title-14/section-25.251"}
+      ]
+    },
+    {
+      "clave": "EASA CS-25",
+      "parte": "Certification Specifications",
+      "nombre": "Certification Specifications and Acceptable Means of Compliance for Large Aeroplanes",
+      "ambito": "Requisito de aeronavegabilidad en la Unión Europea",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. EASA publica cada enmienda como PDF descargable.",
+      "enlaces": [
+        {"t": "Biblioteca de Certification Specifications", "u": "https://www.easa.europa.eu/en/document-library/certification-specifications"}
+      ]
+    }
+  ]
+}
+</script>
+<script>
+"use strict";
+
+function fmtFecha(s){
+  const m={ '01':'enero','02':'febrero','03':'marzo','04':'abril','05':'mayo','06':'junio',
+            '07':'julio','08':'agosto','09':'septiembre','10':'octubre','11':'noviembre','12':'diciembre'};
+  const p=String(s||'').split('-'); if(p.length!==3) return s||'—';
+  return p[2].replace(/^0/,'')+' de '+(m[p[1]]||p[1])+' de '+p[0];
+}
+function mesesDesde(s){
+  const d=new Date(s+'T00:00:00'); if(isNaN(d)) return 0;
+  const h=new Date(); return (h.getFullYear()-d.getFullYear())*12 + (h.getMonth()-d.getMonth());
+}
+function tarjetaNorma(n, compacta){
+  const libre = n.acceso==='gratis';
+  const pill = libre
+    ? '<span class="pill pg">descarga gratuita</span>'
+    : '<span class="pill pp">de pago</span>';
+  const links = (n.enlaces||[]).map(e=>'<a href="'+e.u+'" target="_blank" rel="noopener">'+e.t+' ↗</a>').join('');
+  if(compacta){
+    return '<div class="nrow '+(libre?'g':'p')+'">'
+      + '<div class="nk">'+n.clave+' '+pill+'</div>'
+      + '<div class="nl">'+links+'</div></div>';
+  }
+  return '<div class="ncard '+(libre?'g':'p')+'">'
+    + '<div class="nh">'+n.clave+' '+pill+'</div>'
+    + '<div class="nn">'+n.nombre+'</div>'
+    + '<div class="nm"><b>Qué cubre:</b> '+n.ambito+(n.parte?' · <i>'+n.parte+'</i>':'')+'</div>'
+    + (n.precio?'<div class="nm"><b>Precio:</b> '+n.precio+'</div>':'')
+    + (n.estado?'<div class="nm"><b>Estado:</b> '+n.estado+'</div>':'')
+    + '<div class="nl">'+links+'</div></div>';
+}
+async function cargarNormas(destinoId, compacta, selloId){
+  let d=null, origen='incorporada';
+  // abierto desde el disco (file://) no se puede consultar el archivo: se usa la copia incorporada
+  if(location.protocol==='http:'||location.protocol==='https:'){
+    try{
+      const r = await fetch('normas.json', {cache:'no-cache'});
+      if(r.ok){ d = await r.json(); origen='en línea'; }
+    }catch(e){ /* sin conexión: se usa la copia incorporada */ }
+  }
+  if(!d){
+    try{ d = JSON.parse(document.getElementById('normas-fallback').textContent); }
+    catch(e){ return; }
+  }
+  const cont=document.getElementById(destinoId);
+  if(cont) cont.innerHTML = (d.normas||[]).map(n=>tarjetaNorma(n,compacta)).join('');
+  const sello=document.getElementById(selloId);
+  if(sello){
+    const m=mesesDesde(d.actualizado), vieja=m>12;
+    sello.innerHTML = 'Datos revisados el <b>'+fmtFecha(d.actualizado)+'</b> · lista '+origen
+      + (vieja?' · <span class="stale">han pasado más de 12 meses: conviene verificar las revisiones vigentes</span>':'');
+    sello.className = 'sello'+(vieja?' old':'');
+  }
+}
+
+cargarNormas('lista', false, 'sello');
+</script>
+</body>
+</html>

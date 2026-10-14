@@ -20,6 +20,11 @@ Colección de **siete exploradores interactivos** (HTML, funcionan sin conexión
 6. `mediapotencia_interactivo.html` — Media potencia y factor Q (U3)
 7. `espectro_interactivo.html` — Del espectro de ensayo a la carga de diseño (U4)
 
+Material de apoyo
+
+- `normas.html` — Dónde consultar las normas (enlaces de descarga y de compra)
+- `normas.json` — fuente única de esas referencias: editar este archivo actualiza la guía y el Pilar 7
+
 Punto de partida: `index.html`.
 
 ## Licencia

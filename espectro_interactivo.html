@@ -42,8 +42,11 @@
   .btns{display:flex;gap:7px;flex-wrap:wrap}
   .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12px;border-radius:8px;padding:6px 10px;cursor:pointer}
   .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .tgrp{margin-top:12px}
+  .tgrp .th{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
   .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:8px 10px}
+  .tile.t1{border-left:4px solid var(--orange)} .tile.t2{border-left:4px solid var(--steel)} .tile.t3{border-left:4px solid var(--navy)}
   .tile .k{font-size:11px;color:var(--grey);font-weight:600;line-height:1.3}
   .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:19px;font-weight:700;color:var(--navy);margin-top:1px}
   .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
@@ -69,6 +72,27 @@
   footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
   footer .h{font-weight:700;color:var(--navy);font-size:13px}
   footer a{color:var(--blue)}
+
+  .pill{font-size:10.5px;font-weight:700;border-radius:20px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+  .pill.pg{background:#E7F2EA;color:var(--green);border:1px solid #BFD8C6}
+  .pill.pp{background:#FBF3E4;color:var(--orange);border:1px solid var(--amberb)}
+  .ncard{border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:10px;padding:11px 13px;margin-bottom:10px;background:#fff}
+  .ncard.g{border-left-color:var(--green)} .ncard.p{border-left-color:var(--orange)}
+  .ncard .nh{font-weight:700;color:var(--navy);font-size:14px}
+  .ncard .nn{font-size:12.5px;color:var(--grey);font-style:italic;margin:2px 0 6px}
+  .ncard .nm{font-size:13px;margin-bottom:3px}
+  .nl{margin-top:7px;display:flex;gap:8px;flex-wrap:wrap}
+  .nl a{font-size:12.5px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--line);
+        background:var(--ice2);border-radius:8px;padding:5px 10px}
+  .nl a:hover{background:var(--ice)}
+  .nrow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+        border-bottom:1px solid var(--ice);padding:7px 0}
+  .nrow:last-child{border-bottom:0}
+  .nrow .nk{font-size:13px;font-weight:600;color:var(--navy)}
+  .sello{font-size:12px;color:var(--grey);background:var(--ice2);border:1px solid var(--ice);
+         border-radius:8px;padding:7px 10px;margin-bottom:12px}
+  .sello.old{background:var(--amber);border-color:var(--amberb)}
+  .stale{color:var(--orange);font-weight:700}
   @media(max-width:520px){ .wrap{padding:12px;gap:12px} .card{padding:12px 13px} header h1{font-size:18px} header p{font-size:12px} .pilarnav{font-size:11.5px} .row label{min-width:100%} }
 </style>
 </head>
@@ -95,11 +119,13 @@
   <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
   <span class="arw">→</span>
   <span class="cur">Pilar 7 · Espectro y carga de diseño</span>
+  <span class="arw">·</span>
+  <a href="normas.html" style="border-style:dashed">Normas: dónde consultarlas</a>
 </nav>
 
 <div class="wrap">
   <div class="intro full">
-    <b>¿Qué muestra?</b> Tres gráficas apiladas sobre el mismo eje de frecuencias. Arriba, <span class="mth">W(f)</span>: lo que la <b>norma impone</b> en la base, en g²/Hz. En medio, <span class="mth">|H(f)|²</span>: lo que el <b>equipo aporta</b> con su resonancia — es exactamente el factor de amplificación <span class="mth">M(r)</span> elevado al cuadrado. Abajo, la respuesta <span class="mth">W<sub>resp</sub> = |H|²·W</span>, cuya área da el <span class="mth">G<sub>rms</sub></span> que realmente sufre el componente. Toda la cadena se controla con dos cosas ya conocidas: <b>f<sub>n</sub></b> y <b>ζ</b> (o su equivalente <b>Q</b>).
+    <b>¿Qué muestra?</b> Tres gráficas apiladas sobre el mismo eje de frecuencias. Arriba, <span class="mth">W(f)</span>: lo que la <b>norma impone</b> en la base, en g²/Hz. En medio, <span class="mth">|H(f)|²</span>: lo que el <b>equipo aporta</b> con su resonancia — es exactamente el factor de amplificación <span class="mth">M(r)</span> elevado al cuadrado. Abajo, la respuesta <span class="mth">W<sub>resp</sub> = |H|²·W</span>, cuya área da el <span class="mth">G<sub>rms</sub></span> que realmente sufre el componente. Toda la cadena se controla con dos cosas ya conocidas: <b>f<sub>n</sub></b> y <b>ζ</b> (o su equivalente <b>Q</b>). Los recuadros de lectura están agrupados y coloreados igual que los tres paneles: conviene no confundir el <b style="color:var(--orange)">G<sub>rms</sub> de entrada</b> (grupo 1, lo que da la mesa vibradora) con el <b style="color:var(--navy)">G<sub>rms</sub> de respuesta</b> (grupo 3, lo que sufre el componente).
   </div>
 
   <div class="card">
@@ -149,15 +175,28 @@
         </div>
       </div>
     </div>
-    <div class="tiles">
-      <div class="tile"><div class="k">G<sub>rms</sub> de entrada (área de W)</div><div class="v" id="oGin">14.1 g</div></div>
-      <div class="tile"><div class="k">Q = 1/(2ζ)</div><div class="v" id="oQ">10.0</div></div>
-      <div class="tile"><div class="k">W(f<sub>n</sub>) que ve el equipo</div><div class="v" id="oWfn">0.160</div></div>
-      <div class="tile"><div class="k">Ancho de banda a −3 dB</div><div class="v" id="oBW">10.0 Hz</div></div>
-      <div class="tile gr"><div class="k">G<sub>rms</sub> respuesta (integración)</div><div class="v" id="oGn">15.7 g</div></div>
-      <div class="tile hl"><div class="k">G<sub>rms</sub> por Miles</div><div class="v" id="oGm">15.9 g</div></div>
-      <div class="tile hl"><div class="k">Carga de diseño 3σ</div><div class="v" id="oG3">47 g</div></div>
-      <div class="tile"><div class="k">Amplificación respuesta/entrada</div><div class="v" id="oAmp">1.11</div></div>
+    <div class="tgrp">
+      <div class="th" style="color:var(--orange)">1 · Entrada — lo que impone la norma</div>
+      <div class="tiles">
+        <div class="tile t1"><div class="k">G<sub>rms</sub> de <b>entrada</b> (área de W)</div><div class="v" id="oGin">14.12 g</div></div>
+        <div class="tile t1"><div class="k">W(f<sub>n</sub>) que ve el equipo</div><div class="v" id="oWfn">0.160</div></div>
+      </div>
+    </div>
+    <div class="tgrp">
+      <div class="th" style="color:var(--steel)">2 · Equipo — su resonancia</div>
+      <div class="tiles">
+        <div class="tile t2"><div class="k">Q = 1/(2ζ)</div><div class="v" id="oQ">10.0</div></div>
+        <div class="tile t2"><div class="k">Ancho de banda a −3 dB</div><div class="v" id="oBW">10.0 Hz</div></div>
+      </div>
+    </div>
+    <div class="tgrp">
+      <div class="th" style="color:var(--navy)">3 · Respuesta — lo que sufre el componente</div>
+      <div class="tiles">
+        <div class="tile t3 gr"><div class="k">G<sub>rms</sub> de <b>respuesta</b> (integración)</div><div class="v" id="oGn">15.66 g</div></div>
+        <div class="tile t3 hl"><div class="k">G<sub>rms</sub> de <b>respuesta</b> (por Miles)</div><div class="v" id="oGm">15.85 g</div></div>
+        <div class="tile t3 hl"><div class="k">Carga de diseño 3σ</div><div class="v" id="oG3">47 g</div></div>
+        <div class="tile t3"><div class="k">Amplificación respuesta / entrada</div><div class="v" id="oAmp">1.11×</div></div>
+      </div>
     </div>
   </div>
 
@@ -233,6 +272,15 @@
       <b>Cómo explorar:</b> conviene empezar moviendo <b>f<sub>n</sub></b> y observar los tres paneles a la vez: mientras la resonancia cae dentro de la meseta, la respuesta apenas cambia; al sacarla hacia los extremos del perfil, donde W(f<sub>n</sub>) es menor, la carga baja de golpe — y esa es la verdadera estrategia de diseño. Después conviene variar <b>ζ</b> y comprobar que la carga solo baja como 1/√ζ, mucho menos de lo que suele suponerse. Los botones <b>−3 dB</b>, <b>+3 dB</b> y <b>+6 dB</b> desplazan el perfil completo y permiten ver qué significa un margen de cualificación. Con <b>Congelar comparación</b> se deja una curva de referencia, y con los botones de vista se puede comprobar por qué la escala logarítmica y los decibeles son la forma natural de mirar estos espectros. La diferencia entre el valor por integración y el de Miles indica hasta qué punto la hipótesis de «PSD plana en torno a f<sub>n</sub>» es razonable en cada caso.
     </div>
   </div>
+  <div class="card full" id="cardnormas">
+    <h2>¿Dónde se consiguen estas normas?</h2>
+    <div id="selloesp" class="sello">Cargando la lista de normas…</div>
+    <div id="listaesp"></div>
+    <div class="takeaway" style="margin-top:12px">
+      <b>En corto:</b> las de <b>acceso libre</b> —MIL-STD-810H, el GEVS de la NASA, ECSS, y los textos legales de la FAA y de EASA— se descargan completas y bastan para trabajar todos los conceptos de esta unidad. Las de <b>pago</b> —DO-160 e ISO— se compran al editor o a un revendedor, aunque conviene preguntar antes en la biblioteca de la universidad por una licencia institucional; las fichas de ISO ofrecen además vista previa gratuita, suficiente para citarlas bien. La guía completa, con precios y con el estado de cada revisión, está en <a href="normas.html">Normas: dónde consultarlas</a>.
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -244,6 +292,115 @@
   </div>
 </footer>
 
+<script type="application/json" id="normas-fallback">{
+  "version": 1,
+  "actualizado": "2026-10-07",
+  "nota": "Fuente única de las referencias normativas de los exploradores. Para actualizar un enlace, un precio o el estado de una revisión, basta con editar este archivo en GitHub: las páginas en línea lo leen al cargar y se actualizan solas. Las copias descargadas conservan los datos del día en que se bajaron.",
+  "normas": [
+    {
+      "clave": "RTCA DO-160G, Cambio 1 (2014)",
+      "parte": "Sección 8 — Vibration",
+      "nombre": "Environmental Conditions and Test Procedures for Airborne Equipment",
+      "ambito": "Aviónica y equipo embarcado de aviación civil",
+      "acceso": "pago",
+      "precio": "desde unos 1 019 USD (revendedor Accuris, consultado 10/2026)",
+      "estado": "Revisión H en preparación por el comité SC-135 de RTCA junto con el grupo WG-14 de EUROCAE; la gemela europea ED-14H es técnicamente idéntica.",
+      "enlaces": [
+        {"t": "Página oficial de RTCA", "u": "https://www.rtca.org/do-160/"},
+        {"t": "Comprar (Accuris)", "u": "https://store.accuristech.com/publishers/rtca"}
+      ]
+    },
+    {
+      "clave": "MIL-STD-810H, Cambio 1 (2022)",
+      "parte": "Método 514.8 — Vibration",
+      "nombre": "Environmental Engineering Considerations and Laboratory Tests",
+      "ambito": "Material militar terrestre, naval y aéreo",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. El documento completo pasa de las mil páginas y pesa unos 62 MB; el método 514.8 está en la Parte Dos.",
+      "enlaces": [
+        {"t": "Buscador oficial del Departamento de Defensa (ASSIST)", "u": "https://quicksearch.dla.mil/"},
+        {"t": "Descarga directa (EverySpec)", "u": "https://everyspec.com/MIL-STD/MIL-STD-0800-0899/MIL-STD-810H_55998/"}
+      ]
+    },
+    {
+      "clave": "NASA GSFC-STD-7000B (2021)",
+      "parte": "Sección 2.4 — Structural and mechanical verification",
+      "nombre": "General Environmental Verification Standard (GEVS)",
+      "ambito": "Instrumentos y componentes de vuelo espacial",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. Marcada «Internet Public», es decir liberada para su consulta pública. De aquí sale el perfil generalizado de vibración aleatoria que usa el explorador.",
+      "enlaces": [
+        {"t": "Ficha y descarga en NASA Technical Standards", "u": "https://standards.nasa.gov/standard/gsfc/gsfc-std-7000"}
+      ]
+    },
+    {
+      "clave": "ECSS-E-ST-10-03C Rev.1 (31 may 2022)",
+      "parte": "Campaña de ensayos completa",
+      "nombre": "Space engineering — Testing",
+      "ambito": "Segmento espacial europeo (ESA y su cadena de proveedores)",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. La descarga es libre; el sitio pide registrarse y aceptar el acuerdo de licencia de ECSS.",
+      "enlaces": [
+        {"t": "PDF directo", "u": "https://ecss.nl/wp-content/uploads/2022/05/ECSS-E-ST-10-03-Rev.1(31May2022).pdf"},
+        {"t": "Catálogo de normas activas", "u": "https://ecss.nl/standards/active-standards/"}
+      ]
+    },
+    {
+      "clave": "ISO 20816-1:2016",
+      "parte": "Parte 1 — Directrices generales",
+      "nombre": "Mechanical vibration — Measurement and evaluation of machine vibration",
+      "ambito": "Máquinas rotativas ya en servicio (sustituye a ISO 10816-1)",
+      "acceso": "pago",
+      "precio": "CHF 159, 34 páginas (iso.org, consultado 10/2026)",
+      "estado": "Vigente pero en revisión: se espera que la sustituya ISO/FDIS 20816-1.",
+      "enlaces": [
+        {"t": "Ficha en ISO (con vista previa gratuita)", "u": "https://www.iso.org/standard/63180.html"}
+      ]
+    },
+    {
+      "clave": "ISO 2631-1:1997 / Enm. 1:2010",
+      "parte": "Parte 1 — Requisitos generales",
+      "nombre": "Mechanical vibration and shock — Evaluation of human exposure to whole-body vibration",
+      "ambito": "Personas expuestas: tripulación y pasajeros",
+      "acceso": "pago",
+      "precio": "CHF 159, 31 páginas (iso.org, consultado 10/2026)",
+      "estado": "En proceso de sustitución: la tercera edición quedó registrada como FDIS el 24 de septiembre de 2026.",
+      "enlaces": [
+        {"t": "Ficha en ISO (con vista previa gratuita)", "u": "https://www.iso.org/standard/7612.html"},
+        {"t": "Nueva edición en aprobación", "u": "https://www.iso.org/standard/85768.html"}
+      ]
+    },
+    {
+      "clave": "14 CFR parte 25 (FAA)",
+      "parte": "§ 25.251 Vibration and buffeting · § 25.629 Aeroelastic stability",
+      "nombre": "Airworthiness Standards: Transport Category Airplanes",
+      "ambito": "Requisito legal de aeronavegabilidad en Estados Unidos",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Texto legal vigente, actualizado a diario en el Code of Federal Regulations electrónico.",
+      "enlaces": [
+        {"t": "Parte 25 completa (eCFR)", "u": "https://www.ecfr.gov/current/title-14/part-25"},
+        {"t": "§ 25.251 Vibration and buffeting", "u": "https://www.ecfr.gov/current/title-14/section-25.251"}
+      ]
+    },
+    {
+      "clave": "EASA CS-25",
+      "parte": "Certification Specifications",
+      "nombre": "Certification Specifications and Acceptable Means of Compliance for Large Aeroplanes",
+      "ambito": "Requisito de aeronavegabilidad en la Unión Europea",
+      "acceso": "gratis",
+      "precio": "",
+      "estado": "Vigente. EASA publica cada enmienda como PDF descargable.",
+      "enlaces": [
+        {"t": "Biblioteca de Certification Specifications", "u": "https://www.easa.europa.eu/en/document-library/certification-specifications"}
+      ]
+    }
+  ]
+}
+</script>
 <script>
 "use strict";
 const NAVY='#1F3864',BLUE='#2E5496',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',PURPLE='#6B3FA0',RED='#B23A3A';
@@ -515,6 +672,62 @@ $('bfrz').addEventListener('click',function(){
 window.addEventListener('resize',draw);
 $('sfn').value=sliderFromFn(100); $('vfn').textContent='100 Hz';
 draw();
+
+// ---- normas ----
+
+function fmtFecha(s){
+  const m={ '01':'enero','02':'febrero','03':'marzo','04':'abril','05':'mayo','06':'junio',
+            '07':'julio','08':'agosto','09':'septiembre','10':'octubre','11':'noviembre','12':'diciembre'};
+  const p=String(s||'').split('-'); if(p.length!==3) return s||'—';
+  return p[2].replace(/^0/,'')+' de '+(m[p[1]]||p[1])+' de '+p[0];
+}
+function mesesDesde(s){
+  const d=new Date(s+'T00:00:00'); if(isNaN(d)) return 0;
+  const h=new Date(); return (h.getFullYear()-d.getFullYear())*12 + (h.getMonth()-d.getMonth());
+}
+function tarjetaNorma(n, compacta){
+  const libre = n.acceso==='gratis';
+  const pill = libre
+    ? '<span class="pill pg">descarga gratuita</span>'
+    : '<span class="pill pp">de pago</span>';
+  const links = (n.enlaces||[]).map(e=>'<a href="'+e.u+'" target="_blank" rel="noopener">'+e.t+' ↗</a>').join('');
+  if(compacta){
+    return '<div class="nrow '+(libre?'g':'p')+'">'
+      + '<div class="nk">'+n.clave+' '+pill+'</div>'
+      + '<div class="nl">'+links+'</div></div>';
+  }
+  return '<div class="ncard '+(libre?'g':'p')+'">'
+    + '<div class="nh">'+n.clave+' '+pill+'</div>'
+    + '<div class="nn">'+n.nombre+'</div>'
+    + '<div class="nm"><b>Qué cubre:</b> '+n.ambito+(n.parte?' · <i>'+n.parte+'</i>':'')+'</div>'
+    + (n.precio?'<div class="nm"><b>Precio:</b> '+n.precio+'</div>':'')
+    + (n.estado?'<div class="nm"><b>Estado:</b> '+n.estado+'</div>':'')
+    + '<div class="nl">'+links+'</div></div>';
+}
+async function cargarNormas(destinoId, compacta, selloId){
+  let d=null, origen='incorporada';
+  // abierto desde el disco (file://) no se puede consultar el archivo: se usa la copia incorporada
+  if(location.protocol==='http:'||location.protocol==='https:'){
+    try{
+      const r = await fetch('normas.json', {cache:'no-cache'});
+      if(r.ok){ d = await r.json(); origen='en línea'; }
+    }catch(e){ /* sin conexión: se usa la copia incorporada */ }
+  }
+  if(!d){
+    try{ d = JSON.parse(document.getElementById('normas-fallback').textContent); }
+    catch(e){ return; }
+  }
+  const cont=document.getElementById(destinoId);
+  if(cont) cont.innerHTML = (d.normas||[]).map(n=>tarjetaNorma(n,compacta)).join('');
+  const sello=document.getElementById(selloId);
+  if(sello){
+    const m=mesesDesde(d.actualizado), vieja=m>12;
+    sello.innerHTML = 'Datos revisados el <b>'+fmtFecha(d.actualizado)+'</b> · lista '+origen
+      + (vieja?' · <span class="stale">han pasado más de 12 meses: conviene verificar las revisiones vigentes</span>':'');
+    sello.className = 'sello'+(vieja?' old':'');
+  }
+}
+cargarNormas('listaesp', true, 'selloesp');
 </script>
 </body>
 </html>
