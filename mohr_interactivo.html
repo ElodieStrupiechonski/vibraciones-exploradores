@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Círculo de Mohr · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1180px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .pilarnav{max-width:1180px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  .wrap{max-width:1180px;margin:0 auto;padding:16px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:960px){ .wrap{grid-template-columns:1.5fr .8fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .card h3{margin:14px 0 6px;font-size:13.5px;color:var(--blue)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:11px}
+  .grp{border:1px solid var(--line);border-radius:10px;padding:10px 11px 11px}
+  .grp>.t{font-size:11.5px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px}
+  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+  .row:last-child{margin-bottom:0}
+  .row label{font-weight:700;color:var(--navy);font-size:12.5px;min-width:96px}
+  input[type=range]{flex:1;min-width:84px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:70px;text-align:right;font-size:14px}
+  .btns{display:flex;gap:7px;flex-wrap:wrap}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12px;border-radius:8px;padding:6px 10px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .tgrp{margin-top:12px}
+  .tgrp .th{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:8px 10px}
+  .tile.t1{border-left:4px solid var(--orange)} .tile.t2{border-left:4px solid var(--steel)} .tile.t3{border-left:4px solid var(--green)}
+  .tile .k{font-size:11px;color:var(--grey);font-weight:600;line-height:1.3}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:19px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .tile.bad{background:#FBEAEA;border-color:#E0A9A9} .tile.bad .v{color:var(--red)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:10px 12px;font-family:'Cambria Math',Georgia,serif;font-size:14.5px;color:#233;margin-bottom:9px}
+  .eqbox:last-child{margin-bottom:0}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:11.5px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px}
+  .eqbox b{color:var(--navy)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  .mth{font-family:'Cambria Math',Georgia,serif}
+  .two{display:grid;grid-template-columns:1fr;gap:14px}
+  @media(min-width:760px){ .two{grid-template-columns:1fr 1fr} }
+  footer{max-width:1180px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  @media(max-width:520px){ .wrap{padding:12px;gap:12px} .card{padding:12px 13px} header h1{font-size:18px} .pilarnav{font-size:11.5px} .row label{min-width:100%} }
+</style>
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Círculo de Mohr — Explorador</h1>
+    <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (U5) — al girar el elemento diferencial se observa cómo cambian las componentes del esfuerzo y cómo el punto recorre el círculo al doble del ángulo</p>
+  </div>
+</header>
+
+<nav class="pilarnav" aria-label="Recorrido por los pilares">
+  <span class="lab">Recorrido:</span>
+  <a href="complejos_interactivo.html">Pilar 1 · Números complejos</a>
+  <span class="arw">→</span>
+  <a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a>
+  <span class="arw">→</span>
+  <a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a>
+  <span class="arw">→</span>
+  <a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a>
+  <span class="arw">→</span>
+  <a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a>
+  <span class="arw">→</span>
+  <a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a>
+  <span class="arw">→</span>
+  <a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a>
+  <span class="arw">→</span>
+  <span class="cur">Pilar 8 · Círculo de Mohr</span>
+  <span class="arw">·</span>
+  <a href="normas.html" style="border-style:dashed">Normas: dónde consultarlas</a>
+</nav>
+
+<div class="wrap">
+  <div class="intro full">
+    <b>¿Qué muestra?</b> A la izquierda, el <b>elemento diferencial</b> alrededor de un punto, con las flechas de esfuerzo sobre sus cuatro caras; el deslizador de <span class="mth">θ</span> lo gira. A la derecha, el <b>círculo de Mohr</b>: el punto que representa ese mismo estado se mueve al <b>doble del ángulo</b>. El estado físico no cambia nunca — solo cambia el sistema de referencia desde el que se mira.
+  </div>
+
+  <div class="card">
+    <canvas id="cv" width="860" height="430" aria-label="Elemento diferencial girable y círculo de Mohr correspondiente"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="border-top-color:var(--orange)"></i> esfuerzo normal σ</span>
+      <span><i class="sw" style="border-top-color:var(--steel)"></i> esfuerzo cortante τ</span>
+      <span><i class="sw" style="border-top-color:var(--green);border-top-style:dashed"></i> planos principales</span>
+      <span><i class="sw" style="border-top-color:var(--purple);border-top-style:dashed"></i> cortante máximo</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Controles</h2>
+    <div class="ctl">
+      <div class="grp">
+        <div class="t">Estado de esfuerzo</div>
+        <div class="row"><label>σ<sub>x</sub></label><input id="sx" type="range" min="-200" max="200" step="1" value="80"><span class="val" id="vsx">80</span></div>
+        <div class="row"><label>σ<sub>y</sub></label><input id="sy" type="range" min="-200" max="200" step="1" value="-40"><span class="val" id="vsy">−40</span></div>
+        <div class="row"><label>τ<sub>xy</sub></label><input id="txy" type="range" min="-150" max="150" step="1" value="50"><span class="val" id="vtxy">50</span></div>
+        <div class="btns" style="margin-top:8px">
+          <button class="btn" data-p="120,0,0">Tracción simple</button>
+          <button class="btn" data-p="0,0,60">Cortante puro</button>
+          <button class="btn" data-p="120,60,0">Biaxial</button>
+          <button class="btn" data-p="100,100,0">Biaxial igual</button>
+          <button class="btn on" data-p="80,-40,50">Caso general</button>
+        </div>
+      </div>
+      <div class="grp">
+        <div class="t">Orientación del corte</div>
+        <div class="row"><label>Ángulo θ</label><input id="th" type="range" min="0" max="180" step="0.1" value="0"><span class="val" id="vth">0°</span></div>
+        <div class="btns" style="margin-top:8px">
+          <button class="btn" id="goP">Ir a los planos principales</button>
+          <button class="btn" id="goT">Ir al cortante máximo</button>
+          <button class="btn" id="goZ">θ = 0</button>
+        </div>
+      </div>
+      <div class="grp">
+        <div class="t">Material</div>
+        <div class="row"><label>Límite S<sub>y</sub></label><input id="sylim" type="range" min="60" max="420" step="2" value="276"><span class="val" id="vsy2">276</span></div>
+        <div style="font-size:11.5px;color:var(--grey);margin-top:2px">276 MPa corresponde al aluminio 6061-T6, el del soporte de la Unidad 4.</div>
+      </div>
+    </div>
+
+    <div class="tgrp">
+      <div class="th" style="color:var(--steel)">Lo que no cambia al girar</div>
+      <div class="tiles">
+        <div class="tile t2"><div class="k">Centro  σ<sub>prom</sub> = (σ<sub>x</sub>+σ<sub>y</sub>)/2</div><div class="v" id="oSp">20.0</div></div>
+        <div class="tile t2"><div class="k">Radio  R = τ<sub>máx</sub> en el plano</div><div class="v" id="oR">78.1</div></div>
+      </div>
+    </div>
+    <div class="tgrp">
+      <div class="th" style="color:var(--orange)">El estado, en la orientación θ</div>
+      <div class="tiles">
+        <div class="tile t1"><div class="k">σ<sub>x′</sub></div><div class="v" id="oSxp">80.0</div></div>
+        <div class="tile t1"><div class="k">σ<sub>y′</sub></div><div class="v" id="oSyp">−40.0</div></div>
+        <div class="tile t1"><div class="k">τ<sub>x′y′</sub></div><div class="v" id="oTxp">50.0</div></div>
+        <div class="tile t1"><div class="k">Ángulo en el círculo = 2θ</div><div class="v" id="oDos">0°</div></div>
+      </div>
+    </div>
+    <div class="tgrp">
+      <div class="th" style="color:var(--green)">Resultados principales</div>
+      <div class="tiles">
+        <div class="tile t3"><div class="k">σ<sub>1</sub> (máximo)</div><div class="v" id="oS1">98.1</div></div>
+        <div class="tile t3"><div class="k">σ<sub>2</sub> (mínimo)</div><div class="v" id="oS2">−58.1</div></div>
+        <div class="tile t3"><div class="k">θ<sub>p</sub> de los planos principales</div><div class="v" id="oThp">19.9°</div></div>
+        <div class="tile t3"><div class="k">τ<sub>máx</sub> real (con σ<sub>3</sub> = 0)</div><div class="v" id="oTm3">78.1</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card full">
+    <h2>Criterios de falla: ¿este estado fluye?</h2>
+    <div class="two">
+      <div>
+        <canvas id="cf" width="520" height="440" aria-label="Plano de esfuerzos principales con la elipse de von Mises y el hexágono de Tresca"></canvas>
+        <div class="legend">
+          <span><i class="sw" style="border-top-color:var(--steel)"></i> elipse de von Mises</span>
+          <span><i class="sw" style="border-top-color:var(--orange)"></i> hexágono de Tresca</span>
+          <span><i class="sw" style="border-top-color:var(--red)"></i> estado actual</span>
+        </div>
+      </div>
+      <div>
+        <div class="tiles" style="grid-template-columns:1fr 1fr">
+          <div class="tile hl"><div class="k">σ′ de von Mises</div><div class="v" id="oVM">136.7</div></div>
+          <div class="tile hl"><div class="k">n = S<sub>y</sub>/σ′</div><div class="v" id="oNvm">2.02</div></div>
+          <div class="tile"><div class="k">n de Tresca</div><div class="v" id="oNtr">1.77</div></div>
+          <div class="tile" id="tVer"><div class="k">Veredicto</div><div class="v" id="oVer">no fluye</div></div>
+        </div>
+        <div class="eqbox" style="margin-top:12px">
+          <span class="lab">von Mises — energía de distorsión</span>
+          σ′ = √(σ<sub>1</sub>² − σ<sub>1</sub>σ<sub>2</sub> + σ<sub>2</sub>²)  ·  fluye si σ′ ≥ S<sub>y</sub>
+        </div>
+        <div class="eqbox">
+          <span class="lab">Tresca — cortante máximo</span>
+          fluye si  máx(|σ<sub>1</sub>−σ<sub>2</sub>|, |σ<sub>1</sub>|, |σ<sub>2</sub>|) ≥ S<sub>y</sub>
+        </div>
+        <p style="font-size:13px;margin:10px 0 0">El hexágono de Tresca queda <b>inscrito</b> en la elipse de von Mises, y por eso Tresca nunca es menos conservador. La diferencia es máxima en <b>cortante puro</b>, donde von Mises admite 0.577·S<sub>y</sub> y Tresca solo 0.500·S<sub>y</sub>: un 15.5 % de diferencia. Los ensayos caen casi siempre entre ambos y más cerca de von Mises, que es el que usa por defecto el diseño y todo el postproceso de elementos finitos.</p>
+        <p style="font-size:13px;margin:8px 0 0">Los tres términos dentro del máximo de Tresca no son un capricho: en estado plano la tercera dirección principal es <span class="mth">σ<sub>3</sub> = 0</span>, y el cortante máximo real puede estar <b>fuera del plano</b>. Por eso el recuadro «τ<sub>máx</sub> real» no siempre coincide con el radio R del círculo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card full">
+    <h2>Las fórmulas en pantalla</h2>
+    <div class="two">
+      <div>
+        <div class="eqbox">
+          <span class="lab">1 · Transformación al girar el corte un ángulo θ</span>
+          σ<sub>x′</sub> = (σ<sub>x</sub>+σ<sub>y</sub>)/2 + (σ<sub>x</sub>−σ<sub>y</sub>)/2 · cos 2θ + τ<sub>xy</sub> · sen 2θ<br>
+          τ<sub>x′y′</sub> = −(σ<sub>x</sub>−σ<sub>y</sub>)/2 · sen 2θ + τ<sub>xy</sub> · cos 2θ
+        </div>
+        <div class="eqbox">
+          <span class="lab">2 · Centro y radio</span>
+          σ<sub>prom</sub> = (σ<sub>x</sub>+σ<sub>y</sub>)/2  ·  R = √[((σ<sub>x</sub>−σ<sub>y</sub>)/2)² + τ<sub>xy</sub>²]
+        </div>
+      </div>
+      <div>
+        <div class="eqbox">
+          <span class="lab">3 · La ecuación del círculo</span>
+          (σ − σ<sub>prom</sub>)² + τ² = R²
+        </div>
+        <div class="eqbox">
+          <span class="lab">4 · Esfuerzos principales y su orientación</span>
+          σ<sub>1,2</sub> = σ<sub>prom</sub> ± R  ·  tan 2θ<sub>p</sub> = 2τ<sub>xy</sub> / (σ<sub>x</sub>−σ<sub>y</sub>)
+        </div>
+      </div>
+    </div>
+    <div class="intro" style="margin-top:12px;border-left-color:var(--green)">
+      <b style="color:var(--green)">¿De dónde sale el círculo, y por qué los ángulos van al doble?</b> Escribiendo <span class="mth">a = (σ<sub>x</sub>−σ<sub>y</sub>)/2</span> y <span class="mth">R = √(a² + τ<sub>xy</sub>²)</span>, las dos ecuaciones de transformación se reducen a <span class="mth">σ − σ<sub>prom</sub> = R·cos(2θ − 2θ<sub>p</sub>)</span> y <span class="mth">τ = −R·sen(2θ − 2θ<sub>p</sub>)</span>. Eliminando el ángulo queda <span class="mth">(σ − σ<sub>prom</sub>)² + τ² = R²</span>, que es una circunferencia; y el parámetro que la recorre es <b>2θ</b>, no θ. La razón física es que girar el elemento <b>90°</b> intercambia las caras x e y y devuelve un estado equivalente, mientras que girarlo <b>180°</b> lo devuelve idéntico: media vuelta real del elemento corresponde a una vuelta entera del círculo.
+    </div>
+  </div>
+
+  <div class="card full">
+    <h2>Tres cosas que conviene ver</h2>
+    <div class="two">
+      <div>
+        <h3>Cortante puro es tracción a 45°</h3>
+        <p style="font-size:13.5px;margin:0">Con el preajuste <b>Cortante puro</b> y θ = 45°, el cortante <b>desaparece</b> y en su lugar aparecen tracción y compresión iguales. Eso explica por qué una barra de tiza torcida rompe en una hélice a 45° y no en un plano recto: la tiza es frágil, resiste mal la tracción, y la tracción es máxima justo ahí. El mismo mecanismo agrieta un eje de transmisión que falla por torsión.</p>
+        <h3>El estado biaxial igual, y la trampa del plano</h3>
+        <p style="font-size:13.5px;margin:0">Con el preajuste <b>Biaxial igual</b> el círculo <b>se reduce a un punto</b>: no hay cortante sobre ningún plano perpendicular a la hoja. Pero el recuadro de τ<sub>máx</sub> real no marca cero, porque la tercera dirección sigue teniendo σ<sub>3</sub> = 0 y el cortante máximo se ha ido fuera del plano. Un estado verdaderamente hidrostático necesitaría las tres direcciones iguales, y ése sí no produce fluencia en ningún metal.</p>
+      </div>
+      <div>
+        <h3>Lo que no cambia</h3>
+        <p style="font-size:13.5px;margin:0">Al mover θ, los recuadros azules —el centro y el radio— no se mueven. Son <b>invariantes</b>: no dependen del sistema de referencia que elija quien analiza. Esa es la razón de que cualquier criterio de falla tenga que escribirse en función de invariantes, y de ahí salen las formas de von Mises y de Tresca.</p>
+        <div class="takeaway" style="margin-top:12px">
+          <b>Cómo explorar:</b> conviene empezar con el <b>Caso general</b> y mover solo el ángulo θ, mirando a la vez el elemento y el círculo: por cada grado que gira el cuadrado, el punto avanza dos sobre la circunferencia. Después se pulsa <b>Ir a los planos principales</b> y se comprueba que las flechas de cortante se anulan. Luego <b>Ir al cortante máximo</b>, que cae 45° más allá y donde el esfuerzo normal vale exactamente el promedio. Por último conviene bajar el límite S<sub>y</sub> con el deslizador hasta que el punto rojo salga de la elipse, para ver qué significa que una pieza fluya.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Explorador didáctico del círculo de Mohr y los criterios de falla estática · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.XXXXXXX (se completa al publicar en Zenodo).</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+const NAVY='#1F3864',BLUE='#2E5496',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',
+      GREY='#5B5B5B',PURPLE='#6B3FA0',RED='#B23A3A',ICE='#DCE6F1';
+let SX=80, SY=-40, TXY=50, TH=0, SYLIM=276;
+const $=id=>document.getElementById(id);
+const cv=$('cv'), ctx=cv.getContext('2d');
+const cf=$('cf'), ctf=cf.getContext('2d');
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI;
+const fmt=(x,d)=>{ let s=(Math.abs(x)<5e-3?0:x).toFixed(d===undefined?1:d); return s.replace('-','−'); };
+
+/* ---------- estado ---------- */
+function estado(){
+  const sp=(SX+SY)/2, a=(SX-SY)/2, R=Math.hypot(a,TXY);
+  const s1=sp+R, s2=sp-R;
+  let thp=deg(Math.atan2(2*TXY, SX-SY))/2;
+  const vm=Math.sqrt(s1*s1-s1*s2+s2*s2);
+  const tre=Math.max(Math.abs(s1-s2), Math.abs(s1), Math.abs(s2));
+  return {sp,R,s1,s2,thp,vm,tre,tmax3:tre/2};
+}
+function transf(th){
+  const t=rad(th), c=Math.cos(2*t), s=Math.sin(2*t);
+  const sp=(SX+SY)/2, a=(SX-SY)/2;
+  return { sxp: sp + a*c + TXY*s, syp: sp - a*c - TXY*s, txp: -a*s + TXY*c };
+}
+
+/* ---------- utilidades de dibujo ---------- */
+function arrow(c,x1,y1,x2,y2,col,w){
+  const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy);
+  if(L<1.5) return;
+  const ux=dx/L, uy=dy/L, h=Math.min(8, L*0.45);
+  c.strokeStyle=col; c.lineWidth=w||2; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2-ux*h*0.6,y2-uy*h*0.6); c.stroke();
+  c.beginPath(); c.moveTo(x2,y2);
+  c.lineTo(x2-ux*h - uy*h*0.42, y2-uy*h + ux*h*0.42);
+  c.lineTo(x2-ux*h + uy*h*0.42, y2-uy*h - ux*h*0.42);
+  c.closePath(); c.fillStyle=col; c.fill();
+}
+function txt(c,s,x,y,col,size,align,baseline,bold){
+  c.font=(bold?'bold ':'')+(size||11)+'px Segoe UI,sans-serif';
+  c.textAlign=align||'center'; c.textBaseline=baseline||'middle';
+  c.lineWidth=3.2; c.strokeStyle='rgba(255,255,255,.92)'; c.lineJoin='round'; c.strokeText(s,x,y);
+  c.fillStyle=col; c.fillText(s,x,y);
+}
+
+/* ---------- panel 1: elemento + círculo ---------- */
+function draw(){
+  const E=estado(), T=transf(TH);
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const W=cv.clientWidth||860, H=430;
+  cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+
+  const splitX = W*0.36;
+
+  /* ----- elemento diferencial ----- */
+  const ex=splitX/2, ey=H/2+6, hs=58;
+  txt(ctx,'Elemento diferencial, girado θ = '+fmt(TH,1)+'°', splitX/2, 22, NAVY, 12.5,'center','middle',true);
+  const t=rad(TH);
+  const ux=Math.cos(t), uy=-Math.sin(t);      // eje x' en pantalla (y hacia abajo)
+  const vx=-Math.sin(t), vy=-Math.cos(t);     // eje y' en pantalla
+  const P=(a,b)=>[ex+ux*a*hs+vx*b*hs, ey+uy*a*hs+vy*b*hs];
+  // ejes de referencia x,y
+  ctx.strokeStyle='#E3E9F2'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(ex-110,ey); ctx.lineTo(ex+110,ey); ctx.moveTo(ex,ey-110); ctx.lineTo(ex,ey+110); ctx.stroke();
+  ctx.setLineDash([]);
+  txt(ctx,'x',ex+115,ey,'#9FB0C8',10.5,'left'); txt(ctx,'y',ex,ey-116,'#9FB0C8',10.5);
+  // cuadrado
+  const c1=P(1,1), c2=P(-1,1), c3=P(-1,-1), c4=P(1,-1);
+  ctx.beginPath(); ctx.moveTo(c1[0],c1[1]); ctx.lineTo(c2[0],c2[1]); ctx.lineTo(c3[0],c3[1]); ctx.lineTo(c4[0],c4[1]); ctx.closePath();
+  ctx.fillStyle='rgba(68,114,196,.07)'; ctx.fill();
+  ctx.strokeStyle=NAVY; ctx.lineWidth=2; ctx.stroke();
+  // flechas: escala
+  const cap=60;
+  const len =v=>Math.max(-cap,Math.min(cap, v*0.30));
+  const lenT=v=>Math.max(-cap,Math.min(cap, v*0.44));
+  // cara perpendicular a x' (normal u, tangente v) y su opuesta
+  [1,-1].forEach(sg=>{
+    const [fx,fy]=P(sg,0);
+    const n=len(T.sxp)*sg;
+    arrow(ctx,fx,fy,fx+ux*n,fy+uy*n,ORANGE,2.4);
+    const sh=lenT(T.txp)*sg, ox=fx+ux*sg*7, oy=fy+uy*sg*7;
+    arrow(ctx,ox-vx*sh/2,oy-vy*sh/2,ox+vx*sh/2,oy+vy*sh/2,STEEL,2.4);
+  });
+  // cara perpendicular a y' (normal v, tangente u) y su opuesta
+  [1,-1].forEach(sg=>{
+    const [fx,fy]=P(0,sg);
+    const n=len(T.syp)*sg;
+    arrow(ctx,fx,fy,fx+vx*n,fy+vy*n,ORANGE,2.4);
+    const sh=lenT(T.txp)*sg, ox=fx+vx*sg*7, oy=fy+vy*sg*7;
+    arrow(ctx,ox-ux*sh/2,oy-uy*sh/2,ox+ux*sh/2,oy+uy*sh/2,STEEL,2.4);
+  });
+  txt(ctx,'σx′ = '+fmt(T.sxp), splitX/2, H-42, ORANGE, 12,'center','middle',true);
+  txt(ctx,'σy′ = '+fmt(T.syp)+'    τx′y′ = '+fmt(T.txp), splitX/2, H-24, STEEL, 12,'center','middle',true);
+
+  /* ----- círculo de Mohr ----- */
+  const mL=splitX+54, mR=W-18, mT=38, mB=H-46;
+  const pw=mR-mL, ph=mB-mT;
+  const SMAX=230, TMAX=170;
+  const k=Math.min(pw/(2*SMAX), ph/(2*TMAX));
+  const cx=mL+pw/2, cy=mT+ph/2;
+  const X=s=>cx+s*k, Y=tt=>cy+tt*k;          // τ positivo hacia abajo (convención)
+  txt(ctx,'Círculo de Mohr — el punto avanza 2θ', splitX+(W-splitX)/2, 22, NAVY, 12.5,'center','middle',true);
+  // rejilla y ejes
+  ctx.strokeStyle='#EDF1F8'; ctx.lineWidth=1;
+  for(let s=-200;s<=200;s+=50){ ctx.beginPath(); ctx.moveTo(X(s),mT); ctx.lineTo(X(s),mB); ctx.stroke(); }
+  for(let tt=-150;tt<=150;tt+=50){ ctx.beginPath(); ctx.moveTo(mL,Y(tt)); ctx.lineTo(mR,Y(tt)); ctx.stroke(); }
+  ctx.strokeStyle='#B9C6DA'; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.moveTo(mL,Y(0)); ctx.lineTo(mR,Y(0)); ctx.moveTo(X(0),mT); ctx.lineTo(X(0),mB); ctx.stroke();
+  ctx.fillStyle=GREY; ctx.font='10px Segoe UI,sans-serif';
+  for(let s=-200;s<=200;s+=100){ if(s===0) continue; txt(ctx,String(s),X(s),Y(0)+11,GREY,10); }
+  txt(ctx,'σ',mR-4,Y(0)-10,NAVY,12,'right','middle',true);
+  txt(ctx,'τ',X(0)+12,mB-6,NAVY,12,'left','middle',true);
+  txt(ctx,'(τ positivo hacia abajo)',X(0)+14,mB+10,'#9FB0C8',9.5,'left');
+  // círculo
+  ctx.strokeStyle=STEEL; ctx.lineWidth=2.2;
+  ctx.beginPath(); ctx.arc(X(E.sp),Y(0),E.R*k,0,7); ctx.stroke();
+  // centro
+  ctx.beginPath(); ctx.arc(X(E.sp),Y(0),3.2,0,7); ctx.fillStyle=STEEL; ctx.fill();
+  txt(ctx,'σprom',X(E.sp),Y(0)-12,STEEL,10.5);
+  // principales
+  [[E.s1,'σ1'],[E.s2,'σ2']].forEach(([v,lab])=>{
+    ctx.beginPath(); ctx.arc(X(v),Y(0),4,0,7); ctx.fillStyle=GREEN; ctx.fill();
+    txt(ctx,lab+' = '+fmt(v),X(v),Y(0)+21,GREEN,10.5,'center','middle',true);
+  });
+  // cortante máximo en el plano
+  ctx.strokeStyle=PURPLE; ctx.setLineDash([4,3]); ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.moveTo(X(E.sp),Y(E.R)); ctx.lineTo(X(E.sp),Y(-E.R)); ctx.stroke(); ctx.setLineDash([]);
+  // punto X(θ) y su opuesto
+  const px=X(T.sxp), py=Y(T.txp);
+  const qx=X(T.syp), qy=Y(-T.txp);
+  ctx.strokeStyle='#C9D4E6'; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(qx,qy); ctx.stroke();
+  // arco de 2θ desde la referencia (θ = 0)
+  const rr=E.R*k;
+  if(rr>14 && TH>3 && TH<177){
+    const a0=Math.atan2(TXY*k, ((SX-SY)/2)*k);
+    const a1=a0-rad(2*TH);
+    ctx.strokeStyle='rgba(197,90,17,.6)'; ctx.lineWidth=2.6;
+    ctx.beginPath(); ctx.arc(X(E.sp),Y(0),rr*0.45,a1,a0); ctx.stroke();
+    const am=a0-rad(TH);
+    txt(ctx,'2θ = '+fmt(2*TH,0)+'°', X(E.sp)+Math.cos(am)*rr*0.70, Y(0)+Math.sin(am)*rr*0.70, ORANGE,10.5,'center','middle',true);
+  }
+  // etiquetas desplazadas radialmente hacia fuera del círculo
+  const off=(x,y)=>{ const dx=x-X(E.sp), dy=y-Y(0), d=Math.hypot(dx,dy)||1; return [x+dx/d*17, y+dy/d*17]; };
+  ctx.beginPath(); ctx.arc(qx,qy,4,0,7); ctx.fillStyle='#fff'; ctx.fill();
+  ctx.strokeStyle=STEEL; ctx.lineWidth=2; ctx.stroke();
+  const [qlx,qly]=off(qx,qy); txt(ctx,'Y(θ)',qlx,qly,STEEL,10.5,'center','middle',true);
+  ctx.beginPath(); ctx.arc(px,py,5.5,0,7); ctx.fillStyle=RED; ctx.fill();
+  ctx.strokeStyle='#fff'; ctx.lineWidth=1.6; ctx.stroke();
+  const [plx,ply]=off(px,py); txt(ctx,'X(θ)',plx,ply,RED,11,'center','middle',true);
+
+  /* ---------- lecturas ---------- */
+  $('oSp').textContent=fmt(E.sp);
+  $('oR').textContent=fmt(E.R);
+  $('oSxp').textContent=fmt(T.sxp);
+  $('oSyp').textContent=fmt(T.syp);
+  $('oTxp').textContent=fmt(T.txp);
+  $('oDos').textContent=fmt(2*TH,0)+'°';
+  $('oS1').textContent=fmt(E.s1);
+  $('oS2').textContent=fmt(E.s2);
+  $('oThp').textContent=fmt(E.thp,1)+'°';
+  $('oTm3').textContent=fmt(E.tmax3);
+  drawFalla(E);
+}
+
+/* ---------- panel 2: criterios de falla ---------- */
+function drawFalla(E){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const W=cf.clientWidth||520, H=440;
+  cf.width=W*dpr; cf.height=H*dpr; cf.style.height=H+'px';
+  ctf.setTransform(dpr,0,0,dpr,0,0); ctf.clearRect(0,0,W,H);
+  const m=46, pw=W-2*m, ph=H-2*m;
+  const lim=SYLIM*1.45;
+  const k=Math.min(pw,ph)/(2*lim);
+  const cx=m+pw/2, cy=m+ph/2;
+  const X=s=>cx+s*k, Y=s=>cy-s*k;
+  // ejes
+  ctf.strokeStyle='#EDF1F8'; ctf.lineWidth=1;
+  for(let s=-400;s<=400;s+=100){ if(Math.abs(s)>lim) continue;
+    ctf.beginPath(); ctf.moveTo(X(s),Y(-lim)); ctf.lineTo(X(s),Y(lim)); ctf.stroke();
+    ctf.beginPath(); ctf.moveTo(X(-lim),Y(s)); ctf.lineTo(X(lim),Y(s)); ctf.stroke(); }
+  ctf.strokeStyle='#B9C6DA'; ctf.lineWidth=1.2;
+  ctf.beginPath(); ctf.moveTo(X(-lim),Y(0)); ctf.lineTo(X(lim),Y(0)); ctf.moveTo(X(0),Y(-lim)); ctf.lineTo(X(0),Y(lim)); ctf.stroke();
+  txt(ctf,'σ1',X(lim)-6,Y(0)-11,NAVY,12,'right','middle',true);
+  txt(ctf,'σ2',X(0)+12,Y(lim)+8,NAVY,12,'left','middle',true);
+  for(const s of [-SYLIM,SYLIM]){ txt(ctf,fmt(s,0),X(s),Y(0)+12,GREY,10); }
+  // elipse de von Mises: s1²−s1s2+s2²=Sy²  (paramétrica)
+  ctf.strokeStyle=STEEL; ctf.lineWidth=2.2; ctf.beginPath();
+  for(let i=0;i<=360;i++){
+    const a=rad(i);
+    // ejes principales de la elipse a 45°: semiejes Sy√2 y Sy√(2/3)
+    const u=Math.SQRT2*SYLIM*Math.cos(a), v=Math.sqrt(2/3)*SYLIM*Math.sin(a);
+    const s1=(u+v)/Math.SQRT2, s2=(u-v)/Math.SQRT2;
+    const x=X(s1), y=Y(s2); i?ctf.lineTo(x,y):ctf.moveTo(x,y);
+  }
+  ctf.closePath(); ctf.stroke();
+  ctf.fillStyle='rgba(68,114,196,.06)'; ctf.fill();
+  // hexágono de Tresca
+  const hex=[[SYLIM,0],[SYLIM,SYLIM],[0,SYLIM],[-SYLIM,0],[-SYLIM,-SYLIM],[0,-SYLIM]];
+  ctf.strokeStyle=ORANGE; ctf.lineWidth=2; ctf.beginPath();
+  hex.forEach(([a,b],i)=>{ const x=X(a),y=Y(b); i?ctf.lineTo(x,y):ctf.moveTo(x,y); });
+  ctf.closePath(); ctf.stroke();
+  // estado
+  const px=X(E.s1), py=Y(E.s2);
+  ctf.beginPath(); ctf.moveTo(X(0),Y(0)); ctf.lineTo(px,py);
+  ctf.strokeStyle='rgba(178,58,58,.35)'; ctf.lineWidth=1.4; ctf.setLineDash([4,3]); ctf.stroke(); ctf.setLineDash([]);
+  ctf.beginPath(); ctf.arc(px,py,6,0,7); ctf.fillStyle=RED; ctf.fill();
+  ctf.strokeStyle='#fff'; ctf.lineWidth=1.8; ctf.stroke();
+  txt(ctf,'(σ1, σ2)',px,py-15,RED,11,'center','middle',true);
+  txt(ctf,'von Mises',X(-SYLIM*0.45),Y(SYLIM*1.21),STEEL,11,'center','middle',true);
+  txt(ctf,'Tresca',X(SYLIM*0.46),Y(SYLIM*0.86),ORANGE,11,'center','middle',true);
+  // lecturas
+  const nvm=E.vm>1e-6?SYLIM/E.vm:Infinity, ntr=E.tre>1e-6?SYLIM/E.tre:Infinity;
+  $('oVM').textContent=fmt(E.vm);
+  $('oNvm').textContent=isFinite(nvm)?fmt(nvm,2):'—';
+  $('oNtr').textContent=isFinite(ntr)?fmt(ntr,2):'—';
+  const fluye=E.vm>=SYLIM;
+  $('oVer').textContent=fluye?'fluye':'no fluye';
+  $('tVer').className='tile'+(fluye?' bad':'');
+}
+
+/* ---------- controles ---------- */
+function sync(){
+  $('vsx').textContent=fmt(SX,0); $('vsy').textContent=fmt(SY,0); $('vtxy').textContent=fmt(TXY,0);
+  $('vth').textContent=fmt(TH,1)+'°'; $('vsy2').textContent=fmt(SYLIM,0);
+  document.querySelectorAll('.btn[data-p]').forEach(b=>{
+    const [a,c,d]=b.dataset.p.split(',').map(Number);
+    b.classList.toggle('on', a===SX&&c===SY&&d===TXY);
+  });
+  draw();
+}
+$('sx').addEventListener('input',e=>{ SX=+e.target.value; sync(); });
+$('sy').addEventListener('input',e=>{ SY=+e.target.value; sync(); });
+$('txy').addEventListener('input',e=>{ TXY=+e.target.value; sync(); });
+$('th').addEventListener('input',e=>{ TH=+e.target.value; sync(); });
+$('sylim').addEventListener('input',e=>{ SYLIM=+e.target.value; sync(); });
+document.querySelectorAll('.btn[data-p]').forEach(b=>b.addEventListener('click',()=>{
+  const [a,c,d]=b.dataset.p.split(',').map(Number);
+  SX=a; SY=c; TXY=d; $('sx').value=a; $('sy').value=c; $('txy').value=d; sync();
+}));
+function setTh(v){ let t=((v%180)+180)%180; TH=Math.round(t*10)/10; $('th').value=TH; sync(); }
+$('goP').addEventListener('click',()=>setTh(estado().thp));
+$('goT').addEventListener('click',()=>setTh(estado().thp+45));
+$('goZ').addEventListener('click',()=>setTh(0));
+window.addEventListener('resize',draw);
+sync();
+</script>
+</body>
+</html>

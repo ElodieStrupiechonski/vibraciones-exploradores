@@ -1,6 +1,6 @@
 # Vibraciones — Exploradores interactivos
 
-Colección de **siete exploradores interactivos** (HTML, funcionan sin conexión) de apoyo al curso de **Vibraciones** · Ingeniería Aeroespacial · **ENES Juriquilla, UNAM**.
+Colección de **ocho exploradores interactivos** (HTML, funcionan sin conexión) de apoyo al curso de **Vibraciones** · Ingeniería Aeroespacial · **ENES Juriquilla, UNAM**.
 
 🔗 **Portal en línea:** https://elodiestrupiechonski.github.io/vibraciones-exploradores/
 
@@ -19,6 +19,7 @@ Colección de **siete exploradores interactivos** (HTML, funcionan sin conexión
 5. `forzada_interactivo.html` — Respuesta forzada y resonancia (U3)
 6. `mediapotencia_interactivo.html` — Media potencia y factor Q (U3)
 7. `espectro_interactivo.html` — Del espectro de ensayo a la carga de diseño (U4)
+8. `mohr_interactivo.html` — Círculo de Mohr y criterios de falla estática (U5)
 
 Material de apoyo
 
