@@ -4,8 +4,7 @@ Colección de **ocho exploradores interactivos** (HTML, funcionan sin conexión)
 
 🔗 **Portal en línea:** https://elodiestrupiechonski.github.io/vibraciones-exploradores/
 
-<!-- Tras el primer release en Zenodo, reemplaza XXXXXXX por el número real: -->
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23422993.svg)](https://doi.org/10.5281/zenodo.23422993)
 
 ## Exploradores
 
@@ -34,7 +33,7 @@ Creative Commons Attribution 4.0 International (**CC BY 4.0**).
 
 ## Cómo citar
 
-Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones — Exploradores interactivos* (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.XXXXXXX
+Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones — Exploradores interactivos* (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
 
 ## Autoría
 
