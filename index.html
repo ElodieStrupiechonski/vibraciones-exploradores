@@ -53,6 +53,48 @@
 </style>
 </head>
 <body>
+<!-- navbar:inicio -->
+<style>
+  .tnav{position:sticky;top:0;z-index:5000;background:#fff;border-bottom:1px solid #D3DEEE;box-shadow:0 1px 6px rgba(31,56,100,.08);font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;font-size:13px}
+  .tnav-in{max-width:1180px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tnav-brand{font-weight:800;color:#1F3864;text-decoration:none;letter-spacing:.2px;white-space:nowrap}
+  .tnav-brand small{font-weight:600;color:#7A8699;margin-left:6px}
+  .tnav-btn{border:1px solid #4472C4;background:#fff;color:#2E5496;font-weight:700;border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12.5px;font-family:inherit}
+  .tnav-btn[aria-expanded="true"],.tnav-btn:hover{background:#1F3864;color:#fff;border-color:#1F3864}
+  .tnav-step{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap}
+  .tnav-step a{color:#2E5496;text-decoration:none;border:1px solid #D3DEEE;border-radius:20px;padding:4px 10px;font-weight:600;white-space:nowrap}
+  .tnav-step a:hover{background:#EEF3FA}
+  .tnav-step .tcur{background:#1F3864;color:#fff;border-radius:20px;padding:4px 11px;font-weight:700;white-space:nowrap}
+  .tnav-step .tlab{color:#7A8699;font-weight:700;font-size:12px}
+  .tnav-normas{color:#6B3FA0;text-decoration:none;font-weight:700;border:1px dashed #6B3FA0;border-radius:20px;padding:4px 10px;white-space:nowrap}
+  .tnav-normas:hover{background:#F3EEF8}
+  .tnav-menu{max-width:1180px;margin:0 auto;padding:10px 18px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 18px;border-top:1px solid #EEF3FA}
+  .tnav-menu[hidden]{display:none}
+  .tnav-menu{max-height:calc(100vh - 54px);overflow:auto}
+  .tnav-col{background:#F7F9FD;border:1px solid #EEF3FA;border-radius:10px;padding:9px 11px}
+  .tnav-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#C55A11;margin-bottom:5px}
+  .tnav-h.fund{color:#2E7D46} .tnav-h.apoyo{color:#6B3FA0}
+  .tnav-col a{display:block;color:#1F3864;text-decoration:none;padding:3px 0;font-weight:600;font-size:12.5px}
+  .tnav-col a:hover{color:#C55A11}
+  .tnav-col a.tact{color:#C55A11}
+  .tnav-col a.tact::before{content:"▸ ";}
+  .tnav-sub{margin:4px 0 0;padding-left:14px;color:#5B6B82;font-size:11.5px;line-height:1.35}
+  .tnav-soon{display:inline-block;font-size:11px;color:#7A8699;font-style:italic;margin-top:3px}
+  .tnav-pc{font-size:10.5px;color:#9AA7B8;font-weight:600;margin-left:4px;text-transform:none;letter-spacing:0}
+  @media(max-width:700px){ .tnav-step{display:none} .tnav-in{padding:7px 12px} .tnav-brand small{display:none} }
+</style>
+<nav class="tnav" id="tnav" aria-label="Menú del curso"><div class="tnav-in"><a class="tnav-brand" href="index.html">Vibraciones · Exploradores<small>ENES Juriquilla</small></a><button class="tnav-btn" id="tnav-btn" aria-expanded="false" aria-controls="tnav-menu">Temario ▾</button><div class="tnav-step"><span class="tlab">Recorrido:</span><a href="complejos_interactivo.html">Empezar: Pilar 1 · Números complejos →</a></div><a class="tnav-normas" href="normas.html">Normas</a></div><div class="tnav-menu" id="tnav-menu" hidden><div class="tnav-col"><div class="tnav-h fund">Pilares de fundamentos</div><a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a><a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a><a href="complejos_interactivo.html">Pilar 1 · Números complejos</a></div><div class="tnav-col"><div class="tnav-h">Unidad 1 · Conceptos básicos <span class="tnav-pc">· 4 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>1.1 Ruido y vibraciones, conceptos básicos</li><li>1.2 Frecuencias naturales, amortiguamiento, sistemas rotatorios, vibración libre y forzada</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 2 · Sistemas masa-resorte-amortiguador <span class="tnav-pc">· 4 h</span></div><a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a><ul class="tnav-sub"><li>2.1 Equivalencias para modelado entre sistemas electrónicos, mecánicos, hidráulicos y eléctricos</li><li>2.2 Análisis del sistema resorte-masa-amortiguador</li><li>2.3 Sistemas críticamente amortiguados, sobreamortiguados y subamortiguados</li><li>2.4 Analogías con sistemas espaciales</li><li>2.5 Acoplamiento entre sistemas</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 3 · Frecuencias naturales, resonancia <span class="tnav-pc">· 6 h</span></div><a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a><a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a><ul class="tnav-sub"><li>3.1 Frecuencias naturales</li><li>3.2 Análisis modal</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 4 · Normatividad en sistemas aeroespaciales <span class="tnav-pc">· 6 h</span></div><a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a><a href="normas.html">Normas: dónde consultarlas</a><ul class="tnav-sub"><li>4.1 Normatividad para la prueba de sistemas espaciales</li><li>4.2 Pruebas y su registro</li><li>4.3 Normatividad para sistemas electrónicos en operación, lanzamiento y despliegue</li><li>4.4 Elementos de falla más comunes en sistemas mecánicos, electrónicos y cargas útiles</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 5 · Esfuerzos normales y cortantes directos <span class="tnav-pc">· 6 h</span></div><a href="mohr_interactivo.html">Pilar 8 · Círculo de Mohr</a><ul class="tnav-sub"><li>5.1 Esfuerzos normales directos</li><li>5.2 Esfuerzos cortantes directos</li><li>5.3 Círculo de Mohr y su interpretación para la falla</li><li>5.4 Mecanismos de falla, estática y dinámica</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 6 · Ruido y amortiguamiento <span class="tnav-pc">· 6 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>6.1 Ruido y su transmisión</li><li>6.2 Frecuencias principales y secundarias</li><li>6.3 Transmisión y amortiguamiento</li><li>6.4 Sistemas anecoicos y electrónicos para medición y modelado de ruido</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 7 · Pruebas <span class="tnav-pc">· 10 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>7.1 Hardware de medición</li><li>7.2 Análisis de señales aleatorias</li><li>7.3 Extracción de datos modales</li><li>7.4 Prueba de vibración para resistencia y diagnóstico</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 8 · Sistemas acoplados <span class="tnav-pc">· 6 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>8.1 Factores de riesgo por acoplamiento de frecuencias</li><li>8.2 Frecuencias principales y secundarias de interés</li><li>8.3 Modelado y análisis</li></ul></div><div class="tnav-col"><div class="tnav-h apoyo">Portal</div><a href="index.html" class="tact">Índice por unidades</a><span class="tnav-soon">Programa: Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM · 8 unidades, 48 h</span></div></div></nav>
+<script>
+(function(){
+  var b=document.getElementById('tnav-btn'), m=document.getElementById('tnav-menu'), n=document.getElementById('tnav');
+  if(!b||!m) return;
+  function abrir(v){ m.hidden=!v; b.setAttribute('aria-expanded', v?'true':'false'); }
+  b.addEventListener('click', function(e){ e.stopPropagation(); abrir(m.hidden); });
+  document.addEventListener('click', function(e){ if(!m.hidden && !n.contains(e.target)) abrir(false); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') abrir(false); });
+})();
+</script>
+<!-- navbar:fin -->
 <header>
   <div class="in">
     <h1>Vibraciones — Exploradores interactivos</h1>
@@ -78,7 +120,10 @@
     <p style="font-size:12.5px;color:var(--grey);margin-top:8px">Se puede empezar por cualquiera: cada explorador enlaza con el anterior y el siguiente. Todos funcionan <b>sin conexión</b>; conviene mantener los archivos en la misma carpeta.</p>
   </div>
 
-  <h3 class="sec">Elige un explorador</h3>
+  <!-- indice:inicio -->
+  <style>.sec.unidad{margin-top:30px}.secdesc{margin:-4px 0 12px;font-size:13px;color:var(--grey)}.cards{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.subtemas{margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px;list-style:none}.subtemas li{font-size:12px;color:var(--navy);background:var(--ice2);border:1px solid var(--line);border-radius:14px;padding:3px 10px}.subtemas li.pc{color:var(--grey);border-style:dashed}.soon{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--grey)}</style>
+  <h3 class="sec fund">Pilares de fundamentos <span style="font-weight:600;color:var(--grey);font-size:13px">· conocimiento previo</span></h3>
+  <p class="secdesc">Conocimiento previo que el curso da por sabido: armar la ecuación de un sistema (dinámica), resolverla (EDO) e interpretar sus raíces (números complejos).</p>
   <div class="cards">
 
     <!-- PILAR 3 -->
@@ -150,6 +195,16 @@
       </div>
     </div>
 
+  </div>
+  <h3 class="sec unidad">Unidad 1 · Conceptos básicos <span style="font-weight:600;color:var(--grey);font-size:12px">· 4 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Comprender los principales conceptos relacionados con sistemas vibratorios para interpretar, analizar y diseñar partes de sistemas aeroespaciales.</p>
+  <ul class="subtemas"><li>1.1 Ruido y vibraciones, conceptos básicos</li><li>1.2 Frecuencias naturales, amortiguamiento, sistemas rotatorios, vibración libre y forzada</li></ul>
+  <div class="soon"><b>Próximamente.</b> Unidad sin explorador todavía; los subtemas se cubren en clase y en las tareas.</div>
+  <h3 class="sec unidad">Unidad 2 · Sistemas masa-resorte-amortiguador <span style="font-weight:600;color:var(--grey);font-size:12px">· 4 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Comprender la relación entre las variables de un sistema para producir diferentes respuestas a excitaciones armónicas.</p>
+  <ul class="subtemas"><li>2.1 Equivalencias para modelado entre sistemas electrónicos, mecánicos, hidráulicos y eléctricos</li><li>2.2 Análisis del sistema resorte-masa-amortiguador</li><li>2.3 Sistemas críticamente amortiguados, sobreamortiguados y subamortiguados</li><li>2.4 Analogías con sistemas espaciales</li><li>2.5 Acoplamiento entre sistemas</li></ul>
+  <div class="cards">
+
     <!-- PILAR 4 -->
     <div class="card" style="--accent:#B23A3A">
       <div class="top">
@@ -169,6 +224,12 @@
         <a class="open" href="coulomb_interactivo.html">Abrir explorador →</a>
       </div>
     </div>
+
+  </div>
+  <h3 class="sec unidad">Unidad 3 · Frecuencias naturales, resonancia <span style="font-weight:600;color:var(--grey);font-size:12px">· 6 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Comprender las relaciones entre las variables de sistemas simples y acoplados que los llevan a resonancia, y sus consecuencias para el diseño aeroespacial.</p>
+  <ul class="subtemas"><li>3.1 Frecuencias naturales</li><li>3.2 Análisis modal</li></ul>
+  <div class="cards">
 
     <!-- PILAR 5 -->
     <div class="card" style="--accent:#6B3FA0">
@@ -210,6 +271,12 @@
       </div>
     </div>
 
+  </div>
+  <h3 class="sec unidad">Unidad 4 · Normatividad en sistemas aeroespaciales <span style="font-weight:600;color:var(--grey);font-size:12px">· 6 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Aplicar la normatividad para realizar pruebas en sistemas aeroespaciales y desarrollar modelos que correlacionen las características de los elementos sujetos a diseño, análisis o modificación.</p>
+  <ul class="subtemas"><li>4.1 Normatividad para la prueba de sistemas espaciales</li><li>4.2 Pruebas y su registro</li><li>4.3 Normatividad para sistemas electrónicos en operación, lanzamiento y despliegue</li><li>4.4 Elementos de falla más comunes en sistemas mecánicos, electrónicos y cargas útiles</li></ul>
+  <div class="cards">
+
     <!-- PILAR 7 -->
     <div class="card" style="--accent:#1F3864">
       <div class="top">
@@ -227,26 +294,6 @@
       </div>
       <div class="foot">
         <a class="open" href="espectro_interactivo.html">Abrir explorador →</a>
-      </div>
-    </div>
-
-    <!-- PILAR 8 -->
-    <div class="card" style="--accent:#2E7D46">
-      <div class="top">
-        <span class="pil">Pilar 8 · tema del curso (U5)</span>
-        <h4>📐 Círculo de Mohr</h4>
-        <div class="role2">ESFUERZOS · transformación, von Mises y Tresca</div>
-      </div>
-      <div class="body">
-        <p>El elemento diferencial y el círculo de Mohr, lado a lado y sincronizados: al girar el corte un ángulo <span style="font-family:'Cambria Math',serif">θ</span>, el punto recorre el círculo a <span style="font-family:'Cambria Math',serif">2θ</span>.</p>
-        <ul>
-          <li>σ<sub>1</sub>, σ<sub>2</sub>, θ<sub>p</sub> y τ<sub>máx</sub> en vivo</li>
-          <li>Elipse de von Mises y hexágono de Tresca</li>
-          <li>Factor de seguridad frente a S<sub>y</sub></li>
-        </ul>
-      </div>
-      <div class="foot">
-        <a class="open" href="mohr_interactivo.html">Abrir explorador →</a>
       </div>
     </div>
 
@@ -271,6 +318,56 @@
     </div>
 
   </div>
+  <h3 class="sec unidad">Unidad 5 · Esfuerzos normales y cortantes directos <span style="font-weight:600;color:var(--grey);font-size:12px">· 6 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Comprender las relaciones geométricas de los cuerpos sujetos a cargas directas que crean esfuerzos normales y cortantes, para aplicarlas al análisis, diseño y modelado de elementos aeroespaciales.</p>
+  <ul class="subtemas"><li>5.1 Esfuerzos normales directos</li><li>5.2 Esfuerzos cortantes directos</li><li>5.3 Círculo de Mohr y su interpretación para la falla</li><li>5.4 Mecanismos de falla, estática y dinámica</li></ul>
+  <div class="cards">
+
+    <!-- PILAR 8 -->
+    <div class="card" style="--accent:#2E7D46">
+      <div class="top">
+        <span class="pil">Pilar 8 · tema del curso (U5)</span>
+        <h4>📐 Círculo de Mohr</h4>
+        <div class="role2">ESFUERZOS · transformación, von Mises y Tresca</div>
+      </div>
+      <div class="body">
+        <p>El elemento diferencial y el círculo de Mohr, lado a lado y sincronizados: al girar el corte un ángulo <span style="font-family:'Cambria Math',serif">θ</span>, el punto recorre el círculo a <span style="font-family:'Cambria Math',serif">2θ</span>.</p>
+        <ul>
+          <li>σ<sub>1</sub>, σ<sub>2</sub>, θ<sub>p</sub> y τ<sub>máx</sub> en vivo</li>
+          <li>Elipse de von Mises y hexágono de Tresca</li>
+          <li>Factor de seguridad frente a S<sub>y</sub></li>
+        </ul>
+      </div>
+      <div class="foot">
+        <a class="open" href="mohr_interactivo.html">Abrir explorador →</a>
+      </div>
+    </div>
+
+  </div>
+  <h3 class="sec unidad">Unidad 6 · Ruido y amortiguamiento <span style="font-weight:600;color:var(--grey);font-size:12px">· 6 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Modelar, analizar y desarrollar sistemas aeroespaciales que pueden producir emisiones de ruido, en ambientes de trabajo apropiados según normatividad.</p>
+  <ul class="subtemas"><li>6.1 Ruido y su transmisión</li><li>6.2 Frecuencias principales y secundarias</li><li>6.3 Transmisión y amortiguamiento</li><li>6.4 Sistemas anecoicos y electrónicos para medición y modelado de ruido</li></ul>
+  <div class="soon"><b>Próximamente.</b> Explorador de niveles sonoros: suma de bandas de octava, ley de distancia y tiempo de exposición (NOM-011-STPS-2001). Mientras tanto, la Tarea 6 cubre los cuatro subtemas.</div>
+  <h3 class="sec unidad">Unidad 7 · Pruebas <span style="font-weight:600;color:var(--grey);font-size:12px">· 10 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Realizar el protocolo de pruebas para medir los modos de vibración y entender el comportamiento del sistema bajo diseño, análisis o modificación.</p>
+  <ul class="subtemas"><li>7.1 Hardware de medición</li><li>7.2 Análisis de señales aleatorias</li><li>7.3 Extracción de datos modales</li><li>7.4 Prueba de vibración para resistencia y diagnóstico</li></ul>
+  <div class="soon"><b>Próximamente.</b> El Pilar 7 (espectro y carga de diseño) y el Pilar 6 (media potencia) anticipan 7.2 y 7.3; falta un explorador de análisis de señales (FFT, PSD medida, promediado).</div>
+  <h3 class="sec unidad">Unidad 8 · Sistemas acoplados <span style="font-weight:600;color:var(--grey);font-size:12px">· 6 h del programa</span></h3>
+  <p class="secdesc"><b>Objetivo:</b> Modelar y analizar, mediante sistemas masa-resorte-amortiguador, sistemas acoplados presentes en los sistemas aeroespaciales.</p>
+  <ul class="subtemas"><li>8.1 Factores de riesgo por acoplamiento de frecuencias</li><li>8.2 Frecuencias principales y secundarias de interés</li><li>8.3 Modelado y análisis</li></ul>
+  <div class="soon"><b>Próximamente.</b> Explorador de dos grados de libertad: modos, frecuencias acopladas y absorbedor dinámico.</div>
+
+  <!-- indice:fin -->
+
+  
+
+  
+
+  
+
+  
+
+  
 
   <div class="note">
     <b>Cómo usarlo.</b> Se descarga la carpeta completa y se abre en cualquier navegador (funciona sin internet, también en tablet). El punto de partida es <span style="font-family:'Cambria Math',serif">index.html</span>. Los enlaces «Hoja del alumno» abren el documento Word correspondiente si está en la misma carpeta. Cada explorador incluye, en su parte inferior, un mapa de recorrido para saltar entre pilares.

@@ -1,0 +1,192 @@
+{
+  "curso": "Vibraciones",
+  "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
+  "actualizado": "2026-10-19",
+  "nota": "Fuente única de la barra de navegación y del índice. Títulos, subtemas, horas y objetivos tomados del programa oficial (Vibraciones.pdf). Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos'), 3) ejecutar add_navbar.py.",
+  "paginas": {
+    "complejos_interactivo.html": {
+      "corto": "Pilar 1 · Números complejos",
+      "titulo": "Números complejos",
+      "rol": "interpretar"
+    },
+    "edo_interactivo.html": {
+      "corto": "Pilar 2 · EDO 2.º orden",
+      "titulo": "EDO lineal de 2.º orden",
+      "rol": "resolver"
+    },
+    "edo3_interactivo.html": {
+      "corto": "Pilar 3 · Dinámica (ΣF = ma)",
+      "titulo": "Dinámica de la partícula",
+      "rol": "armar"
+    },
+    "coulomb_interactivo.html": {
+      "corto": "Pilar 4 · Fricción de Coulomb",
+      "titulo": "Fricción de Coulomb"
+    },
+    "forzada_interactivo.html": {
+      "corto": "Pilar 5 · Respuesta forzada",
+      "titulo": "Respuesta forzada y resonancia"
+    },
+    "mediapotencia_interactivo.html": {
+      "corto": "Pilar 6 · Media potencia y Q",
+      "titulo": "Media potencia y factor Q"
+    },
+    "espectro_interactivo.html": {
+      "corto": "Pilar 7 · Espectro y carga de diseño",
+      "titulo": "Del espectro de ensayo a la carga de diseño"
+    },
+    "mohr_interactivo.html": {
+      "corto": "Pilar 8 · Círculo de Mohr",
+      "titulo": "Círculo de Mohr y criterios de falla"
+    },
+    "normas.html": {
+      "corto": "Normas: dónde consultarlas",
+      "titulo": "Dónde consultar las normas",
+      "apoyo": true
+    }
+  },
+  "recorrido": [
+    "complejos_interactivo.html",
+    "edo_interactivo.html",
+    "edo3_interactivo.html",
+    "coulomb_interactivo.html",
+    "forzada_interactivo.html",
+    "mediapotencia_interactivo.html",
+    "espectro_interactivo.html",
+    "mohr_interactivo.html"
+  ],
+  "fundamentos": {
+    "titulo": "Pilares de fundamentos",
+    "descripcion": "Conocimiento previo que el curso da por sabido: armar la ecuación de un sistema (dinámica), resolverla (EDO) e interpretar sus raíces (números complejos).",
+    "paginas": [
+      "edo3_interactivo.html",
+      "edo_interactivo.html",
+      "complejos_interactivo.html"
+    ]
+  },
+  "unidades": [
+    {
+      "n": 1,
+      "titulo": "Conceptos básicos",
+      "horas": 4,
+      "objetivo": "Comprender los principales conceptos relacionados con sistemas vibratorios para interpretar, analizar y diseñar partes de sistemas aeroespaciales.",
+      "subtemas": [
+        "1.1 Ruido y vibraciones, conceptos básicos",
+        "1.2 Frecuencias naturales, amortiguamiento, sistemas rotatorios, vibración libre y forzada"
+      ],
+      "paginas": []
+    },
+    {
+      "n": 2,
+      "titulo": "Sistemas masa-resorte-amortiguador",
+      "horas": 4,
+      "objetivo": "Comprender la relación entre las variables de un sistema para producir diferentes respuestas a excitaciones armónicas.",
+      "subtemas": [
+        "2.1 Equivalencias para modelado entre sistemas electrónicos, mecánicos, hidráulicos y eléctricos",
+        "2.2 Análisis del sistema resorte-masa-amortiguador",
+        "2.3 Sistemas críticamente amortiguados, sobreamortiguados y subamortiguados",
+        "2.4 Analogías con sistemas espaciales",
+        "2.5 Acoplamiento entre sistemas"
+      ],
+      "paginas": [
+        "coulomb_interactivo.html"
+      ]
+    },
+    {
+      "n": 3,
+      "titulo": "Frecuencias naturales, resonancia",
+      "horas": 6,
+      "objetivo": "Comprender las relaciones entre las variables de sistemas simples y acoplados que los llevan a resonancia, y sus consecuencias para el diseño aeroespacial.",
+      "subtemas": [
+        "3.1 Frecuencias naturales",
+        "3.2 Análisis modal"
+      ],
+      "paginas": [
+        "forzada_interactivo.html",
+        "mediapotencia_interactivo.html"
+      ]
+    },
+    {
+      "n": 4,
+      "titulo": "Normatividad en sistemas aeroespaciales",
+      "horas": 6,
+      "objetivo": "Aplicar la normatividad para realizar pruebas en sistemas aeroespaciales y desarrollar modelos que correlacionen las características de los elementos sujetos a diseño, análisis o modificación.",
+      "subtemas": [
+        "4.1 Normatividad para la prueba de sistemas espaciales",
+        "4.2 Pruebas y su registro",
+        "4.3 Normatividad para sistemas electrónicos en operación, lanzamiento y despliegue",
+        "4.4 Elementos de falla más comunes en sistemas mecánicos, electrónicos y cargas útiles"
+      ],
+      "paginas": [
+        "espectro_interactivo.html"
+      ],
+      "apoyo": [
+        "normas.html"
+      ]
+    },
+    {
+      "n": 5,
+      "titulo": "Esfuerzos normales y cortantes directos",
+      "horas": 6,
+      "objetivo": "Comprender las relaciones geométricas de los cuerpos sujetos a cargas directas que crean esfuerzos normales y cortantes, para aplicarlas al análisis, diseño y modelado de elementos aeroespaciales.",
+      "subtemas": [
+        "5.1 Esfuerzos normales directos",
+        "5.2 Esfuerzos cortantes directos",
+        "5.3 Círculo de Mohr y su interpretación para la falla",
+        "5.4 Mecanismos de falla, estática y dinámica"
+      ],
+      "paginas": [
+        "mohr_interactivo.html"
+      ]
+    },
+    {
+      "n": 6,
+      "titulo": "Ruido y amortiguamiento",
+      "horas": 6,
+      "objetivo": "Modelar, analizar y desarrollar sistemas aeroespaciales que pueden producir emisiones de ruido, en ambientes de trabajo apropiados según normatividad.",
+      "subtemas": [
+        "6.1 Ruido y su transmisión",
+        "6.2 Frecuencias principales y secundarias",
+        "6.3 Transmisión y amortiguamiento",
+        "6.4 Sistemas anecoicos y electrónicos para medición y modelado de ruido"
+      ],
+      "paginas": [],
+      "proximamente": "Explorador de niveles sonoros: suma de bandas de octava, ley de distancia y tiempo de exposición (NOM-011-STPS-2001). Mientras tanto, la Tarea 6 cubre los cuatro subtemas."
+    },
+    {
+      "n": 7,
+      "titulo": "Pruebas",
+      "horas": 10,
+      "objetivo": "Realizar el protocolo de pruebas para medir los modos de vibración y entender el comportamiento del sistema bajo diseño, análisis o modificación.",
+      "subtemas": [
+        "7.1 Hardware de medición",
+        "7.2 Análisis de señales aleatorias",
+        "7.3 Extracción de datos modales",
+        "7.4 Prueba de vibración para resistencia y diagnóstico"
+      ],
+      "paginas": [],
+      "proximamente": "El Pilar 7 (espectro y carga de diseño) y el Pilar 6 (media potencia) anticipan 7.2 y 7.3; falta un explorador de análisis de señales (FFT, PSD medida, promediado)."
+    },
+    {
+      "n": 8,
+      "titulo": "Sistemas acoplados",
+      "horas": 6,
+      "objetivo": "Modelar y analizar, mediante sistemas masa-resorte-amortiguador, sistemas acoplados presentes en los sistemas aeroespaciales.",
+      "subtemas": [
+        "8.1 Factores de riesgo por acoplamiento de frecuencias",
+        "8.2 Frecuencias principales y secundarias de interés",
+        "8.3 Modelado y análisis"
+      ],
+      "paginas": [],
+      "proximamente": "Explorador de dos grados de libertad: modos, frecuencias acopladas y absorbedor dinámico."
+    }
+  ],
+  "fuente": "Programa de estudios oficial de la asignatura Vibraciones (clave 7.º semestre, 6 créditos, 48 h teóricas), Plan de Estudios de la Licenciatura en Ingeniería Aeroespacial, ENES Juriquilla, UNAM.",
+  "bibliografia_basica": [
+    "Bottega, W. J. Engineering Vibrations. CRC Press, 2014 (texto rector)",
+    "Géradin, M., Rixen, D. J. Mechanical Vibrations, 3.ª ed. Wiley, 2015",
+    "Den Hartog, J. P. Mechanical Vibrations. McGraw-Hill",
+    "Inman, D. J. Engineering Vibration, 4.ª ed. Pearson, 2013",
+    "Rao, S. S. Mechanical Vibrations. Prentice Hall, 2011"
+  ]
+}

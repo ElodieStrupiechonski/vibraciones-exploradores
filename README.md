@@ -25,6 +25,9 @@ Material de apoyo
 - `normas.html` — Dónde consultar las normas (enlaces de descarga y de compra)
 - `normas.json` — fuente única de esas referencias: editar este archivo actualiza la guía y el Pilar 7
 
+- `temario.json` — fuente única de la **barra de navegación** y del **índice por unidades**: unidades, subtemas y qué explorador pertenece a cada una
+- `add_navbar.py` (en el repositorio de trabajo) — inyecta la barra en todas las páginas y reconstruye el índice; para una página nueva basta registrarla en `temario.json` y volver a ejecutarlo
+
 Punto de partida: `index.html`.
 
 ## Licencia
