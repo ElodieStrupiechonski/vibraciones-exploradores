@@ -69,54 +69,34 @@
   footer a{color:var(--blue)}
   @media(max-width:520px){ .wrap{padding:12px;gap:12px} .card{padding:12px 13px} header h1{font-size:18px} .pilarnav{font-size:11.5px} .row label{min-width:100%} }
 </style>
+<!-- tema:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
+  :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
+        --accent:#C1571B;--serif:"Spectral",Georgia,serif;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{background:var(--bg);font-family:var(--sans)}
+  header{background:transparent;color:var(--ink,#1a1a1a);border-bottom:1px solid var(--line);padding:22px max(20px,calc(50% - 590px)) 14px}
+  header h1{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.15;color:var(--navy,#1F3864);margin:0}
+  header p{color:var(--muted);opacity:1;font-size:15px;margin:6px 0 0;max-width:80ch}
+  header .hk{display:block;font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .card,.intro{box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .card h2,.card h3{font-family:var(--serif);font-weight:600}
+  .card h2{font-size:17px}
+  .eqbox,.tile{background:var(--ice2);border-color:var(--line)}
+  .btn{background:var(--card)}
+  footer .cred{border-top-color:var(--accent)}
+  footer{color:var(--muted)}
+  @media print{header{border-bottom:1px solid #999}}
+</style>
+<!-- tema:fin -->
 </head>
 <body>
-<!-- navbar:inicio -->
-<style>
-  .tnav{position:sticky;top:0;z-index:5000;background:#fff;border-bottom:1px solid #D3DEEE;box-shadow:0 1px 6px rgba(31,56,100,.08);font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;font-size:13px}
-  .tnav-in{max-width:1180px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .tnav-brand{font-weight:800;color:#1F3864;text-decoration:none;letter-spacing:.2px;white-space:nowrap}
-  .tnav-brand small{font-weight:600;color:#7A8699;margin-left:6px}
-  .tnav-btn{border:1px solid #4472C4;background:#fff;color:#2E5496;font-weight:700;border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12.5px;font-family:inherit}
-  .tnav-btn[aria-expanded="true"],.tnav-btn:hover{background:#1F3864;color:#fff;border-color:#1F3864}
-  .tnav-step{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap}
-  .tnav-step a{color:#2E5496;text-decoration:none;border:1px solid #D3DEEE;border-radius:20px;padding:4px 10px;font-weight:600;white-space:nowrap}
-  .tnav-step a:hover{background:#EEF3FA}
-  .tnav-step .tcur{background:#1F3864;color:#fff;border-radius:20px;padding:4px 11px;font-weight:700;white-space:nowrap}
-  .tnav-step .tlab{color:#7A8699;font-weight:700;font-size:12px}
-  .tnav-normas{color:#6B3FA0;text-decoration:none;font-weight:700;border:1px dashed #6B3FA0;border-radius:20px;padding:4px 10px;white-space:nowrap}
-  .tnav-normas:hover{background:#F3EEF8}
-  .tnav-menu{max-width:1180px;margin:0 auto;padding:10px 18px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 18px;border-top:1px solid #EEF3FA}
-  .tnav-menu[hidden]{display:none}
-  .tnav-menu{max-height:calc(100vh - 54px);overflow:auto}
-  .tnav-col{background:#F7F9FD;border:1px solid #EEF3FA;border-radius:10px;padding:9px 11px}
-  .tnav-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#C55A11;margin-bottom:5px}
-  .tnav-h.fund{color:#2E7D46} .tnav-h.apoyo{color:#6B3FA0}
-  .tnav-col a{display:block;color:#1F3864;text-decoration:none;padding:3px 0;font-weight:600;font-size:12.5px}
-  .tnav-col a:hover{color:#C55A11}
-  .tnav-col a.tact{color:#C55A11}
-  .tnav-col a.tact::before{content:"▸ ";}
-  .tnav-sub{margin:4px 0 0;padding-left:14px;color:#5B6B82;font-size:11.5px;line-height:1.35}
-  .tnav-soon{display:inline-block;font-size:11px;color:#7A8699;font-style:italic;margin-top:3px}
-  .tnav-pc{font-size:10.5px;color:#9AA7B8;font-weight:600;margin-left:4px;text-transform:none;letter-spacing:0}
-  @media(max-width:700px){ .tnav-step{display:none} .tnav-in{padding:7px 12px} .tnav-brand small{display:none} }
-</style>
-<nav class="tnav" id="tnav" aria-label="Menú del curso"><div class="tnav-in"><a class="tnav-brand" href="index.html">Vibraciones · Exploradores<small>ENES Juriquilla</small></a><button class="tnav-btn" id="tnav-btn" aria-expanded="false" aria-controls="tnav-menu">Temario ▾</button><div class="tnav-step"><span class="tlab">Recorrido:</span><a href="espectro_interactivo.html" title="Del espectro de ensayo a la carga de diseño">← Pilar 7 · Espectro y carga de diseño</a><span class="tcur">Pilar 8 · Círculo de Mohr</span></div><a class="tnav-normas" href="normas.html">Normas</a></div><div class="tnav-menu" id="tnav-menu" hidden><div class="tnav-col"><div class="tnav-h fund">Pilares de fundamentos</div><a href="edo3_interactivo.html">Pilar 3 · Dinámica (ΣF = ma)</a><a href="edo_interactivo.html">Pilar 2 · EDO 2.º orden</a><a href="complejos_interactivo.html">Pilar 1 · Números complejos</a></div><div class="tnav-col"><div class="tnav-h">Unidad 1 · Conceptos básicos <span class="tnav-pc">· 4 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>1.1 Ruido y vibraciones, conceptos básicos</li><li>1.2 Frecuencias naturales, amortiguamiento, sistemas rotatorios, vibración libre y forzada</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 2 · Sistemas masa-resorte-amortiguador <span class="tnav-pc">· 4 h</span></div><a href="coulomb_interactivo.html">Pilar 4 · Fricción de Coulomb</a><ul class="tnav-sub"><li>2.1 Equivalencias para modelado entre sistemas electrónicos, mecánicos, hidráulicos y eléctricos</li><li>2.2 Análisis del sistema resorte-masa-amortiguador</li><li>2.3 Sistemas críticamente amortiguados, sobreamortiguados y subamortiguados</li><li>2.4 Analogías con sistemas espaciales</li><li>2.5 Acoplamiento entre sistemas</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 3 · Frecuencias naturales, resonancia <span class="tnav-pc">· 6 h</span></div><a href="forzada_interactivo.html">Pilar 5 · Respuesta forzada</a><a href="mediapotencia_interactivo.html">Pilar 6 · Media potencia y Q</a><ul class="tnav-sub"><li>3.1 Frecuencias naturales</li><li>3.2 Análisis modal</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 4 · Normatividad en sistemas aeroespaciales <span class="tnav-pc">· 6 h</span></div><a href="espectro_interactivo.html">Pilar 7 · Espectro y carga de diseño</a><a href="normas.html">Normas: dónde consultarlas</a><ul class="tnav-sub"><li>4.1 Normatividad para la prueba de sistemas espaciales</li><li>4.2 Pruebas y su registro</li><li>4.3 Normatividad para sistemas electrónicos en operación, lanzamiento y despliegue</li><li>4.4 Elementos de falla más comunes en sistemas mecánicos, electrónicos y cargas útiles</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 5 · Esfuerzos normales y cortantes directos <span class="tnav-pc">· 6 h</span></div><a href="mohr_interactivo.html" class="tact">Pilar 8 · Círculo de Mohr</a><ul class="tnav-sub"><li>5.1 Esfuerzos normales directos</li><li>5.2 Esfuerzos cortantes directos</li><li>5.3 Círculo de Mohr y su interpretación para la falla</li><li>5.4 Mecanismos de falla, estática y dinámica</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 6 · Ruido y amortiguamiento <span class="tnav-pc">· 6 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>6.1 Ruido y su transmisión</li><li>6.2 Frecuencias principales y secundarias</li><li>6.3 Transmisión y amortiguamiento</li><li>6.4 Sistemas anecoicos y electrónicos para medición y modelado de ruido</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 7 · Pruebas <span class="tnav-pc">· 10 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>7.1 Hardware de medición</li><li>7.2 Análisis de señales aleatorias</li><li>7.3 Extracción de datos modales</li><li>7.4 Prueba de vibración para resistencia y diagnóstico</li></ul></div><div class="tnav-col"><div class="tnav-h">Unidad 8 · Sistemas acoplados <span class="tnav-pc">· 6 h</span></div><span class="tnav-soon">sin explorador todavía</span><ul class="tnav-sub"><li>8.1 Factores de riesgo por acoplamiento de frecuencias</li><li>8.2 Frecuencias principales y secundarias de interés</li><li>8.3 Modelado y análisis</li></ul></div><div class="tnav-col"><div class="tnav-h apoyo">Portal</div><a href="index.html">Índice por unidades</a><span class="tnav-soon">Programa: Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM · 8 unidades, 48 h</span></div></div></nav>
-<script>
-(function(){
-  var b=document.getElementById('tnav-btn'), m=document.getElementById('tnav-menu'), n=document.getElementById('tnav');
-  if(!b||!m) return;
-  function abrir(v){ m.hidden=!v; b.setAttribute('aria-expanded', v?'true':'false'); }
-  b.addEventListener('click', function(e){ e.stopPropagation(); abrir(m.hidden); });
-  document.addEventListener('click', function(e){ if(!m.hidden && !n.contains(e.target)) abrir(false); });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') abrir(false); });
-})();
-</script>
-<!-- navbar:fin -->
 <header>
   <div class="in">
-    <h1>Círculo de Mohr — Explorador</h1>
-    <p>UNAM · ENES Juriquilla · Ingeniería Aeroespacial · Vibraciones (U5) — al girar el elemento diferencial se observa cómo cambian las componentes del esfuerzo y cómo el punto recorre el círculo al doble del ángulo</p>
+    <h1>Círculo de Mohr</h1>
+    <p><span class="hk">Vibraciones · U5</span>Al girar el elemento diferencial se observa cómo cambian las componentes del esfuerzo y cómo el punto recorre el círculo al doble del ángulo</p>
   </div>
 </header>
 
@@ -565,5 +545,118 @@ sync();
 })();
 </script>
 <!-- contador:fin -->
+<!-- navbar:inicio -->
+<style>
+  body{margin-top:50px!important}
+  .nvbar{position:fixed;top:0;left:0;right:0;z-index:9999;height:44px;display:flex;align-items:center;
+    gap:10px;padding:0 14px;background:var(--card,#fff);border-bottom:1px solid var(--line,#e2dcc9);
+    font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+  .nvbar a{text-decoration:none;color:var(--navy,var(--ink,#1F3864))}
+  .nv-home{font-weight:700;white-space:nowrap}
+  .nv-home small{font-weight:400;color:var(--muted,#5a5a5a)}
+  .nv-step{display:flex;align-items:center;justify-content:center;width:34px;height:30px;border:1px solid var(--line,#e2dcc9);
+    border-radius:8px;font-size:17px;line-height:1}
+  .nv-step:hover{background:var(--bg,#f4f1ea)}
+  .nv-step[aria-disabled="true"]{opacity:.25;pointer-events:none}
+  .nv-aquibar{flex:1;min-width:0;text-align:center;font-weight:700;color:var(--ink,#1a1a1a);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .nv-aquibar small{font-weight:400;color:var(--muted,#8a8fa0)}
+  .nvbar details{position:relative}
+  .nvbar summary{list-style:none;cursor:pointer;font-weight:700;color:var(--accent,#C1571B);
+    border:1px solid var(--line,#e2dcc9);border-radius:8px;padding:5px 12px;user-select:none;white-space:nowrap}
+  .nvbar summary::-webkit-details-marker{display:none}
+  .nv-menu{position:absolute;right:0;top:40px;width:min(680px,calc(100vw - 24px));max-height:calc(100vh - 70px);overflow:auto;
+    background:var(--card,#fff);border:1px solid var(--line,#e2dcc9);border-radius:12px;
+    box-shadow:0 8px 30px rgba(0,0,0,.18);padding:10px;column-count:2;column-gap:18px}
+  .nv-grp{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted,#8a8fa0);
+    padding:10px 10px 5px;break-after:avoid;border-top:1px solid var(--line,#eee)}
+  .nv-menu .nv-grp:first-child{border-top:0;padding-top:4px}
+  .nv-menu a{display:block;padding:8px 10px;border-radius:7px;color:var(--ink,#1a1a1a);break-inside:avoid}
+  .nv-menu a small{color:var(--muted,#8a8fa0);margin-left:4px}
+  .nv-menu a:hover{background:var(--bg,#f4f1ea)}
+  .nv-menu a.nv-aqui{background:var(--bg,#f4f1ea);font-weight:700;color:var(--accent,#C1571B)}
+  .nv-vacio{display:block;padding:4px 10px 8px;font-size:12px;font-style:italic;color:var(--muted,#8a8fa0);break-inside:avoid}
+  .nv-pie{column-span:all;margin-top:6px;padding:7px 10px 2px;border-top:1px solid var(--line,#eee);
+    font-size:11.5px;color:var(--muted,#8a8fa0)}
+  @media (max-width:720px){
+    .nv-home small{display:none}
+    .nv-aquibar{display:none}
+    .nv-menu{column-count:1;position:fixed;left:12px;right:12px;top:50px;width:auto}
+  }
+  @media print{.nvbar{display:none} body{margin-top:0!important}}
+</style>
+<nav class="nvbar" aria-label="Navegación del sitio">
+  <a class="nv-home" href="index.html">⌁ Exploradores de Vibraciones <small>· ENES Juriquilla</small></a>
+  <a class="nv-step" id="nv-ant" href="#" title="Explorador anterior (tecla ←)" aria-label="Anterior">‹</a>
+  <span class="nv-aquibar" id="nv-aqui-bar"></span>
+  <a class="nv-step" id="nv-sig" href="#" title="Explorador siguiente (tecla →)" aria-label="Siguiente">›</a>
+  <details id="nvdet"><summary>Temario ▾</summary>
+    <div class="nv-menu">
+<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
+<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html">Dinámica de la partícula <small>Pilar 3 · armar</small></a>
+<a href="edo_interactivo.html" data-nv="edo_interactivo.html">EDO lineal de 2.º orden <small>Pilar 2 · resolver</small></a>
+<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html">Números complejos <small>Pilar 1 · interpretar</small></a>
+<div class="nv-grp">Unidad 1 · Conceptos básicos · 4 h</div>
+<span class="nv-vacio">sin explorador todavía</span>
+<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador · 4 h</div>
+<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html">Fricción de Coulomb <small>Pilar 4 · tema 2.3</small></a>
+<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia · 6 h</div>
+<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html">Respuesta forzada y resonancia <small>Pilar 5 · tema 3.1</small></a>
+<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html">Media potencia y factor Q <small>Pilar 6 · temas 3.1–3.2</small></a>
+<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales · 6 h</div>
+<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html">Del espectro a la carga de diseño <small>Pilar 7 · temas 4.1–4.2</small></a>
+<a href="normas.html" data-nv="normas.html">Dónde consultar las normas <small>temas 4.1 y 4.3 · apoyo</small></a>
+<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos · 6 h</div>
+<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html">Círculo de Mohr <small>Pilar 8 · tema 5.3</small></a>
+<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
+<span class="nv-vacio">sin explorador todavía</span>
+<div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
+<span class="nv-vacio">sin explorador todavía</span>
+<div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
+<span class="nv-vacio">sin explorador todavía</span>
+    <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
+    </div>
+  </details>
+</nav>
+<script>
+(function(){
+  var orden=[], datos={};
+  var l=document.querySelectorAll('.nv-menu a[data-nv]');
+  for(var i=0;i<l.length;i++){
+    var f=l[i].getAttribute('data-nv'); orden.push(f);
+    datos[f]={el:l[i], titulo:l[i].childNodes[0].textContent.trim(),
+               sub:(l[i].querySelector('small')||{textContent:''}).textContent};
+  }
+  var aqui=(location.pathname.split('/').pop()||'index.html');
+  var idx=orden.indexOf(aqui);
+  var ant=document.getElementById('nv-ant'), sig=document.getElementById('nv-sig'),
+      bar=document.getElementById('nv-aqui-bar');
+  if(idx>=0){
+    datos[aqui].el.className='nv-aqui';
+    bar.innerHTML=datos[aqui].titulo+' <small>'+datos[aqui].sub+'</small>';
+    if(idx>0) ant.href=orden[idx-1]; else ant.setAttribute('aria-disabled','true');
+    if(idx<orden.length-1) sig.href=orden[idx+1]; else sig.setAttribute('aria-disabled','true');
+    if(idx>0) ant.title='Anterior: '+datos[orden[idx-1]].titulo+'  (tecla ←)';
+    if(idx<orden.length-1) sig.title='Siguiente: '+datos[orden[idx+1]].titulo+'  (tecla →)';
+  } else {
+    ant.setAttribute('aria-disabled','true'); sig.setAttribute('aria-disabled','true');
+    bar.textContent='';
+  }
+  document.addEventListener('click',function(e){
+    var d=document.getElementById('nvdet');
+    if(d&&d.open&&!d.contains(e.target)) d.open=false;
+  });
+  document.addEventListener('keydown',function(e){
+    var t=(e.target.tagName||'').toUpperCase();
+    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||e.altKey||e.ctrlKey||e.metaKey) return;
+    var d=document.getElementById('nvdet');
+    if(e.key==='Escape'&&d&&d.open){d.open=false;return;}
+    if(idx<0) return;
+    if(e.key==='ArrowLeft'&&idx>0) location.href=orden[idx-1];
+    if(e.key==='ArrowRight'&&idx<orden.length-1) location.href=orden[idx+1];
+  });
+})();
+</script>
+<!-- navbar:fin -->
 </body>
 </html>

@@ -7,42 +7,153 @@
     "complejos_interactivo.html": {
       "corto": "Pilar 1 · Números complejos",
       "titulo": "Números complejos",
-      "rol": "interpretar"
+      "rol": "interpretar",
+      "enfoque": "INTERPRETAR · el idioma de la vibración",
+      "descripcion": "Al arrastrar z en el plano de Argand se leen |z| como amplitud, θ como desfase y sus raíces como régimen.",
+      "puntos": [
+        "Formas binómica, polar y de Euler",
+        "Raíces cuadradas y ecuación auxiliar",
+        "Fasor: excitación vs. respuesta (desfase θ)"
+      ],
+      "tema": "interpretar",
+      "swatch": [
+        "#C55A11",
+        "#4472C4"
+      ],
+      "hoja": "Hoja_alumno_Pilar1_Complejos.docx"
     },
     "edo_interactivo.html": {
       "corto": "Pilar 2 · EDO 2.º orden",
       "titulo": "EDO lineal de 2.º orden",
-      "rol": "resolver"
+      "rol": "resolver",
+      "enfoque": "RESOLVER · el discriminante decide el régimen",
+      "descripcion": "Al mover los coeficientes o arrastrar las raíces en el plano s se observan Δ = b²−4ac y los cuatro regímenes.",
+      "puntos": [
+        "Subamortiguado, crítico, sobreamortiguado",
+        "Inestable = flameo (frontera Re = 0)",
+        "Respuesta x(t) con condiciones iniciales"
+      ],
+      "tema": "resolver",
+      "swatch": [
+        "#2E5496",
+        "#C55A11"
+      ],
+      "hoja": "Hoja_alumno_Pilar2_EDO.docx"
     },
     "edo3_interactivo.html": {
       "corto": "Pilar 3 · Dinámica (ΣF = ma)",
       "titulo": "Dinámica de la partícula",
-      "rol": "armar"
+      "rol": "armar",
+      "enfoque": "ARMAR · del DCL a la ecuación de movimiento",
+      "descripcion": "Al arrastrar la masa se ve el diagrama de cuerpo libre en vivo y se arma ΣF = ma → m·x″ + c·x′ + k·x = 0.",
+      "puntos": [
+        "Frecuencia natural ωn = √(k/m)",
+        "Energía T ↔ V, resorte equivalente",
+        "Péndulo y acelerómetro (masa sísmica)"
+      ],
+      "tema": "armar",
+      "swatch": [
+        "#2E7D46",
+        "#2E5496"
+      ],
+      "hoja": "Hoja_alumno_Pilar3_Dinamica.docx"
     },
     "coulomb_interactivo.html": {
       "corto": "Pilar 4 · Fricción de Coulomb",
-      "titulo": "Fricción de Coulomb"
+      "titulo": "Fricción de Coulomb",
+      "enfoque": "FRICCIÓN SECA · decaimiento lineal y banda de reposo",
+      "descripcion": "Al soltar el bloque se observa cómo la fricción seca Ff = μN hace que la amplitud caiga en línea recta (no exponencial) hasta detenerse dentro de una banda.",
+      "puntos": [
+        "Banda de reposo = Ff/k",
+        "Caída de amplitud 4Ff/k por ciclo",
+        "Conteo de ciclos hasta detenerse"
+      ],
+      "tema": "tema 2.3",
+      "swatch": [
+        "#B23A3A",
+        "#C55A11"
+      ]
     },
     "forzada_interactivo.html": {
       "corto": "Pilar 5 · Respuesta forzada",
-      "titulo": "Respuesta forzada y resonancia"
+      "titulo": "Respuesta forzada y resonancia",
+      "enfoque": "RESONANCIA · factor de amplificación M y fase φ",
+      "descripcion": "Al barrer la frecuencia r = ω/ωn se observan el factor de amplificación M, la fase φ y el pico de resonancia.",
+      "puntos": [
+        "M = 1/√[(1−r²)²+(2ζr)²]",
+        "Fase φ y resonancia (r ≈ 1)",
+        "Aislamiento: aísla si r > √2"
+      ],
+      "tema": "tema 3.1",
+      "swatch": [
+        "#6B3FA0",
+        "#4472C4"
+      ]
     },
     "mediapotencia_interactivo.html": {
       "corto": "Pilar 6 · Media potencia y Q",
-      "titulo": "Media potencia y factor Q"
+      "titulo": "Media potencia y factor Q",
+      "enfoque": "ENSAYO MODAL · medir ζ desde la curva",
+      "descripcion": "Al variar el amortiguamiento se observa cómo el pico sube y se angosta. Los puntos donde la amplitud cae a Mmáx/√2 dan el ancho de banda Δf.",
+      "puntos": [
+        "Q = 1/(2ζ) = fn/Δf",
+        "ζ medido = Δf/(2fn)",
+        "Origen de la asimetría de la curva"
+      ],
+      "tema": "temas 3.1–3.2",
+      "swatch": [
+        "#2E7D46",
+        "#6B3FA0"
+      ]
     },
     "espectro_interactivo.html": {
       "corto": "Pilar 7 · Espectro y carga de diseño",
-      "titulo": "Del espectro de ensayo a la carga de diseño"
+      "titulo": "Del espectro a la carga de diseño",
+      "enfoque": "VIBRACIÓN ALEATORIA · PSD, Grms y ecuación de Miles",
+      "descripcion": "Tres paneles encadenados: lo que impone la norma W(f), lo que aporta la resonancia del equipo |H(f)|² y la respuesta que resulta.",
+      "puntos": [
+        "Grms = √(∫W df) y carga de diseño 3σ",
+        "Miles: √[(π/2)·fn·Q·W(fn)]",
+        "Escalas en dB (−3, +3, +6) y por qué log"
+      ],
+      "tema": "temas 4.1–4.2",
+      "swatch": [
+        "#1F3864",
+        "#C55A11"
+      ]
     },
     "mohr_interactivo.html": {
       "corto": "Pilar 8 · Círculo de Mohr",
-      "titulo": "Círculo de Mohr y criterios de falla"
+      "titulo": "Círculo de Mohr",
+      "enfoque": "ESFUERZOS · transformación, von Mises y Tresca",
+      "descripcion": "El elemento diferencial y el círculo de Mohr, lado a lado y sincronizados: al girar el corte un ángulo θ, el punto recorre el círculo a 2θ.",
+      "puntos": [
+        "σ1, σ2, θp y τmáx en vivo",
+        "Elipse de von Mises y hexágono de Tresca",
+        "Factor de seguridad frente a Sy"
+      ],
+      "tema": "tema 5.3",
+      "swatch": [
+        "#2E7D46",
+        "#C55A11"
+      ]
     },
     "normas.html": {
       "corto": "Normas: dónde consultarlas",
       "titulo": "Dónde consultar las normas",
-      "apoyo": true
+      "apoyo": true,
+      "enfoque": "ACCESO · qué se baja gratis y qué se compra",
+      "descripcion": "Las normas citadas en la Unidad 4, con el enlace oficial de cada una y el aviso de si la descarga es libre o hay que comprarla.",
+      "puntos": [
+        "MIL-STD-810H, GEVS y ECSS: descarga gratuita",
+        "DO-160 e ISO: de pago, con vista previa",
+        "Enlaces que se actualizan desde un solo archivo"
+      ],
+      "tema": "temas 4.1 y 4.3 · apoyo",
+      "swatch": [
+        "#6B3FA0",
+        "#8a8fa0"
+      ]
     }
   },
   "recorrido": [
@@ -188,5 +299,23 @@
     "Den Hartog, J. P. Mechanical Vibrations. McGraw-Hill",
     "Inman, D. J. Engineering Vibration, 4.ª ed. Pearson, 2013",
     "Rao, S. S. Mechanical Vibrations. Prentice Hall, 2011"
-  ]
+  ],
+  "lede": "Una colección de recursos abiertos para tocar la física del curso: se mueve un control y se observa cómo responde el sistema. Cada explorador acompaña un tema del programa y está pensado para proyectarse en clase y para repasar sin conexión.",
+  "ruta": {
+    "texto": "Ruta sugerida para los pilares de fundamentos",
+    "pasos": [
+      [
+        "edo3_interactivo.html",
+        "armar ΣF = ma"
+      ],
+      [
+        "edo_interactivo.html",
+        "resolver"
+      ],
+      [
+        "complejos_interactivo.html",
+        "interpretar"
+      ]
+    ]
+  }
 }

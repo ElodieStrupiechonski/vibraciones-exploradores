@@ -26,7 +26,12 @@ Material de apoyo
 - `normas.json` — fuente única de esas referencias: editar este archivo actualiza la guía y el Pilar 7
 
 - `temario.json` — fuente única de la **barra de navegación** y del **índice por unidades**: unidades, subtemas y qué explorador pertenece a cada una
-- `add_navbar.py` (en el repositorio de trabajo) — inyecta la barra en todas las páginas y reconstruye el índice; para una página nueva basta registrarla en `temario.json` y volver a ejecutarlo
+- `build_index.py` — genera `index.html` desde `temario.json` (mismo lenguaje visual que el sitio de Teoría Electromagnética)
+- `add_navbar.py` — barra de navegación fija (‹ › Temario, teclas ← →) en todas las páginas, desde `temario.json`
+- `add_tema.py` — tema visual común de los exploradores (fondo papel, Spectral + IBM Plex, cabecera sobria)
+- `add_contador.py` — contador de visitas (GoatCounter)
+
+Orden para regenerar el sitio: `build_index.py` → `add_tema.py` → `add_contador.py CODIGO` → `add_navbar.py`. Todos son idempotentes; para una página nueva basta registrarla en `temario.json` y volver a correrlos
 
 Punto de partida: `index.html`.
 
