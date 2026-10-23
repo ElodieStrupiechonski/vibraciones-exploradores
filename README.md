@@ -18,7 +18,9 @@ Colección de **ocho exploradores interactivos** (HTML, funcionan sin conexión)
 5. `forzada_interactivo.html` — Respuesta forzada y resonancia (U3)
 6. `mediapotencia_interactivo.html` — Media potencia y factor Q (U3)
 7. `espectro_interactivo.html` — Del espectro de ensayo a la carga de diseño (U4)
-8. `mohr_interactivo.html` — Círculo de Mohr y criterios de falla estática (U5)
+8. `mohr_interactivo.html` — Círculo de Mohr, roseta de galgas, tres círculos y criterios de falla estática (U5)
+9. `fatiga_interactivo.html` — Fatiga: curva S–N, diagrama de Haigh y regla de Miner (U5)
+10. `sonido_interactivo.html` — Niveles sonoros, bandas de octava y exposición al ruido, NOM-011-STPS-2001 (U6)
 
 Material de apoyo
 

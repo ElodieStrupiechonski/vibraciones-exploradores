@@ -1,321 +1,357 @@
 {
-  "curso": "Vibraciones",
-  "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
-  "actualizado": "2026-10-19",
-  "nota": "Fuente única de la barra de navegación y del índice. Títulos, subtemas, horas y objetivos tomados del programa oficial (Vibraciones.pdf). Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos'), 3) ejecutar add_navbar.py.",
-  "paginas": {
-    "complejos_interactivo.html": {
-      "corto": "Pilar 1 · Números complejos",
-      "titulo": "Números complejos",
-      "rol": "interpretar",
-      "enfoque": "INTERPRETAR · el idioma de la vibración",
-      "descripcion": "Al arrastrar z en el plano de Argand se leen |z| como amplitud, θ como desfase y sus raíces como régimen.",
-      "puntos": [
-        "Formas binómica, polar y de Euler",
-        "Raíces cuadradas y ecuación auxiliar",
-        "Fasor: excitación vs. respuesta (desfase θ)"
-      ],
-      "tema": "interpretar",
-      "swatch": [
-        "#C55A11",
-        "#4472C4"
-      ],
-      "hoja": "Hoja_alumno_Pilar1_Complejos.docx"
-    },
-    "edo_interactivo.html": {
-      "corto": "Pilar 2 · EDO 2.º orden",
-      "titulo": "EDO lineal de 2.º orden",
-      "rol": "resolver",
-      "enfoque": "RESOLVER · el discriminante decide el régimen",
-      "descripcion": "Al mover los coeficientes o arrastrar las raíces en el plano s se observan Δ = b²−4ac y los cuatro regímenes.",
-      "puntos": [
-        "Subamortiguado, crítico, sobreamortiguado",
-        "Inestable = flameo (frontera Re = 0)",
-        "Respuesta x(t) con condiciones iniciales"
-      ],
-      "tema": "resolver",
-      "swatch": [
-        "#2E5496",
-        "#C55A11"
-      ],
-      "hoja": "Hoja_alumno_Pilar2_EDO.docx"
-    },
-    "edo3_interactivo.html": {
-      "corto": "Pilar 3 · Dinámica (ΣF = ma)",
-      "titulo": "Dinámica de la partícula",
-      "rol": "armar",
-      "enfoque": "ARMAR · del DCL a la ecuación de movimiento",
-      "descripcion": "Al arrastrar la masa se ve el diagrama de cuerpo libre en vivo y se arma ΣF = ma → m·x″ + c·x′ + k·x = 0.",
-      "puntos": [
-        "Frecuencia natural ωn = √(k/m)",
-        "Energía T ↔ V, resorte equivalente",
-        "Péndulo y acelerómetro (masa sísmica)"
-      ],
-      "tema": "armar",
-      "swatch": [
-        "#2E7D46",
-        "#2E5496"
-      ],
-      "hoja": "Hoja_alumno_Pilar3_Dinamica.docx"
-    },
-    "coulomb_interactivo.html": {
-      "corto": "Pilar 4 · Fricción de Coulomb",
-      "titulo": "Fricción de Coulomb",
-      "enfoque": "FRICCIÓN SECA · decaimiento lineal y banda de reposo",
-      "descripcion": "Al soltar el bloque se observa cómo la fricción seca Ff = μN hace que la amplitud caiga en línea recta (no exponencial) hasta detenerse dentro de una banda.",
-      "puntos": [
-        "Banda de reposo = Ff/k",
-        "Caída de amplitud 4Ff/k por ciclo",
-        "Conteo de ciclos hasta detenerse"
-      ],
-      "tema": "tema 2.3",
-      "swatch": [
-        "#B23A3A",
-        "#C55A11"
-      ]
-    },
-    "forzada_interactivo.html": {
-      "corto": "Pilar 5 · Respuesta forzada",
-      "titulo": "Respuesta forzada y resonancia",
-      "enfoque": "RESONANCIA · factor de amplificación M y fase φ",
-      "descripcion": "Al barrer la frecuencia r = ω/ωn se observan el factor de amplificación M, la fase φ y el pico de resonancia.",
-      "puntos": [
-        "M = 1/√[(1−r²)²+(2ζr)²]",
-        "Fase φ y resonancia (r ≈ 1)",
-        "Aislamiento: aísla si r > √2"
-      ],
-      "tema": "tema 3.1",
-      "swatch": [
-        "#6B3FA0",
-        "#4472C4"
-      ]
-    },
-    "mediapotencia_interactivo.html": {
-      "corto": "Pilar 6 · Media potencia y Q",
-      "titulo": "Media potencia y factor Q",
-      "enfoque": "ENSAYO MODAL · medir ζ desde la curva",
-      "descripcion": "Al variar el amortiguamiento se observa cómo el pico sube y se angosta. Los puntos donde la amplitud cae a Mmáx/√2 dan el ancho de banda Δf.",
-      "puntos": [
-        "Q = 1/(2ζ) = fn/Δf",
-        "ζ medido = Δf/(2fn)",
-        "Origen de la asimetría de la curva"
-      ],
-      "tema": "temas 3.1–3.2",
-      "swatch": [
-        "#2E7D46",
-        "#6B3FA0"
-      ]
-    },
-    "espectro_interactivo.html": {
-      "corto": "Pilar 7 · Espectro y carga de diseño",
-      "titulo": "Del espectro a la carga de diseño",
-      "enfoque": "VIBRACIÓN ALEATORIA · PSD, Grms y ecuación de Miles",
-      "descripcion": "Tres paneles encadenados: lo que impone la norma W(f), lo que aporta la resonancia del equipo |H(f)|² y la respuesta que resulta.",
-      "puntos": [
-        "Grms = √(∫W df) y carga de diseño 3σ",
-        "Miles: √[(π/2)·fn·Q·W(fn)]",
-        "Escalas en dB (−3, +3, +6) y por qué log"
-      ],
-      "tema": "temas 4.1–4.2",
-      "swatch": [
-        "#1F3864",
-        "#C55A11"
-      ]
-    },
-    "mohr_interactivo.html": {
-      "corto": "Pilar 8 · Círculo de Mohr",
-      "titulo": "Círculo de Mohr",
-      "enfoque": "ESFUERZOS · transformación, von Mises y Tresca",
-      "descripcion": "El elemento diferencial y el círculo de Mohr, lado a lado y sincronizados: al girar el corte un ángulo θ, el punto recorre el círculo a 2θ.",
-      "puntos": [
-        "σ1, σ2, θp y τmáx en vivo",
-        "Elipse de von Mises y hexágono de Tresca",
-        "Factor de seguridad frente a Sy"
-      ],
-      "tema": "tema 5.3",
-      "swatch": [
-        "#2E7D46",
-        "#C55A11"
-      ]
-    },
-    "normas.html": {
-      "corto": "Normas: dónde consultarlas",
-      "titulo": "Dónde consultar las normas",
-      "apoyo": true,
-      "enfoque": "ACCESO · qué se baja gratis y qué se compra",
-      "descripcion": "Las normas citadas en la Unidad 4, con el enlace oficial de cada una y el aviso de si la descarga es libre o hay que comprarla.",
-      "puntos": [
-        "MIL-STD-810H, GEVS y ECSS: descarga gratuita",
-        "DO-160 e ISO: de pago, con vista previa",
-        "Enlaces que se actualizan desde un solo archivo"
-      ],
-      "tema": "temas 4.1 y 4.3 · apoyo",
-      "swatch": [
-        "#6B3FA0",
-        "#8a8fa0"
-      ]
-    }
+ "curso": "Vibraciones",
+ "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
+ "actualizado": "2026-10-19",
+ "nota": "Fuente única de la barra de navegación y del índice. Títulos, subtemas, horas y objetivos tomados del programa oficial (Vibraciones.pdf). Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos'), 3) ejecutar add_navbar.py.",
+ "paginas": {
+  "complejos_interactivo.html": {
+   "corto": "Pilar 1 · Números complejos",
+   "titulo": "Números complejos",
+   "rol": "interpretar",
+   "enfoque": "INTERPRETAR · el idioma de la vibración",
+   "descripcion": "Al arrastrar z en el plano de Argand se leen |z| como amplitud, θ como desfase y sus raíces como régimen.",
+   "puntos": [
+    "Formas binómica, polar y de Euler",
+    "Raíces cuadradas y ecuación auxiliar",
+    "Fasor: excitación vs. respuesta (desfase θ)"
+   ],
+   "tema": "interpretar",
+   "swatch": [
+    "#C55A11",
+    "#4472C4"
+   ],
+   "hoja": "Hoja_alumno_Pilar1_Complejos.docx"
   },
-  "recorrido": [
-    "complejos_interactivo.html",
-    "edo_interactivo.html",
-    "edo3_interactivo.html",
-    "coulomb_interactivo.html",
-    "forzada_interactivo.html",
-    "mediapotencia_interactivo.html",
-    "espectro_interactivo.html",
-    "mohr_interactivo.html"
-  ],
-  "fundamentos": {
-    "titulo": "Pilares de fundamentos",
-    "descripcion": "Conocimiento previo que el curso da por sabido: armar la ecuación de un sistema (dinámica), resolverla (EDO) e interpretar sus raíces (números complejos).",
-    "paginas": [
-      "edo3_interactivo.html",
-      "edo_interactivo.html",
-      "complejos_interactivo.html"
-    ]
+  "edo_interactivo.html": {
+   "corto": "Pilar 2 · EDO 2.º orden",
+   "titulo": "EDO lineal de 2.º orden",
+   "rol": "resolver",
+   "enfoque": "RESOLVER · el discriminante decide el régimen",
+   "descripcion": "Al mover los coeficientes o arrastrar las raíces en el plano s se observan Δ = b²−4ac y los cuatro regímenes.",
+   "puntos": [
+    "Subamortiguado, crítico, sobreamortiguado",
+    "Inestable = flameo (frontera Re = 0)",
+    "Respuesta x(t) con condiciones iniciales"
+   ],
+   "tema": "resolver",
+   "swatch": [
+    "#2E5496",
+    "#C55A11"
+   ],
+   "hoja": "Hoja_alumno_Pilar2_EDO.docx"
   },
-  "unidades": [
-    {
-      "n": 1,
-      "titulo": "Conceptos básicos",
-      "horas": 4,
-      "objetivo": "Comprender los principales conceptos relacionados con sistemas vibratorios para interpretar, analizar y diseñar partes de sistemas aeroespaciales.",
-      "subtemas": [
-        "1.1 Ruido y vibraciones, conceptos básicos",
-        "1.2 Frecuencias naturales, amortiguamiento, sistemas rotatorios, vibración libre y forzada"
-      ],
-      "paginas": []
-    },
-    {
-      "n": 2,
-      "titulo": "Sistemas masa-resorte-amortiguador",
-      "horas": 4,
-      "objetivo": "Comprender la relación entre las variables de un sistema para producir diferentes respuestas a excitaciones armónicas.",
-      "subtemas": [
-        "2.1 Equivalencias para modelado entre sistemas electrónicos, mecánicos, hidráulicos y eléctricos",
-        "2.2 Análisis del sistema resorte-masa-amortiguador",
-        "2.3 Sistemas críticamente amortiguados, sobreamortiguados y subamortiguados",
-        "2.4 Analogías con sistemas espaciales",
-        "2.5 Acoplamiento entre sistemas"
-      ],
-      "paginas": [
-        "coulomb_interactivo.html"
-      ]
-    },
-    {
-      "n": 3,
-      "titulo": "Frecuencias naturales, resonancia",
-      "horas": 6,
-      "objetivo": "Comprender las relaciones entre las variables de sistemas simples y acoplados que los llevan a resonancia, y sus consecuencias para el diseño aeroespacial.",
-      "subtemas": [
-        "3.1 Frecuencias naturales",
-        "3.2 Análisis modal"
-      ],
-      "paginas": [
-        "forzada_interactivo.html",
-        "mediapotencia_interactivo.html"
-      ]
-    },
-    {
-      "n": 4,
-      "titulo": "Normatividad en sistemas aeroespaciales",
-      "horas": 6,
-      "objetivo": "Aplicar la normatividad para realizar pruebas en sistemas aeroespaciales y desarrollar modelos que correlacionen las características de los elementos sujetos a diseño, análisis o modificación.",
-      "subtemas": [
-        "4.1 Normatividad para la prueba de sistemas espaciales",
-        "4.2 Pruebas y su registro",
-        "4.3 Normatividad para sistemas electrónicos en operación, lanzamiento y despliegue",
-        "4.4 Elementos de falla más comunes en sistemas mecánicos, electrónicos y cargas útiles"
-      ],
-      "paginas": [
-        "espectro_interactivo.html"
-      ],
-      "apoyo": [
-        "normas.html"
-      ]
-    },
-    {
-      "n": 5,
-      "titulo": "Esfuerzos normales y cortantes directos",
-      "horas": 6,
-      "objetivo": "Comprender las relaciones geométricas de los cuerpos sujetos a cargas directas que crean esfuerzos normales y cortantes, para aplicarlas al análisis, diseño y modelado de elementos aeroespaciales.",
-      "subtemas": [
-        "5.1 Esfuerzos normales directos",
-        "5.2 Esfuerzos cortantes directos",
-        "5.3 Círculo de Mohr y su interpretación para la falla",
-        "5.4 Mecanismos de falla, estática y dinámica"
-      ],
-      "paginas": [
-        "mohr_interactivo.html"
-      ]
-    },
-    {
-      "n": 6,
-      "titulo": "Ruido y amortiguamiento",
-      "horas": 6,
-      "objetivo": "Modelar, analizar y desarrollar sistemas aeroespaciales que pueden producir emisiones de ruido, en ambientes de trabajo apropiados según normatividad.",
-      "subtemas": [
-        "6.1 Ruido y su transmisión",
-        "6.2 Frecuencias principales y secundarias",
-        "6.3 Transmisión y amortiguamiento",
-        "6.4 Sistemas anecoicos y electrónicos para medición y modelado de ruido"
-      ],
-      "paginas": [],
-      "proximamente": "Explorador de niveles sonoros: suma de bandas de octava, ley de distancia y tiempo de exposición (NOM-011-STPS-2001). Mientras tanto, la Tarea 6 cubre los cuatro subtemas."
-    },
-    {
-      "n": 7,
-      "titulo": "Pruebas",
-      "horas": 10,
-      "objetivo": "Realizar el protocolo de pruebas para medir los modos de vibración y entender el comportamiento del sistema bajo diseño, análisis o modificación.",
-      "subtemas": [
-        "7.1 Hardware de medición",
-        "7.2 Análisis de señales aleatorias",
-        "7.3 Extracción de datos modales",
-        "7.4 Prueba de vibración para resistencia y diagnóstico"
-      ],
-      "paginas": [],
-      "proximamente": "El Pilar 7 (espectro y carga de diseño) y el Pilar 6 (media potencia) anticipan 7.2 y 7.3; falta un explorador de análisis de señales (FFT, PSD medida, promediado)."
-    },
-    {
-      "n": 8,
-      "titulo": "Sistemas acoplados",
-      "horas": 6,
-      "objetivo": "Modelar y analizar, mediante sistemas masa-resorte-amortiguador, sistemas acoplados presentes en los sistemas aeroespaciales.",
-      "subtemas": [
-        "8.1 Factores de riesgo por acoplamiento de frecuencias",
-        "8.2 Frecuencias principales y secundarias de interés",
-        "8.3 Modelado y análisis"
-      ],
-      "paginas": [],
-      "proximamente": "Explorador de dos grados de libertad: modos, frecuencias acopladas y absorbedor dinámico."
-    }
-  ],
-  "fuente": "Programa de estudios oficial de la asignatura Vibraciones (clave 7.º semestre, 6 créditos, 48 h teóricas), Plan de Estudios de la Licenciatura en Ingeniería Aeroespacial, ENES Juriquilla, UNAM.",
-  "bibliografia_basica": [
-    "Bottega, W. J. Engineering Vibrations. CRC Press, 2014 (texto rector)",
-    "Géradin, M., Rixen, D. J. Mechanical Vibrations, 3.ª ed. Wiley, 2015",
-    "Den Hartog, J. P. Mechanical Vibrations. McGraw-Hill",
-    "Inman, D. J. Engineering Vibration, 4.ª ed. Pearson, 2013",
-    "Rao, S. S. Mechanical Vibrations. Prentice Hall, 2011"
-  ],
-  "lede": "Una colección de recursos abiertos para tocar la física del curso: se mueve un control y se observa cómo responde el sistema. Cada explorador acompaña un tema del programa y está pensado para proyectarse en clase y para repasar sin conexión.",
-  "ruta": {
-    "texto": "Ruta sugerida para los pilares de fundamentos",
-    "pasos": [
-      [
-        "edo3_interactivo.html",
-        "armar ΣF = ma"
-      ],
-      [
-        "edo_interactivo.html",
-        "resolver"
-      ],
-      [
-        "complejos_interactivo.html",
-        "interpretar"
-      ]
-    ]
+  "edo3_interactivo.html": {
+   "corto": "Pilar 3 · Dinámica (ΣF = ma)",
+   "titulo": "Dinámica de la partícula",
+   "rol": "armar",
+   "enfoque": "ARMAR · del DCL a la ecuación de movimiento",
+   "descripcion": "Al arrastrar la masa se ve el diagrama de cuerpo libre en vivo y se arma ΣF = ma → m·x″ + c·x′ + k·x = 0.",
+   "puntos": [
+    "Frecuencia natural ωn = √(k/m)",
+    "Energía T ↔ V, resorte equivalente",
+    "Péndulo y acelerómetro (masa sísmica)"
+   ],
+   "tema": "armar",
+   "swatch": [
+    "#2E7D46",
+    "#2E5496"
+   ],
+   "hoja": "Hoja_alumno_Pilar3_Dinamica.docx"
+  },
+  "coulomb_interactivo.html": {
+   "corto": "Pilar 4 · Fricción de Coulomb",
+   "titulo": "Fricción de Coulomb",
+   "enfoque": "FRICCIÓN SECA · decaimiento lineal y banda de reposo",
+   "descripcion": "Al soltar el bloque se observa cómo la fricción seca Ff = μN hace que la amplitud caiga en línea recta (no exponencial) hasta detenerse dentro de una banda.",
+   "puntos": [
+    "Banda de reposo = Ff/k",
+    "Caída de amplitud 4Ff/k por ciclo",
+    "Conteo de ciclos hasta detenerse"
+   ],
+   "tema": "tema 2.3",
+   "swatch": [
+    "#B23A3A",
+    "#C55A11"
+   ]
+  },
+  "forzada_interactivo.html": {
+   "corto": "Pilar 5 · Respuesta forzada",
+   "titulo": "Respuesta forzada y resonancia",
+   "enfoque": "RESONANCIA · factor de amplificación M y fase φ",
+   "descripcion": "Al barrer la frecuencia r = ω/ωn se observan el factor de amplificación M, la fase φ y el pico de resonancia.",
+   "puntos": [
+    "M = 1/√[(1−r²)²+(2ζr)²]",
+    "Fase φ y resonancia (r ≈ 1)",
+    "Aislamiento: aísla si r > √2"
+   ],
+   "tema": "tema 3.1",
+   "swatch": [
+    "#6B3FA0",
+    "#4472C4"
+   ]
+  },
+  "mediapotencia_interactivo.html": {
+   "corto": "Pilar 6 · Media potencia y Q",
+   "titulo": "Media potencia y factor Q",
+   "enfoque": "ENSAYO MODAL · medir ζ desde la curva",
+   "descripcion": "Al variar el amortiguamiento se observa cómo el pico sube y se angosta. Los puntos donde la amplitud cae a Mmáx/√2 dan el ancho de banda Δf.",
+   "puntos": [
+    "Q = 1/(2ζ) = fn/Δf",
+    "ζ medido = Δf/(2fn)",
+    "Origen de la asimetría de la curva"
+   ],
+   "tema": "temas 3.1–3.2",
+   "swatch": [
+    "#2E7D46",
+    "#6B3FA0"
+   ]
+  },
+  "espectro_interactivo.html": {
+   "corto": "Pilar 7 · Espectro y carga de diseño",
+   "titulo": "Del espectro a la carga de diseño",
+   "enfoque": "VIBRACIÓN ALEATORIA · PSD, Grms y ecuación de Miles",
+   "descripcion": "Tres paneles encadenados: lo que impone la norma W(f), lo que aporta la resonancia del equipo |H(f)|² y la respuesta que resulta.",
+   "puntos": [
+    "Grms = √(∫W df) y carga de diseño 3σ",
+    "Miles: √[(π/2)·fn·Q·W(fn)]",
+    "Escalas en dB (−3, +3, +6) y por qué log"
+   ],
+   "tema": "temas 4.1–4.2",
+   "swatch": [
+    "#1F3864",
+    "#C55A11"
+   ]
+  },
+  "mohr_interactivo.html": {
+   "corto": "Pilar 8 · Círculo de Mohr",
+   "titulo": "Círculo de Mohr",
+   "enfoque": "ESFUERZOS · transformación, von Mises y Tresca",
+   "descripcion": "El elemento diferencial y el círculo de Mohr, lado a lado y sincronizados: al girar el corte un ángulo θ, el punto recorre el círculo a 2θ. Incluye la roseta de galgas y los tres círculos.",
+   "puntos": [
+    "σ1, σ2, θp y τmáx en vivo",
+    "Roseta de galgas 0/45/90 → estado de esfuerzo",
+    "Tres círculos, von Mises y Tresca"
+   ],
+   "tema": "tema 5.3",
+   "swatch": [
+    "#2E7D46",
+    "#C55A11"
+   ]
+  },
+  "normas.html": {
+   "corto": "Normas: dónde consultarlas",
+   "titulo": "Dónde consultar las normas",
+   "apoyo": true,
+   "enfoque": "ACCESO · qué se baja gratis y qué se compra",
+   "descripcion": "Las normas citadas en la Unidad 4, con el enlace oficial de cada una y el aviso de si la descarga es libre o hay que comprarla.",
+   "puntos": [
+    "MIL-STD-810H, GEVS y ECSS: descarga gratuita",
+    "DO-160 e ISO: de pago, con vista previa",
+    "Enlaces que se actualizan desde un solo archivo"
+   ],
+   "tema": "temas 4.1 y 4.3 · apoyo",
+   "swatch": [
+    "#6B3FA0",
+    "#8a8fa0"
+   ]
+  },
+  "fatiga_interactivo.html": {
+   "corto": "Pilar 9 · Fatiga",
+   "titulo": "Fatiga: S–N, Haigh y Miner",
+   "enfoque": "FALLA DINÁMICA · la carga que oscila consume vida",
+   "descripcion": "Curva S–N en log–log y diagrama de Haigh con el estado de la pieza; Goodman, Soderberg y Gerber; daño acumulado de un ensayo de vibración aleatoria con las tres bandas de Steinberg.",
+   "puntos": [
+    "Acero con límite, aluminio sin él",
+    "Esfuerzo medio y concentrador Kf",
+    "Miner: cuánta vida consume el ensayo"
+   ],
+   "tema": "tema 5.4",
+   "swatch": [
+    "#B23A3A",
+    "#6B3FA0"
+   ]
+  },
+  "sonido_interactivo.html": {
+   "corto": "Pilar 10 · Niveles sonoros",
+   "titulo": "Niveles sonoros y exposición al ruido",
+   "enfoque": "ACÚSTICA · los niveles no se suman, se suman las energías",
+   "descripcion": "Espectro en bandas de octava editable, nivel total y ponderado A, ley de distancia, varias fuentes y tiempo permitido según la NOM-011-STPS-2001. Con micrófono relativo opcional.",
+   "puntos": [
+    "Suma energética y ponderación A",
+    "−6 dB por duplicar la distancia",
+    "T = 8·2^((90−LA)/3) h"
+   ],
+   "tema": "temas 6.3–6.4",
+   "swatch": [
+    "#4472C4",
+    "#2E7D46"
+   ]
   }
+ },
+ "recorrido": [
+  "complejos_interactivo.html",
+  "edo_interactivo.html",
+  "edo3_interactivo.html",
+  "coulomb_interactivo.html",
+  "forzada_interactivo.html",
+  "mediapotencia_interactivo.html",
+  "espectro_interactivo.html",
+  "mohr_interactivo.html",
+  "fatiga_interactivo.html",
+  "sonido_interactivo.html"
+ ],
+ "fundamentos": {
+  "titulo": "Pilares de fundamentos",
+  "descripcion": "Conocimiento previo que el curso da por sabido: armar la ecuación de un sistema (dinámica), resolverla (EDO) e interpretar sus raíces (números complejos).",
+  "paginas": [
+   "edo3_interactivo.html",
+   "edo_interactivo.html",
+   "complejos_interactivo.html"
+  ]
+ },
+ "unidades": [
+  {
+   "n": 1,
+   "titulo": "Conceptos básicos",
+   "horas": 4,
+   "objetivo": "Comprender los principales conceptos relacionados con sistemas vibratorios para interpretar, analizar y diseñar partes de sistemas aeroespaciales.",
+   "subtemas": [
+    "1.1 Ruido y vibraciones, conceptos básicos",
+    "1.2 Frecuencias naturales, amortiguamiento, sistemas rotatorios, vibración libre y forzada"
+   ],
+   "paginas": []
+  },
+  {
+   "n": 2,
+   "titulo": "Sistemas masa-resorte-amortiguador",
+   "horas": 4,
+   "objetivo": "Comprender la relación entre las variables de un sistema para producir diferentes respuestas a excitaciones armónicas.",
+   "subtemas": [
+    "2.1 Equivalencias para modelado entre sistemas electrónicos, mecánicos, hidráulicos y eléctricos",
+    "2.2 Análisis del sistema resorte-masa-amortiguador",
+    "2.3 Sistemas críticamente amortiguados, sobreamortiguados y subamortiguados",
+    "2.4 Analogías con sistemas espaciales",
+    "2.5 Acoplamiento entre sistemas"
+   ],
+   "paginas": [
+    "coulomb_interactivo.html"
+   ]
+  },
+  {
+   "n": 3,
+   "titulo": "Frecuencias naturales, resonancia",
+   "horas": 6,
+   "objetivo": "Comprender las relaciones entre las variables de sistemas simples y acoplados que los llevan a resonancia, y sus consecuencias para el diseño aeroespacial.",
+   "subtemas": [
+    "3.1 Frecuencias naturales",
+    "3.2 Análisis modal"
+   ],
+   "paginas": [
+    "forzada_interactivo.html",
+    "mediapotencia_interactivo.html"
+   ]
+  },
+  {
+   "n": 4,
+   "titulo": "Normatividad en sistemas aeroespaciales",
+   "horas": 6,
+   "objetivo": "Aplicar la normatividad para realizar pruebas en sistemas aeroespaciales y desarrollar modelos que correlacionen las características de los elementos sujetos a diseño, análisis o modificación.",
+   "subtemas": [
+    "4.1 Normatividad para la prueba de sistemas espaciales",
+    "4.2 Pruebas y su registro",
+    "4.3 Normatividad para sistemas electrónicos en operación, lanzamiento y despliegue",
+    "4.4 Elementos de falla más comunes en sistemas mecánicos, electrónicos y cargas útiles"
+   ],
+   "paginas": [
+    "espectro_interactivo.html"
+   ],
+   "apoyo": [
+    "normas.html"
+   ]
+  },
+  {
+   "n": 5,
+   "titulo": "Esfuerzos normales y cortantes directos",
+   "horas": 6,
+   "objetivo": "Comprender las relaciones geométricas de los cuerpos sujetos a cargas directas que crean esfuerzos normales y cortantes, para aplicarlas al análisis, diseño y modelado de elementos aeroespaciales.",
+   "subtemas": [
+    "5.1 Esfuerzos normales directos",
+    "5.2 Esfuerzos cortantes directos",
+    "5.3 Círculo de Mohr y su interpretación para la falla",
+    "5.4 Mecanismos de falla, estática y dinámica"
+   ],
+   "paginas": [
+    "mohr_interactivo.html",
+    "fatiga_interactivo.html"
+   ]
+  },
+  {
+   "n": 6,
+   "titulo": "Ruido y amortiguamiento",
+   "horas": 6,
+   "objetivo": "Modelar, analizar y desarrollar sistemas aeroespaciales que pueden producir emisiones de ruido, en ambientes de trabajo apropiados según normatividad.",
+   "subtemas": [
+    "6.1 Ruido y su transmisión",
+    "6.2 Frecuencias principales y secundarias",
+    "6.3 Transmisión y amortiguamiento",
+    "6.4 Sistemas anecoicos y electrónicos para medición y modelado de ruido"
+   ],
+   "paginas": [
+    "sonido_interactivo.html"
+   ]
+  },
+  {
+   "n": 7,
+   "titulo": "Pruebas",
+   "horas": 10,
+   "objetivo": "Realizar el protocolo de pruebas para medir los modos de vibración y entender el comportamiento del sistema bajo diseño, análisis o modificación.",
+   "subtemas": [
+    "7.1 Hardware de medición",
+    "7.2 Análisis de señales aleatorias",
+    "7.3 Extracción de datos modales",
+    "7.4 Prueba de vibración para resistencia y diagnóstico"
+   ],
+   "paginas": [],
+   "proximamente": "El Pilar 7 (espectro y carga de diseño) y el Pilar 6 (media potencia) anticipan 7.2 y 7.3; falta un explorador de análisis de señales (FFT, PSD medida, promediado)."
+  },
+  {
+   "n": 8,
+   "titulo": "Sistemas acoplados",
+   "horas": 6,
+   "objetivo": "Modelar y analizar, mediante sistemas masa-resorte-amortiguador, sistemas acoplados presentes en los sistemas aeroespaciales.",
+   "subtemas": [
+    "8.1 Factores de riesgo por acoplamiento de frecuencias",
+    "8.2 Frecuencias principales y secundarias de interés",
+    "8.3 Modelado y análisis"
+   ],
+   "paginas": [],
+   "proximamente": "Explorador de dos grados de libertad: modos, frecuencias acopladas y absorbedor dinámico."
+  }
+ ],
+ "fuente": "Programa de estudios oficial de la asignatura Vibraciones (clave 7.º semestre, 6 créditos, 48 h teóricas), Plan de Estudios de la Licenciatura en Ingeniería Aeroespacial, ENES Juriquilla, UNAM.",
+ "bibliografia_basica": [
+  "Bottega, W. J. Engineering Vibrations. CRC Press, 2014 (texto rector)",
+  "Géradin, M., Rixen, D. J. Mechanical Vibrations, 3.ª ed. Wiley, 2015",
+  "Den Hartog, J. P. Mechanical Vibrations. McGraw-Hill",
+  "Inman, D. J. Engineering Vibration, 4.ª ed. Pearson, 2013",
+  "Rao, S. S. Mechanical Vibrations. Prentice Hall, 2011"
+ ],
+ "lede": "Una colección de recursos abiertos para tocar la física del curso: se mueve un control y se observa cómo responde el sistema. Cada explorador acompaña un tema del programa y está pensado para proyectarse en clase y para repasar sin conexión.",
+ "ruta": {
+  "texto": "Ruta sugerida para los pilares de fundamentos",
+  "pasos": [
+   [
+    "edo3_interactivo.html",
+    "armar ΣF = ma"
+   ],
+   [
+    "edo_interactivo.html",
+    "resolver"
+   ],
+   [
+    "complejos_interactivo.html",
+    "interpretar"
+   ]
+  ]
+ }
 }

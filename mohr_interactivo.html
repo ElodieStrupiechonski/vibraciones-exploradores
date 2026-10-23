@@ -175,6 +175,38 @@
     </div>
   </div>
 
+
+  <div class="card full" id="roseta">
+    <h2>De la medición al estado de esfuerzo: la roseta de galgas 0°/45°/90°</h2>
+    <div class="two">
+      <div>
+        <p style="font-size:13.5px;margin:0 0 10px">Una galga mide la deformación <b>solo a lo largo de sus trazos</b>. Con tres galgas a 0°, 45° y 90° (roseta rectangular) y las ecuaciones de transformación aplicadas a las deformaciones se recupera el estado plano completo; la ley de Hooke lo convierte en esfuerzos y el explorador hace el resto. Es lo que corre en el equipo de adquisición en el ensayo estático de un ala.</p>
+        <div class="grp">
+          <div class="t">Lecturas en microdeformación, µε</div>
+          <div class="row"><label>ε<sub>a</sub> (0°)</label><input id="ea" type="range" min="-2000" max="2000" step="5" value="500"><span class="val" id="vea">500</span></div>
+          <div class="row"><label>ε<sub>b</sub> (45°)</label><input id="eb" type="range" min="-2000" max="2000" step="5" value="400"><span class="val" id="veb">400</span></div>
+          <div class="row"><label>ε<sub>c</sub> (90°)</label><input id="ec" type="range" min="-2000" max="2000" step="5" value="-150"><span class="val" id="vec">−150</span></div>
+          <div class="row"><label>E (GPa)</label><input id="Eg" type="range" min="40" max="220" step="1" value="69"><span class="val" id="vEg">69</span></div>
+          <div class="row"><label>ν</label><input id="nu" type="range" min="0.2" max="0.4" step="0.01" value="0.33"><span class="val" id="vnu">0.33</span></div>
+          <div class="btns" style="margin-top:8px"><button class="btn" id="bRos">Cargar este estado en el explorador</button></div>
+        </div>
+        <div class="eqbox" style="margin-top:10px"><span class="lab">Cuña en deformaciones y Hooke en estado plano</span>
+          ε<sub>x</sub> = ε<sub>a</sub>, ε<sub>y</sub> = ε<sub>c</sub>, γ<sub>xy</sub> = 2ε<sub>b</sub> − ε<sub>a</sub> − ε<sub>c</sub>  ·  σ<sub>x</sub> = E(ε<sub>x</sub>+νε<sub>y</sub>)/(1−ν²), σ<sub>y</sub> = E(ε<sub>y</sub>+νε<sub>x</sub>)/(1−ν²), τ<sub>xy</sub> = Gγ<sub>xy</sub>, G = E/[2(1+ν)]</div>
+      </div>
+      <div>
+        <div class="tiles">
+          <div class="tile t2"><div class="k">γ<sub>xy</sub> (µε)</div><div class="v" id="oGxy">450</div></div>
+          <div class="tile t2"><div class="k">σ<sub>x</sub>, σ<sub>y</sub>, τ<sub>xy</sub> (MPa)</div><div class="v" id="oRos" style="font-size:16px">34.9 · 1.2 · 11.7</div></div>
+          <div class="tile t3"><div class="k">σ<sub>1</sub>, σ<sub>2</sub> (MPa)</div><div class="v" id="oRos12">38.5 · −2.5</div></div>
+          <div class="tile t3"><div class="k">θ<sub>p</sub></div><div class="v" id="oRosT">17.3°</div></div>
+        </div>
+        <h3>Los tres círculos y el cortante máximo absoluto</h3>
+        <canvas id="c3" width="520" height="260" aria-label="Los tres círculos de Mohr del estado actual con sigma 3 igual a cero"></canvas>
+        <p style="font-size:12.5px;margin:6px 0 0;color:var(--grey)">Con σ<sub>3</sub> = 0 (superficie libre). Si σ<sub>1</sub> y σ<sub>2</sub> tienen el mismo signo, el círculo del plano (azul) es el pequeño y el cortante máximo real (rojo) actúa a 45° a través del espesor: pruébelo con el preajuste <b>Biaxial</b>.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="card full">
     <h2>Criterios de falla: ¿este estado fluye?</h2>
     <div class="two">
@@ -511,6 +543,42 @@ $('goP').addEventListener('click',()=>setTh(estado().thp));
 $('goT').addEventListener('click',()=>setTh(estado().thp+45));
 $('goZ').addEventListener('click',()=>setTh(0));
 window.addEventListener('resize',draw);
+/* ---------- roseta de galgas ---------- */
+let EA=500,EB=400,EC=-150,EG=69,NU=0.33;
+function roseta(){
+  const ex=EA*1e-6, ey=EC*1e-6, g=(2*EB-EA-EC)*1e-6, E=EG*1e3, G=E/(2*(1+NU));
+  const sx=E/(1-NU*NU)*(ex+NU*ey), sy=E/(1-NU*NU)*(ey+NU*ex), t=G*g;
+  const sp=(sx+sy)/2, R=Math.hypot((sx-sy)/2,t);
+  return {g:g*1e6,sx,sy,t,s1:sp+R,s2:sp-R,thp:deg(Math.atan2(2*t,sx-sy))/2};
+}
+function syncRos(){
+  $('vea').textContent=fmt(EA,0); $('veb').textContent=fmt(EB,0); $('vec').textContent=fmt(EC,0); $('vEg').textContent=EG; $('vnu').textContent=NU.toFixed(2);
+  const r=roseta(); $('oGxy').textContent=fmt(r.g,0); $('oRos').textContent=fmt(r.sx)+' · '+fmt(r.sy)+' · '+fmt(r.t);
+  $('oRos12').textContent=fmt(r.s1)+' · '+fmt(r.s2); $('oRosT').textContent=fmt(r.thp)+'°';
+}
+[['ea','EA'],['eb','EB'],['ec','EC'],['Eg','EG'],['nu','NU']].forEach(([id,k])=>$(id).addEventListener('input',e=>{ const v=+e.target.value; if(k==='EA')EA=v; else if(k==='EB')EB=v; else if(k==='EC')EC=v; else if(k==='EG')EG=v; else NU=v; syncRos(); }));
+$('bRos').addEventListener('click',()=>{ const r=roseta(); const cl=(v,m)=>Math.max(-m,Math.min(m,Math.round(v))); SX=cl(r.sx,200); SY=cl(r.sy,200); TXY=cl(r.t,150); $('sx').value=SX; $('sy').value=SY; $('txy').value=TXY; document.querySelectorAll('.btn[data-p]').forEach(b=>b.classList.remove('on')); sync(); $('cv').scrollIntoView({behavior:'smooth',block:'center'}); });
+/* ---------- tres círculos ---------- */
+const c3=$('c3'), c3x=c3.getContext('2d');
+function drawTres(){
+  const E=estado(); const s=[E.s1,E.s2,0].sort((a,b)=>b-a); const W=c3.width,H=c3.height;
+  c3x.clearRect(0,0,W,H); c3x.fillStyle='#fff'; c3x.fillRect(0,0,W,H);
+  const lo=Math.min(s[2],0)-20, hi=Math.max(s[0],0)+20, Rmax=(s[0]-s[2])/2;
+  const x0=40,x1=W-20, cy=H/2; const k=Math.min((x1-x0)/(hi-lo),(H/2-28)/Rmax);
+  const X=v=>x0+(v-lo)*k;
+  c3x.strokeStyle='#B9C6DA'; c3x.lineWidth=1; c3x.beginPath(); c3x.moveTo(x0,cy); c3x.lineTo(x1,cy); c3x.stroke();
+  if(lo<0&&hi>0){ c3x.beginPath(); c3x.moveTo(X(0),cy-H/2+20); c3x.lineTo(X(0),cy+H/2-20); c3x.stroke(); }
+  const circ=(a,b,col,w,dash)=>{ c3x.setLineDash(dash||[]); c3x.strokeStyle=col; c3x.lineWidth=w; c3x.beginPath(); c3x.arc(X((a+b)/2),cy,Math.abs(b-a)/2*k,0,2*Math.PI); c3x.stroke(); c3x.setLineDash([]); };
+  circ(E.s1,0,GREY,1.2,[4,3]); circ(E.s2,0,GREY,1.2,[4,3]); circ(E.s1,E.s2,STEEL,2); circ(s[0],s[2],RED,2.4);
+  [[E.s1,'σ1',GREEN],[E.s2,'σ2',GREEN],[0,'σ3 = 0',GREY]].forEach(([v,l,c])=>{ c3x.fillStyle=c; c3x.beginPath(); c3x.arc(X(v),cy,4,0,7); c3x.fill(); txt(c3x,l+' '+(l==='σ3 = 0'?'':fmt(v)),X(v),cy+16,c,10.5,'center'); });
+  const cx=X((s[0]+s[2])/2); c3x.strokeStyle=RED; c3x.lineWidth=1.4; c3x.beginPath(); c3x.moveTo(cx,cy); c3x.lineTo(cx,cy-Rmax*k); c3x.stroke();
+  txt(c3x,'τmáx,abs = '+fmt(Rmax)+' MPa',cx+6,cy-Rmax*k+12,RED,11,'left','alphabetic',true);
+  txt(c3x,'R en el plano = '+fmt(E.R),X((E.s1+E.s2)/2)+6,cy+E.R*k-4,STEEL,10.5,'left');
+  txt(c3x,'σ (MPa)',x1,cy-6,GREY,10,'right');
+}
+const sync0=sync; sync=function(){ sync0(); drawTres(); };
+syncRos(); drawTres();
+
 sync();
 </script>
 <!-- contador:inicio -->
@@ -608,8 +676,9 @@ sync();
 <a href="normas.html" data-nv="normas.html">Dónde consultar las normas <small>temas 4.1 y 4.3 · apoyo</small></a>
 <div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos · 6 h</div>
 <a href="mohr_interactivo.html" data-nv="mohr_interactivo.html">Círculo de Mohr <small>Pilar 8 · tema 5.3</small></a>
+<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html">Fatiga: S–N, Haigh y Miner <small>Pilar 9 · tema 5.4</small></a>
 <div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
 <div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
 <span class="nv-vacio">sin explorador todavía</span>
 <div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
