@@ -1,6 +1,6 @@
 {
   "title": "Vibraciones — Exploradores interactivos",
-  "description": "Colección de ocho exploradores interactivos (HTML, funcionan sin conexión) de apoyo al curso de Vibraciones de Ingeniería Aeroespacial (ENES Juriquilla, UNAM). Pilares de fundamentos: números complejos, EDO lineal de 2.º orden y dinámica de la partícula (ΣF = ma). Temas del curso: fricción de Coulomb (U2), respuesta forzada, amplificación y resonancia (U3), método de media potencia y factor Q (U3), y el paso del espectro de ensayo de vibración aleatoria a la carga de diseño mediante la ecuación de Miles (U4). Recurso educativo abierto.",
+  "description": "Colección de diez exploradores interactivos (HTML, funcionan sin conexión) de apoyo al curso de Vibraciones de Ingeniería Aeroespacial (ENES Juriquilla, UNAM). Pilares de fundamentos: números complejos, EDO lineal de 2.º orden y dinámica de la partícula (ΣF = ma). Temas del curso: fricción de Coulomb (U2), respuesta forzada, amplificación y resonancia (U3), método de media potencia y factor Q (U3), y el paso del espectro de ensayo de vibración aleatoria a la carga de diseño mediante la ecuación de Miles (U4), círculo de Mohr con roseta de galgas y criterios de falla estática (U5), fatiga con curva S–N, diagrama de Haigh y regla de Miner (U5), y niveles sonoros, bandas de octava y exposición al ruido según la NOM-011-STPS-2001 (U6). Recurso educativo abierto.",
   "upload_type": "lesson",
   "language": "spa",
   "access_right": "open",
