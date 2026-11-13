@@ -2,6 +2,104 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
 <title>Del espectro a la carga de diseño · Explorador · Vibraciones · ENES Juriquilla</title>
@@ -97,7 +195,6 @@
 </style>
 <!-- tema:inicio -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
   /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
   :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
@@ -129,7 +226,7 @@
 
 <div class="wrap">
   <div class="intro full">
-    <b>¿Qué muestra?</b> Tres gráficas apiladas sobre el mismo eje de frecuencias. Arriba, <span class="mth">W(f)</span>: lo que la <b>norma impone</b> en la base, en g²/Hz. En medio, <span class="mth">|H(f)|²</span>: lo que el <b>equipo aporta</b> con su resonancia — es exactamente el factor de amplificación <span class="mth">M(r)</span> elevado al cuadrado. Abajo, la respuesta <span class="mth">W<sub>resp</sub> = |H|²·W</span>, cuya área da el <span class="mth">G<sub>rms</sub></span> que realmente sufre el componente. Toda la cadena se controla con dos cosas ya conocidas: <b>f<sub>n</sub></b> y <b>ζ</b> (o su equivalente <b>Q</b>). Los recuadros de lectura están agrupados y coloreados igual que los tres paneles: conviene no confundir el <b style="color:var(--orange)">G<sub>rms</sub> de entrada</b> (grupo 1, lo que da la mesa vibradora) con el <b style="color:var(--navy)">G<sub>rms</sub> de respuesta</b> (grupo 3, lo que sufre el componente).
+    <b>¿Qué muestra?</b> Tres gráficas apiladas sobre el mismo eje de frecuencias. Arriba, <span class="mth">W(f)</span>: lo que la <b>norma impone</b> en la base, en g²/Hz. En medio, <span class="mth">|H(f)|²</span>: lo que el <b>equipo aporta</b> con su resonancia: es exactamente el factor de amplificación <span class="mth">M(r)</span> elevado al cuadrado. Abajo, la respuesta <span class="mth">W<sub>resp</sub> = |H|²·W</span>, cuya área da el <span class="mth">G<sub>rms</sub></span> que realmente sufre el componente. Toda la cadena se controla con dos cosas ya conocidas: <b>f<sub>n</sub></b> y <b>ζ</b> (o su equivalente <b>Q</b>). Los recuadros de lectura están agrupados y coloreados igual que los tres paneles: conviene no confundir el <b style="color:var(--orange)">G<sub>rms</sub> de entrada</b> (grupo 1, lo que da la mesa vibradora) con el <b style="color:var(--navy)">G<sub>rms</sub> de respuesta</b> (grupo 3, lo que sufre el componente).
   </div>
 
   <div class="card">
@@ -148,7 +245,7 @@
     <div class="ctl">
       <div class="grp">
         <div class="t">Perfil de la norma</div>
-        <div class="row"><label>Meseta W₀</label><input id="sw0" type="range" min="0.01" max="0.30" step="0.005" value="0.16"><span class="val" id="vw0">0.160</span></div>
+        <div class="row"><label>Meseta W<sub>0</sub></label><input id="sw0" type="range" min="0.01" max="0.30" step="0.005" value="0.16"><span class="val" id="vw0">0.160</span></div>
         <div class="row"><label>Inicio de meseta</label><input id="sfa" type="range" min="30" max="300" step="5" value="50"><span class="val" id="vfa">50 Hz</span></div>
         <div class="row"><label>Fin de meseta</label><input id="sfb" type="range" min="400" max="1600" step="20" value="800"><span class="val" id="vfb">800 Hz</span></div>
         <div class="btns" style="margin-top:8px">
@@ -180,21 +277,21 @@
       </div>
     </div>
     <div class="tgrp">
-      <div class="th" style="color:var(--orange)">1 · Entrada — lo que impone la norma</div>
+      <div class="th" style="color:var(--orange)">1 · Entrada: lo que impone la norma</div>
       <div class="tiles">
         <div class="tile t1"><div class="k">G<sub>rms</sub> de <b>entrada</b> (área de W)</div><div class="v" id="oGin">14.12 g</div></div>
         <div class="tile t1"><div class="k">W(f<sub>n</sub>) que ve el equipo</div><div class="v" id="oWfn">0.160</div></div>
       </div>
     </div>
     <div class="tgrp">
-      <div class="th" style="color:var(--steel)">2 · Equipo — su resonancia</div>
+      <div class="th" style="color:var(--steel)">2 · Equipo: su resonancia</div>
       <div class="tiles">
         <div class="tile t2"><div class="k">Q = 1/(2ζ)</div><div class="v" id="oQ">10.0</div></div>
         <div class="tile t2"><div class="k">Ancho de banda a −3 dB</div><div class="v" id="oBW">10.0 Hz</div></div>
       </div>
     </div>
     <div class="tgrp">
-      <div class="th" style="color:var(--navy)">3 · Respuesta — lo que sufre el componente</div>
+      <div class="th" style="color:var(--navy)">3 · Respuesta: lo que sufre el componente</div>
       <div class="tiles">
         <div class="tile t3 gr"><div class="k">G<sub>rms</sub> de <b>respuesta</b> (integración)</div><div class="v" id="oGn">15.66 g</div></div>
         <div class="tile t3 hl"><div class="k">G<sub>rms</sub> de <b>respuesta</b> (por Miles)</div><div class="v" id="oGm">15.85 g</div></div>
@@ -208,32 +305,14 @@
     <h2>Las fórmulas en pantalla</h2>
     <div class="two">
       <div>
-        <div class="eqbox">
-          <span class="lab">1 · Lo que impone la norma</span>
-          W(f) en <b>g²/Hz</b> &nbsp;·&nbsp; tramos rectos en log–log: W ∝ f<sup> n</sup>, con <b>n = ±2</b> para ±6 dB/octava
-        </div>
-        <div class="eqbox">
-          <span class="lab">2 · Valor eficaz del ensayo</span>
-          G<sub>rms</sub> = √( ∫ W(f) df ) &nbsp;·&nbsp; tramo plano: G<sub>rms</sub> = √(W₀·Δf)
-        </div>
-        <div class="eqbox">
-          <span class="lab">3 · Lo que aporta el equipo (ya conocido)</span>
-          |H(f)| = M(r) = 1 / √[(1−r²)² + (2ζr)²],&nbsp; r = f/f<sub>n</sub> &nbsp;·&nbsp; |H(f<sub>n</sub>)| ≈ <b>Q</b> = 1/(2ζ)
-        </div>
+        <div class="eqbox"><span class="lab">1 · Lo que impone la norma</span><div class="eqnote">Densidad espectral de aceleración <i>W</i>(<i>f</i>) en g²/Hz; tramos rectos en escala log–log:</div><math display="block"><mrow><mi>W</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>f</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>∝</mo><msup><mi>f</mi><mrow><mspace width="0.17em"></mspace><mi>n</mi></mrow></msup><mo>,</mo><mspace width="2em"></mspace><mi>n</mi><mo>=</mo><mfrac><mi>N</mi><mrow><mn>10</mn><msub><mi mathvariant="normal" data-fn="1">log</mi><mn>10</mn></msub><mspace width="0.17em"></mspace><mn>2</mn></mrow></mfrac><mo>≈</mo><mfrac><mi>N</mi><mn>3.01</mn></mfrac></mrow></math><div class="eqnote">con <i>N</i> la pendiente en dB/octava: <i>n</i> ≈ ±2 para ±6 dB/octava y <i>n</i> ≈ ±1 para ±3 dB/octava</div></div>
+        <div class="eqbox"><span class="lab">2 · Valor eficaz del ensayo</span><math display="block"><mrow><msub><mi>G</mi><mi mathvariant="normal">rms</mi></msub><mo>=</mo><msqrt><mrow><munderover><mo largeop="true" movablelimits="false">∫</mo><msub><mi>f</mi><mn>1</mn></msub><msub><mi>f</mi><mn>2</mn></msub></munderover><mi>W</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>f</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mspace width="0.17em"></mspace><mi mathvariant="normal">d</mi><mi>f</mi></mrow></msqrt><mo>,</mo><mspace width="2em"></mspace><mtext>tramo plano: </mtext><msub><mi>G</mi><mi mathvariant="normal">rms</mi></msub><mo>=</mo><msqrt><mrow><msub><mi>W</mi><mn>0</mn></msub><mspace width="0.17em"></mspace><mi>Δ</mi><mi>f</mi></mrow></msqrt></mrow></math></div>
+        <div class="eqbox"><span class="lab">3 · Lo que aporta el equipo (ya conocido)</span><math display="block"><mrow><mo stretchy="false" lspace="0" rspace="0">|</mo><mi>H</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>f</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mo>=</mo><mi>M</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>r</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>1</mn><mo>−</mo><msup><mi>r</mi><mn>2</mn></msup><msup><mo stretchy="false" lspace="0" rspace="0">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>2</mn><mi>ζ</mi><mi>r</mi><msup><mo stretchy="false" lspace="0" rspace="0">)</mo><mn>2</mn></msup></mrow></msqrt></mfrac><mo>,</mo><mspace width="2em"></mspace><mi>r</mi><mo>=</mo><mfrac><mi>f</mi><msub><mi>f</mi><mi>n</mi></msub></mfrac><mo>,</mo><mspace width="2em"></mspace><mo stretchy="false" lspace="0" rspace="0">|</mo><mi>H</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><msub><mi>f</mi><mi>n</mi></msub><mo stretchy="false" lspace="0" rspace="0">)</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>ζ</mi></mrow></mfrac><mo>=</mo><mi>Q</mi></mrow></math></div>
       </div>
       <div>
-        <div class="eqbox">
-          <span class="lab">4 · Respuesta: se multiplican potencias, no amplitudes</span>
-          W<sub>resp</sub>(f) = <b>|H(f)|²</b> · W(f)
-        </div>
-        <div class="eqbox">
-          <span class="lab">5 · Ecuación de Miles (PSD plana en torno a f<sub>n</sub>)</span>
-          G<sub>rms,resp</sub> = √( (π/2)·f<sub>n</sub>·Q·W(f<sub>n</sub>) ) = √( π·f<sub>n</sub>·W(f<sub>n</sub>) / 4ζ )
-        </div>
-        <div class="eqbox">
-          <span class="lab">6 · Carga de diseño</span>
-          3σ = 3·G<sub>rms,resp</sub> &nbsp;·&nbsp; fuerza de inercia: F = m·(3σ)·g
-        </div>
+        <div class="eqbox"><span class="lab">4 · Respuesta: se multiplican potencias, no amplitudes</span><math display="block"><mrow><msub><mi>W</mi><mi mathvariant="normal">resp</mi></msub><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>f</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mi>H</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>f</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><msup><mo stretchy="false" lspace="0" rspace="0">|</mo><mn>2</mn></msup><mspace width="0.17em"></mspace><mi>W</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>f</mi><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow></math></div>
+        <div class="eqbox"><span class="lab">5 · Ecuación de Miles (PSD plana en torno a <i>f</i><sub>n</sub>)</span><math display="block"><mrow><msub><mi>G</mi><mi mathvariant="normal">rms,resp</mi></msub><mo>≈</mo><msqrt><mrow><mfrac><mi>π</mi><mn>2</mn></mfrac><mspace width="0.17em"></mspace><msub><mi>f</mi><mi>n</mi></msub><mspace width="0.17em"></mspace><mi>Q</mi><mspace width="0.17em"></mspace><mi>W</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><msub><mi>f</mi><mi>n</mi></msub><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow></msqrt><mo>=</mo><msqrt><mfrac><mrow><mi>π</mi><mspace width="0.17em"></mspace><msub><mi>f</mi><mi>n</mi></msub><mspace width="0.17em"></mspace><mi>W</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><msub><mi>f</mi><mi>n</mi></msub><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow><mrow><mn>4</mn><mi>ζ</mi></mrow></mfrac></msqrt></mrow></math></div>
+        <div class="eqbox"><span class="lab">6 · Carga de diseño</span><math display="block"><mrow><mn>3</mn><mi>σ</mi><mo>=</mo><mn>3</mn><mspace width="0.17em"></mspace><msub><mi>G</mi><mi mathvariant="normal">rms,resp</mi></msub><mo>,</mo><mspace width="2em"></mspace><mi>F</mi><mo>=</mo><mi>m</mi><mspace width="0.17em"></mspace><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>3</mn><mi>σ</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mspace width="0.17em"></mspace><msub><mi>g</mi><mn>0</mn></msub><mo>,</mo><mspace width="2em"></mspace><msub><mi>g</mi><mn>0</mn></msub><mo>=</mo><mn>9.81</mn><mspace width="0.25em"></mspace><mi mathvariant="normal">m</mi><mo lspace="0.05em" rspace="0.05em">/</mo><msup><mi mathvariant="normal">s</mi><mn>2</mn></msup></mrow></math></div>
       </div>
     </div>
     <div class="intro" style="margin-top:12px;border-left-color:var(--green)">
@@ -245,11 +324,11 @@
     <h2>Recordatorio: la escala de decibeles, la escala logarítmica y la unidad g</h2>
 
     <h3>El decibel no es una unidad, es una razón</h3>
-    <p style="font-size:13.5px;margin:4px 0 8px">El decibel compara dos cantidades. Si la cantidad es de tipo <b>potencia</b> —y una PSD lo es, porque está en g²/Hz— la razón se expresa como <span class="mth">ΔdB = 10·log₁₀(W₂/W₁)</span>. Si la cantidad es de tipo <b>amplitud</b> —una aceleración en g, un desplazamiento— se usa <span class="mth">ΔdB = 20·log₁₀(G₂/G₁)</span>. No son dos convenios distintos: como la potencia va con el cuadrado de la amplitud, ambas expresiones dan el mismo número.</p>
+    <p style="font-size:13.5px;margin:4px 0 8px">El decibel compara dos cantidades. Si la cantidad es de tipo <b>potencia</b> …y una PSD lo es, porque está en g²/Hz… la razón se expresa como <span class="mth">ΔdB = 10·log<sub>10</sub>(W<sub>2</sub>/W<sub>1</sub>)</span>. Si la cantidad es de tipo <b>amplitud</b> …una aceleración en g, un desplazamiento… se usa <span class="mth">ΔdB = 20·log<sub>10</sub>(G<sub>2</sub>/G<sub>1</sub>)</span>. No son dos convenios distintos: como la potencia va con el cuadrado de la amplitud, ambas expresiones dan el mismo número.</p>
 
     <table class="db">
       <tr><th style="width:18%">Valor</th><th style="width:30%">Qué significa</th><th>Por qué aparece en el curso</th></tr>
-      <tr><td>−3 dB</td><td>la potencia se reduce a la <b>mitad</b>; la amplitud, a 1/√2 = 0.707</td><td>Es exactamente la definición de los <b>puntos de media potencia</b> f₁ y f₂. El «ancho de banda a −3 dB» es el Δf del Pilar 6, y de ahí salen ζ = Δf/(2f<sub>n</sub>) y Q = f<sub>n</sub>/Δf.</td></tr>
+      <tr><td>−3 dB</td><td>la potencia se reduce a la <b>mitad</b>; la amplitud, a 1/√2 = 0.707</td><td>Es exactamente la definición de los <b>puntos de media potencia</b> f<sub>1</sub> y f<sub>2</sub>. El «ancho de banda a −3 dB» es el Δf del Pilar 6, y de ahí salen ζ = Δf/(2f<sub>n</sub>) y Q = f<sub>n</sub>/Δf.</td></tr>
       <tr><td>+3 dB</td><td>la potencia se <b>duplica</b>; la amplitud sube un factor √2 ≈ 1.41</td><td>Es el margen habitual entre el nivel de <b>aceptación</b> y el de <b>cualificación</b>: se duplica la PSD, pero el G<sub>rms</sub> solo sube un 41 %.</td></tr>
       <tr><td>+6 dB</td><td>la potencia se <b>cuadruplica</b>; la amplitud se <b>duplica</b></td><td>Es el margen de cualificación severo, y sobre todo la pendiente típica de los perfiles: <b>+6 dB por octava</b> significa que al duplicar la frecuencia la PSD se multiplica por 4, es decir W ∝ f².</td></tr>
       <tr><td>+10 dB</td><td>la potencia se multiplica por <b>10</b>; la amplitud, por √10 ≈ 3.16</td><td>Una década de PSD. Sirve para leer de un vistazo cuántos órdenes de magnitud separan dos ensayos.</td></tr>
@@ -265,15 +344,12 @@
 
   <div class="card full">
     <h2>Puente con la ecuación de movimiento que ya se sabe resolver</h2>
-    <div class="eqbox">
-      <span class="lab">Lo de siempre: régimen permanente ante una armónica</span>
-      m·x″ + c·x′ + k·x = F₀ cos ωt &nbsp;&nbsp;⇒&nbsp;&nbsp; x(t) = X·cos(ωt − φ),&nbsp; X = (F₀/k)·M(r),&nbsp; φ = atan2(2ζr, 1−r²)
-    </div>
+    <div class="eqbox"><span class="lab">Lo de siempre: régimen permanente ante una armónica</span><math display="block"><mrow><mi>m</mi><mspace width="0.17em"></mspace><msup><mi>x</mi><mrow><mo>′</mo><mo>′</mo></mrow></msup><mo>+</mo><mi>c</mi><mspace width="0.17em"></mspace><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mi>k</mi><mspace width="0.17em"></mspace><mi>x</mi><mo>=</mo><msub><mi>F</mi><mn>0</mn></msub><mi mathvariant="normal" data-fn="1">cos</mi><mspace width="0.17em"></mspace><mi>ω</mi><mi>t</mi><mspace width="1em"></mspace><mo>⇒</mo><mspace width="1em"></mspace><mi>x</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>t</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><mi>X</mi><mi mathvariant="normal" data-fn="1">cos</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>ω</mi><mi>t</mi><mo>−</mo><mi>φ</mi><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow></math><math display="block"><mrow><mi>X</mi><mo>=</mo><mfrac><msub><mi>F</mi><mn>0</mn></msub><mi>k</mi></mfrac><mspace width="0.17em"></mspace><mi>M</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>r</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>,</mo><mspace width="2em"></mspace><mi>φ</mi><mo>=</mo><mi mathvariant="normal">atan2</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>2</mn><mi>ζ</mi><mi>r</mi><mo>,</mo><mspace width="0.25em"></mspace><mn>1</mn><mo>−</mo><msup><mi>r</mi><mn>2</mn></msup><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow></math></div>
     <p style="font-size:13.5px;margin:8px 0 0">La función de respuesta en frecuencia <span class="mth">H(f)</span> no es un objeto nuevo: <b>es esa misma solución de régimen, vista como función de la frecuencia</b>. Su módulo es el factor de amplificación <span class="mth">M(r)</span> que ya se calcula desde la Unidad 3, y su argumento es el desfase <span class="mth">φ</span>. El panel central de la gráfica es, literalmente, la curva del Pilar 5 elevada al cuadrado.</p>
     <p style="font-size:13.5px;margin:8px 0 0">Una vibración aleatoria es una <b>superposición de infinitas armónicas</b> de amplitudes y fases impredecibles. Como la ecuación de movimiento es <b>lineal</b>, cada armónica se resuelve por separado con la fórmula de arriba y los efectos se suman: no hace falta ninguna teoría nueva. Lo único que cambia es la contabilidad. Sumar amplitudes no tendría sentido, porque las fases son aleatorias y se cancelarían entre sí; lo que sí se conserva y se suma es la <b>potencia</b>. Por eso la relación de entrada a salida se escribe con el módulo al cuadrado, <span class="mth">W<sub>resp</sub> = |H|²·W</span>, y el área bajo esa curva es la <b>varianza</b> de la aceleración de respuesta, cuya raíz cuadrada es el <span class="mth">G<sub>rms</sub></span>.</p>
     <p style="font-size:13.5px;margin:8px 0 0">En resumen, la cadena completa usa tres piezas que ya estaban sobre la mesa: la <b>solución de régimen</b> de la EDO da <span class="mth">|H|</span>; los <b>puntos de media potencia</b> dan <span class="mth">Q</span> y <span class="mth">ζ</span>; y la <b>norma</b> aporta el único dato externo, <span class="mth">W(f<sub>n</sub>)</span>. Con esos tres números, la ecuación de Miles entrega la carga con la que se dimensiona la estructura.</p>
     <div class="takeaway" style="margin-top:12px">
-      <b>Cómo explorar:</b> conviene empezar moviendo <b>f<sub>n</sub></b> y observar los tres paneles a la vez: mientras la resonancia cae dentro de la meseta, la respuesta apenas cambia; al sacarla hacia los extremos del perfil, donde W(f<sub>n</sub>) es menor, la carga baja de golpe — y esa es la verdadera estrategia de diseño. Después conviene variar <b>ζ</b> y comprobar que la carga solo baja como 1/√ζ, mucho menos de lo que suele suponerse. Los botones <b>−3 dB</b>, <b>+3 dB</b> y <b>+6 dB</b> desplazan el perfil completo y permiten ver qué significa un margen de cualificación. Con <b>Congelar comparación</b> se deja una curva de referencia, y con los botones de vista se puede comprobar por qué la escala logarítmica y los decibeles son la forma natural de mirar estos espectros. La diferencia entre el valor por integración y el de Miles indica hasta qué punto la hipótesis de «PSD plana en torno a f<sub>n</sub>» es razonable en cada caso.
+      <b>Cómo explorar:</b> conviene empezar moviendo <b>f<sub>n</sub></b> y observar los tres paneles a la vez: mientras la resonancia cae dentro de la meseta, la respuesta apenas cambia; al sacarla hacia los extremos del perfil, donde W(f<sub>n</sub>) es menor, la carga baja de golpe, y esa es la verdadera estrategia de diseño. Después conviene variar <b>ζ</b> y comprobar que la carga solo baja como 1/√ζ, mucho menos de lo que suele suponerse. Los botones <b>−3 dB</b>, <b>+3 dB</b> y <b>+6 dB</b> desplazan el perfil completo y permiten ver qué significa un margen de cualificación. Con <b>Congelar comparación</b> se deja una curva de referencia, y con los botones de vista se puede comprobar por qué la escala logarítmica y los decibeles son la forma natural de mirar estos espectros. La diferencia entre el valor por integración y el de Miles indica hasta qué punto la hipótesis de «PSD plana en torno a f<sub>n</sub>» es razonable en cada caso.
     </div>
   </div>
   <div class="card full" id="cardnormas">
@@ -281,7 +357,7 @@
     <div id="selloesp" class="sello">Cargando la lista de normas…</div>
     <div id="listaesp"></div>
     <div class="takeaway" style="margin-top:12px">
-      <b>En corto:</b> las de <b>acceso libre</b> —MIL-STD-810H, el GEVS de la NASA, ECSS, y los textos legales de la FAA y de EASA— se descargan completas y bastan para trabajar todos los conceptos de esta unidad. Las de <b>pago</b> —DO-160 e ISO— se compran al editor o a un revendedor, aunque conviene preguntar antes en la biblioteca de la universidad por una licencia institucional; las fichas de ISO ofrecen además vista previa gratuita, suficiente para citarlas bien. La guía completa, con precios y con el estado de cada revisión, está en <a href="normas.html">Normas: dónde consultarlas</a>.
+      <b>En corto:</b> las de <b>acceso libre</b> …MIL-STD-810H, el GEVS de la NASA, ECSS, y los textos legales de la FAA y de EASA… se descargan completas y bastan para trabajar todos los conceptos de esta unidad. Las de <b>pago</b> …DO-160 e ISO… se compran al editor o a un revendedor, aunque conviene preguntar antes en la biblioteca de la universidad por una licencia institucional; las fichas de ISO ofrecen además vista previa gratuita, suficiente para citarlas bien. La guía completa, con precios y con el estado de cada revisión, está en <a href="normas.html">Normas: dónde consultarlas</a>.
     </div>
   </div>
 
@@ -292,7 +368,7 @@
   <div class="cred">
     <div class="h">Créditos y cómo citar</div>
     <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
-    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
   </div>
 </footer>
 
@@ -303,7 +379,7 @@
   "normas": [
     {
       "clave": "RTCA DO-160G, Cambio 1 (2014)",
-      "parte": "Sección 8 — Vibration",
+      "parte": "Sección 8: Vibration",
       "nombre": "Environmental Conditions and Test Procedures for Airborne Equipment",
       "ambito": "Aviónica y equipo embarcado de aviación civil",
       "acceso": "pago",
@@ -316,7 +392,7 @@
     },
     {
       "clave": "MIL-STD-810H, Cambio 1 (2022)",
-      "parte": "Método 514.8 — Vibration",
+      "parte": "Método 514.8: Vibration",
       "nombre": "Environmental Engineering Considerations and Laboratory Tests",
       "ambito": "Material militar terrestre, naval y aéreo",
       "acceso": "gratis",
@@ -329,7 +405,7 @@
     },
     {
       "clave": "NASA GSFC-STD-7000B (2021)",
-      "parte": "Sección 2.4 — Structural and mechanical verification",
+      "parte": "Sección 2.4: Structural and mechanical verification",
       "nombre": "General Environmental Verification Standard (GEVS)",
       "ambito": "Instrumentos y componentes de vuelo espacial",
       "acceso": "gratis",
@@ -342,7 +418,7 @@
     {
       "clave": "ECSS-E-ST-10-03C Rev.1 (31 may 2022)",
       "parte": "Campaña de ensayos completa",
-      "nombre": "Space engineering — Testing",
+      "nombre": "Space engineering: Testing",
       "ambito": "Segmento espacial europeo (ESA y su cadena de proveedores)",
       "acceso": "gratis",
       "precio": "",
@@ -354,8 +430,8 @@
     },
     {
       "clave": "ISO 20816-1:2016",
-      "parte": "Parte 1 — Directrices generales",
-      "nombre": "Mechanical vibration — Measurement and evaluation of machine vibration",
+      "parte": "Parte 1: Directrices generales",
+      "nombre": "Mechanical vibration: Measurement and evaluation of machine vibration",
       "ambito": "Máquinas rotativas ya en servicio (sustituye a ISO 10816-1)",
       "acceso": "pago",
       "precio": "CHF 159, 34 páginas (iso.org, consultado 10/2026)",
@@ -366,8 +442,8 @@
     },
     {
       "clave": "ISO 2631-1:1997 / Enm. 1:2010",
-      "parte": "Parte 1 — Requisitos generales",
-      "nombre": "Mechanical vibration and shock — Evaluation of human exposure to whole-body vibration",
+      "parte": "Parte 1: Requisitos generales",
+      "nombre": "Mechanical vibration and shock: Evaluation of human exposure to whole-body vibration",
       "ambito": "Personas expuestas: tripulación y pasajeros",
       "acceso": "pago",
       "precio": "CHF 159, 31 páginas (iso.org, consultado 10/2026)",
@@ -612,7 +688,7 @@ function draw(){
     if(pi===2){
       ctx.fillStyle=NAVY; ctx.textAlign='right'; ctx.textBaseline='top'; ctx.font='11.5px Segoe UI,sans-serif';
       ctx.fillText('área bajo la curva = σ² = '+Aout.toFixed(1)+' g²', mL+pw-6, t+4);
-      ctx.fillText('Grms = √σ² = '+Gout.toFixed(2)+' g', mL+pw-6, t+19);
+      ctx.fillText('G_{rms} = √σ² = '+Gout.toFixed(2)+' g', mL+pw-6, t+19);
     }
   });
   // etiqueta eje x
@@ -625,7 +701,7 @@ function draw(){
   $('oWfn').textContent=Wfn>0?Wfn.toFixed(3):'0 (fuera)';
   $('oBW').textContent=(2*z*fn).toFixed(1)+' Hz';
   $('oGn').textContent=Gout.toFixed(2)+' g';
-  $('oGm').textContent=Gm>0?Gm.toFixed(2)+' g':'—';
+  $('oGm').textContent=Gm>0?Gm.toFixed(2)+' g':'…';
   $('oG3').textContent=(3*Gout).toFixed(0)+' g';
   $('oAmp').textContent=(Gin>0?(Gout/Gin):0).toFixed(2)+'×';
 }
@@ -682,7 +758,7 @@ draw();
 function fmtFecha(s){
   const m={ '01':'enero','02':'febrero','03':'marzo','04':'abril','05':'mayo','06':'junio',
             '07':'julio','08':'agosto','09':'septiembre','10':'octubre','11':'noviembre','12':'diciembre'};
-  const p=String(s||'').split('-'); if(p.length!==3) return s||'—';
+  const p=String(s||'').split('-'); if(p.length!==3) return s||'…';
   return p[2].replace(/^0/,'')+' de '+(m[p[1]]||p[1])+' de '+p[0];
 }
 function mesesDesde(s){
@@ -733,6 +809,82 @@ async function cargarNormas(destinoId, compacta, selloId){
 }
 cargarNormas('listaesp', true, 'selloesp');
 </script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ mostrar(); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
 <!-- contador:inicio -->
 <style>
   .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
@@ -740,7 +892,7 @@ cargarNormas('listaesp', true, 'selloesp');
   .visitas b{color:#1F3864;font-weight:700}
   .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
 </style>
-<div class="visitas" id="visitas"><span>👁 Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
 <a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
 <script>
 (function(){
@@ -832,9 +984,11 @@ cargarNormas('listaesp', true, 'selloesp');
 <div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
 <a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
 <div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html">Laboratorio de señales <small>Pilar 11 · temas 7.1–7.2</small></a>
 <div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html">Dos grados de libertad y absorbedor <small>Pilar 12 · temas 8.1–8.3</small></a>
+
+
     <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
     </div>
   </details>

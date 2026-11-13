@@ -2,6 +2,104 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fricción de Coulomb · Explorador interactivo · Vibraciones</title>
 <style>
@@ -107,7 +205,6 @@
 </style>
 <!-- tema:inicio -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
   /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
   :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
@@ -138,11 +235,11 @@
   <!-- ================= COLUMNA IZQUIERDA ================= -->
   <div>
     <div class="aero">
-      <h3>🛩️ En la aeronave · ¿por qué me importa?</h3>
+      <h3>En la aeronave · ¿por qué importa?</h3>
       <p>La fricción seca no es solo el bloque de la clase: es un <b>mecanismo real de disipación de energía</b> en la estructura. En un fuselaje con miles de <b>uniones remachadas y atornilladas</b>, las láminas frotan una contra otra con un <b>microdeslizamiento</b> (microslip) cada vez que la estructura vibra.</p>
       <ul>
         <li><b>Amortiguamiento estructural:</b> ese roce en las juntas convierte energía de vibración en calor. Por eso las uniones <b>aportan amortiguamiento</b> a la estructura, incluso sin ningún amortiguador dedicado.</li>
-        <li><b>Modelo de Coulomb:</b> la fuerza de fricción tiene <b>magnitud casi constante</b> <span class="num">F<sub>f</sub> = μ·N</span> y solo <b>cambia de signo</b> con la velocidad — igual que en este explorador.</li>
+        <li><b>Modelo de Coulomb:</b> la fuerza de fricción tiene <b>magnitud casi constante</b> <span class="num">F<sub>f</sub> = μ·N</span> y solo <b>cambia de signo</b> con la velocidad: igual que en este explorador.</li>
         <li><b>Firma característica:</b> la amplitud cae de forma <b>lineal</b> (una recta), no exponencial; los ingenieros usan esa firma para identificar cuándo domina la fricción seca en un ensayo de vibración.</li>
         <li><b>Diseño:</b> demasiado apriete reduce el microslip y el amortiguamiento; muy poco, genera fatiga por rozamiento (<i>fretting</i>). Hay un óptimo.</li>
       </ul>
@@ -150,14 +247,14 @@
     </div>
 
     <div class="card">
-      <h2>1 · Define el sistema &nbsp;m · x″ + k · x = ∓F<sub>f</sub></h2>
+      <h2>1 · Definición del sistema &nbsp;m · x″ + k · x = ∓F<sub>f</sub></h2>
       <div class="grid3">
         <div class="fld"><label>m &nbsp;masa (kg)</label><input id="in-m" type="number" step="any" min="0.01" value="2"></div>
         <div class="fld"><label>k &nbsp;rigidez (N/m)</label><input id="in-k" type="number" step="any" min="0" value="800"></div>
         <div class="fld"><label>μ &nbsp;coef. fricción</label><input id="in-mu" type="number" step="any" min="0" value="0.20"></div>
-        <div class="fld"><label>x₀ &nbsp;despl. inicial (mm)</label><input id="in-x0" type="number" step="any" value="60"></div>
+        <div class="fld"><label>x<sub>0</sub> &nbsp;despl. inicial (mm)</label><input id="in-x0" type="number" step="any" value="60"></div>
       </div>
-      <div class="hint">La masa se suelta desde x₀ con velocidad cero (g = 9.81 m/s²). Con ▶ se suelta; con el foco en el diagrama, ←/→ ajustan x₀.</div>
+      <div class="hint">La masa se suelta desde x<sub>0</sub> con velocidad cero (g = 9.81 m/s²). Con ▶ se suelta; con el foco en el diagrama, ←/→ ajustan x<sub>0</sub>.</div>
       <div class="chips" id="chips"></div>
     </div>
 
@@ -184,7 +281,7 @@
     <div class="card">
       <h2>Masa – resorte con fricción seca &nbsp;·&nbsp; F<sub>f</sub> = μ·N en vivo</h2>
       <canvas id="cv" width="720" height="440" tabindex="0" role="application" aria-label="Bloque sobre superficie con fricción, unido a un resorte y una pared. Las flechas cambian el desplazamiento inicial."></canvas>
-      <div class="kbd">⌨ Con el foco en el diagrama: <kbd>←</kbd> <kbd>→</kbd> cambian x₀, <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> suelta/pausa.</div>
+      <div class="kbd">Con el foco en el diagrama: <kbd>←</kbd> <kbd>→</kbd> cambian x<sub>0</sub>, <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> suelta/pausa.</div>
       <div class="sr" aria-live="polite" id="live"></div>
       <div class="legend">
         <span><span class="dot" style="background:#C55A11"></span> F<sub>k</sub> = −k·x (resorte)</span>
@@ -193,7 +290,7 @@
       </div>
       <div class="diagctrls">
         <button class="btn small" id="play">⏸ pausar</button>
-        <button class="btn small ghost" id="release">▶ soltar desde x₀</button>
+        <button class="btn small ghost" id="release">▶ soltar desde x<sub>0</sub></button>
         <label class="toggle"><input type="checkbox" id="ck-forces" checked> mostrar fuerzas</label>
       </div>
       <div class="hint">La flecha roja (fricción) <b>voltea de sentido</b> cada vez que el bloque cambia de dirección: siempre se opone a la velocidad. La banda sombreada es la zona de reposo ±F<sub>f</sub>/k.</div>
@@ -204,13 +301,13 @@
       <div class="eqbox" id="eom"></div>
       <div id="practico"></div>
       <details class="gloss">
-        <summary>📖 Glosario (F<sub>f</sub>=μN, banda de reposo, lineal vs exponencial, ω)</summary>
+        <summary>Glosario (F<sub>f</sub>=μN, banda de reposo, lineal vs exponencial, ω)</summary>
         <ul>
-          <li><b>F<sub>f</sub> = μ·N = μ·m·g</b> — fuerza de fricción de Coulomb (seca): magnitud <b>constante</b>, solo cambia de signo para oponerse a la velocidad. No depende de la velocidad ni del desplazamiento.</li>
-          <li><b>Banda de reposo (zona muerta)</b> — intervalo ±F<sub>f</sub>/k alrededor del equilibrio. Si el bloque se detiene ahí, la fuerza del resorte k·x no supera la fricción estática y <b>ya no arranca</b>: queda en reposo permanente (no necesariamente en x = 0).</li>
-          <li><b>Decaimiento lineal vs exponencial</b> — con fricción seca la amplitud pierde <b>2F<sub>f</sub>/k por semiciclo</b> (cantidad fija) → los picos caen sobre una <b>recta</b>. Con amortiguamiento <b>viscoso</b> pierde una <b>fracción</b> fija → caída <b>exponencial</b>.</li>
-          <li><b>¿Por qué ω no cambia?</b> — en cada semiciclo la EOM es m·x″ + k·x = ∓F<sub>f</sub>: es SHM a <b>ω<sub>n</sub> = √(k/m)</b> solo que alrededor de un centro corrido ±F<sub>f</sub>/k. El término de fricción mueve el centro pero <b>no toca</b> la frecuencia. Por eso <b>T no cambia</b> con la fricción (a diferencia de ω<sub>d</sub> en el caso viscoso).</li>
-          <li><b>Nº de semiciclos hasta el paro</b> — n = ⌈(x₀ − F<sub>f</sub>/k)/(2F<sub>f</sub>/k)⌉ (techo, porque completa el semiciclo en curso). Ciclos completos = n/2.</li>
+          <li><b>F<sub>f</sub> = μ·N = μ·m·g</b>: fuerza de fricción de Coulomb (seca): magnitud <b>constante</b>, solo cambia de signo para oponerse a la velocidad. No depende de la velocidad ni del desplazamiento.</li>
+          <li><b>Banda de reposo (zona muerta)</b>: intervalo ±F<sub>f</sub>/k alrededor del equilibrio. Si el bloque se detiene ahí, la fuerza del resorte k·x no supera la fricción estática y <b>ya no arranca</b>: queda en reposo permanente (no necesariamente en x = 0).</li>
+          <li><b>Decaimiento lineal vs exponencial</b>: con fricción seca la amplitud pierde <b>2F<sub>f</sub>/k por semiciclo</b> (cantidad fija) → los picos caen sobre una <b>recta</b>. Con amortiguamiento <b>viscoso</b> pierde una <b>fracción</b> fija → caída <b>exponencial</b>.</li>
+          <li><b>¿Por qué ω no cambia?</b>: en cada semiciclo la EOM es m·x″ + k·x = ∓F<sub>f</sub>: es SHM a <b><math><mrow><msub><mi>ω</mi><mi>n</mi></msub><mo>=</mo><msqrt><mrow><mi>k</mi><mo lspace="0.05em" rspace="0.05em">/</mo><mi>m</mi></mrow></msqrt></mrow></math></b> solo que alrededor de un centro corrido ±F<sub>f</sub>/k. El término de fricción mueve el centro pero <b>no toca</b> la frecuencia. Por eso <b>T no cambia</b> con la fricción (a diferencia de ω<sub>d</sub> en el caso viscoso).</li>
+          <li><b>Nº de semiciclos hasta el paro</b>: <math><mrow><mi>n</mi><mo>=</mo><mrow><mo stretchy="true" fence="true">⌈</mo><mfrac><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>−</mo><msub><mi>F</mi><mi>f</mi></msub><mo lspace="0.05em" rspace="0.05em">/</mo><mi>k</mi></mrow><mrow><mn>2</mn><msub><mi>F</mi><mi>f</mi></msub><mo lspace="0.05em" rspace="0.05em">/</mo><mi>k</mi></mrow></mfrac><mo stretchy="true" fence="true">⌉</mo></mrow></mrow></math> (función techo, porque se completa el semiciclo en curso). Ciclos completos = n/2.</li>
         </ul>
       </details>
     </div>
@@ -218,8 +315,8 @@
 </div>
 <div class="wrap" style="padding-top:0">
   <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
-    🧭 <b>Tu recorrido.</b> Aquí viste un tipo de amortiguamiento <b>no viscoso</b>: la fricción seca, con caída <b>lineal</b> y frecuencia intacta.
-    ➡ <b>Siguiente:</b> el <a href="forzada_interactivo.html">Pilar 5</a> añade una <b>fuerza externa</b> y estudia la respuesta forzada y la resonancia; regresa al <a href="edo3_interactivo.html">Pilar 3</a> para recordar cómo se arma ΣF = ma.
+     <b>Recorrido.</b> Aquí se estudió un tipo de amortiguamiento <b>no viscoso</b>: la fricción seca, con caída <b>lineal</b> y frecuencia intacta.
+    <b>Siguiente:</b> el <a href="forzada_interactivo.html">Pilar 5</a> añade una <b>fuerza externa</b> y estudia la respuesta forzada y la resonancia; el <a href="edo3_interactivo.html">Pilar 3</a> recuerda cómo se arma ΣF = ma.
     <span style="color:#5B5B5B">(Conviene mantener los archivos en la misma carpeta para que los enlaces funcionen.)</span>
   </div>
 </div>
@@ -232,7 +329,7 @@
     </div>
     <div style="font-weight:700;color:var(--navy);margin:8px 0 4px">Cómo citar:</div>
     <div style="background:var(--ice);border-left:4px solid var(--steel);border-radius:4px;padding:8px 10px;font-style:italic;color:#333;line-height:1.5">
-      Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.
+      Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.
     </div>
   </div>
 </footer>
@@ -327,7 +424,7 @@ function refresh(){
   document.getElementById('eom').innerHTML=fmt(M.m)+'·x″ + '+fmt(M.k)+'·x = ∓F<sub>f</sub> = ∓'+fmt(M.Ff,3)+' N';
   // lectura + conteo
   document.getElementById('lectura').innerHTML =
-    '🔎 <b>Lectura:</b> F<sub>f</sub> = μ·m·g = '+fmt(M.Ff,3)+' N. Banda de reposo F<sub>f</sub>/k = <b>'+mm(M.d)+' mm</b>. '+
+    ' <b>Lectura:</b> F<sub>f</sub> = μ·m·g = '+fmt(M.Ff,3)+' N. Banda de reposo F<sub>f</sub>/k = <b>'+mm(M.d)+' mm</b>. '+
     'Cada semiciclo la amplitud pierde 2F<sub>f</sub>/k = <b>'+mm(M.perHalf)+' mm</b>; cada ciclo completo 4F<sub>f</sub>/k = <b>'+mm(M.perCycle)+' mm</b>.';
   let qb;
   if(isFinite(M.nHalf)){
@@ -345,12 +442,12 @@ function refresh(){
     +tile('F<sub>f</sub>', fmt(M.Ff,3)+' N','fricción de Coulomb = μ·m·g')
     +tile('ω<sub>n</sub>', fmt(M.wn,3)+' rad/s','frecuencia natural = √(k/m)')
     +tile('f<sub>n</sub>', fmt(M.fn,3)+' Hz','f_n = ω_n / 2π')
-    +tile('T', (M.T?fmt(M.T,3)+' s':'—'),'periodo = 2π/ω_n — NO cambia con la fricción')
+    +tile('T', (M.T?fmt(M.T,3)+' s':'…'),'periodo = 2π/ω_n: NO cambia con la fricción')
     +tile('caída / ciclo', mm(M.perCycle)+' mm','4F_f/k (decaimiento LINEAL)')
     +tile('banda reposo', '±'+mm(M.d)+' mm','F_f/k (zona muerta)')
     +tile('nº semiciclos', (isFinite(M.nHalf)?M.nHalf:'∞'),'⌈(x0−F_f/k)/(2F_f/k)⌉')
     +tile('nº ciclos ≈', (isFinite(M.cycles)?fmt(M.cycles,2):'∞'),'n_semiciclos / 2')
-    +tile('reposo final', (isFinite(M.nHalf)?mm(M.finalX)+' mm':'—'),'posición de paro (dentro de la banda)')
+    +tile('reposo final', (isFinite(M.nHalf)?mm(M.finalX)+' mm':'…'),'posición de paro (dentro de la banda)')
     +tile('x₀', mm(M.x0)+' mm','desplazamiento inicial (v₀ = 0)')
     +'</div>';
   document.getElementById('practico').innerHTML =
@@ -433,7 +530,7 @@ function drawResponse(phFrac){
     if(isFinite(M.totalTime)){
       s='<b>Lineal:</b> los picos caen sobre una recta. Se detiene tras <b>'+M.nHalf+' semiciclos</b> ('+fmt(M.cycles,2)+' ciclos) en <b>x = '+fmt(M.finalX*1000,2)+' mm</b>, dentro de la banda ±'+fmt(M.d*1000,2)+' mm. <b>T = '+fmt(M.T,3)+' s</b> (no cambia con la fricción).';
     } else { s='<b>Sin fricción</b> (μ = 0): oscila indefinidamente a ω<sub>n</sub> = '+fmt(M.wn,3)+' rad/s, T = '+fmt(M.T,3)+' s.'; }
-    if(showVisc) s+=' <span style="color:'+STEEL+'">La curva azul (viscoso) cae de forma <b>exponencial</b> — contraste clave.</span>';
+    if(showVisc) s+=' <span style="color:'+STEEL+'">La curva azul (viscoso) cae de forma <b>exponencial</b>: contraste clave.</span>';
     if(info.__k!==s){info.innerHTML=s; info.__k=s;}
   }
 }
@@ -580,6 +677,82 @@ requestAnimationFrame(drawMain);
 function respLoop(now){ const St=simState(now); drawResponse(St.frac); requestAnimationFrame(respLoop); }
 requestAnimationFrame(respLoop);
 </script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ mostrar(); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
 <!-- contador:inicio -->
 <style>
   .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
@@ -587,7 +760,7 @@ requestAnimationFrame(respLoop);
   .visitas b{color:#1F3864;font-weight:700}
   .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
 </style>
-<div class="visitas" id="visitas"><span>👁 Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
 <a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
 <script>
 (function(){
@@ -679,9 +852,11 @@ requestAnimationFrame(respLoop);
 <div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
 <a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
 <div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html">Laboratorio de señales <small>Pilar 11 · temas 7.1–7.2</small></a>
 <div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html">Dos grados de libertad y absorbedor <small>Pilar 12 · temas 8.1–8.3</small></a>
+
+
     <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
     </div>
   </details>

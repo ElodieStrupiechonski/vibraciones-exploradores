@@ -2,6 +2,104 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
 <title>Números complejos · Explorador interactivo · Vibraciones</title>
@@ -108,7 +206,6 @@
 </style>
 <!-- tema:inicio -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
   /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
   :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
@@ -139,7 +236,7 @@
   <!-- ================= COLUMNA IZQUIERDA ================= -->
   <div>
     <div class="aero">
-      <h3>🛩️ En la aeronave · ¿por qué me importa?</h3>
+      <h3>En la aeronave · ¿por qué importa?</h3>
       <p>Los números complejos son el <b>idioma</b> con el que se escribe la vibración. Cada modo estructural amortiguado es una raíz compleja <span class="num">s = −ζω<sub>n</sub> ± iω<sub>d</sub></span>, y la respuesta en frecuencia es un número complejo.</p>
       <ul>
         <li><b>Fasor</b> <span class="num">z = |z|∠θ</span>: al analizar la respuesta a una ráfaga o al flameo, <b>|z| es la amplificación</b> y <b>θ el desfase</b> respecto de la excitación.</li>
@@ -149,7 +246,7 @@
       <div class="src">Valores ilustrativos (órdenes de magnitud); bibliografía: Fung, <i>An Introduction to the Theory of Aeroelasticity</i>; Rao, <i>Mechanical Vibrations</i>.</div>
     </div>
     <div class="card">
-      <h2>1 · Entra un número complejo</h2>
+      <h2>1 · Introducción de un número complejo</h2>
       <div class="tabs">
         <div class="tab active" data-mode="bin">Binómica</div>
         <div class="tab" data-mode="pol">Polar</div>
@@ -168,7 +265,7 @@
       <div class="inputs" data-mode="eul">
         <div class="fld"><label>módulo  r</label><input id="in-er" type="number" step="any" min="0" value="2"></div>
         <div class="fld"><label>ángulo  θ (rad)</label><input id="in-et" type="number" step="any" value="1.0472"></div>
-        <div class="hint">z = r·e<sup>iθ</sup> &nbsp;(θ en radianes)</div>
+        <div class="hint"><math><mrow><mi>z</mi><mo>=</mo><mi>r</mi><mspace width="0.17em"></mspace><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup></mrow></math> &nbsp;(θ en radianes)</div>
       </div>
       <div class="chips" id="chips"></div>
     </div>
@@ -182,9 +279,9 @@
 
     <div class="card forms roots">
       <h2>3 · Raíces cuadradas &nbsp;√z</h2>
-      <div class="row"><span class="tag">w₀</span><span class="val" id="r0"></span></div>
-      <div class="row"><span class="tag">w₁ = −w₀</span><span class="val" id="r1"></span></div>
-      <div class="hint">wₖ = √r · e<sup>i(θ+2πk)/2</sup>, &nbsp;k = 0,1. &nbsp; Comprueba: (w₀)² = z.</div>
+      <div class="row"><span class="tag">w<sub>0</sub></span><span class="val" id="r0"></span></div>
+      <div class="row"><span class="tag">w<sub>1</sub> = −w<sub>0</sub></span><span class="val" id="r1"></span></div>
+      <div class="hint"><math><mrow><msub><mi>w</mi><mi>k</mi></msub><mo>=</mo><msqrt><mi>r</mi></msqrt><mspace width="0.28em"></mspace><msup><mi>e</mi><mrow><mspace width="0.17em"></mspace><mi>i</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>θ</mi><mo>+</mo><mn>2</mn><mi>π</mi><mi>k</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo lspace="0.05em" rspace="0.05em">/</mo><mn>2</mn></mrow></msup><mo>,</mo><mspace width="1em"></mspace><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn></mrow></math>. &nbsp; Comprobación: <math><mrow><msubsup><mi>w</mi><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><mi>z</mi></mrow></math>.</div>
     </div>
 
     <div style="font-size:12.5px;color:var(--grey);background:var(--ice2);border:1px solid var(--ice);border-radius:9px;padding:9px 12px;margin-bottom:16px">
@@ -192,25 +289,25 @@
     </div>
 
     <div class="card">
-      <h2>🎡 Concepto matemático · El giro que se vuelve onda</h2>
+      <h2>Concepto matemático · El giro que se vuelve onda</h2>
       <canvas id="wave"></canvas>
       <div id="wavecap"></div>
     </div>
 
     <div class="card">
-      <h2>🛝 Vida cotidiana · El columpio</h2>
+      <h2>Vida cotidiana · El columpio</h2>
       <canvas id="swing"></canvas>
       <div id="swingcap"></div>
     </div>
 
     <div class="card">
-      <h2>🧱 Vibraciones · Torre en mesa vibradora</h2>
+      <h2>Vibraciones · Torre en mesa vibradora</h2>
       <canvas id="tower"></canvas>
       <div id="towercap"></div>
     </div>
 
     <div class="card">
-      <h2>✈️ Aeronáutica · Cabeceo del ala (flutter)</h2>
+      <h2>Aeronáutica · Cabeceo del ala (flutter)</h2>
       <canvas id="wing"></canvas>
       <div id="wingcap"></div>
     </div>
@@ -221,10 +318,10 @@
     <div class="card">
       <h2>Plano de Argand</h2>
       <canvas id="cv" width="720" height="560" tabindex="0" role="application" aria-label="Plano de Argand. Las flechas mueven el número complejo z."></canvas>
-      <div class="kbd">⌨ Con el foco en el plano: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> mueven z, <kbd>Shift</kbd>+flecha paso mayor.</div>
+      <div class="kbd">Con el foco en el plano: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> mueven z, <kbd>Shift</kbd>+flecha paso mayor.</div>
       <div class="sr" aria-live="polite" id="live"></div>
       <div class="legend">
-        <span><span class="dot" style="background:#1F3864"></span> z (arrástralo)</span>
+        <span><span class="dot" style="background:#1F3864"></span> z (se puede arrastrar)</span>
         <span><span class="dot" style="background:#C55A11"></span> raíces √z</span>
         <span><span class="dot" style="background:#8AA0C0"></span> excitación / respuesta (al reproducir)</span>
       </div>
@@ -249,17 +346,17 @@
       <h2>Significado en Vibraciones</h2>
       <div class="lectura" id="lectura"></div>
       <div id="practico"></div>
-      <div style="font-size:12.5px;color:var(--grey);margin:6px 0 4px">Respuesta libre implicada &nbsp;x(t) = e<sup>Re·t</sup>·cos(Im·t)&nbsp; (interpretando z como raíz característica s = Re + i·Im):</div>
+      <div style="font-size:12.5px;color:var(--grey);margin:6px 0 4px">Respuesta libre implicada &nbsp;<math><mrow><mi>x</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>t</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mi mathvariant="normal">Re</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>s</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mspace width="0.17em"></mspace><mi>t</mi></mrow></msup><mi mathvariant="normal" data-fn="1">cos</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi mathvariant="normal">Im</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>s</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mspace width="0.17em"></mspace><mi>t</mi><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow></math>&nbsp; (interpretando <i>z</i> como raíz característica <i>s</i>):</div>
       <canvas id="resp"></canvas>
       <div id="respinfo"></div>
       <details class="gloss">
-        <summary>📖 Glosario de símbolos (ωₙ, ω_d, ζ, σ, T_d)</summary>
+        <summary>Glosario de símbolos (ω<sub>n</sub>, ω_d, ζ, σ, T_d)</summary>
         <ul>
-          <li><b>ω<sub>n</sub></b> — <b>frecuencia natural</b>: a qué frecuencia oscilaría el sistema <em>sin</em> amortiguamiento. Aquí ω<sub>n</sub> = |z|.</li>
-          <li><b>ω<sub>d</sub></b> — <b>frecuencia amortiguada</b>: a la que <em>realmente</em> oscila el sistema amortiguado. ω<sub>d</sub> = ω<sub>n</sub>·√(1−ζ²) = |Im(z)|, siempre ≤ ω<sub>n</sub>.</li>
-          <li><b>ζ</b> — <b>factor de amortiguamiento</b>: cuánto se apaga la oscilación. ζ=0 no amortiguado; 0&lt;ζ&lt;1 subamortiguado; ζ≥1 sin oscilación; ζ&lt;0 inestable.</li>
-          <li><b>σ = ζ·ω<sub>n</sub></b> — <b>tasa de decaimiento</b> = |Re(z)|. La envolvente de la respuesta es e<sup>−σt</sup>.</li>
-          <li><b>T<sub>d</sub> = 2π/ω<sub>d</sub></b> — <b>periodo</b> de la oscilación amortiguada.</li>
+          <li><b>ω<sub>n</sub></b>: <b>frecuencia natural</b>: a qué frecuencia oscilaría el sistema <em>sin</em> amortiguamiento. Aquí ω<sub>n</sub> = |z|.</li>
+          <li><b>ω<sub>d</sub></b>: <b>frecuencia amortiguada</b>: a la que <em>realmente</em> oscila el sistema amortiguado. <math><mrow><msub><mi>ω</mi><mi>d</mi></msub><mo>=</mo><msub><mi>ω</mi><mi>n</mi></msub><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>ζ</mi><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mi mathvariant="normal">Im</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>z</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo stretchy="false" lspace="0" rspace="0">|</mo></mrow></math>, siempre ≤ ω<sub>n</sub>.</li>
+          <li><b>ζ</b>: <b>factor de amortiguamiento</b>: cuánto se apaga la oscilación. ζ=0 no amortiguado; 0&lt;ζ&lt;1 subamortiguado; ζ≥1 sin oscilación; ζ&lt;0 inestable.</li>
+          <li><b>σ = ζ·ω<sub>n</sub></b>: <b>tasa de decaimiento</b> = |Re(z)|. La envolvente de la respuesta es e<sup>−σt</sup>.</li>
+          <li><b><math><mrow><msub><mi>T</mi><mi>d</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><msub><mi>ω</mi><mi>d</mi></msub></mfrac></mrow></math></b>: <b>periodo</b> de la oscilación amortiguada.</li>
         </ul>
       </details>
     </div>
@@ -281,14 +378,14 @@
 </div>
 <div class="wrap" style="padding-top:0">
   <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
-    🧭 <b>Tu recorrido.</b> ⬅ <b>Antes:</b> estas raíces salen de la ecuación auxiliar de la <a href="edo_interactivo.html">EDO (Pilar 2)</a>, que a su vez viene de <a href="edo3_interactivo.html">ΣF = ma (Pilar 3)</a>. Aquí cierras el círculo: <b>interpretas</b> qué significan esas raíces complejas como vibración.
+     <b>Recorrido.</b>  <b>Antes:</b> estas raíces salen de la ecuación auxiliar de la <a href="edo_interactivo.html">EDO (Pilar 2)</a>, que a su vez viene de <a href="edo3_interactivo.html">ΣF = ma (Pilar 3)</a>. Aquí se cierra el círculo: <b>se interpreta</b> qué significan esas raíces complejas como vibración.
     <span style="color:#5B5B5B">(Conviene mantener los tres archivos en la misma carpeta para que los enlaces funcionen.)</span>
   </div>
 </div>
 <div class="wrap" style="padding-top:0">
   <div style="grid-column:1 / -1;margin-bottom:8px;background:#EEF3FA;border:1px solid #DCE6F1;border-radius:10px;padding:11px 13px;font-size:12.5px;color:#1A1A1A;line-height:1.5">
     <b style="color:#1F3864">Créditos y cómo citar.</b> Autoría: <b>Elodie Strupiechonski</b> (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y <b>Andrés de Luna Bugallo</b> (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.<br>
-    <b>Cómo citar:</b> Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). <i>Vibraciones — Exploradores interactivos</i> (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <span style="font-family:'Cambria Math',Georgia,serif"><a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a></span>.
+    <b>Cómo citar:</b> Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). <i>Vibraciones: exploradores interactivos</i> (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <span style="font-family:'Cambria Math',Georgia,serif"><a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a></span>.
   </div>
 </div>
 <footer>© 2026 Elodie Strupiechonski &amp; Andrés de Luna Bugallo · ENES Juriquilla / CFATA, UNAM · Licencia CC BY 4.0 · material de apoyo del curso de Vibraciones · funciona sin conexión.</footer>
@@ -345,16 +442,16 @@ function practico(){
   const r=modOf(z), th=argOf(z), a=z.a, b=z.b, thg=th*180/Math.PI;
   // --- Lectura vibratoria (fasor) ---
   document.getElementById('lectura').innerHTML =
-    '🔎 <b>Lectura vibratoria:</b> si z representa una respuesta armónica, <b>|z| = '+fmt(r)+'</b> es su '+
+    ' <b>Lectura vibratoria:</b> si z representa una respuesta armónica, <b>|z| = '+fmt(r)+'</b> es su '+
     '<b>amplitud</b> y <b>θ = '+fmt(thg,1)+'°</b> es el <b>desfase</b> respecto de la excitación. '+
-    'Al girar el fasor: <b>x(t) = '+fmt(r)+'·cos(ωt + '+fmt(thg,1)+'°)</b>. Pulsa «fasor» para verlo.';
+    'Al girar el fasor: <b>x(t) = '+fmt(r)+'·cos(ωt + '+fmt(thg,1)+'°)</b>. El botón «fasor» lo muestra.';
   // --- Interpretación como raíz característica ---
   const wn=r, wd=Math.abs(b), sigma=Math.abs(a);
   let cls, col, imp, zeta=null;
   if(Math.abs(b)<1e-9){
     col='var(--grey)';
-    if(a<0){ cls='raíz real — sin oscilación'; imp='Vuelve al equilibrio sin oscilar (contribución sobreamortiguada o crítica).'; zeta=1; }
-    else   { cls='real positiva — inestable'; imp='Crece sin oscilar: divergencia monótona (inestable).'; zeta=-1; }
+    if(a<0){ cls='raíz real: sin oscilación'; imp='Vuelve al equilibrio sin oscilar (contribución sobreamortiguada o crítica).'; zeta=1; }
+    else   { cls='real positiva: inestable'; imp='Crece sin oscilar: divergencia monótona (inestable).'; zeta=-1; }
   } else if(Math.abs(a)<1e-9){
     cls='no amortiguado (ζ = 0)'; col='#4472C4'; zeta=0;
     imp='Oscila indefinidamente sin perder amplitud: resonancia sin pérdidas, situación peligrosa a evitar.';
@@ -369,7 +466,7 @@ function practico(){
   let ro='<div class="ro">'
     +tile('ω<sub>n</sub>', fmt(wn)+' rad/s','frecuencia natural = |z|')
     +tile('ω<sub>d</sub>', fmt(wd)+' rad/s','frec. amortiguada = |Im(z)| ≤ ω_n')
-    +tile('ζ', (zeta===null?'—':fmt(zeta,3)),'factor de amortiguamiento')
+    +tile('ζ', (zeta===null?'…':fmt(zeta,3)),'factor de amortiguamiento')
     +tile('σ', fmt(sigma,3)+' 1/s','decaimiento = |Re(z)|; envolvente e^(−σt)')
     +'</div>';
   document.getElementById('practico').innerHTML =
@@ -565,7 +662,7 @@ function draw(){
       ctx.fillText('θ', cx+62*Math.cos(mid), cy-62*Math.sin(mid));
     }
     ctx.fillStyle='#5B5B5B'; ctx.font='12px Segoe UI';
-    ctx.fillText('excitación (gris) vs respuesta (azul) — el ángulo constante es el desfase θ', 12, 16);
+    ctx.fillText('excitación (gris) vs respuesta (azul): el ángulo constante es el desfase θ', 12, 16);
   }
   // vector z
   const [zx,zy]=toPx(z.a,z.b);
@@ -678,7 +775,7 @@ function newQ(){
     ans.innerHTML=inputField('q-r','r')+inputField('q-t','θ (°)');
   } else if(curType==='sqrt'){
     const opt=pick([{a:0,b:0,r:9,t:180,lab:'−9'},{a:0,b:0,r:4,t:180,lab:'−4'},{a:0,b:0,r:2,t:90,lab:'2i'},{a:0,b:0,r:8,t:90,lab:'8i'}]);
-    cur=opt; q.innerHTML='Halla UNA raíz cuadrada (forma binómica a+bi):  <b>z = '+opt.lab+'</b>';
+    cur=opt; q.innerHTML='Determinar una raíz cuadrada (forma binómica a+bi):  <b>z = '+opt.lab+'</b>';
     ans.innerHTML=inputField('q-a','a')+inputField('q-b','b');
   } else if(curType==='aux'){
     const alpha=pick([-1,-2,-3,-1]), beta=pick([1,2,3]);
@@ -726,9 +823,9 @@ function check(){
   } else if(curType==='eul'){
     const a=cur.r*Math.cos(cur.t), b=cur.r*Math.sin(cur.t); ok=near(val('q-a'),a)&&near(val('q-b'),b); sol='a='+fmt(a)+', b='+fmt(b);
   } else if(curType==='reg'){
-    ok = cur.sel===cur.correct; sol=cur.correct+(cur.sel?'':'  (elige una opción primero)');
+    ok = cur.sel===cur.correct; sol=cur.correct+(cur.sel?'':'  (falta elegir una opción)');
   }
-  fb.textContent = ok?'¡Correcto!  ✓':'Aún no. Revisa el procedimiento e inténtalo otra vez.';
+  fb.textContent = ok?'¡Correcto!  ':'Aún no. Revisa el procedimiento e inténtalo otra vez.';
   fb.className='feedback '+(ok?'ok':'no');
   document.getElementById('sol').textContent='Solución: '+sol;
 }
@@ -786,7 +883,7 @@ function drawWing(now){
   c.fillStyle=ri.c;c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('respuesta (cabeceo)',teX,H-7);c.textAlign='left';
   // etiqueta de régimen + aviso de flameo
   c.fillStyle=ri.c;c.font='bold 12px Segoe UI';c.fillText(ri.g+' '+ri.l,10,16);
-  if(ri.l==='inestable'){c.fillStyle='#B23A3A';c.font='bold 12px Segoe UI';c.textAlign='right';c.fillText('⚠ flameo (flutter)',W-10,16);c.textAlign='left';}
+  if(ri.l==='inestable'){c.fillStyle='#B23A3A';c.font='bold 12px Segoe UI';c.textAlign='right';c.fillText(' flameo (flutter)',W-10,16);c.textAlign='left';}
   requestAnimationFrame(drawWing);
 }
 
@@ -878,7 +975,7 @@ function drawTower(now){
   // etiquetas
   c.fillStyle=ri.c;c.font='bold 12px Segoe UI';c.fillText(ri.g+' '+ri.l,10,16);
   c.fillStyle='#5B5B5B';c.font='bold 11px Segoe UI';c.textAlign='right';c.fillText('desfase θ = '+fmt(th*180/Math.PI,0)+'°',W-10,16);c.textAlign='left';
-  if(ri.l==='inestable' && Math.abs(relSway)>24){c.fillStyle='#B23A3A';c.font='bold 11px Segoe UI';c.textAlign='center';c.fillText('¡resonancia! 🌀',W*0.5,34);c.textAlign='left';}
+  if(ri.l==='inestable' && Math.abs(relSway)>24){c.fillStyle='#B23A3A';c.font='bold 11px Segoe UI';c.textAlign='center';c.fillText('¡resonancia! ',W*0.5,34);c.textAlign='left';}
   c.fillStyle='#41506a';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('base: se sacude ↔ (excitación)',tX,H-2);c.textAlign='left';
   c.fillStyle='#B8355F';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('azotea (respuesta)',Math.min(W-54,Math.max(54,topCX)),Math.max(14,topCY-floorH/2-20));c.textAlign='left';
   requestAnimationFrame(drawTower);
@@ -917,7 +1014,7 @@ function drawSwing(now){
   if(pm>0.05){const axx=hX+20*pm;c.beginPath();c.moveTo(axx,hY);c.lineTo(axx-6,hY-4);c.lineTo(axx-6,hY+4);c.closePath();c.fill();}
   c.fillStyle=ri.c;c.font='bold 12px Segoe UI';c.fillText(ri.g+' '+ri.l,10,16);
   c.fillStyle='#5B5B5B';c.font='bold 11px Segoe UI';c.textAlign='right';c.fillText('desfase θ = '+fmt(th*180/Math.PI,0)+'°',W-10,16);c.textAlign='left';
-  if(ri.l==='inestable' && Math.abs(beta)>0.34){c.fillStyle='#B23A3A';c.font='bold 11px Segoe UI';c.textAlign='center';c.fillText('¡cada vez más alto! 🎉',W*0.5,H-22);c.textAlign='left';}
+  if(ri.l==='inestable' && Math.abs(beta)>0.34){c.fillStyle='#B23A3A';c.font='bold 11px Segoe UI';c.textAlign='center';c.fillText('¡cada vez más alto! ',W*0.5,H-22);c.textAlign='left';}
   c.fillStyle='#C55A11';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('empujón (excitación)',hX+6,H-2);c.textAlign='left';
   c.fillStyle='#1F3864';c.font='bold 10px Segoe UI';c.textAlign='center';c.fillText('columpio (respuesta)',Math.min(W-62,Math.max(62,bx)),Math.min(H-2,by+30));c.textAlign='left';
   requestAnimationFrame(drawSwing);
@@ -933,16 +1030,92 @@ function respLoop(now){
 window.addEventListener('resize',()=>{setupCanvas();practico();});
 refreshForms(); setupCanvas(); fit(); newQ();
 document.querySelector('#reto-types .btn').classList.remove('ghost');
-document.getElementById('wavecap').innerHTML='<b>Concepto matemático.</b> Una <b>rueda de la fortuna</b>: la cabina gira en el plano complejo (e<sup>iωt</sup>) y su altura va dibujando una <b>onda armónica</b>. El radio es la <b>amplitud |z|</b> y el punto de partida, el <b>desfase θ</b> — ¡así un giro se convierte en una señal!';
+document.getElementById('wavecap').innerHTML='<b>Concepto matemático.</b> Una <b>rueda de la fortuna</b>: la cabina gira en el plano complejo (e<sup>iωt</sup>) y su altura va dibujando una <b>onda armónica</b>. El radio es la <b>amplitud |z|</b> y el punto de partida, el <b>desfase θ</b>: ¡así un giro se convierte en una señal!';
 requestAnimationFrame(drawWave);
 document.getElementById('swingcap').innerHTML='<b>Vida cotidiana.</b> Alguien <span style="color:#C55A11;font-weight:600">empuja</span> (excitación) y el columpio <span style="color:#1F3864;font-weight:600">responde</span> con un <b>retraso: el desfase θ</b>. Si empujas <b>a tiempo</b> (en fase) crece; a destiempo, se apaga. El columpio va <b>sincronizado con la gráfica x(t)</b>.';
 requestAnimationFrame(drawSwing);
-document.getElementById('towercap').innerHTML='<b>Vibraciones.</b> La <span style="color:#41506a;font-weight:600">mesa (base)</span> se sacude ↔ y la <span style="color:#B8355F;font-weight:600">azotea</span> responde con un <b>desfase θ</b>. En <b>resonancia</b> se mece cada vez más; con amortiguamiento, se calma. Es —a pequeña escala y con un juguete— lo que estudian los ingenieros para que un <b>edificio resista un sismo</b> (por eso se añaden amortiguadores o una masa sintonizada). Va <b>sincronizada con x(t)</b>.';
+document.getElementById('towercap').innerHTML='<b>Vibraciones.</b> La <span style="color:#41506a;font-weight:600">mesa (base)</span> se sacude ↔ y la <span style="color:#B8355F;font-weight:600">azotea</span> responde con un <b>desfase θ</b>. En <b>resonancia</b> se mece cada vez más; con amortiguamiento, se calma. Es …a pequeña escala y con un juguete… lo que estudian los ingenieros para que un <b>edificio resista un sismo</b> (por eso se añaden amortiguadores o una masa sintonizada). Va <b>sincronizada con x(t)</b>.';
 requestAnimationFrame(drawTower);
 document.getElementById('wingcap').innerHTML='<b>Aeronáutica.</b> La <span style="color:#C55A11;font-weight:600">ráfaga (excitación)</span> entra por el borde de ataque y el ala responde con <b>cabeceo</b> (desfase θ). En el semiplano <b>izquierdo</b> se apaga; en el <b>derecho</b> crece → <span style="color:#B23A3A;font-weight:600">flameo (flutter)</span>. Va <b>sincronizada con x(t)</b>.';
 requestAnimationFrame(drawWing);
 requestAnimationFrame(respLoop);
 </script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ mostrar(); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
 <!-- contador:inicio -->
 <style>
   .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
@@ -950,7 +1123,7 @@ requestAnimationFrame(respLoop);
   .visitas b{color:#1F3864;font-weight:700}
   .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
 </style>
-<div class="visitas" id="visitas"><span>👁 Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
 <a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
 <script>
 (function(){
@@ -1042,9 +1215,11 @@ requestAnimationFrame(respLoop);
 <div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
 <a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
 <div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html">Laboratorio de señales <small>Pilar 11 · temas 7.1–7.2</small></a>
 <div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html">Dos grados de libertad y absorbedor <small>Pilar 12 · temas 8.1–8.3</small></a>
+
+
     <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
     </div>
   </details>

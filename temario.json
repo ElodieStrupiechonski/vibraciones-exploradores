@@ -1,7 +1,7 @@
 {
  "curso": "Vibraciones",
  "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
- "actualizado": "2026-10-19",
+ "actualizado": "2026-11-11",
  "nota": "Fuente única de la barra de navegación y del índice. Títulos, subtemas, horas y objetivos tomados del programa oficial (Vibraciones.pdf). Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos'), 3) ejecutar add_navbar.py.",
  "paginas": {
   "complejos_interactivo.html": {
@@ -186,6 +186,38 @@
     "#4472C4",
     "#2E7D46"
    ]
+  },
+  "senales_interactivo.html": {
+   "corto": "Pilar 11 · Laboratorio de señales",
+   "titulo": "Laboratorio de señales",
+   "enfoque": "MEDIR · muestreo, ventanas y promedio de Welch",
+   "descripcion": "Una señal sintética o un CSV de Phyphox se muestrea, se corta en segmentos y se promedia: aliasing, fuga, resolución y error aleatorio a la vista.",
+   "puntos": [
+    "Aliasing: f_a = |f − k·f_s|",
+    "Δf = 1/T_seg y ε_r ≈ 1/√n_d",
+    "G_rms como área de la PSD (Parseval)"
+   ],
+   "tema": "temas 7.1–7.2",
+   "swatch": [
+    "#2E5496",
+    "#2E7D46"
+   ]
+  },
+  "dosgdl_interactivo.html": {
+   "corto": "Pilar 12 · Dos grados de libertad",
+   "titulo": "Dos grados de libertad y absorbedor",
+   "enfoque": "ACOPLAR · modos, antirresonancia y riesgo por acoplamiento",
+   "descripcion": "Al montar un segundo sistema sobre la estructura, la resonancia se divide en dos modos; un absorbedor sintonizado anula la respuesta en su frecuencia.",
+   "puntos": [
+    "Valores propios: ω_1, ω_2 y formas modales",
+    "Absorbedor dinámico y óptimo de Den Hartog",
+    "Separación de frecuencias equipo–estructura"
+   ],
+   "tema": "temas 8.1–8.3",
+   "swatch": [
+    "#1F3864",
+    "#6B3FA0"
+   ]
   }
  },
  "recorrido": [
@@ -198,7 +230,9 @@
   "espectro_interactivo.html",
   "mohr_interactivo.html",
   "fatiga_interactivo.html",
-  "sonido_interactivo.html"
+  "sonido_interactivo.html",
+  "senales_interactivo.html",
+  "dosgdl_interactivo.html"
  ],
  "fundamentos": {
   "titulo": "Pilares de fundamentos",
@@ -311,8 +345,9 @@
     "7.3 Extracción de datos modales",
     "7.4 Prueba de vibración para resistencia y diagnóstico"
    ],
-   "paginas": [],
-   "proximamente": "El Pilar 7 (espectro y carga de diseño) y el Pilar 6 (media potencia) anticipan 7.2 y 7.3; falta un explorador de análisis de señales (FFT, PSD medida, promediado)."
+   "paginas": [
+    "senales_interactivo.html"
+   ]
   },
   {
    "n": 8,
@@ -324,8 +359,9 @@
     "8.2 Frecuencias principales y secundarias de interés",
     "8.3 Modelado y análisis"
    ],
-   "paginas": [],
-   "proximamente": "Explorador de dos grados de libertad: modos, frecuencias acopladas y absorbedor dinámico."
+   "paginas": [
+    "dosgdl_interactivo.html"
+   ]
   }
  ],
  "fuente": "Programa de estudios oficial de la asignatura Vibraciones (clave 7.º semestre, 6 créditos, 48 h teóricas), Plan de Estudios de la Licenciatura en Ingeniería Aeroespacial, ENES Juriquilla, UNAM.",

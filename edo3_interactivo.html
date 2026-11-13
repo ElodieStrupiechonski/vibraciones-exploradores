@@ -2,6 +2,104 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
 <title>Dinámica de la partícula · Explorador interactivo · Vibraciones</title>
@@ -108,7 +206,6 @@
 </style>
 <!-- tema:inicio -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
   /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
   :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
@@ -139,8 +236,8 @@
   <!-- ================= COLUMNA IZQUIERDA ================= -->
   <div>
     <div class="aero">
-      <h3>🛩️ En la aeronave · ¿por qué me importa?</h3>
-      <p>Casi todo lo que vibra en un avión se modela primero como una <b>masa sobre un resorte con amortiguador</b>. El primer paso —y el de este pilar— es escribir bien su ecuación de movimiento con <b>ΣF = ma</b> y obtener su <b>frecuencia natural</b>.</p>
+      <h3>En la aeronave · ¿por qué importa?</h3>
+      <p>Casi todo lo que vibra en un avión se modela primero como una <b>masa sobre un resorte con amortiguador</b>. El primer paso, y el de este pilar, es escribir bien su ecuación de movimiento con <b>ΣF = ma</b> y obtener su <b>frecuencia natural</b>.</p>
       <ul>
         <li><b>Tren de aterrizaje</b> (amortiguador óleo-neumático): se diseña cerca del <b>crítico</b> para no rebotar en la pista; frecuencias del orden de <span class="num">2–5 Hz</span>.</li>
         <li><b>Montaje de aviónica</b>: se aísla colocando la frecuencia natural del soporte por debajo de <span class="num">1/√2</span> de la frecuencia de la vibración a filtrar.</li>
@@ -150,18 +247,18 @@
       <div class="src">Valores ilustrativos (órdenes de magnitud); los datos de diseño se toman de la normativa (CS-25 / FAR-25) y de bibliografía como Rao, <i>Mechanical Vibrations</i>; Den Hartog, <i>Mechanical Vibrations</i>.</div>
     </div>
     <div class="card">
-      <h2>1 · Define el sistema &nbsp;m · x″ + c · x′ + k · x = 0</h2>
+      <h2>1 · Definición del sistema &nbsp;m · x″ + c · x′ + k · x = 0</h2>
       <div class="grid3">
         <div class="fld"><label>m &nbsp;masa (kg)</label><input id="in-m" type="number" step="any" min="0.01" value="1"></div>
         <div class="fld"><label>k &nbsp;rigidez (N/m)</label><input id="in-k" type="number" step="any" min="0" value="13"></div>
         <div class="fld"><label>c &nbsp;amortig. (N·s/m)</label><input id="in-c" type="number" step="any" value="4"></div>
       </div>
-      <div class="hint">Al arrastrar la masa en el diagrama de la derecha se fija el desplazamiento inicial x₀; con ▶ se suelta.</div>
+      <div class="hint">Al arrastrar la masa en el diagrama de la derecha se fija el desplazamiento inicial x<sub>0</sub>; con ▶ se suelta.</div>
       <div class="keq">
-        <div style="font-weight:700;color:var(--navy);font-size:13px;margin-bottom:6px">🔗 Resorte equivalente → k</div>
+        <div style="font-weight:700;color:var(--navy);font-size:13px;margin-bottom:6px">Resorte equivalente → k</div>
         <div class="rowk">
-          <div class="fld"><label>k₁</label><input id="in-k1" type="number" step="any" value="1000"></div>
-          <div class="fld"><label>k₂</label><input id="in-k2" type="number" step="any" value="500"></div>
+          <div class="fld"><label>k<sub>1</sub></label><input id="in-k1" type="number" step="any" value="1000"></div>
+          <div class="fld"><label>k<sub>2</sub></label><input id="in-k2" type="number" step="any" value="500"></div>
           <div class="radios">
             <label><input type="radio" name="comb" value="par" checked> paralelo</label>
             <label><input type="radio" name="comb" value="ser"> serie</label>
@@ -188,25 +285,25 @@
     </div>
 
     <div class="card">
-      <h2>🧮 Concepto matemático · Diagrama de cuerpo libre (ΣF = ma)</h2>
+      <h2>Concepto matemático · Diagrama de cuerpo libre (ΣF = ma)</h2>
       <canvas id="dcl"></canvas>
       <div id="dclcap"></div>
     </div>
 
     <div class="card">
-      <h2>⚡ Vibraciones · Intercambio de energía (T ↔ V)</h2>
+      <h2>Vibraciones · Intercambio de energía (T ↔ V)</h2>
       <canvas id="energy"></canvas>
       <div id="energycap"></div>
     </div>
 
     <div class="card">
-      <h2>🕰️ Vida cotidiana · El péndulo simple (ángulo pequeño)</h2>
+      <h2>Vida cotidiana · El péndulo simple (ángulo pequeño)</h2>
       <canvas id="pend"></canvas>
       <div id="pendcap"></div>
     </div>
 
     <div class="card">
-      <h2>🛩️ Aeronáutica · Acelerómetro (masa sísmica)</h2>
+      <h2>Aeronáutica · Acelerómetro (masa sísmica)</h2>
       <canvas id="accel"></canvas>
       <div id="accelcap"></div>
     </div>
@@ -217,7 +314,7 @@
     <div class="card">
       <h2>Sistema masa–resorte–amortiguador &nbsp;·&nbsp; DCL en vivo</h2>
       <canvas id="cv" width="720" height="440" tabindex="0" role="application" aria-label="Sistema masa-resorte-amortiguador. Las flechas desplazan la masa."></canvas>
-      <div class="kbd">⌨ Con el foco en el diagrama: <kbd>←</kbd> <kbd>→</kbd> desplazan la masa (x₀), <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> suelta/pausa.</div>
+      <div class="kbd">Con el foco en el diagrama: <kbd>←</kbd> <kbd>→</kbd> desplazan la masa (x<sub>0</sub>), <kbd>Shift</kbd>+flecha da un paso mayor, <kbd>Espacio</kbd> suelta/pausa.</div>
       <div class="sr" aria-live="polite" id="live"></div>
       <div class="legend">
         <span><span class="dot" style="background:#C55A11"></span> F<sub>k</sub> = −k·x (resorte)</span>
@@ -233,7 +330,7 @@
       </div>
       <div class="diagctrls">
         <button class="btn small" id="play">⏸ pausar</button>
-        <button class="btn small ghost" id="release">▶ soltar desde x₀</button>
+        <button class="btn small ghost" id="release">▶ soltar desde x<sub>0</sub></button>
         <label class="toggle"><input type="checkbox" id="ck-forces" checked> mostrar fuerzas</label>
       </div>
       <div class="hint">Al arrastrar la masa (◀▶) se desplaza: el resorte tira de vuelta con F<sub>k</sub> = −k·x. Al soltarla, la EOM decide cómo vuelve al equilibrio.</div>
@@ -245,20 +342,20 @@
       <div class="eqbox" id="eom"></div>
       <div id="practico"></div>
       <div class="grid3" style="margin:4px 0 8px">
-        <div class="fld"><label>x(0) = x₀ (m)</label><input id="in-x0" type="number" step="any" value="1"></div>
-        <div class="fld"><label>x′(0) = v₀ (m/s)</label><input id="in-v0" type="number" step="any" value="0"></div>
+        <div class="fld"><label>x(0) = x<sub>0</sub> (m)</label><input id="in-x0" type="number" step="any" value="1"></div>
+        <div class="fld"><label>x′(0) = v<sub>0</sub> (m/s)</label><input id="in-v0" type="number" step="any" value="0"></div>
       </div>
       <div style="font-size:12.5px;color:var(--grey);margin:2px 0 4px">Respuesta libre &nbsp;x(t)&nbsp; (solución de la EOM con esas condiciones iniciales):</div>
       <canvas id="resp"></canvas>
       <div id="respinfo"></div>
       <details class="gloss">
-        <summary>📖 Glosario (ω<sub>n</sub>, f<sub>n</sub>, T, ζ, energía, péndulo)</summary>
+        <summary>Glosario (ω<sub>n</sub>, f<sub>n</sub>, T, ζ, energía, péndulo)</summary>
         <ul>
-          <li><b>ω<sub>n</sub> = √(k/m)</b> — <b>frecuencia natural</b> (rad/s): a la que oscilaría el sistema sin amortiguamiento.</li>
-          <li><b>f<sub>n</sub> = ω<sub>n</sub>/2π</b> — frecuencia en Hz; &nbsp; <b>T = 1/f<sub>n</sub> = 2π/ω<sub>n</sub></b> — periodo natural (s).</li>
-          <li><b>ζ = c/(2√(km))</b> — factor de amortiguamiento; &nbsp; <b>c<sub>c</sub> = 2√(km)</b> — amortiguamiento crítico.</li>
-          <li><b>Energía:</b> T = ½·m·v² (cinética), V = ½·k·x² (potencial elástica). Sin amortiguamiento, T + V = ½·k·A² = constante.</li>
-          <li><b>Péndulo (ángulo pequeño):</b> θ″ + (g/L)·θ = 0 → ω<sub>n</sub> = √(g/L). No depende de la masa.</li>
+          <li><b><math><mrow><msub><mi>ω</mi><mi>n</mi></msub><mo>=</mo><msqrt><mrow><mi>k</mi><mo lspace="0.05em" rspace="0.05em">/</mo><mi>m</mi></mrow></msqrt></mrow></math></b>: <b>frecuencia natural</b> (rad/s): a la que oscilaría el sistema sin amortiguamiento.</li>
+          <li><b><math><mrow><msub><mi>f</mi><mi>n</mi></msub><mo>=</mo><mfrac><msub><mi>ω</mi><mi>n</mi></msub><mrow><mn>2</mn><mi>π</mi></mrow></mfrac></mrow></math></b>: frecuencia en Hz; &nbsp; <b><math><mrow><mi>T</mi><mo>=</mo><mfrac><mn>1</mn><msub><mi>f</mi><mi>n</mi></msub></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><msub><mi>ω</mi><mi>n</mi></msub></mfrac></mrow></math></b>: periodo natural (s).</li>
+          <li><b><math><mrow><mi>ζ</mi><mo>=</mo><mfrac><mi>c</mi><mrow><mn>2</mn><msqrt><mrow><mi>k</mi><mspace width="0.17em"></mspace><mi>m</mi></mrow></msqrt></mrow></mfrac></mrow></math></b>: factor de amortiguamiento; &nbsp; <b><math><mrow><msub><mi>c</mi><mi>c</mi></msub><mo>=</mo><mn>2</mn><msqrt><mrow><mi>k</mi><mspace width="0.17em"></mspace><mi>m</mi></mrow></msqrt></mrow></math></b>: amortiguamiento crítico.</li>
+          <li><b>Energía:</b> <math><mrow><mi>T</mi><mo>=</mo><mstyle displaystyle="false"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mi>m</mi><mspace width="0.17em"></mspace><msup><mi>v</mi><mn>2</mn></msup></mrow></math> (cinética), <math><mrow><mi>V</mi><mo>=</mo><mstyle displaystyle="false"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mi>k</mi><mspace width="0.17em"></mspace><msup><mi>x</mi><mn>2</mn></msup></mrow></math> (potencial elástica). Sin amortiguamiento, <math><mrow><mi>T</mi><mo>+</mo><mi>V</mi><mo>=</mo><mstyle displaystyle="false"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mi>k</mi><mspace width="0.17em"></mspace><msup><mi>A</mi><mn>2</mn></msup></mrow></math> = constante.</li>
+          <li><b>Péndulo (ángulo pequeño):</b> <math><mrow><msup><mi>θ</mi><mrow><mo>′</mo><mo>′</mo></mrow></msup><mo>+</mo><mfrac><mi>g</mi><mi>L</mi></mfrac><mspace width="0.17em"></mspace><mi>θ</mi><mo>=</mo><mn>0</mn><mspace width="0.25em"></mspace><mo>⇒</mo><mspace width="0.25em"></mspace><msub><mi>ω</mi><mi>n</mi></msub><mo>=</mo><msqrt><mrow><mi>g</mi><mo lspace="0.05em" rspace="0.05em">/</mo><mi>L</mi></mrow></msqrt></mrow></math>. No depende de la masa.</li>
           <li><b>Equilibrio (caso vertical):</b> si se mide x desde el equilibrio, el peso se cancela con la deformación estática del resorte y desaparece de la EOM.</li>
         </ul>
       </details>
@@ -281,15 +378,15 @@
 </div>
 <div class="wrap" style="padding-top:0">
   <div class="crosslink" style="grid-column:1 / -1;margin-bottom:8px">
-    🧭 <b>Tu recorrido.</b> Aquí <b>armaste</b> la ecuación de movimiento <span style="font-family:Cambria Math,serif">m·x″ + c·x′ + k·x = 0</span> a partir de ΣF = ma.
-    ➡ <b>Siguiente:</b> el <a href="edo_interactivo.html">Pilar 2</a> la <b>resuelve</b> y clasifica su régimen por el discriminante; luego el <a href="complejos_interactivo.html">Pilar 1</a> <b>interpreta</b> sus raíces complejas.
+     <b>Recorrido.</b> Aquí <b>se armó</b> la ecuación de movimiento <span style="font-family:Cambria Math,serif">m·x″ + c·x′ + k·x = 0</span> a partir de ΣF = ma.
+    <b>Siguiente:</b> el <a href="edo_interactivo.html">Pilar 2</a> la <b>resuelve</b> y clasifica su régimen por el discriminante; luego el <a href="complejos_interactivo.html">Pilar 1</a> <b>interpreta</b> sus raíces complejas.
     <span style="color:#5B5B5B">(Conviene mantener los tres archivos en la misma carpeta para que los enlaces funcionen.)</span>
   </div>
 </div>
 <div class="wrap" style="padding-top:0">
   <div style="grid-column:1 / -1;margin-bottom:8px;background:#EEF3FA;border:1px solid #DCE6F1;border-radius:10px;padding:11px 13px;font-size:12.5px;color:#1A1A1A;line-height:1.5">
     <b style="color:#1F3864">Créditos y cómo citar.</b> Autoría: <b>Elodie Strupiechonski</b> (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y <b>Andrés de Luna Bugallo</b> (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.<br>
-    <b>Cómo citar:</b> Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). <i>Vibraciones — Exploradores interactivos</i> (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <span style="font-family:'Cambria Math',Georgia,serif"><a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a></span>.
+    <b>Cómo citar:</b> Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). <i>Vibraciones: exploradores interactivos</i> (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <span style="font-family:'Cambria Math',Georgia,serif"><a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a></span>.
   </div>
 </div>
 <footer>© 2026 Elodie Strupiechonski &amp; Andrés de Luna Bugallo · ENES Juriquilla / CFATA, UNAM · Licencia CC BY 4.0 · material de apoyo del curso de Vibraciones · funciona sin conexión.</footer>
@@ -361,13 +458,13 @@ function practico(){
   const S=solution(), ri=regInfo(), V=vib();
   const E0=0.5*sys.k*ic.x0*ic.x0 + 0.5*sys.m*ic.v0*ic.v0;
   document.getElementById('lectura').innerHTML =
-    '🔎 <b>Lectura vibratoria:</b> la ecuación de movimiento sale de <b>ΣF = m·a</b>. '+
+    ' <b>Lectura vibratoria:</b> la ecuación de movimiento sale de <b>ΣF = m·a</b>. '+
     'Con estos valores, <b>ω<sub>n</sub> = √(k/m) = '+fmt(V.wn)+' rad/s</b> ('+fmt(V.fn,3)+' Hz), '+
     'régimen <b style="color:'+ri.c+'">'+ri.l+'</b>'+(V.zeta!==null?' (ζ = '+fmt(V.zeta,3)+')':'')+'.';
   let ro='<div class="ro">'
     +tile('ω<sub>n</sub>', fmt(V.wn)+' rad/s','frecuencia natural = √(k/m)')
-    +tile('f<sub>n</sub> · T', fmt(V.fn,3)+' Hz · '+(V.T?fmt(V.T,3)+' s':'—'),'f_n = ω_n/2π, T = 2π/ω_n')
-    +tile('ζ', V.zeta!==null?fmt(V.zeta,3):'—','amortiguamiento = c/(2√(km))')
+    +tile('f<sub>n</sub> · T', fmt(V.fn,3)+' Hz · '+(V.T?fmt(V.T,3)+' s':'…'),'f_n = ω_n/2π, T = 2π/ω_n')
+    +tile('ζ', V.zeta!==null?fmt(V.zeta,3):'…','amortiguamiento = c/(2√(km))')
     +tile('E₀', fmt(E0,3)+' J','energía inicial ½kx₀² + ½mv₀²')
     +'</div>';
   document.getElementById('practico').innerHTML =
@@ -469,7 +566,7 @@ function drawMain(now){
   if(cv.width!==Math.round(CW*dpr)) setupCanvas();
   ctx.clearRect(0,0,CW,CH);
   const S=simState(now), ri=regInfo(), V=vib();
-  // estado actual (posición y velocidad) — el reloj compartido decide (congela en pausa)
+  // estado actual (posición y velocidad): el reloj compartido decide (congela en pausa)
   if(dragMass){ curV=0; }                       // curX fijado por el arrastre
   else { curX=S.S.f(S.tSim); curV=S.S.df(S.tSim); }
   const ppu=pxPerUnit(), eqX=CW*0.52, groundY=CH*0.72, wallX=CW*0.10;
@@ -588,7 +685,7 @@ function newQ(){
   document.getElementById('fb').textContent=''; document.getElementById('sol').classList.remove('show');
   if(curType==='wn'){
     const m=pick([1,2,3,4,5]), k=pick([100,200,300,400,500]);
-    cur={m,k}; q.innerHTML='Un sistema tiene m = '+m+' kg y k = '+k+' N/m. Halla ω<sub>n</sub> (rad/s) y f<sub>n</sub> (Hz):';
+    cur={m,k}; q.innerHTML='Un sistema tiene m = '+m+' kg y k = '+k+' N/m. Determinar ω<sub>n</sub> (rad/s) y f<sub>n</sub> (Hz):';
     ans.innerHTML=inputField('q-wn','ω_n')+inputField('q-fn','f_n');
   } else if(curType==='eom'){
     cur={correct:'m·x″ + c·x′ + k·x = 0'};
@@ -598,15 +695,15 @@ function newQ(){
     ans.querySelectorAll('.opt').forEach(btn=>btn.addEventListener('click',()=>{cur.sel=btn.textContent;ans.querySelectorAll('.opt').forEach(x=>x.classList.toggle('ghost',x!==btn));}));
   } else if(curType==='keq'){
     const k1=pick([300,400,500,1000]), k2=pick([200,500,600]), kind=pick(['par','ser']), m=pick([2,4,5]);
-    cur={k1,k2,kind,m}; q.innerHTML='Dos resortes k₁ = '+k1+' y k₂ = '+k2+' N/m en <b>'+(kind==='par'?'paralelo':'serie')+'</b> con m = '+m+' kg. Halla k<sub>eq</sub> (N/m) y ω<sub>n</sub> (rad/s):';
+    cur={k1,k2,kind,m}; q.innerHTML='Dos resortes k₁ = '+k1+' y k₂ = '+k2+' N/m en <b>'+(kind==='par'?'paralelo':'serie')+'</b> con m = '+m+' kg. Determinar k<sub>eq</sub> (N/m) y ω<sub>n</sub> (rad/s):';
     ans.innerHTML=inputField('q-keq','k_eq',96)+inputField('q-wn','ω_n');
   } else if(curType==='energy'){
     const k=pick([200,400,800]), A=pick([0.02,0.05,0.1]);
-    cur={k,A}; q.innerHTML='Sistema no amortiguado con k = '+k+' N/m y amplitud A = '+A+' m. Halla la energía total (J):';
+    cur={k,A}; q.innerHTML='Sistema no amortiguado con k = '+k+' N/m y amplitud A = '+A+' m. Determinar la energía total (J):';
     ans.innerHTML=inputField('q-E','E',96);
   } else if(curType==='pend'){
     const L=pick([0.5,1,1.5,2]);
-    cur={L}; q.innerHTML='Un péndulo simple de longitud L = '+L+' m (g = 9.81). Halla ω<sub>n</sub> (rad/s) y f<sub>n</sub> (Hz):';
+    cur={L}; q.innerHTML='Un péndulo simple de longitud L = '+L+' m (g = 9.81). Determinar ω<sub>n</sub> (rad/s) y f<sub>n</sub> (Hz):';
     ans.innerHTML=inputField('q-wn','ω_n')+inputField('q-fn','f_n');
   }
 }
@@ -615,11 +712,11 @@ function check(){
   const fb=document.getElementById('fb'); let ok=false, sol='';
   const near=(u,v,tol)=>Math.abs(u-v)<(tol||0.04*Math.max(1,Math.abs(v))+0.04);
   if(curType==='wn'){ const wn=Math.sqrt(cur.k/cur.m), fn=wn/TAU; ok=near(val('q-wn'),wn)&&near(val('q-fn'),fn,0.03); sol='ω_n=√(k/m)='+fmt(wn,3)+' rad/s, f_n=ω_n/2π='+fmt(fn,3)+' Hz'; }
-  else if(curType==='eom'){ ok=cur.sel===cur.correct; sol=cur.correct+(cur.sel?'':'  (elige una opción)'); }
+  else if(curType==='eom'){ ok=cur.sel===cur.correct; sol=cur.correct+(cur.sel?'':'  (falta elegir una opción)'); }
   else if(curType==='keq'){ const keq=cur.kind==='par'?cur.k1+cur.k2:cur.k1*cur.k2/(cur.k1+cur.k2), wn=Math.sqrt(keq/cur.m); ok=near(val('q-keq'),keq)&&near(val('q-wn'),wn); sol='k_eq='+(cur.kind==='par'?'k₁+k₂':'k₁k₂/(k₁+k₂)')+'='+fmt(keq,2)+' N/m, ω_n='+fmt(wn,3)+' rad/s'; }
   else if(curType==='energy'){ const E=0.5*cur.k*cur.A*cur.A; ok=near(val('q-E'),E,0.02*Math.max(0.2,E)+0.005); sol='E=½kA²='+fmt(E,4)+' J'; }
   else if(curType==='pend'){ const wn=Math.sqrt(G/cur.L), fn=wn/TAU; ok=near(val('q-wn'),wn)&&near(val('q-fn'),fn,0.03); sol='ω_n=√(g/L)='+fmt(wn,3)+' rad/s, f_n='+fmt(fn,3)+' Hz'; }
-  fb.textContent = ok?'¡Correcto!  ✓':'Aún no. Revisa el procedimiento e inténtalo otra vez.';
+  fb.textContent = ok?'¡Correcto!  ':'Aún no. Revisa el procedimiento e inténtalo otra vez.';
   fb.className='feedback '+(ok?'ok':'no');
   document.getElementById('sol').textContent='Solución: '+sol;
 }
@@ -782,7 +879,7 @@ refreshForms(); setupCanvas(); newQ();
 document.querySelector('#reto-types .btn').classList.remove('ghost');
 document.getElementById('dclcap').innerHTML='<b>Concepto matemático.</b> El <b>diagrama de cuerpo libre</b>: sobre la masa actúan el resorte (<span style="color:#C55A11;font-weight:600">−k·x</span>) y el amortiguador (<span style="color:#4472C4;font-weight:600">−c·x′</span>). La 2.ª ley <b>ΣF = m·a</b> reúne todo en la ecuación de movimiento.';
 document.getElementById('energycap').innerHTML='<b>Vibraciones.</b> La energía va y viene entre <span style="color:#2E7D46;font-weight:600">cinética T = ½mv²</span> y <span style="color:#C55A11;font-weight:600">potencial V = ½kx²</span>. Sin amortiguamiento la suma <b>E = T+V</b> es constante; con amortiguador, <b>decae</b>. Va <b>sincronizada con x(t)</b>.';
-document.getElementById('pendcap').innerHTML='<b>Vida cotidiana.</b> Un <b>péndulo simple</b>. Para ángulos pequeños su EOM es <b>θ″ + (g/L)θ = 0</b>, así que <b>ω_n = √(g/L)</b> — ¡no depende de la masa! Se anima como analogía de la respuesta, <b>sincronizado con x(t)</b>.';
+document.getElementById('pendcap').innerHTML='<b>Vida cotidiana.</b> Un <b>péndulo simple</b>. Para ángulos pequeños su EOM es <b>θ″ + (g/L)θ = 0</b>, así que <b>ω_n = √(g/L)</b>: ¡no depende de la masa! Se anima como analogía de la respuesta, <b>sincronizado con x(t)</b>.';
 document.getElementById('accelcap').innerHTML='<b>Aeronáutica.</b> Un <b>acelerómetro</b> es una <b>masa sísmica</b> sobre resortes dentro de una carcasa: cuando el vehículo acelera, la masa se desplaza y ese desplazamiento mide la aceleración. Es exactamente un sistema m–k–c. Va <b>sincronizado con x(t)</b>.';
 requestAnimationFrame(drawMain);
 requestAnimationFrame(drawEnergy);
@@ -792,6 +889,82 @@ requestAnimationFrame(respLoop);
 const _rf=refreshForms; refreshForms=function(){ _rf(); drawDCL(); };
 drawDCL();
 </script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ mostrar(); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
 <!-- contador:inicio -->
 <style>
   .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
@@ -799,7 +972,7 @@ drawDCL();
   .visitas b{color:#1F3864;font-weight:700}
   .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
 </style>
-<div class="visitas" id="visitas"><span>👁 Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
 <a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
 <script>
 (function(){
@@ -891,9 +1064,11 @@ drawDCL();
 <div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
 <a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
 <div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html">Laboratorio de señales <small>Pilar 11 · temas 7.1–7.2</small></a>
 <div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html">Dos grados de libertad y absorbedor <small>Pilar 12 · temas 8.1–8.3</small></a>
+
+
     <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
     </div>
   </details>

@@ -2,6 +2,104 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
 <title>Círculo de Mohr · Explorador · Vibraciones · ENES Juriquilla</title>
@@ -71,7 +169,6 @@
 </style>
 <!-- tema:inicio -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
   /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
   :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
@@ -103,7 +200,7 @@
 
 <div class="wrap">
   <div class="intro full">
-    <b>¿Qué muestra?</b> A la izquierda, el <b>elemento diferencial</b> alrededor de un punto, con las flechas de esfuerzo sobre sus cuatro caras; el deslizador de <span class="mth">θ</span> lo gira. A la derecha, el <b>círculo de Mohr</b>: el punto que representa ese mismo estado se mueve al <b>doble del ángulo</b>. El estado físico no cambia nunca — solo cambia el sistema de referencia desde el que se mira.
+    <b>¿Qué muestra?</b> A la izquierda, el <b>elemento diferencial</b> alrededor de un punto, con las flechas de esfuerzo sobre sus cuatro caras; el deslizador de <span class="mth">θ</span> lo gira. A la derecha, el <b>círculo de Mohr</b>: el punto que representa ese mismo estado se mueve al <b>doble del ángulo</b>. El estado físico no cambia nunca: solo cambia el sistema de referencia desde el que se mira.
   </div>
 
   <div class="card">
@@ -190,8 +287,7 @@
           <div class="row"><label>ν</label><input id="nu" type="range" min="0.2" max="0.4" step="0.01" value="0.33"><span class="val" id="vnu">0.33</span></div>
           <div class="btns" style="margin-top:8px"><button class="btn" id="bRos">Cargar este estado en el explorador</button></div>
         </div>
-        <div class="eqbox" style="margin-top:10px"><span class="lab">Cuña en deformaciones y Hooke en estado plano</span>
-          ε<sub>x</sub> = ε<sub>a</sub>, ε<sub>y</sub> = ε<sub>c</sub>, γ<sub>xy</sub> = 2ε<sub>b</sub> − ε<sub>a</sub> − ε<sub>c</sub>  ·  σ<sub>x</sub> = E(ε<sub>x</sub>+νε<sub>y</sub>)/(1−ν²), σ<sub>y</sub> = E(ε<sub>y</sub>+νε<sub>x</sub>)/(1−ν²), τ<sub>xy</sub> = Gγ<sub>xy</sub>, G = E/[2(1+ν)]</div>
+        <div class="eqbox" style="margin-top:10px"><span class="lab">Cuña en deformaciones y Hooke en estado plano</span><math display="block"><mrow><msub><mi>ε</mi><mi>x</mi></msub><mo>=</mo><msub><mi>ε</mi><mi>a</mi></msub><mo>,</mo><mspace width="2em"></mspace><msub><mi>ε</mi><mi>y</mi></msub><mo>=</mo><msub><mi>ε</mi><mi>c</mi></msub><mo>,</mo><mspace width="2em"></mspace><msub><mi>γ</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mo>=</mo><mn>2</mn><msub><mi>ε</mi><mi>b</mi></msub><mo>−</mo><msub><mi>ε</mi><mi>a</mi></msub><mo>−</mo><msub><mi>ε</mi><mi>c</mi></msub></mrow></math><math display="block"><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>=</mo><mfrac><mrow><mi>E</mi><mspace width="0.17em"></mspace><mo stretchy="false" lspace="0" rspace="0">(</mo><msub><mi>ε</mi><mi>x</mi></msub><mo>+</mo><mi>ν</mi><mspace width="0.17em"></mspace><msub><mi>ε</mi><mi>y</mi></msub><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>ν</mi><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mspace width="2em"></mspace><msub><mi>σ</mi><mi>y</mi></msub><mo>=</mo><mfrac><mrow><mi>E</mi><mspace width="0.17em"></mspace><mo stretchy="false" lspace="0" rspace="0">(</mo><msub><mi>ε</mi><mi>y</mi></msub><mo>+</mo><mi>ν</mi><mspace width="0.17em"></mspace><msub><mi>ε</mi><mi>x</mi></msub><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>ν</mi><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mspace width="2em"></mspace><msub><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mo>=</mo><mi>G</mi><mspace width="0.17em"></mspace><msub><mi>γ</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mo>,</mo><mspace width="2em"></mspace><mi>G</mi><mo>=</mo><mfrac><mi>E</mi><mrow><mn>2</mn><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>1</mn><mo>+</mo><mi>ν</mi><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow></mfrac></mrow></math></div>
       </div>
       <div>
         <div class="tiles">
@@ -225,14 +321,8 @@
           <div class="tile"><div class="k">n de Tresca</div><div class="v" id="oNtr">1.77</div></div>
           <div class="tile" id="tVer"><div class="k">Veredicto</div><div class="v" id="oVer">no fluye</div></div>
         </div>
-        <div class="eqbox" style="margin-top:12px">
-          <span class="lab">von Mises — energía de distorsión</span>
-          σ′ = √(σ<sub>1</sub>² − σ<sub>1</sub>σ<sub>2</sub> + σ<sub>2</sub>²)  ·  fluye si σ′ ≥ S<sub>y</sub>
-        </div>
-        <div class="eqbox">
-          <span class="lab">Tresca — cortante máximo</span>
-          fluye si  máx(|σ<sub>1</sub>−σ<sub>2</sub>|, |σ<sub>1</sub>|, |σ<sub>2</sub>|) ≥ S<sub>y</sub>
-        </div>
+        <div class="eqbox" style="margin-top:12px"><span class="lab">von Mises: energía de distorsión</span><math display="block"><mrow><msup><mi>σ</mi><mo>′</mo></msup><mo>=</mo><msqrt><mrow><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>−</mo><msub><mi>σ</mi><mn>1</mn></msub><msub><mi>σ</mi><mn>2</mn></msub><mo>+</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></mrow></msqrt><mo>,</mo><mspace width="2em"></mspace><mtext>fluye si </mtext><msup><mi>σ</mi><mo>′</mo></msup><mo>≥</mo><msub><mi>S</mi><mi>y</mi></msub></mrow></math></div>
+        <div class="eqbox"><span class="lab">Tresca: cortante máximo</span><math display="block"><mrow><mtext>fluye si </mtext><mi mathvariant="normal" data-fn="1">max</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><msub><mi>σ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" lspace="0" rspace="0">|</mo><mo>,</mo><mspace width="0.25em"></mspace><mo stretchy="false" lspace="0" rspace="0">|</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" lspace="0" rspace="0">|</mo><mo>,</mo><mspace width="0.25em"></mspace><mo stretchy="false" lspace="0" rspace="0">|</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" lspace="0" rspace="0">|</mo><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>≥</mo><msub><mi>S</mi><mi>y</mi></msub></mrow></math></div>
         <p style="font-size:13px;margin:10px 0 0">El hexágono de Tresca queda <b>inscrito</b> en la elipse de von Mises, y por eso Tresca nunca es menos conservador. La diferencia es máxima en <b>cortante puro</b>, donde von Mises admite 0.577·S<sub>y</sub> y Tresca solo 0.500·S<sub>y</sub>: un 15.5 % de diferencia. Los ensayos caen casi siempre entre ambos y más cerca de von Mises, que es el que usa por defecto el diseño y todo el postproceso de elementos finitos.</p>
         <p style="font-size:13px;margin:8px 0 0">Los tres términos dentro del máximo de Tresca no son un capricho: en estado plano la tercera dirección principal es <span class="mth">σ<sub>3</sub> = 0</span>, y el cortante máximo real puede estar <b>fuera del plano</b>. Por eso el recuadro «τ<sub>máx</sub> real» no siempre coincide con el radio R del círculo.</p>
       </div>
@@ -243,29 +333,16 @@
     <h2>Las fórmulas en pantalla</h2>
     <div class="two">
       <div>
-        <div class="eqbox">
-          <span class="lab">1 · Transformación al girar el corte un ángulo θ</span>
-          σ<sub>x′</sub> = (σ<sub>x</sub>+σ<sub>y</sub>)/2 + (σ<sub>x</sub>−σ<sub>y</sub>)/2 · cos 2θ + τ<sub>xy</sub> · sen 2θ<br>
-          τ<sub>x′y′</sub> = −(σ<sub>x</sub>−σ<sub>y</sub>)/2 · sen 2θ + τ<sub>xy</sub> · cos 2θ
-        </div>
-        <div class="eqbox">
-          <span class="lab">2 · Centro y radio</span>
-          σ<sub>prom</sub> = (σ<sub>x</sub>+σ<sub>y</sub>)/2  ·  R = √[((σ<sub>x</sub>−σ<sub>y</sub>)/2)² + τ<sub>xy</sub>²]
-        </div>
+        <div class="eqbox"><span class="lab">1 · Transformación al girar el corte un ángulo θ</span><math display="block"><mrow><msub><mi>σ</mi><msup><mi>x</mi><mo>′</mo></msup></msub><mo>=</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>+</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mo>+</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>−</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mi mathvariant="normal" data-fn="1">cos</mi><mspace width="0.17em"></mspace><mn>2</mn><mi>θ</mi><mo>+</mo><msub><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mspace width="0.17em"></mspace><mi mathvariant="normal">sen</mi><mspace width="0.17em"></mspace><mn>2</mn><mi>θ</mi></mrow></math><math display="block"><mrow><msub><mi>τ</mi><mrow><msup><mi>x</mi><mo>′</mo></msup><msup><mi>y</mi><mo>′</mo></msup></mrow></msub><mo>=</mo><mo>−</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>−</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mspace width="0.17em"></mspace><mi mathvariant="normal">sen</mi><mspace width="0.17em"></mspace><mn>2</mn><mi>θ</mi><mo>+</mo><msub><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mi mathvariant="normal" data-fn="1">cos</mi><mspace width="0.17em"></mspace><mn>2</mn><mi>θ</mi></mrow></math></div>
+        <div class="eqbox"><span class="lab">2 · Centro y radio</span><math display="block"><mrow><msub><mi>σ</mi><mi mathvariant="normal">prom</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>+</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"></mspace><mi>R</mi><mo>=</mo><msqrt><mrow><msup><mrow><mo stretchy="true" fence="true">(</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>−</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mo stretchy="true" fence="true">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msubsup><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow><mn>2</mn></msubsup></mrow></msqrt></mrow></math></div>
       </div>
       <div>
-        <div class="eqbox">
-          <span class="lab">3 · La ecuación del círculo</span>
-          (σ − σ<sub>prom</sub>)² + τ² = R²
-        </div>
-        <div class="eqbox">
-          <span class="lab">4 · Esfuerzos principales y su orientación</span>
-          σ<sub>1,2</sub> = σ<sub>prom</sub> ± R  ·  tan 2θ<sub>p</sub> = 2τ<sub>xy</sub> / (σ<sub>x</sub>−σ<sub>y</sub>)
-        </div>
+        <div class="eqbox"><span class="lab">3 · La ecuación del círculo</span><math display="block"><mrow><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>σ</mi><mo>−</mo><msub><mi>σ</mi><mi mathvariant="normal">prom</mi></msub><msup><mo stretchy="false" lspace="0" rspace="0">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>τ</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup></mrow></math></div>
+        <div class="eqbox"><span class="lab">4 · Esfuerzos principales y su orientación</span><math display="block"><mrow><msub><mi>σ</mi><mrow><mn>1</mn><mo>,</mo><mn>2</mn></mrow></msub><mo>=</mo><msub><mi>σ</mi><mi mathvariant="normal">prom</mi></msub><mo>±</mo><mi>R</mi><mo>,</mo><mspace width="2em"></mspace><mi mathvariant="normal" data-fn="1">tan</mi><mspace width="0.17em"></mspace><mn>2</mn><msub><mi>θ</mi><mi>p</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mspace width="0.17em"></mspace><msub><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub></mrow><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>−</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow></mfrac></mrow></math></div>
       </div>
     </div>
     <div class="intro" style="margin-top:12px;border-left-color:var(--green)">
-      <b style="color:var(--green)">¿De dónde sale el círculo, y por qué los ángulos van al doble?</b> Escribiendo <span class="mth">a = (σ<sub>x</sub>−σ<sub>y</sub>)/2</span> y <span class="mth">R = √(a² + τ<sub>xy</sub>²)</span>, las dos ecuaciones de transformación se reducen a <span class="mth">σ − σ<sub>prom</sub> = R·cos(2θ − 2θ<sub>p</sub>)</span> y <span class="mth">τ = −R·sen(2θ − 2θ<sub>p</sub>)</span>. Eliminando el ángulo queda <span class="mth">(σ − σ<sub>prom</sub>)² + τ² = R²</span>, que es una circunferencia; y el parámetro que la recorre es <b>2θ</b>, no θ. La razón física es que girar el elemento <b>90°</b> intercambia las caras x e y y devuelve un estado equivalente, mientras que girarlo <b>180°</b> lo devuelve idéntico: media vuelta real del elemento corresponde a una vuelta entera del círculo.
+      <b style="color:var(--green)">¿De dónde sale el círculo, y por qué los ángulos van al doble?</b> Escribiendo <span class="mth">a = (σ<sub>x</sub>−σ<sub>y</sub>)/2</span> y <math><mrow><mi>R</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msubsup><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow><mn>2</mn></msubsup></mrow></msqrt></mrow></math>, las dos ecuaciones de transformación se reducen a <span class="mth">σ − σ<sub>prom</sub> = R·cos(2θ − 2θ<sub>p</sub>)</span> y <span class="mth">τ = −R·sen(2θ − 2θ<sub>p</sub>)</span>. Eliminando el ángulo queda <span class="mth">(σ − σ<sub>prom</sub>)² + τ² = R²</span>, que es una circunferencia; y el parámetro que la recorre es <b>2θ</b>, no θ. La razón física es que girar el elemento <b>90°</b> intercambia las caras x e y y devuelve un estado equivalente, mientras que girarlo <b>180°</b> lo devuelve idéntico: media vuelta real del elemento corresponde a una vuelta entera del círculo.
     </div>
   </div>
 
@@ -280,7 +357,7 @@
       </div>
       <div>
         <h3>Lo que no cambia</h3>
-        <p style="font-size:13.5px;margin:0">Al mover θ, los recuadros azules —el centro y el radio— no se mueven. Son <b>invariantes</b>: no dependen del sistema de referencia que elija quien analiza. Esa es la razón de que cualquier criterio de falla tenga que escribirse en función de invariantes, y de ahí salen las formas de von Mises y de Tresca.</p>
+        <p style="font-size:13.5px;margin:0">Al mover θ, los recuadros azules …el centro y el radio… no se mueven. Son <b>invariantes</b>: no dependen del sistema de referencia que elija quien analiza. Esa es la razón de que cualquier criterio de falla tenga que escribirse en función de invariantes, y de ahí salen las formas de von Mises y de Tresca.</p>
         <div class="takeaway" style="margin-top:12px">
           <b>Cómo explorar:</b> conviene empezar con el <b>Caso general</b> y mover solo el ángulo θ, mirando a la vez el elemento y el círculo: por cada grado que gira el cuadrado, el punto avanza dos sobre la circunferencia. Después se pulsa <b>Ir a los planos principales</b> y se comprueba que las flechas de cortante se anulan. Luego <b>Ir al cortante máximo</b>, que cae 45° más allá y donde el esfuerzo normal vale exactamente el promedio. Por último conviene bajar el límite S<sub>y</sub> con el deslizador hasta que el punto rojo salga de la elipse, para ver qué significa que una pieza fluya.
         </div>
@@ -294,7 +371,7 @@
   <div class="cred">
     <div class="h">Créditos y cómo citar</div>
     <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
-    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
   </div>
 </footer>
 
@@ -389,8 +466,8 @@ function draw(){
     const sh=lenT(T.txp)*sg, ox=fx+vx*sg*7, oy=fy+vy*sg*7;
     arrow(ctx,ox-ux*sh/2,oy-uy*sh/2,ox+ux*sh/2,oy+uy*sh/2,STEEL,2.4);
   });
-  txt(ctx,'σx′ = '+fmt(T.sxp), splitX/2, H-42, ORANGE, 12,'center','middle',true);
-  txt(ctx,'σy′ = '+fmt(T.syp)+'    τx′y′ = '+fmt(T.txp), splitX/2, H-24, STEEL, 12,'center','middle',true);
+  txt(ctx,'σ_{x′} = '+fmt(T.sxp), splitX/2, H-42, ORANGE, 12,'center','middle',true);
+  txt(ctx,'σ_{y′} = '+fmt(T.syp)+'    τ_{x′y′} = '+fmt(T.txp), splitX/2, H-24, STEEL, 12,'center','middle',true);
 
   /* ----- círculo de Mohr ----- */
   const mL=splitX+54, mR=W-18, mT=38, mB=H-46;
@@ -399,7 +476,7 @@ function draw(){
   const k=Math.min(pw/(2*SMAX), ph/(2*TMAX));
   const cx=mL+pw/2, cy=mT+ph/2;
   const X=s=>cx+s*k, Y=tt=>cy+tt*k;          // τ positivo hacia abajo (convención)
-  txt(ctx,'Círculo de Mohr — el punto avanza 2θ', splitX+(W-splitX)/2, 22, NAVY, 12.5,'center','middle',true);
+  txt(ctx,'Círculo de Mohr: el punto avanza 2θ', splitX+(W-splitX)/2, 22, NAVY, 12.5,'center','middle',true);
   // rejilla y ejes
   ctx.strokeStyle='#EDF1F8'; ctx.lineWidth=1;
   for(let s=-200;s<=200;s+=50){ ctx.beginPath(); ctx.moveTo(X(s),mT); ctx.lineTo(X(s),mB); ctx.stroke(); }
@@ -416,7 +493,7 @@ function draw(){
   ctx.beginPath(); ctx.arc(X(E.sp),Y(0),E.R*k,0,7); ctx.stroke();
   // centro
   ctx.beginPath(); ctx.arc(X(E.sp),Y(0),3.2,0,7); ctx.fillStyle=STEEL; ctx.fill();
-  txt(ctx,'σprom',X(E.sp),Y(0)-12,STEEL,10.5);
+  txt(ctx,'σ_{prom}',X(E.sp),Y(0)-12,STEEL,10.5);
   // principales
   [[E.s1,'σ1'],[E.s2,'σ2']].forEach(([v,lab])=>{
     ctx.beginPath(); ctx.arc(X(v),Y(0),4,0,7); ctx.fillStyle=GREEN; ctx.fill();
@@ -481,8 +558,8 @@ function drawFalla(E){
     ctf.beginPath(); ctf.moveTo(X(-lim),Y(s)); ctf.lineTo(X(lim),Y(s)); ctf.stroke(); }
   ctf.strokeStyle='#B9C6DA'; ctf.lineWidth=1.2;
   ctf.beginPath(); ctf.moveTo(X(-lim),Y(0)); ctf.lineTo(X(lim),Y(0)); ctf.moveTo(X(0),Y(-lim)); ctf.lineTo(X(0),Y(lim)); ctf.stroke();
-  txt(ctf,'σ1',X(lim)-6,Y(0)-11,NAVY,12,'right','middle',true);
-  txt(ctf,'σ2',X(0)+12,Y(lim)+8,NAVY,12,'left','middle',true);
+  txt(ctf,'σ_1',X(lim)-6,Y(0)-11,NAVY,12,'right','middle',true);
+  txt(ctf,'σ_2',X(0)+12,Y(lim)+8,NAVY,12,'left','middle',true);
   for(const s of [-SYLIM,SYLIM]){ txt(ctf,fmt(s,0),X(s),Y(0)+12,GREY,10); }
   // elipse de von Mises: s1²−s1s2+s2²=Sy²  (paramétrica)
   ctf.strokeStyle=STEEL; ctf.lineWidth=2.2; ctf.beginPath();
@@ -506,14 +583,14 @@ function drawFalla(E){
   ctf.strokeStyle='rgba(178,58,58,.35)'; ctf.lineWidth=1.4; ctf.setLineDash([4,3]); ctf.stroke(); ctf.setLineDash([]);
   ctf.beginPath(); ctf.arc(px,py,6,0,7); ctf.fillStyle=RED; ctf.fill();
   ctf.strokeStyle='#fff'; ctf.lineWidth=1.8; ctf.stroke();
-  txt(ctf,'(σ1, σ2)',px,py-15,RED,11,'center','middle',true);
+  txt(ctf,'(σ_1, σ_2)',px,py-15,RED,11,'center','middle',true);
   txt(ctf,'von Mises',X(-SYLIM*0.45),Y(SYLIM*1.21),STEEL,11,'center','middle',true);
   txt(ctf,'Tresca',X(SYLIM*0.46),Y(SYLIM*0.86),ORANGE,11,'center','middle',true);
   // lecturas
   const nvm=E.vm>1e-6?SYLIM/E.vm:Infinity, ntr=E.tre>1e-6?SYLIM/E.tre:Infinity;
   $('oVM').textContent=fmt(E.vm);
-  $('oNvm').textContent=isFinite(nvm)?fmt(nvm,2):'—';
-  $('oNtr').textContent=isFinite(ntr)?fmt(ntr,2):'—';
+  $('oNvm').textContent=isFinite(nvm)?fmt(nvm,2):'…';
+  $('oNtr').textContent=isFinite(ntr)?fmt(ntr,2):'…';
   const fluye=E.vm>=SYLIM;
   $('oVer').textContent=fluye?'fluye':'no fluye';
   $('tVer').className='tile'+(fluye?' bad':'');
@@ -570,9 +647,9 @@ function drawTres(){
   if(lo<0&&hi>0){ c3x.beginPath(); c3x.moveTo(X(0),cy-H/2+20); c3x.lineTo(X(0),cy+H/2-20); c3x.stroke(); }
   const circ=(a,b,col,w,dash)=>{ c3x.setLineDash(dash||[]); c3x.strokeStyle=col; c3x.lineWidth=w; c3x.beginPath(); c3x.arc(X((a+b)/2),cy,Math.abs(b-a)/2*k,0,2*Math.PI); c3x.stroke(); c3x.setLineDash([]); };
   circ(E.s1,0,GREY,1.2,[4,3]); circ(E.s2,0,GREY,1.2,[4,3]); circ(E.s1,E.s2,STEEL,2); circ(s[0],s[2],RED,2.4);
-  [[E.s1,'σ1',GREEN],[E.s2,'σ2',GREEN],[0,'σ3 = 0',GREY]].forEach(([v,l,c])=>{ c3x.fillStyle=c; c3x.beginPath(); c3x.arc(X(v),cy,4,0,7); c3x.fill(); txt(c3x,l+' '+(l==='σ3 = 0'?'':fmt(v)),X(v),cy+16,c,10.5,'center'); });
+  [[E.s1,'σ_1',GREEN],[E.s2,'σ_2',GREEN],[0,'σ_3 = 0',GREY]].forEach(([v,l,c])=>{ c3x.fillStyle=c; c3x.beginPath(); c3x.arc(X(v),cy,4,0,7); c3x.fill(); txt(c3x,l+' '+(l==='σ_3 = 0'?'':fmt(v)),X(v),cy+16,c,10.5,'center'); });
   const cx=X((s[0]+s[2])/2); c3x.strokeStyle=RED; c3x.lineWidth=1.4; c3x.beginPath(); c3x.moveTo(cx,cy); c3x.lineTo(cx,cy-Rmax*k); c3x.stroke();
-  txt(c3x,'τmáx,abs = '+fmt(Rmax)+' MPa',cx+6,cy-Rmax*k+12,RED,11,'left','alphabetic',true);
+  txt(c3x,'τ_{máx,abs} = '+fmt(Rmax)+' MPa',cx+6,cy-Rmax*k+12,RED,11,'left','alphabetic',true);
   txt(c3x,'R en el plano = '+fmt(E.R),X((E.s1+E.s2)/2)+6,cy+E.R*k-4,STEEL,10.5,'left');
   txt(c3x,'σ (MPa)',x1,cy-6,GREY,10,'right');
 }
@@ -581,6 +658,82 @@ syncRos(); drawTres();
 
 sync();
 </script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ mostrar(); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
 <!-- contador:inicio -->
 <style>
   .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
@@ -588,7 +741,7 @@ sync();
   .visitas b{color:#1F3864;font-weight:700}
   .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
 </style>
-<div class="visitas" id="visitas"><span>👁 Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
 <a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
 <script>
 (function(){
@@ -680,9 +833,11 @@ sync();
 <div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
 <a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
 <div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html">Laboratorio de señales <small>Pilar 11 · temas 7.1–7.2</small></a>
 <div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html">Dos grados de libertad y absorbedor <small>Pilar 12 · temas 8.1–8.3</small></a>
+
+
     <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
     </div>
   </details>

@@ -1,4 +1,4 @@
-# Vibraciones — Exploradores interactivos
+# Vibraciones: exploradores interactivos
 
 Colección de **ocho exploradores interactivos** (HTML, funcionan sin conexión) de apoyo al curso de **Vibraciones** · Ingeniería Aeroespacial · **ENES Juriquilla, UNAM**.
 
@@ -9,29 +9,29 @@ Colección de **ocho exploradores interactivos** (HTML, funcionan sin conexión)
 ## Exploradores
 
 **Pilares de fundamentos (conocimiento previo)**
-1. `complejos_interactivo.html` — Números complejos (INTERPRETAR)
-2. `edo_interactivo.html` — EDO lineal de 2.º orden (RESOLVER)
-3. `edo3_interactivo.html` — Dinámica de la partícula, ΣF = ma (ARMAR)
+1. `complejos_interactivo.html`: Números complejos (INTERPRETAR)
+2. `edo_interactivo.html`: EDO lineal de 2.º orden (RESOLVER)
+3. `edo3_interactivo.html`: Dinámica de la partícula, ΣF = ma (ARMAR)
 
 **Temas del curso**
-4. `coulomb_interactivo.html` — Fricción de Coulomb (U2)
-5. `forzada_interactivo.html` — Respuesta forzada y resonancia (U3)
-6. `mediapotencia_interactivo.html` — Media potencia y factor Q (U3)
-7. `espectro_interactivo.html` — Del espectro de ensayo a la carga de diseño (U4)
-8. `mohr_interactivo.html` — Círculo de Mohr, roseta de galgas, tres círculos y criterios de falla estática (U5)
-9. `fatiga_interactivo.html` — Fatiga: curva S–N, diagrama de Haigh y regla de Miner (U5)
-10. `sonido_interactivo.html` — Niveles sonoros, bandas de octava y exposición al ruido, NOM-011-STPS-2001 (U6)
+4. `coulomb_interactivo.html`: Fricción de Coulomb (U2)
+5. `forzada_interactivo.html`: Respuesta forzada y resonancia (U3)
+6. `mediapotencia_interactivo.html`: Media potencia y factor Q (U3)
+7. `espectro_interactivo.html`: Del espectro de ensayo a la carga de diseño (U4)
+8. `mohr_interactivo.html`: Círculo de Mohr, roseta de galgas, tres círculos y criterios de falla estática (U5)
+9. `fatiga_interactivo.html`: Fatiga: curva S–N, diagrama de Haigh y regla de Miner (U5)
+10. `sonido_interactivo.html`: Niveles sonoros, bandas de octava y exposición al ruido, NOM-011-STPS-2001 (U6)
 
 Material de apoyo
 
-- `normas.html` — Dónde consultar las normas (enlaces de descarga y de compra)
-- `normas.json` — fuente única de esas referencias: editar este archivo actualiza la guía y el Pilar 7
+- `normas.html`: Dónde consultar las normas (enlaces de descarga y de compra)
+- `normas.json`: fuente única de esas referencias: editar este archivo actualiza la guía y el Pilar 7
 
-- `temario.json` — fuente única de la **barra de navegación** y del **índice por unidades**: unidades, subtemas y qué explorador pertenece a cada una
-- `build_index.py` — genera `index.html` desde `temario.json` (mismo lenguaje visual que el sitio de Teoría Electromagnética)
-- `add_navbar.py` — barra de navegación fija (‹ › Temario, teclas ← →) en todas las páginas, desde `temario.json`
-- `add_tema.py` — tema visual común de los exploradores (fondo papel, Spectral + IBM Plex, cabecera sobria)
-- `add_contador.py` — contador de visitas (GoatCounter)
+- `temario.json`: fuente única de la **barra de navegación** y del **índice por unidades**: unidades, subtemas y qué explorador pertenece a cada una
+- `build_index.py`: genera `index.html` desde `temario.json` (mismo lenguaje visual que el sitio de Teoría Electromagnética)
+- `add_navbar.py`: barra de navegación fija (‹ › Temario, teclas ← →) en todas las páginas, desde `temario.json`
+- `add_tema.py`: tema visual común de los exploradores (fondo papel, Spectral + IBM Plex, cabecera sobria)
+- `add_contador.py`: contador de visitas (GoatCounter)
 
 Orden para regenerar el sitio: `build_index.py` → `add_tema.py` → `add_contador.py CODIGO` → `add_navbar.py`. Todos son idempotentes; para una página nueva basta registrarla en `temario.json` y volver a correrlos
 
@@ -43,9 +43,18 @@ Creative Commons Attribution 4.0 International (**CC BY 4.0**).
 
 ## Cómo citar
 
-Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones — Exploradores interactivos* (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
+Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones: exploradores interactivos* (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
 
 ## Autoría
 
-- Elodie Strupiechonski — ENES Juriquilla, UNAM · ORCID [0000-0001-8991-8499](https://orcid.org/0000-0001-8991-8499)
-- Andrés de Luna Bugallo — CFATA, UNAM · ORCID [0000-0002-7591-5235](https://orcid.org/0000-0002-7591-5235)
+- Elodie Strupiechonski: ENES Juriquilla, UNAM · ORCID [0000-0001-8991-8499](https://orcid.org/0000-0001-8991-8499)
+- Andrés de Luna Bugallo: CFATA, UNAM · ORCID [0000-0002-7591-5235](https://orcid.org/0000-0002-7591-5235)
+
+## Revisión de noviembre de 2026
+
+- Dos exploradores nuevos: `senales_interactivo.html` (Pilar 11, Unidad 7: muestreo, aliasing, ventanas y método de Welch, con lectura de archivos CSV de Phyphox) y `dosgdl_interactivo.html` (Pilar 12, Unidad 8: dos grados de libertad, formas modales y absorbedor dinámico).
+- Entrada por teclado: cada deslizador tiene una casilla numérica contigua; el valor escrito no queda limitado al paso del deslizador y se valida contra su intervalo.
+- Fórmulas en notación matemática (MathML incrustado, sin bibliotecas externas): fracciones, radicales y subíndices reales, también en las etiquetas de las gráficas.
+- Tipografía institucional (Century Gothic o equivalente en títulos, Arial en texto, Cambria en fórmulas), redacción impersonal y sin rayas.
+- Correcciones: botones principales de los Pilares 1 a 5 (texto blanco sobre fondo blanco), aproximaciones marcadas con ≈ en media potencia y Miles, criterio de Gerber, formato del daño de Miner.
+- Todos los resultados numéricos se verificaron con cálculos independientes (Python y NumPy) mediante pruebas automáticas en navegador.

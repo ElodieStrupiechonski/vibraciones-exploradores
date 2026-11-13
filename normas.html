@@ -2,6 +2,104 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
 <title>Dónde consultar las normas · Vibraciones · ENES Juriquilla</title>
@@ -63,7 +161,6 @@
 </style>
 <!-- tema:inicio -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
   /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
   :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
@@ -114,8 +211,8 @@
 
   <div class="card">
     <h2>Si hay que comprar una norma</h2>
-    <p>Las normas de pago se consiguen por tres vías. La primera es el <b>editor</b>: RTCA e ISO venden directamente desde sus propios sitios, y es la opción más fiable porque garantiza la revisión correcta. La segunda son los <b>revendedores autorizados</b> —Accuris, antes IHS Markit, o Techstreet—, que a veces ofrecen formatos o licencias distintas; conviene comparar, pero verificando siempre que la revisión sea la que se necesita. La tercera, y la más razonable en un entorno universitario, es la <b>licencia institucional</b>: muchas universidades mantienen suscripciones a catálogos completos de normas, de modo que antes de pagar una copia individual vale la pena preguntar en la biblioteca si ya existe acceso.</p>
-    <p>Un detalle que ahorra dinero: para entender un método de ensayo casi nunca hace falta el documento completo. Las fichas de ISO ofrecen <b>vista previa gratuita</b> con el alcance y el índice, suficiente para citar correctamente, y los conceptos que se evalúan en el curso —la densidad espectral, el valor eficaz, la ecuación de Miles, los márgenes en decibeles— son públicos y están cubiertos por las normas gratuitas.</p>
+    <p>Las normas de pago se consiguen por tres vías. La primera es el <b>editor</b>: RTCA e ISO venden directamente desde sus propios sitios, y es la opción más fiable porque garantiza la revisión correcta. La segunda son los <b>revendedores autorizados</b> …Accuris, antes IHS Markit, o Techstreet…, que a veces ofrecen formatos o licencias distintas; conviene comparar, pero verificando siempre que la revisión sea la que se necesita. La tercera, y la más razonable en un entorno universitario, es la <b>licencia institucional</b>: muchas universidades mantienen suscripciones a catálogos completos de normas, de modo que antes de pagar una copia individual vale la pena preguntar en la biblioteca si ya existe acceso.</p>
+    <p>Un detalle que ahorra dinero: para entender un método de ensayo casi nunca hace falta el documento completo. Las fichas de ISO ofrecen <b>vista previa gratuita</b> con el alcance y el índice, suficiente para citar correctamente, y los conceptos que se evalúan en el curso …la densidad espectral, el valor eficaz, la ecuación de Miles, los márgenes en decibeles… son públicos y están cubiertos por las normas gratuitas.</p>
     <div class="warn"><b>Sobre la licencia.</b> Los documentos de pago se adquieren con una licencia de uso personal o institucional y <b>no se pueden redistribuir</b>. Compartir el PDF de una norma comprada, aunque sea con fines docentes, infringe esa licencia. Lo que sí se puede hacer, y es lo que hacemos en el curso, es citar la norma, explicar su contenido y trabajar con los perfiles publicados en las normas de acceso libre.</div>
   </div>
 
@@ -123,7 +220,7 @@
     <h2>Cómo se mantiene actualizada esta lista</h2>
     <p>Las revisiones de las normas cambian y los enlaces se mueven, así que la lista no está escrita dentro de las páginas: vive en un archivo aparte llamado <code>normas.json</code>, en la misma carpeta del sitio. Las páginas lo leen al abrirse, de modo que <b>editar ese único archivo actualiza a la vez esta guía y el recuadro del explorador del Pilar 7</b>, sin tocar ningún otro archivo.</p>
     <p>En la práctica, actualizar un enlace consiste en abrir <code>normas.json</code> en GitHub, pulsar el lápiz, cambiar la línea correspondiente, cambiar también la fecha del campo <code>actualizado</code> y confirmar. Quien abra el sitio en línea verá el cambio de inmediato.</p>
-    <p>Cuando una página se usa <b>sin conexión</b> —descargada en una memoria o abierta desde el disco— no hay forma de consultar el archivo, así que se muestra la copia incorporada el día en que se descargó, y el sello de arriba lo indica. Además, si han pasado <b>más de doce meses</b> desde la última revisión, el sello cambia de color y avisa de que conviene comprobar si alguna norma cambió de edición. Esa comprobación la hace la propia página con la fecha del equipo, así que funciona también sin conexión.</p>
+    <p>Cuando una página se usa <b>sin conexión</b> …descargada en una memoria o abierta desde el disco… no hay forma de consultar el archivo, así que se muestra la copia incorporada el día en que se descargó, y el sello de arriba lo indica. Además, si han pasado <b>más de doce meses</b> desde la última revisión, el sello cambia de color y avisa de que conviene comprobar si alguna norma cambió de edición. Esa comprobación la hace la propia página con la fecha del equipo, así que funciona también sin conexión.</p>
   </div>
 
 </div>
@@ -133,7 +230,7 @@
   <div class="cred">
     <div class="h">Créditos y cómo citar</div>
     <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
-    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones — Exploradores interactivos (Versión 1.0) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
   </div>
 </footer>
 
@@ -144,7 +241,7 @@
   "normas": [
     {
       "clave": "RTCA DO-160G, Cambio 1 (2014)",
-      "parte": "Sección 8 — Vibration",
+      "parte": "Sección 8: Vibration",
       "nombre": "Environmental Conditions and Test Procedures for Airborne Equipment",
       "ambito": "Aviónica y equipo embarcado de aviación civil",
       "acceso": "pago",
@@ -157,7 +254,7 @@
     },
     {
       "clave": "MIL-STD-810H, Cambio 1 (2022)",
-      "parte": "Método 514.8 — Vibration",
+      "parte": "Método 514.8: Vibration",
       "nombre": "Environmental Engineering Considerations and Laboratory Tests",
       "ambito": "Material militar terrestre, naval y aéreo",
       "acceso": "gratis",
@@ -170,7 +267,7 @@
     },
     {
       "clave": "NASA GSFC-STD-7000B (2021)",
-      "parte": "Sección 2.4 — Structural and mechanical verification",
+      "parte": "Sección 2.4: Structural and mechanical verification",
       "nombre": "General Environmental Verification Standard (GEVS)",
       "ambito": "Instrumentos y componentes de vuelo espacial",
       "acceso": "gratis",
@@ -183,7 +280,7 @@
     {
       "clave": "ECSS-E-ST-10-03C Rev.1 (31 may 2022)",
       "parte": "Campaña de ensayos completa",
-      "nombre": "Space engineering — Testing",
+      "nombre": "Space engineering: Testing",
       "ambito": "Segmento espacial europeo (ESA y su cadena de proveedores)",
       "acceso": "gratis",
       "precio": "",
@@ -195,8 +292,8 @@
     },
     {
       "clave": "ISO 20816-1:2016",
-      "parte": "Parte 1 — Directrices generales",
-      "nombre": "Mechanical vibration — Measurement and evaluation of machine vibration",
+      "parte": "Parte 1: Directrices generales",
+      "nombre": "Mechanical vibration: Measurement and evaluation of machine vibration",
       "ambito": "Máquinas rotativas ya en servicio (sustituye a ISO 10816-1)",
       "acceso": "pago",
       "precio": "CHF 159, 34 páginas (iso.org, consultado 10/2026)",
@@ -207,8 +304,8 @@
     },
     {
       "clave": "ISO 2631-1:1997 / Enm. 1:2010",
-      "parte": "Parte 1 — Requisitos generales",
-      "nombre": "Mechanical vibration and shock — Evaluation of human exposure to whole-body vibration",
+      "parte": "Parte 1: Requisitos generales",
+      "nombre": "Mechanical vibration and shock: Evaluation of human exposure to whole-body vibration",
       "ambito": "Personas expuestas: tripulación y pasajeros",
       "acceso": "pago",
       "precio": "CHF 159, 31 páginas (iso.org, consultado 10/2026)",
@@ -252,7 +349,7 @@
 function fmtFecha(s){
   const m={ '01':'enero','02':'febrero','03':'marzo','04':'abril','05':'mayo','06':'junio',
             '07':'julio','08':'agosto','09':'septiembre','10':'octubre','11':'noviembre','12':'diciembre'};
-  const p=String(s||'').split('-'); if(p.length!==3) return s||'—';
+  const p=String(s||'').split('-'); if(p.length!==3) return s||'…';
   return p[2].replace(/^0/,'')+' de '+(m[p[1]]||p[1])+' de '+p[0];
 }
 function mesesDesde(s){
@@ -311,7 +408,7 @@ cargarNormas('lista', false, 'sello');
   .visitas b{color:#1F3864;font-weight:700}
   .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
 </style>
-<div class="visitas" id="visitas"><span>👁 Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
 <a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
 <script>
 (function(){
@@ -403,9 +500,11 @@ cargarNormas('lista', false, 'sello');
 <div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
 <a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
 <div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html">Laboratorio de señales <small>Pilar 11 · temas 7.1–7.2</small></a>
 <div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html">Dos grados de libertad y absorbedor <small>Pilar 12 · temas 8.1–8.3</small></a>
+
+
     <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
     </div>
   </details>

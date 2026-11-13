@@ -5,7 +5,7 @@
   "normas": [
     {
       "clave": "RTCA DO-160G, Cambio 1 (2014)",
-      "parte": "Sección 8 — Vibration",
+      "parte": "Sección 8: Vibration",
       "nombre": "Environmental Conditions and Test Procedures for Airborne Equipment",
       "ambito": "Aviónica y equipo embarcado de aviación civil",
       "acceso": "pago",
@@ -18,7 +18,7 @@
     },
     {
       "clave": "MIL-STD-810H, Cambio 1 (2022)",
-      "parte": "Método 514.8 — Vibration",
+      "parte": "Método 514.8: Vibration",
       "nombre": "Environmental Engineering Considerations and Laboratory Tests",
       "ambito": "Material militar terrestre, naval y aéreo",
       "acceso": "gratis",
@@ -31,7 +31,7 @@
     },
     {
       "clave": "NASA GSFC-STD-7000B (2021)",
-      "parte": "Sección 2.4 — Structural and mechanical verification",
+      "parte": "Sección 2.4: Structural and mechanical verification",
       "nombre": "General Environmental Verification Standard (GEVS)",
       "ambito": "Instrumentos y componentes de vuelo espacial",
       "acceso": "gratis",
@@ -44,7 +44,7 @@
     {
       "clave": "ECSS-E-ST-10-03C Rev.1 (31 may 2022)",
       "parte": "Campaña de ensayos completa",
-      "nombre": "Space engineering — Testing",
+      "nombre": "Space engineering: Testing",
       "ambito": "Segmento espacial europeo (ESA y su cadena de proveedores)",
       "acceso": "gratis",
       "precio": "",
@@ -56,8 +56,8 @@
     },
     {
       "clave": "ISO 20816-1:2016",
-      "parte": "Parte 1 — Directrices generales",
-      "nombre": "Mechanical vibration — Measurement and evaluation of machine vibration",
+      "parte": "Parte 1: Directrices generales",
+      "nombre": "Mechanical vibration: Measurement and evaluation of machine vibration",
       "ambito": "Máquinas rotativas ya en servicio (sustituye a ISO 10816-1)",
       "acceso": "pago",
       "precio": "CHF 159, 34 páginas (iso.org, consultado 10/2026)",
@@ -68,8 +68,8 @@
     },
     {
       "clave": "ISO 2631-1:1997 / Enm. 1:2010",
-      "parte": "Parte 1 — Requisitos generales",
-      "nombre": "Mechanical vibration and shock — Evaluation of human exposure to whole-body vibration",
+      "parte": "Parte 1: Requisitos generales",
+      "nombre": "Mechanical vibration and shock: Evaluation of human exposure to whole-body vibration",
       "ambito": "Personas expuestas: tripulación y pasajeros",
       "acceso": "pago",
       "precio": "CHF 159, 31 páginas (iso.org, consultado 10/2026)",
