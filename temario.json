@@ -1,7 +1,7 @@
 {
  "curso": "Vibraciones",
  "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
- "actualizado": "2026-11-17",
+ "actualizado": "2026-11-18",
  "nota": "Fuente única del panel de navegación, del índice, del mapa del sitio y de los metadatos. Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos') en el orden del programa, 3) ejecutar integra2.py.",
  "paginas": {
   "complejos_interactivo.html": {

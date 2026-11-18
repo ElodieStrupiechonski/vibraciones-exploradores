@@ -2,9 +2,9 @@
 
 La numeración sigue las etiquetas (*tags*) de GitHub, que son las versiones archivadas en Zenodo. El DOI de concepto [10.5281/zenodo.23422993](https://doi.org/10.5281/zenodo.23422993) (citar «todas las versiones») resuelve siempre a la más reciente.
 
-## [1.2] · 2026-11-17 · DOI de versión: se anota al publicar la *release* v1.2 en Zenodo
+## [1.3] · 2026-11-18 · DOI de versión: se anota al publicar la *release* v1.3 en Zenodo
 
-Quince exploradores y un tutorial.
+Quince exploradores y un tutorial. Reúne todo lo posterior a la v1.2 del 16 de octubre.
 
 ### Tutorial de medición y análisis
 - `tutorial_phyphox.html` (U7 · 7.1): recorrido de siete pasos, del teléfono a la frecuencia natural y al amortiguamiento. Ligas de descarga de Phyphox (sitio oficial, Google Play, App Store), del cuaderno de Jupyter y del registro de ejemplo; instrucciones para Google Colab y para Visual Studio Code con tabla de errores frecuentes; analizador en el navegador (registro de ejemplo, archivo CSV propio o señal sintética) con espectro, envolvente de Hilbert y decremento logarítmico; lista de verificación. El avance por pasos se conserva en el navegador.
@@ -37,14 +37,14 @@ Pendiente de esta revisión: variables en cursiva dentro de las gráficas, una t
 ### Verificación
 - Pruebas automáticas en navegador (`qa/`): cada lectura de los exploradores nuevos se compara con un cálculo independiente en Python (NumPy y SciPy), incluida la integración temporal de la transmisibilidad, la respuesta al escalón y los tres métodos de extracción modal; entrada por teclado; orden de navegación; ausencia de desbordamiento a 390 px y de ligas locales rotas.
 
-## [1.1] · 2026-11-11
-
+### Cambios del 11 al 13 de noviembre (publicados en la rama principal sin etiqueta; los archivos decían «Versión 1.1»)
 - Exploradores nuevos: `senales_interactivo.html` (Pilar 11 · U7: muestreo, aliasing, ventanas y método de Welch, con lectura de archivos CSV de Phyphox) y `dosgdl_interactivo.html` (Pilar 12 · U8: dos grados de libertad, formas modales y absorbedor dinámico).
 - Entrada por teclado: cada deslizador tiene una casilla numérica contigua; el valor escrito no queda limitado al paso del deslizador y se valida contra su intervalo.
 - Fórmulas en notación matemática (MathML incrustado, sin bibliotecas externas), también en las etiquetas de las gráficas.
 - Tipografía institucional (Century Gothic o equivalente en títulos, Arial en texto, Cambria en fórmulas), redacción impersonal y sin rayas.
 - Correcciones: botones principales de los Pilares 1 a 5, aproximaciones marcadas con ≈ en media potencia y Miles, criterio de Gerber, formato del daño de Miner.
 
-## [1.0] · 2026
 
-- Diez exploradores (tres pilares de fundamentos y unidades 2 a 6), guía de normas, índice por unidades y barra de navegación.
+## [1.2] · 2026-10-16 y [1.1]
+
+Versiones etiquetadas y archivadas en Zenodo en octubre de 2026 (diez exploradores: tres pilares de fundamentos y unidades 2 a 6, guía de normas, índice por unidades y barra de navegación). El detalle de cada una está en la página de *releases* del repositorio. Nota: entre el 11 y el 17 de noviembre los pies de página mostraron por error «Versión 1.1» y «Versión 1.2» para contenido posterior a la etiqueta v1.2; la versión 1.3 corrige la numeración.

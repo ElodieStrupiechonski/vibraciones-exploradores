@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Revisión 1.2 (noviembre de 2026): integra los exploradores nuevos y homologa el sitio con el de Teoría
+"""Versión 1.3 (noviembre de 2026; durante su preparación se llamó «revisión 1.2»): integra los exploradores nuevos y homologa el sitio con el de Teoría
 Electromagnética. Idempotente. Uso: python3 integra2.py CARPETA
 
   1. temario.json: altas (analogías, transmisibilidad, tutorial, extracción modal), orden por unidad del programa.
@@ -8,11 +8,11 @@ Electromagnética. Idempotente. Uso: python3 integra2.py CARPETA
      Teoría Electromagnética: anterior/siguiente con nombre, buscador (tecla /), lista por unidades, ☰ en móvil.
   3. Bloques «movil» y «seo» (descripción, canónica, Open Graph y JSON-LD) en todas las páginas; sitemap.xml.
   4. Índice: las secciones de cada unidad se regeneran desde temario.json.
-  5. Versión 1.2 en pies de página, CITATION.cff, .zenodo.json y README.
+  5. Versión 1.3 en pies de página, CITATION.cff, .zenodo.json y README.
 """
 import json, os, re, sys, html
 D = sys.argv[1]; esc = lambda s: html.escape(s, quote=True)
-VERSION, FECHA = "1.2", "2026-11-17"
+VERSION, FECHA = "1.3", "2026-11-18"
 BASE = "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
 DOI = "10.5281/zenodo.23422993"
 tp = os.path.join(D, "temario.json"); T = json.load(open(tp, encoding="utf-8")); P = T["paginas"]
@@ -260,7 +260,7 @@ for f in htmls:
     assert s.count("</body>") == 1 and s.count("</head>") == 1, f
     s = s.replace("</head>", seo(f) + MOVIL + "</head>", 1)
     s = s.replace("</body>", NAV + "</body>", 1)
-    s = s.replace("(Versión 1.1)", "(Versión %s)" % VERSION).replace("(Versión 1.0)", "(Versión %s)" % VERSION)
+    s = re.sub(r"\(Versión 1\.[0-2]\)", "(Versión %s)" % VERSION, s)
     open(p, "w", encoding="utf-8").write(s)
 
 # ------------------------------------------------------------------------------------------------ 4. índice
@@ -342,7 +342,7 @@ Las mismas que en el sitio de Teoría Electromagnética: tipografía institucion
 
 ## Mantenimiento
 
-La carpeta `herramientas/` contiene los scripts de Python que generan y homologan las páginas (todos idempotentes salvo `mejoras.py`, que se aplicó una sola vez en la versión 1.1). Para añadir un explorador: registrarlo en `temario.json` dentro de su unidad, en el orden del programa, y ejecutar `integra2.py`. `construir.sh` reconstruye la versión actual a partir de la anterior; `rev12.py`, `teclado.py`, `nuevos.py` y `audit.py` son las pruebas automáticas (Playwright) que comparan las lecturas con cálculos independientes.
+La carpeta `herramientas/` contiene los scripts de Python que generan y homologan las páginas (todos idempotentes salvo `mejoras.py`, que se aplicó una sola vez en la revisión del 11 de noviembre de 2026). Para añadir un explorador: registrarlo en `temario.json` dentro de su unidad, en el orden del programa, y ejecutar `integra2.py`. `construir.sh` reconstruye la versión actual a partir de la anterior; `rev12.py`, `teclado.py`, `nuevos.py` y `audit.py` son las pruebas automáticas (Playwright) que comparan las lecturas con cálculos independientes.
 
 ## Licencia
 
@@ -363,6 +363,6 @@ open(os.path.join(D, "README.md"), "w", encoding="utf-8").write(README)
 def zen(a):
     a = a.replace("Colección de doce exploradores interactivos", "Colección de quince exploradores interactivos y un tutorial de medición")
     if "analogías electromecánicas" not in a:
-        a = a.replace(" Recurso educativo abierto.", " La versión 1.2 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
+        a = a.replace(" Recurso educativo abierto.", " La versión 1.3 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
     return a
 cambia(".zenodo.json", zen)
