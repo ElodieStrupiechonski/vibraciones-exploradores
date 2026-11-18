@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Extracción de parámetros modales · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1120px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:900px){ .wrap{grid-template-columns:1.35fr .9fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .row label{font-weight:700;color:var(--navy);font-size:13.5px;min-width:150px}
+  input[type=range]{flex:1;min-width:160px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:76px;text-align:right;font-size:15px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12.5px;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:9px 11px}
+  .tile .k{font-size:11.5px;color:var(--grey);font-weight:600}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:20px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;font-family:'Cambria Math',Georgia,serif;font-size:15px;color:#233}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:12px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  footer{max-width:1120px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  .eqbox b{color:var(--navy)}
+  .pilarnav{max-width:1120px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  @media(max-width:520px){ .pilarnav{font-size:11.5px} }
+</style>
+<style>
+  .grp{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .grp .t{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .nota{font-size:12px;color:var(--grey);margin:6px 0 0}
+  select,.archivo{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff}
+  .tiles.t3{grid-template-columns:1fr 1fr 1fr} @media(max-width:520px){.tiles.t3{grid-template-columns:1fr 1fr}}
+  .tile .v{font-size:18px} .tile.al .v{color:var(--red)}
+  .two{display:grid;grid-template-columns:1fr;gap:12px} @media(min-width:900px){.two{grid-template-columns:1fr 1fr}}
+  .eqbox{overflow-x:auto} .two>div{min-width:0}
+  .oculto .tile .v,.oculto table.res td,.oculto .resp{filter:blur(7px);user-select:none}
+  .tile .v{overflow-wrap:anywhere}
+  table.tb{border-collapse:collapse;font-size:13px;width:100%} table.tb td,table.tb th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left} table.tb th{color:var(--navy)}
+</style>
+<!-- tema:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
+  :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
+        --accent:#C1571B;--serif:"Spectral",Georgia,serif;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{background:var(--bg);font-family:var(--sans)}
+  header{background:transparent;color:var(--ink,#1a1a1a);border-bottom:1px solid var(--line);padding:22px max(20px,calc(50% - 590px)) 14px}
+  header h1{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.15;color:var(--navy,#1F3864);margin:0}
+  header p{color:var(--muted);opacity:1;font-size:15px;margin:6px 0 0;max-width:80ch}
+  header .hk{display:block;font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .card,.intro{box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .card h2,.card h3{font-family:var(--serif);font-weight:600}
+  .card h2{font-size:17px}
+  .eqbox,.tile{background:var(--ice2);border-color:var(--line)}
+  .btn{background:var(--card)}
+  footer .cred{border-top-color:var(--accent)}
+  footer{color:var(--muted)}
+  @media print{header{border-bottom:1px solid #999}}
+</style>
+<!-- tema:fin -->
+<!-- seo:inicio -->
+<meta name="description" content="Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa.">
+<link rel="canonical" href="https://elodiestrupiechonski.github.io/vibraciones-exploradores/modal_interactivo.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploradores de Vibraciones (UNAM)">
+<meta property="og:title" content="Extracción de parámetros modales">
+<meta property="og:description" content="Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa.">
+<meta property="og:url" content="https://elodiestrupiechonski.github.io/vibraciones-exploradores/modal_interactivo.html">
+<meta property="og:locale" content="es_MX">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Extracción de parámetros modales",
+ "description": "Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa.",
+ "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/modal_interactivo.html",
+ "inLanguage": "es",
+ "isAccessibleForFree": true,
+ "learningResourceType": "simulación interactiva",
+ "educationalLevel": "Licenciatura",
+ "about": [
+  "análisis modal experimental",
+  "función de respuesta en frecuencia",
+  "diagrama de Nyquist"
+ ],
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "identifier": "https://doi.org/10.5281/zenodo.23422993",
+ "author": [
+  {
+   "@type": "Person",
+   "name": "Elodie Strupiechonski",
+   "sameAs": "https://orcid.org/0000-0001-8991-8499"
+  },
+  {
+   "@type": "Person",
+   "name": "Andrés de Luna Bugallo",
+   "sameAs": "https://orcid.org/0000-0002-7591-5235"
+  }
+ ],
+ "provider": {
+  "@type": "CollegeOrUniversity",
+  "name": "Universidad Nacional Autónoma de México, ENES Juriquilla"
+ },
+ "isPartOf": {
+  "@type": "Collection",
+  "name": "Vibraciones: exploradores interactivos",
+  "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
+ }
+}
+</script>
+<!-- seo:fin -->
+<!-- movil:inicio -->
+<style>
+  .card{min-width:0}
+  pre{overflow-x:auto;max-width:100%}
+  .row,.tile,.grp,.two>div{min-width:0}
+  input[type=number],select{max-width:100%;min-width:0}
+  canvas{max-width:100%}
+  @media (max-width:480px){
+    .eqbox{font-size:14px}
+    .row,.row.kbrow{flex-wrap:wrap!important}
+    .row>label{min-width:100%!important;flex:1 1 100%}
+    .row>input[type=range]{flex:1 1 120px;min-height:28px}
+    .tiles.t3{grid-template-columns:1fr 1fr}
+    header h1{font-size:22px}
+  }
+</style>
+<!-- movil:fin -->
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Extracción de parámetros modales</h1>
+    <p><span class="hk">Vibraciones · Pilar 15 · U7</span>Al elegir una banda de la función de respuesta en frecuencia se obtienen la frecuencia natural y el amortiguamiento por tres métodos y se comparan con los valores verdaderos</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="intro full">
+    <b>¿Qué muestra?</b> De un ensayo de impacto o de un barrido se obtiene la <b>función de respuesta en frecuencia</b> (FRF) <i>H</i>(<i>f</i>) = <i>X</i>/<i>F</i>, un número complejo por cada frecuencia medida. Aquí la FRF es sintética (dos modos y ruido de medición), de manera que se conocen los valores verdaderos. Se elige una banda alrededor de un pico y se extraen <i>f</i><sub>n</sub> y ζ por tres métodos: <b>pico y media potencia</b>, <b>ajuste de círculo</b> en el plano de Nyquist y <b>recta de la FRF inversa</b>. La tabla compara cada resultado con el valor verdadero.
+  </div>
+
+  <div class="card">
+    <canvas id="cm" width="760" height="330" aria-label="Magnitud de la FRF con la banda de análisis"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="border-top-color:var(--steel)"></i> |<i>H</i>| medida</span>
+      <span><i class="sw" style="border-top-color:var(--orange);border-top-style:dashed"></i> modelo de 1 GDL con los parámetros del círculo</span>
+      <span><i class="sw" style="border-top-color:var(--green);border-top-style:dashed"></i> <i>f</i><sub>n</sub> verdaderas</span>
+      <span><i class="sw" style="border-top-color:var(--red)"></i> puntos de media potencia</span>
+    </div>
+    <canvas id="cn" width="760" height="330" style="margin-top:10px" aria-label="Diagrama de Nyquist con el círculo ajustado y rectas de la FRF inversa"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>Controles</h2>
+    <div class="grp"><div class="t">Estructura (valores verdaderos)</div>
+      <div class="row"><label>Modo 1: <i>f</i><sub>1</sub></label><input id="f1" type="range" min="5" max="90" step="0.1" value="20"><span class="val" id="vf1">20 Hz</span></div>
+      <div class="row"><label>Modo 1: ζ<sub>1</sub></label><input id="z1" type="range" min="0.002" max="0.2" step="0.001" value="0.02"><span class="val" id="vz1">0.02</span></div>
+      <div class="row"><label>Modo 2: <i>f</i><sub>2</sub></label><input id="f2" type="range" min="5" max="95" step="0.1" value="60"><span class="val" id="vf2">60 Hz</span></div>
+      <div class="row"><label>Modo 2: ζ<sub>2</sub></label><input id="z2" type="range" min="0.002" max="0.2" step="0.001" value="0.01"><span class="val" id="vz2">0.01</span></div>
+      <div class="row"><label>Modo 2: constante modal <i>A</i><sub>2</sub>/<i>A</i><sub>1</sub></label><input id="a2" type="range" min="0" max="3" step="0.05" value="1"><span class="val" id="va2">1</span></div>
+    </div>
+    <div class="grp"><div class="t">Medición</div>
+      <div class="row"><label>Duración del registro <i>T</i></label><input id="T" type="range" min="1" max="100" step="0.5" value="10"><span class="val" id="vT">10 s</span></div>
+      <div class="row"><label>Ruido (% del pico mayor)</label><input id="ns" type="range" min="0" max="10" step="0.1" value="0.5"><span class="val" id="vns">0.5 %</span></div>
+    </div>
+    <div class="grp"><div class="t">Banda de análisis</div>
+      <div class="row"><label>Centro <i>f</i><sub>c</sub></label><input id="fc" type="range" min="5" max="95" step="0.1" value="20"><span class="val" id="vfc">20 Hz</span></div>
+      <div class="row"><label>Semiancho <i>b</i></label><input id="b" type="range" min="0.2" max="20" step="0.1" value="2"><span class="val" id="vb">2 Hz</span></div>
+      <div class="btns"><button class="btn" id="c1">Centrar en el modo 1</button><button class="btn" id="c2">Centrar en el modo 2</button></div>
+    </div>
+    <div class="btns" style="margin-bottom:8px"><button class="btn" id="nr">Nueva realización del ruido</button><button class="btn" id="pra">Ocultar lecturas (modo práctica)</button>
+    </div>
+    <div class="btns">
+      <button class="btn" data-pre="U">Un solo modo</button><button class="btn" data-pre="S">Modos separados</button><button class="btn" data-pre="C">Modos cercanos</button><button class="btn" data-pre="R">Resolución insuficiente</button><button class="btn" data-pre="N">Mucho ruido</button>
+    </div>
+    <div class="tiles t3" style="margin-top:10px">
+      <div class="tile "><div class="k">Resolución Δ<i>f</i> = 1/<i>T</i></div><div class="v" id="odf">…</div></div><div class="tile "><div class="k">Puntos en la banda</div><div class="v" id="onp">…</div></div><div class="tile "><div class="k">Ancho de media potencia 2ζ<i>f</i><sub>n</sub></div><div class="v" id="obw">…</div></div>
+      <div class="tile hl"><div class="k">Puntos dentro de ese ancho</div><div class="v" id="onb">…</div></div><div class="tile "><div class="k">Separación modal / ancho</div><div class="v" id="osep">…</div></div><div class="tile "><div class="k">Diámetro del círculo</div><div class="v" id="odia">…</div></div>
+    </div>
+    <div style="overflow-x:auto;margin-top:10px"><table class="tb res" id="res"></table></div>
+    <div class="nota" id="aviso"></div>
+    <div class="nota"><b>Glosario.</b> Receptancia: desplazamiento por unidad de fuerza. Constante modal <i>A</i><sub>r</sub>: peso de cada modo en la FRF (1/kg). Separación modal / ancho: distancia entre las dos frecuencias naturales dividida entre el mayor ancho de media potencia; por debajo de 2 los picos se traslapan.</div>
+  </div>
+
+  <div class="card full">
+    <h2>Las fórmulas en pantalla</h2>
+    <div class="two"><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">1 · Receptancia de una estructura con dos modos</span><math display="block"><mrow><mi>H</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>ω</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><mfrac><mi>X</mi><mi>F</mi></mfrac><mo>=</mo><munderover><mo largeop="true" movablelimits="false">∑</mo><mrow><mi>r</mi><mo>=</mo><mn>1</mn></mrow><mn>2</mn></munderover><mfrac><msub><mi>A</mi><mi>r</mi></msub><mrow><msubsup><mi>ω</mi><mi>r</mi><mn>2</mn></msubsup><mo>−</mo><msup><mi>ω</mi><mn>2</mn></msup><mo>+</mo><mi>i</mi><mspace width="0.17em"></mspace><mn>2</mn><msub><mi>ζ</mi><mi>r</mi></msub><msub><mi>ω</mi><mi>r</mi></msub><mi>ω</mi></mrow></mfrac></mrow></math><div class="eqnote"><i>A</i><sub>r</sub> es la constante modal (1/kg para un modo normalizado con la masa)</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">2 · Pico y media potencia</span><math display="block"><mrow><msub><mi>f</mi><mi>n</mi></msub><mo>≈</mo><msub><mi>f</mi><mtext>pico</mtext></msub><mo>,</mo><mspace width="2em"></mspace><mi>ζ</mi><mo>≈</mo><mfrac><mrow><msub><mi>f</mi><mi>b</mi></msub><mo>−</mo><msub><mi>f</mi><mi>a</mi></msub></mrow><mrow><mn>2</mn><msub><mi>f</mi><mi>n</mi></msub></mrow></mfrac><mo>,</mo><mspace width="2em"></mspace><mo stretchy="false" lspace="0" rspace="0">|</mo><mi>H</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><msub><mi>f</mi><mi>a</mi></msub><mo stretchy="false" lspace="0" rspace="0">)</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mo>=</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mi>H</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><msub><mi>f</mi><mi>b</mi></msub><mo stretchy="false" lspace="0" rspace="0">)</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mo>=</mo><mfrac><mrow><mo stretchy="false" lspace="0" rspace="0">|</mo><mi>H</mi><msub><mo stretchy="false" lspace="0" rspace="0">|</mo><mi mathvariant="normal" data-fn="1">max</mi></msub></mrow><msqrt><mn>2</mn></msqrt></mfrac></mrow></math><div class="eqnote">válido si ζ ≪ 1 y si hay al menos cuatro o cinco puntos entre <i>f</i><sub>a</sub> y <i>f</i><sub>b</sub></div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">3 · Recta de la FRF inversa (un solo modo)</span><math display="block"><mrow><mfrac><mn>1</mn><mi>H</mi></mfrac><mo>=</mo><mfrac><mrow><msubsup><mi>ω</mi><mi>r</mi><mn>2</mn></msubsup><mo>−</mo><msup><mi>ω</mi><mn>2</mn></msup></mrow><mi>A</mi></mfrac><mo>+</mo><mi>i</mi><mspace width="0.17em"></mspace><mfrac><mrow><mn>2</mn><mi>ζ</mi><msub><mi>ω</mi><mi>r</mi></msub></mrow><mi>A</mi></mfrac><mspace width="0.17em"></mspace><mi>ω</mi></mrow></math><div class="eqnote">la parte real es una recta en ω<sup>2</sup> (pendiente −1/<i>A</i>, cruce por cero en ω<sub>r</sub><sup>2</sup>); la imaginaria es una recta en ω que pasa por el origen. Supone <i>A</i> real (modos normales)</div></div>
+    </div><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">4 · Círculo de Nyquist de un modo</span><math display="block"><mrow><mtext>diámetro</mtext><mo>≈</mo><mfrac><mi>A</mi><mrow><mn>2</mn><mi>ζ</mi><msubsup><mi>ω</mi><mi>r</mi><mn>2</mn></msubsup></mrow></mfrac><mo>,</mo><mspace width="2em"></mspace><mi mathvariant="normal" data-fn="1">tan</mi><mspace width="0.17em"></mspace><mfrac><mi>θ</mi><mn>2</mn></mfrac><mo>≈</mo><mfrac><mrow><msubsup><mi>ω</mi><mi>r</mi><mn>2</mn></msubsup><mo>−</mo><msup><mi>ω</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><mi>ζ</mi><msubsup><mi>ω</mi><mi>r</mi><mn>2</mn></msubsup></mrow></mfrac></mrow></math><div class="eqnote">θ es el ángulo visto desde el centro, medido desde el punto de resonancia; tan(θ/2) es una recta en ω<sup>2</sup>. Con amortiguamiento viscoso la receptancia describe una circunferencia solo de forma aproximada (ζ ≪ 1); es exacta para la movilidad, o para la receptancia con amortiguamiento histerético</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">5 · Ajuste del círculo por mínimos cuadrados</span><math display="block"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><msub><mi>x</mi><mi>c</mi></msub><mspace width="0.17em"></mspace><mi>x</mi><mo>+</mo><mn>2</mn><msub><mi>y</mi><mi>c</mi></msub><mspace width="0.17em"></mspace><mi>y</mi><mo>+</mo><mrow><mo stretchy="true" fence="true">(</mo><msup><mi>R</mi><mn>2</mn></msup><mo>−</mo><msubsup><mi>x</mi><mi>c</mi><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>y</mi><mi>c</mi><mn>2</mn></msubsup><mo stretchy="true" fence="true">)</mo></mrow></mrow></math><div class="eqnote">lineal en las incógnitas <i>x</i><sub>c</sub>, <i>y</i><sub>c</sub> y <i>R</i><sup>2</sup> − <i>x</i><sub>c</sub><sup>2</sup> − <i>y</i><sub>c</sub><sup>2</sup>; el residuo de los demás modos solo desplaza el círculo</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">6 · Resolución necesaria</span><math display="block"><mrow><mi>Δ</mi><mi>f</mi><mo>=</mo><mfrac><mn>1</mn><mi>T</mi></mfrac><mo>≤</mo><mfrac><mrow><mn>2</mn><mi>ζ</mi><msub><mi>f</mi><mi>n</mi></msub></mrow><mn>4</mn></mfrac><mspace width="2em"></mspace><mo>⇒</mo><mspace width="2em"></mspace><mi>T</mi><mo>≥</mo><mfrac><mn>2</mn><mrow><mi>ζ</mi><msub><mi>f</mi><mi>n</mi></msub></mrow></mfrac></mrow></math><div class="eqnote">criterio práctico: al menos cuatro intervalos dentro del ancho de media potencia</div></div>
+    </div></div>
+    <div class="intro" style="margin-top:12px"><b>Lectura para el ensayo.</b> El método de media potencia usa tres puntos de la curva y depende de la resolución y de dónde cae el pico entre dos líneas espectrales; el círculo y la recta usan todos los puntos de la banda y promedian el ruido. La recta de la FRF inversa supone que en la banda solo responde un modo y, como invierte <i>H</i>, amplifica el ruido de los puntos alejados de la resonancia, donde |<i>H</i>| es pequeña. El círculo absorbe la cola de los demás modos como un desplazamiento casi constante, por lo que resiste mejor los modos cercanos. Como criterio práctico, cuando dos modos están a menos de dos anchos de media potencia ningún método de un grado de libertad es fiable y se recurre a un ajuste de varios modos. <b>Hipótesis:</b> sistema lineal, modos reales y FRF muestreada sin fuga (la duración del registro solo fija Δ<i>f</i>); el segundo modo se trata con detalle en el explorador de dos grados de libertad.</div>
+    <div class="takeaway" style="margin-top:10px"><b>Cómo explorar:</b> (1) con «Un solo modo» y la banda en 20 ± 2 Hz los tres métodos recuperan <i>f</i><sub>1</sub> = 20 Hz y ζ<sub>1</sub> = 0.02 con error menor que 1 %. (2) Con «Modos separados» aparece un segundo modo en 60 Hz: su cola es casi constante en la banda y los tres resultados apenas cambian. (3) Con «Modos cercanos» (20 y 23 Hz) la recta de la FRF inversa sobrestima ζ a más del doble, mientras que el círculo se mantiene a unos 5 %. (4) Con «Resolución insuficiente» (<i>T</i> = 2 s, Δ<i>f</i> = 0.5 Hz, <i>f</i><sub>1</sub> = 20.25 Hz, de modo que el pico cae entre dos líneas espectrales) la media potencia sobrestima ζ cerca de 30 %; el círculo y la recta, que usan toda la banda, conservan un error del orden de 1 %. (5) Con «Mucho ruido», al pulsar varias veces «Nueva realización del ruido» la media potencia oscila del orden de ±10 % y el círculo menos de la mitad. (6) Para practicar: «Ocultar lecturas», estimar <i>f</i><sub>n</sub> y ζ sobre la gráfica con los puntos de media potencia y comprobar. Referencias: Ewins, <i>Modal Testing: Theory, Practice and Application</i>, 2.ª ed., Research Studies Press, 2000, caps. 2 y 4; Inman, <i>Engineering Vibration</i>, 4.ª ed., cap. 7; Dobson (1987), «A straight-line technique for extracting modal properties from frequency response data», Mech. Syst. Signal Process. 1(1), 29–40, <a href="https://doi.org/10.1016/0888-3270(87)90081-1">doi:10.1016/0888-3270(87)90081-1</a>.</div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Explorador didáctico de extracción de parámetros modales (media potencia, círculo de Nyquist y FRF inversa) · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.2) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+const NAVY='#1F3864',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',RED='#B23A3A',PURPLE='#6B3FA0';
+const $=id=>document.getElementById(id);
+function lienzo(cv,H){ const c=cv.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1,2), W=cv.clientWidth||760; cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px'; c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H); return {c,W,H}; }
+function pasos(a,b,n){ const d=(b-a)/n, p=Math.pow(10,Math.floor(Math.log10(d))), q=d/p, s=(q<1.5?1:q<3?2:q<7?5:10)*p, o=[]; for(let v=Math.ceil(a/s-1e-9)*s; v<=b+1e-9*s; v+=s) o.push(+v.toPrecision(12)); return o; }
+function num(v){ const a=Math.abs(v); if(v===0) return '0'; if(a>=1e4||a<1e-2){ const e=Math.floor(Math.log10(a)+1e-9), m=+(v/Math.pow(10,e)).toPrecision(2); return (String(m)+'×10^'+e).replace(/-/g,'−'); } return String(+v.toPrecision(3)).replace('-','−'); }
+// notación de ingeniería con prefijo SI
+function ing(v,u){ if(!isFinite(v)) return '∞'; if(!(v>0)) return '0 '+u; const P=[[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ'],[1e-9,'n'],[1e-12,'p']]; for(const [f,p] of P){ if(v>=f*0.9995) return (+(v/f).toPrecision(3))+' '+p+u; } return num(v)+' '+u; }
+// modo práctica: oculta las lecturas hasta que se pulse de nuevo
+function practica(id){ const b=$(id); if(!b) return; b.addEventListener('click',()=>{ const on=document.body.classList.toggle('oculto'); b.classList.toggle('on',on); b.textContent=on?'Mostrar lecturas':'Ocultar lecturas (modo práctica)'; }); }
+// Ejes: o={x0,x1,y0,y1,logx,logy,xl,yl,tit}; devuelve los mapeos X, Y y el rectángulo de trazo
+function ejes(g,box,o){ const c=g.c, mL=box.mL||56, mR=box.mR||14, mT=box.mT||24, mB=box.mB||36, x=box.x||0, y=box.y||0, w=(box.w||g.W)-mL-mR, h=(box.h||g.H)-mT-mB, px=x+mL, py=y+mT;
+  const lx=o.logx, ly=o.logy, ax=lx?Math.log10(o.x0):o.x0, bx=lx?Math.log10(o.x1):o.x1, ay=ly?Math.log10(o.y0):o.y0, by=ly?Math.log10(o.y1):o.y1;
+  const X=v=>px+((lx?Math.log10(Math.max(v,1e-300)):v)-ax)/(bx-ax)*w, Y=v=>py+(1-((ly?Math.log10(Math.max(v,1e-300)):v)-ay)/(by-ay))*h;
+  c.lineWidth=1; c.strokeStyle='#E3E9F3'; c.fillStyle=GREY; c.font='11px Arial';
+  const tx=lx?decadas(o.x0,o.x1):pasos(o.x0,o.x1,o.nx||8), ty=ly?decadas(o.y0,o.y1):pasos(o.y0,o.y1,o.ny||5);
+  c.textAlign='center'; c.textBaseline='top'; tx.forEach(v=>{ c.beginPath(); c.moveTo(X(v),py); c.lineTo(X(v),py+h); c.stroke(); c.fillText(lx?pot(v):num(v),X(v),py+h+5); });
+  c.textAlign='right'; c.textBaseline='middle'; ty.forEach(v=>{ c.beginPath(); c.moveTo(px,Y(v)); c.lineTo(px+w,Y(v)); c.stroke(); c.fillText(ly?pot(v):num(v),px-6,Y(v)); });
+  c.strokeStyle='#9AA7BF'; c.strokeRect(px,py,w,h);
+  c.fillStyle=NAVY; c.textAlign='left'; c.textBaseline='top'; if(o.tit){ let fs=12; do{ c.font='bold '+fs+'px Arial'; fs-=0.5; } while(fs>8.5&&c.measureText(o.tit.replace(/[_^]/g,'')).width>w+mR-2); c.fillText(o.tit,px,y+5); } c.font='bold 12px Arial';
+  c.textAlign='center'; if(o.xl) c.fillText(o.xl,px+w/2,py+h+20);
+  if(o.yl){ c.save(); c.translate(x+12,py+h/2); c.rotate(-Math.PI/2); c.textBaseline='middle'; c.fillText(o.yl,0,0); c.restore(); }
+  return {X,Y,px,py,w,h,c,o}; }
+function pot(v){ const e=Math.round(Math.log10(v)); return (e>=-2&&e<=3)?String(+Math.pow(10,e).toPrecision(1)):'10^'+(e<0?'−'+(-e):e); }
+function decadas(a,b){ const o=[]; for(let e=Math.ceil(Math.log10(a)-1e-9); e<=Math.log10(b)+1e-9; e++) o.push(Math.pow(10,e)); return o; }
+function curva(e,pts,color,lw,dash){ const c=e.c; c.save(); c.beginPath(); c.rect(e.px,e.py,e.w,e.h); c.clip(); c.strokeStyle=color; c.lineWidth=lw||1.6; c.setLineDash(dash||[]); c.beginPath(); let on=false;
+  for(const p of pts){ if(!isFinite(p[1])){ on=false; continue; } const x=e.X(p[0]), y=e.Y(p[1]); on?c.lineTo(x,y):c.moveTo(x,y); on=true; } c.stroke(); c.restore(); }
+function funcion(e,f,color,lw,dash,n){ n=n||Math.round(e.w); const o=e.o, pts=[]; for(let i=0;i<=n;i++){ const u=i/n, x=o.logx?o.x0*Math.pow(o.x1/o.x0,u):o.x0+(o.x1-o.x0)*u; pts.push([x,f(x)]); } curva(e,pts,color,lw,dash); }
+function vline(e,x,color,dash,txt,dy){ const c=e.c; if(x<Math.min(e.o.x0,e.o.x1)||x>Math.max(e.o.x0,e.o.x1)) return; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.X(x),e.py); c.lineTo(e.X(x),e.py+e.h); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; const der=e.X(x)>e.px+e.w-110; c.textAlign=der?'right':'left'; c.textBaseline='top'; c.fillText(txt,e.X(x)+(der?-4:4),e.py+4+(dy||0)); } c.restore(); }
+function hline(e,y,color,dash,txt){ const c=e.c; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.px,e.Y(y)); c.lineTo(e.px+e.w,e.Y(y)); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; c.textAlign='right'; c.textBaseline='bottom'; c.fillText(txt,e.px+e.w-4,e.Y(y)-2); } c.restore(); }
+function punto(e,x,y,color,r){ const c=e.c; c.fillStyle=color; c.strokeStyle='#fff'; c.lineWidth=1.5; c.beginPath(); c.arc(e.X(x),e.Y(y),r||5,0,7); c.fill(); c.stroke(); }
+// Enlaza deslizadores: UN = {id:' unidad'}; llama a cb en cada cambio
+function liga(S,UN,cb){ Object.keys(UN).forEach(id=>$(id).addEventListener('input',ev=>{ S[id]=+ev.target.value; $('v'+id).textContent=(+S[id].toPrecision(6))+UN[id]; cb(); })); }
+function pon(S,UN,o,cb){ Object.keys(o).forEach(k=>{ S[k]=o[k]; if($(k)&&UN[k]!==undefined){ $(k).value=o[k]; $('v'+k).textContent=o[k]+UN[k]; } }); cb(); }
+
+let S={f1:20,z1:0.02,f2:60,z2:0.01,a2:1,T:10,ns:0.5,fc:20,b:2};
+const UN={f1:' Hz',z1:'',f2:' Hz',z2:'',a2:'',T:' s',ns:' %',fc:' Hz',b:' Hz'}, FMAX=100, TP=2*Math.PI;
+function rng(seed){ let a=seed>>>0; return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function Hmodo(f,fr,z,A){ const w=TP*f, wr=TP*fr, dr=wr*wr-w*w, di=2*z*wr*w, d=dr*dr+di*di; return [A*dr/d,-A*di/d]; }
+function Hteo(f){ const a=Hmodo(f,S.f1,S.z1,1), b=Hmodo(f,S.f2,S.z2,S.a2); return [a[0]+b[0],a[1]+b[1]]; }
+let SEM=20261118;
+function medir(){ const df=1/S.T, n=Math.floor(FMAX/df), f=new Float64Array(n), re=new Float64Array(n), im=new Float64Array(n), u=rng(SEM); let mx=0;
+  for(let k=0;k<n;k++){ f[k]=(k+1)*df; const h=Hteo(f[k]); re[k]=h[0]; im[k]=h[1]; mx=Math.max(mx,Math.hypot(h[0],h[1])); }
+  const sg=S.ns/100*mx/Math.SQRT2; for(let k=0;k<n;k++){ const r=Math.sqrt(-2*Math.log(1-u())), t=TP*u(); re[k]+=sg*r*Math.cos(t); im[k]+=sg*r*Math.sin(t); }
+  return {f,re,im,df,n,mx}; }
+function recta(x,y){ const n=x.length; let sx=0,sy=0,sxx=0,sxy=0; for(let i=0;i<n;i++){ sx+=x[i]; sy+=y[i]; sxx+=x[i]*x[i]; sxy+=x[i]*y[i]; } const d=n*sxx-sx*sx, m=(n*sxy-sx*sy)/d; return [m,(sy-m*sx)/n]; }
+function resolver3(M,v){ // eliminación de Gauss 3×3
+  const A=M.map((r,i)=>r.concat(v[i])); for(let i=0;i<3;i++){ let p=i; for(let j=i+1;j<3;j++) if(Math.abs(A[j][i])>Math.abs(A[p][i])) p=j; [A[i],A[p]]=[A[p],A[i]]; for(let j=i+1;j<3;j++){ const q=A[j][i]/A[i][i]; for(let k=i;k<4;k++) A[j][k]-=q*A[i][k]; } }
+  const x=[0,0,0]; for(let i=2;i>=0;i--){ let s=A[i][3]; for(let k=i+1;k<3;k++) s-=A[i][k]*x[k]; x[i]=s/A[i][i]; } return x; }
+function extraer(D){
+  const i0=D.f.findIndex(v=>v>=S.fc-S.b-1e-9); let i1=D.n-1; while(i1>0&&D.f[i1]>S.fc+S.b+1e-9) i1--; const np=i1-i0+1; if(i0<0||np<5) return {np:Math.max(0,np),i0,i1};
+  const f=D.f.subarray(i0,i1+1), re=D.re.subarray(i0,i1+1), im=D.im.subarray(i0,i1+1), m=Array.from(f,(_,i)=>Math.hypot(re[i],im[i]));
+  // --- 1 · pico (parábola en ln|H|) y media potencia (interpolación lineal)
+  let k=0; for(let i=1;i<np;i++) if(m[i]>m[k]) k=i; let fp=f[k], mp=m[k];
+  if(k>0&&k<np-1){ const y0=Math.log(m[k-1]), y1=Math.log(m[k]), y2=Math.log(m[k+1]), d=0.5*(y0-y2)/(y0-2*y1+y2); fp=f[k]+d*D.df; mp=Math.exp(y1-0.25*(y0-y2)*d); }
+  const hp=mp/Math.SQRT2; let i=k, fa=NaN, fb=NaN; while(i>0&&m[i]>hp) i--; if(m[i]<=hp) fa=f[i]+(hp-m[i])/(m[i+1]-m[i])*D.df;
+  i=k; while(i<np-1&&m[i]>hp) i++; if(m[i]<=hp) fb=f[i-1]+(hp-m[i-1])/(m[i]-m[i-1])*D.df;
+  const P={fn:fp,z:(fb-fa)/(2*fp),fa,fb,hp,mp};
+  // --- 2 · recta de la FRF inversa
+  const w=Array.from(f,v=>TP*v), w2=w.map(v=>v*v), gr=[], gi=[]; for(let j=0;j<np;j++){ const d=re[j]*re[j]+im[j]*im[j]; gr.push(re[j]/d); gi.push(-im[j]/d); }
+  let swg=0, sww=0; for(let j=0;j<np;j++){ swg+=w[j]*gi[j]; sww+=w[j]*w[j]; }                 // Im(1/H) = (2ζω_r/A)·ω: recta por el origen
+  const pr=recta(w2,gr), pi=[swg/sww,0], Ai=-1/pr[0], wri=Math.sqrt(pr[1]*Ai), I={fn:wri/TP,z:pi[0]*Ai/(2*wri),A:Ai,pr,pi,w,w2,gr,gi};
+  // --- 3 · círculo por mínimos cuadrados y recta de tan(θ/2) en ω²
+  const N=[[0,0,0],[0,0,0],[0,0,0]], v=[0,0,0]; for(let j=0;j<np;j++){ const r=[re[j],im[j],1], q=re[j]*re[j]+im[j]*im[j]; for(let a=0;a<3;a++){ v[a]+=r[a]*q; for(let b2=0;b2<3;b2++) N[a][b2]+=r[a]*r[b2]; } }
+  const s=resolver3(N,v), xc=s[0]/2, yc=s[1]/2, R=Math.sqrt(s[2]+xc*xc+yc*yc), xx=[], yy=[];
+  for(let j=0;j<np;j++){ const th=Math.atan2(re[j]-xc,-(im[j]-yc)); if(Math.abs(th)<2.2){ xx.push(w2[j]); yy.push(Math.tan(th/2)); } }
+  let C={xc,yc,R,fn:NaN,z:NaN,A:NaN}; if(xx.length>=3){ const pt=recta(xx,yy), wr2=-pt[1]/pt[0], zc=-1/(2*wr2*pt[0]); C={xc,yc,R,fn:Math.sqrt(wr2)/TP,z:zc,A:2*R*2*zc*wr2}; }
+  return {np,i0,i1,f,re,im,m,P,I,C};
+}
+let D=null, E=null;
+function verdad(){ return Math.abs(S.fc-S.f1)<=Math.abs(S.fc-S.f2)||S.a2===0 ? {fn:S.f1,z:S.z1,n:1} : {fn:S.f2,z:S.z2,n:2}; }
+function dibujar(){
+  D=medir(); E=extraer(D); const V=verdad();
+  // ---------- magnitud
+  let g=lienzo($('cm'),330), mn=Infinity; for(let k=0;k<D.n;k++){ mn=Math.min(mn,Math.hypot(D.re[k],D.im[k])); }
+  const y1=Math.pow(10,Math.ceil(Math.log10(D.mx)+0.1)), y0=Math.max(y1*1e-5,Math.pow(10,Math.floor(Math.log10(Math.max(mn,1e-12)))));
+  let e=ejes(g,{},{x0:0,x1:FMAX,y0,y1,logy:true,xl:'f (Hz)',yl:'|H| (m/N)',tit:'Magnitud de la FRF  ·  Δf = '+(+D.df.toPrecision(3))+' Hz  ·  banda de análisis sombreada',nx:10}), c=g.c;
+  c.fillStyle='rgba(197,90,17,.10)'; c.fillRect(e.X(Math.max(0,S.fc-S.b)),e.py,e.X(Math.min(FMAX,S.fc+S.b))-e.X(Math.max(0,S.fc-S.b)),e.h);
+  vline(e,S.f1,GREEN,[5,4],'f_1'); if(S.a2>0) vline(e,S.f2,GREEN,[5,4],'f_2');
+  const pts=[]; for(let k=0;k<D.n;k++) pts.push([D.f[k],Math.hypot(D.re[k],D.im[k])]); curva(e,pts,STEEL,1.5);
+  if(E.C&&isFinite(E.C.fn)&&E.C.z>0){ const C=E.C, p2=[]; for(let x=Math.max(0.1,S.fc-S.b);x<=S.fc+S.b;x+=S.b/60){ const h=Hmodo(x,C.fn,C.z,C.A); p2.push([x,Math.hypot(h[0],h[1])]); } curva(e,p2,ORANGE,2,[6,4]); }
+  if(E.P&&isFinite(E.P.fa)&&isFinite(E.P.fb)){ punto(e,E.P.fa,E.P.hp,RED,4); punto(e,E.P.fb,E.P.hp,RED,4); }
+  // ---------- Nyquist (izquierda) y rectas de la FRF inversa (derecha)
+  const ang=($('cn').clientWidth||760)<560; g=lienzo($('cn'),ang?640:330); c=g.c; const half=ang?g.W:g.W/2, bN=ang?{x:0,w:g.W,y:0,h:330}:{x:0,w:half,h:330}, bI=ang?{x:0,w:g.W,y:330,h:310}:{x:half,w:half,h:330};
+  if(E.np>=5){
+    const hN=330-24-36, wN=half-56-14, asp=wN/hN, rr=1.3*E.C.R/Math.min(1,asp);
+    e=ejes(g,bN,{x0:E.C.xc-rr*asp,x1:E.C.xc+rr*asp,y0:E.C.yc-rr,y1:E.C.yc+rr,xl:'Re H (m/N)',yl:'Im H (m/N)',tit:'Nyquist en la banda y círculo ajustado',nx:4,ny:5});
+    c.save(); c.beginPath(); c.rect(e.px,e.py,e.w,e.h); c.clip(); c.strokeStyle=ORANGE; c.lineWidth=1.6; c.setLineDash([6,4]); c.beginPath();
+    for(let a=0;a<=360;a+=3){ const x=e.X(E.C.xc+E.C.R*Math.cos(a*Math.PI/180)), y=e.Y(E.C.yc+E.C.R*Math.sin(a*Math.PI/180)); a?c.lineTo(x,y):c.moveTo(x,y); } c.stroke(); c.setLineDash([]); c.restore();
+    for(let j=0;j<E.np;j++){ c.fillStyle=STEEL; c.beginPath(); c.arc(e.X(E.re[j]),e.Y(E.im[j]),2.6,0,7); c.fill(); }
+    punto(e,E.C.xc,E.C.yc,ORANGE,3.5);
+    // rectas: parte real de 1/H contra ω² (normalizada) e imaginaria contra ω
+    const I=E.I, sc=1/Math.max(...I.gr.map(Math.abs),...I.gi.map(Math.abs)), fa=E.f[0], fb=E.f[E.np-1];
+    const e2=ejes(g,bI,{x0:fa,x1:fb,y0:-1.1,y1:1.1,xl:'f (Hz)',yl:'1/H (normalizada)',tit:'FRF inversa: Re (azul) e Im (naranja)',nx:5,ny:4});
+    hline(e2,0,GREY,[2,3]);
+    for(let j=0;j<E.np;j++){ c.fillStyle=STEEL; c.beginPath(); c.arc(e2.X(E.f[j]),e2.Y(I.gr[j]*sc),2.4,0,7); c.fill(); c.fillStyle=ORANGE; c.beginPath(); c.arc(e2.X(E.f[j]),e2.Y(I.gi[j]*sc),2.4,0,7); c.fill(); }
+    funcion(e2,x=>(I.pr[0]*Math.pow(TP*x,2)+I.pr[1])*sc,STEEL,1.4); funcion(e2,x=>I.pi[0]*TP*x*sc,ORANGE,1.4);
+    if(isFinite(I.fn)) vline(e2,I.fn,GREEN,[5,4],'Re = 0: f_n');
+  } else { c.fillStyle=GREY; c.font='13px Arial'; c.textAlign='center'; c.fillText('La banda contiene menos de cinco puntos: ampliar el semiancho o la duración del registro.',g.W/2,160); }
+  // ---------- lecturas
+  const bw=2*V.z*V.fn, sep=S.a2>0?Math.abs(S.f2-S.f1)/Math.max(2*S.z1*S.f1,2*S.z2*S.f2):Infinity;
+  $('odf').textContent=(+D.df.toPrecision(4))+' Hz'; $('onp').textContent=E.np; $('obw').textContent=bw.toPrecision(3)+' Hz'; $('onb').textContent=(bw/D.df).toFixed(1); $('onb').parentNode.classList.toggle('al',bw/D.df<4);
+  $('osep').textContent=isFinite(sep)?sep.toFixed(1):'un solo modo'; $('odia').textContent=E.np>=5?num(2*E.C.R)+' m/N':'…';
+  const pc=(a,b)=>isFinite(a)&&a>0?((a-b)/b*100).toFixed(1).replace('-','−')+' %':'…', fx=(v,n)=>isFinite(v)&&v>0?v.toFixed(n):'…';
+  const filas=[['Método','f_n (Hz)','ζ','Error en f_n','Error en ζ'],['Valor verdadero (modo '+V.n+')',V.fn.toFixed(3),V.z.toFixed(4),'',''] ];
+  if(E.np>=5){ [['Pico y media potencia',E.P],['Círculo de Nyquist',E.C],['Recta de la FRF inversa',E.I]].forEach(([n,r])=>filas.push([n,fx(r.fn,3),fx(r.z,4),pc(r.fn,V.fn),pc(r.z,V.z)])); }
+  $('res').innerHTML=filas.map((r,i)=>'<tr>'+r.map(()=>i?'<td></td>':'<th></th>').join('')+'</tr>').join(''); [...$('res').rows].forEach((tr,i)=>[...tr.cells].forEach((td,j)=>td.textContent=filas[i][j]));
+  const av=[]; if(E.np<5) av.push('La banda contiene menos de cinco puntos: ampliar el semiancho o la duración del registro.');
+  if(Math.abs(S.fc-V.fn)>S.b) av.push('La banda no contiene ninguna frecuencia natural: los resultados no tienen significado. Centrar la banda en un pico.');
+  if(E.np>=5&&[E.P,E.C,E.I].some(r=>!(r.z>0))) av.push('Algún método no produjo un amortiguamiento positivo; se muestra «…».');
+  if(bw/D.df<4) av.push('Hay menos de cuatro puntos dentro del ancho de media potencia: conviene un registro de al menos '+(2/(V.z*V.fn)).toFixed(1)+' s.');
+  if(sep<2) av.push('Los modos están a menos de dos anchos de media potencia: los métodos de un grado de libertad no son fiables.');
+  if(E.np>=5&&!(isFinite(E.P.fa)&&isFinite(E.P.fb))) av.push('La banda no contiene los dos puntos de media potencia: ampliar el semiancho.');
+  $('aviso').textContent=av.join(' ');
+}
+liga(S,UN,dibujar); practica('pra');
+$('nr').onclick=()=>{ SEM=(SEM*1103515245+12345)>>>0; dibujar(); };
+$('c1').onclick=()=>pon(S,UN,{fc:S.f1,b:+Math.max(0.2,Math.min(20,5*S.z1*S.f1)).toFixed(1)},dibujar);
+$('c2').onclick=()=>pon(S,UN,{fc:S.f2,b:+Math.max(0.2,Math.min(20,5*S.z2*S.f2)).toFixed(1)},dibujar);
+const PRE={U:{f1:20,z1:0.02,f2:60,z2:0.01,a2:0,T:10,ns:0.5,fc:20,b:2}, S:{f1:20,z1:0.02,f2:60,z2:0.01,a2:1,T:10,ns:0.5,fc:20,b:2}, C:{f1:20,z1:0.02,f2:23,z2:0.02,a2:1,T:20,ns:0.5,fc:20,b:1.5}, R:{f1:20.25,z1:0.02,f2:60,z2:0.01,a2:1,T:2,ns:0.5,fc:20.25,b:3}, N:{f1:20,z1:0.02,f2:60,z2:0.01,a2:1,T:10,ns:5,fc:20,b:2}};
+document.querySelectorAll('[data-pre]').forEach(b=>b.addEventListener('click',()=>pon(S,UN,PRE[b.dataset.pre],dibujar)));
+window.addEventListener('resize',dibujar);
+window.__mod={S,medir,extraer,Hteo,res:()=>E};
+dibujar();
+
+</script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ n.classList.add('kbmal'); n.value=limpio(actual(),6).replace('-','−'); setTimeout(function(){ n.classList.remove('kbmal'); },900); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
+<!-- contador:inicio -->
+<style>
+  .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
+  .visitas span{display:inline-block;background:#fff;border:1px solid #D3DEEE;border-radius:20px;padding:3px 11px}
+  .visitas b{color:#1F3864;font-weight:700}
+  .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
+</style>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
+<script>
+(function(){
+  if(location.protocol!=='http:' && location.protocol!=='https:') return;   // copia local: sin contador ni peticiones
+  var sc=document.createElement('script'); sc.async=true;
+  sc.setAttribute('data-goatcounter','https://elodiestrupiechonski.goatcounter.com/count');
+  sc.src='https://gc.zgo.at/count.js'; document.head.appendChild(sc);
+  var base='https://elodiestrupiechonski.goatcounter.com/counter/';
+  function pide(path){
+    return fetch(base+encodeURIComponent(path).replace(/%2F/g,'/')+'.json',{cache:'no-cache'})
+      .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+  }
+  var p=location.pathname;
+  if(/\/index\.html$/.test(p)) p=p.replace(/index\.html$/,'');
+  Promise.all([pide(p), pide('TOTAL')]).then(function(res){
+    var a=res[0], b=res[1];
+    if(!a && !b) return;
+    document.getElementById('vis-pag').textContent = a ? a.count : '–';
+    document.getElementById('vis-tot').textContent = b ? b.count : '–';
+    document.getElementById('visitas').style.display='block';
+  });
+})();
+</script>
+<!-- contador:fin -->
+<!-- navegacion:inicio -->
+<style>
+  :root{--nv-w:272px}
+  body{margin-top:0!important}
+  @media (min-width:1360px){ body{margin-left:var(--nv-w)!important} }
+  .nvside{position:fixed;top:0;left:0;bottom:0;width:var(--nv-w);z-index:9999;display:flex;flex-direction:column;
+    background:var(--card,#fff);border-right:1px solid var(--line,#e2dcc9);
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:14px;color:var(--ink,#1a1a1a);
+    box-shadow:1px 0 8px rgba(0,0,0,.05);transition:transform .2s ease}
+  .nvside a{text-decoration:none;color:inherit}
+  .nv-cab{padding:14px 16px 10px;border-bottom:1px solid var(--line,#e2dcc9);position:relative}
+  .nv-marca{display:block;font-family:"Century Gothic","Questrial",Arial,sans-serif;font-weight:700;font-size:15px;
+    line-height:1.25;color:var(--navy,var(--ink,#1F3864))}
+  .nv-marca small{display:block;font-weight:400;font-size:12px;color:var(--muted,var(--grey,#5a5a5a));margin-top:2px}
+  .nv-pasos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+  .nv-paso{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font-size:11px;color:var(--muted,var(--grey,#5a5a5a));min-width:0}
+  .nv-paso b{font-size:12.5px;color:var(--ink,#1a1a1a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nv-paso.sig{text-align:right}
+  .nv-paso:hover{background:var(--bg,#f4f1ea)}
+  .nv-paso[aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-busca{margin-top:8px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font:inherit;background:var(--bg,#f8f6f0);color:inherit}
+  .nv-lista{flex:1;overflow-y:auto;padding:6px 8px 10px}
+  .nv-grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,var(--grey,#5a5a5a));padding:12px 8px 4px}
+  .nv-lista a{display:block;padding:6px 8px 6px 10px;border-radius:6px;border-left:3px solid transparent;line-height:1.3}
+  .nv-lista a small{display:block;font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-lista a:hover{background:var(--bg,#f4f1ea)}
+  .nv-lista a.nv-aqui{background:var(--bg,#f4f1ea);border-left-color:var(--accent,var(--orange,#C1571B));font-weight:700}
+  .nv-nada{padding:10px;font-size:12.5px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-pie{padding:8px 14px;border-top:1px solid var(--line,#e2dcc9);font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-boton{display:none;position:fixed;top:10px;left:10px;z-index:10000;gap:6px}
+  .nv-boton a,.nv-boton button{display:flex;align-items:center;justify-content:center;height:38px;min-width:38px;padding:0 10px;
+    border:1px solid var(--line,#e2dcc9);border-radius:9px;background:var(--card,#fff);color:var(--ink,#1a1a1a);
+    font:600 14px Arial,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .nv-boton [aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-velo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10001}
+  .nv-cierra{display:none;position:absolute;top:10px;right:10px;width:32px;height:32px;border:1px solid var(--line,#e2dcc9);border-radius:8px;background:var(--card,#fff);color:inherit;font-size:16px;cursor:pointer}
+  @media (max-width:1359px){
+    body{margin-top:56px!important}
+    .nvside{transform:translateX(-102%);width:min(320px,88vw)}
+    .nvside.abierto{transform:none;z-index:10002}
+    .nv-cierra{display:block}
+    .nv-pie{display:none}
+    .nv-boton{display:flex}
+    .nvside.abierto ~ .nv-velo{display:block}
+  }
+  @media print{.nvside,.nv-boton,.nv-velo{display:none} body{margin:0!important}}
+</style>
+<nav class="nvside" id="nvside" aria-label="Exploradores del curso">
+  <div class="nv-cab">
+    <button class="nv-cierra" id="nv-cierra" aria-label="Cerrar el temario">✕</button>
+    <a class="nv-marca" href="index.html">Exploradores de Vibraciones<small>ENES Juriquilla, UNAM · inicio</small></a>
+    <div class="nv-pasos">
+      <a class="nv-paso" id="nv-ant" href="#" aria-label="Explorador anterior">‹ anterior<b id="nv-ant-t">…</b></a>
+      <a class="nv-paso sig" id="nv-sig" href="#" aria-label="Explorador siguiente">siguiente ›<b id="nv-sig-t">…</b></a>
+    </div>
+    <input class="nv-busca" id="nv-busca" type="search" placeholder="Buscar (tecla /)" aria-label="Buscar explorador">
+  </div>
+  <div class="nv-lista" id="nv-lista">
+<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
+<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html" data-k="segunda ley de Newton frecuencia natural Frecuencia natural ωn = √(k/m) Energía T ↔ V, resorte equivalente Péndulo y acelerómetro (masa sísmica)">Dinámica de la partícula<small>Pilar 3 · armar la ecuación</small></a>
+<a href="edo_interactivo.html" data-nv="edo_interactivo.html" data-k="ecuaciones diferenciales de segundo orden amortiguamiento Subamortiguado, crítico, sobreamortiguado Inestable = flameo (frontera Re = 0) Respuesta x(t) con condiciones iniciales">EDO lineal de 2.º orden<small>Pilar 2 · resolverla</small></a>
+<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html" data-k="números complejos fasores Formas binómica, polar y de Euler Raíces cuadradas y ecuación auxiliar Fasor: excitación vs. respuesta (desfase θ)">Números complejos<small>Pilar 1 · interpretar las raíces</small></a>
+<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador</div>
+<a href="analogias_interactivo.html" data-nv="analogias_interactivo.html" data-k="analogía electromecánica circuito RLC sistemas de segundo orden Analogías fuerza-tensión y fuerza-corriente Escala de impedancia: ω_n y ζ no cambian Chapoteo, paneles y control de actitud">Analogías entre sistemas<small>2.1 y 2.4 · Pilar 14</small></a>
+<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html" data-k="fricción de Coulomb vibración libre Banda de reposo = Ff/k Caída de amplitud 4Ff/k por ciclo Conteo de ciclos hasta detenerse">Fricción de Coulomb<small>2.3 (fricción seca) · Pilar 4</small></a>
+<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia</div>
+<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html" data-k="respuesta forzada resonancia M = 1/√[(1−r²)²+(2ζr)²] Fase φ y resonancia (r ≈ 1) Aislamiento: aísla si r &gt; √2">Respuesta forzada y resonancia<small>3.1 · Pilar 5</small></a>
+<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html" data-k="método de media potencia factor de calidad Q = 1/(2ζ) = fn/Δf ζ medido = Δf/(2fn) Origen de la asimetría de la curva">Media potencia y factor Q<small>3.1–3.2 · Pilar 6</small></a>
+<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales</div>
+<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html" data-k="vibración aleatoria densidad espectral de potencia ecuación de Miles Grms = √(∫W df) y carga de diseño 3σ Miles: √[(π/2)·fn·Q·W(fn)] Escalas en dB (−3, +3, +6) y por qué log">Del espectro a la carga de diseño<small>4.1–4.2 · Pilar 7</small></a>
+<a href="normas.html" data-nv="normas.html" data-k="normas de ensayo GEVS ECSS MIL-STD-810H, GEVS y ECSS: descarga gratuita DO-160 e ISO: de pago, con vista previa Enlaces que se actualizan desde un solo archivo">Dónde consultar las normas<small>4.1 y 4.3 · apoyo</small></a>
+<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos</div>
+<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html" data-k="círculo de Mohr criterios de falla σ1, σ2, θp y τmáx en vivo Roseta de galgas 0/45/90 → estado de esfuerzo Tres círculos, von Mises y Tresca">Círculo de Mohr<small>5.3 · Pilar 8</small></a>
+<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html" data-k="fatiga regla de Miner Acero con límite, aluminio sin él Esfuerzo medio y concentrador Kf Miner: cuánta vida consume el ensayo">Fatiga: S–N, Haigh y Miner<small>5.4 · Pilar 9</small></a>
+<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento</div>
+<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html" data-k="nivel de presión sonora bandas de octava exposición al ruido Suma energética y ponderación A −6 dB por duplicar la distancia T = 8·2^((90−LA)/3) h">Niveles sonoros y exposición al ruido<small>6.1, 6.2 y 6.4 · Pilar 10</small></a>
+<a href="transmisibilidad_interactivo.html" data-nv="transmisibilidad_interactivo.html" data-k="transmisibilidad aislamiento de vibraciones desbalance rotatorio T_r = 1 en r = √2 para todo ζ Deflexión estática: δ_st = g/ω_n^2 Desbalance rotatorio: F_0 = m_0 e ω^2">Transmisibilidad y aislamiento<small>6.3 · Pilar 13</small></a>
+<div class="nv-grp">Unidad 7 · Pruebas</div>
+<a href="tutorial_phyphox.html" data-nv="tutorial_phyphox.html" data-k="Phyphox acelerómetro del teléfono decremento logarítmico Jupyter Descarga de Phyphox, cuaderno y datos de ejemplo Colab o Visual Studio Code, paso a paso Envolvente de Hilbert y decremento logarítmico">Tutorial: medir con Phyphox y analizar en Python<small>7.1 · Tutorial</small></a>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html" data-k="muestreo aliasing método de Welch Aliasing: f_a = |f − k·f_s| Δf = 1/T_seg y ε_r ≈ 1/√n_d G_rms como área de la PSD (Parseval)">Laboratorio de señales<small>7.1–7.2 · Pilar 11</small></a>
+<a href="modal_interactivo.html" data-nv="modal_interactivo.html" data-k="análisis modal experimental función de respuesta en frecuencia diagrama de Nyquist Media potencia: ζ = (f_b − f_a)/(2 f_n) Círculo de Nyquist por mínimos cuadrados Resolución necesaria: T ≥ 2/(ζ f_n)">Extracción de parámetros modales<small>7.3 · Pilar 15</small></a>
+<div class="nv-grp">Unidad 8 · Sistemas acoplados</div>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html" data-k="dos grados de libertad absorbedor dinámico Valores propios: ω_1, ω_2 y formas modales Absorbedor dinámico y óptimo de Den Hartog Separación de frecuencias equipo–estructura">Dos grados de libertad y absorbedor<small>8.1–8.3 · Pilar 12</small></a>
+<div class="nv-nada" id="nv-nada" style="display:none">Sin coincidencias. Se busca en títulos, temas y palabras clave.</div>
+  </div>
+  <div class="nv-pie">Teclas (fuera de los controles): ← anterior · → siguiente · / buscar · Esc cerrar</div>
+</nav>
+<div class="nv-boton"><button id="nv-abre" aria-controls="nvside" aria-expanded="false">☰ Temario</button>
+  <a id="nv-ant2" href="#" aria-label="Anterior">‹</a><a id="nv-sig2" href="#" aria-label="Siguiente">›</a></div>
+<div class="nv-velo" id="nv-velo"></div>
+<script>
+(function(){
+  var lista=document.getElementById('nv-lista'), side=document.getElementById('nvside');
+  var l=lista.querySelectorAll('a[data-nv]'), orden=[], dat={};
+  for(var i=0;i<l.length;i++){var f=l[i].getAttribute('data-nv');orden.push(f);
+    dat[f]={el:l[i],t:l[i].childNodes[0].textContent.trim()};}
+  var aqui=(location.pathname.split('/').pop()||'index.html'), k=orden.indexOf(aqui);
+  function paso(idA,idT,j){var a=document.getElementById(idA);
+    if(j<0||j>=orden.length){a.setAttribute('aria-disabled','true');a.setAttribute('tabindex','-1');if(idT)document.getElementById(idT).textContent='';return;}
+    a.href=orden[j];a.title=dat[orden[j]].t+(j<k?' (tecla ←)':' (tecla →)');if(idT)document.getElementById(idT).textContent=dat[orden[j]].t;}
+  if(k>=0){dat[aqui].el.className='nv-aqui';dat[aqui].el.setAttribute('aria-current','page');
+    paso('nv-ant','nv-ant-t',k-1);paso('nv-sig','nv-sig-t',k+1);paso('nv-ant2',null,k-1);paso('nv-sig2',null,k+1);
+    setTimeout(function(){var r=dat[aqui].el;lista.scrollTop=r.offsetTop-lista.clientHeight/3;},0);}
+  else{paso('nv-ant','nv-ant-t',-1);paso('nv-sig','nv-sig-t',0);paso('nv-ant2',null,-1);paso('nv-sig2',null,0);}
+  var bus=document.getElementById('nv-busca');
+  function llano(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  bus.addEventListener('input',function(){var q=llano(bus.value), grp=null, vis=0, tot=0;
+    Array.prototype.forEach.call(lista.children,function(c){
+      if(c.classList.contains('nv-grp')){if(grp)grp.style.display=vis?'':'none';grp=c;vis=0;return;}
+      if(!c.getAttribute('data-nv')) return;
+      var ok=!q||llano(c.textContent+' '+(c.getAttribute('data-k')||'')).indexOf(q)>=0;c.style.display=ok?'':'none';if(ok){vis++;tot++;}});
+    if(grp)grp.style.display=vis?'':'none';
+    document.getElementById('nv-nada').style.display=tot?'none':'block';});
+  bus.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){var v=lista.querySelector('a[data-nv]:not([style*="none"])');if(v)location.href=v.href;}
+    if(e.key==='Escape'){bus.value='';bus.dispatchEvent(new Event('input'));bus.blur();cambia(false);}});
+  var abre=document.getElementById('nv-abre'), velo=document.getElementById('nv-velo');
+  function cambia(on){side.classList.toggle('abierto',on);abre.setAttribute('aria-expanded',on?'true':'false');}
+  abre.addEventListener('click',function(){cambia(!side.classList.contains('abierto'));});
+  velo.addEventListener('click',function(){cambia(false);});
+  document.getElementById('nv-cierra').addEventListener('click',function(){cambia(false);});
+  document.addEventListener('keydown',function(e){
+    var t=(e.target.tagName||'').toUpperCase();
+    if(e.key==='Escape'){cambia(false);return;}
+    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||t==='BUTTON'||t==='A'||t==='SUMMARY'||e.target.isContentEditable||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey) return;
+    if(e.key==='/'){e.preventDefault();if(innerWidth<1360)cambia(true);bus.focus();return;}
+    if(k<0) return;
+    if(e.key==='ArrowLeft'&&k>0) location.href=orden[k-1];
+    if(e.key==='ArrowRight'&&k<orden.length-1) location.href=orden[k+1];
+  });
+})();
+</script>
+<!-- navegacion:fin -->
+</body>
+</html>

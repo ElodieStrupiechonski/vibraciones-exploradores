@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Tutorial: medir con Phyphox y analizar en Python · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1120px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:900px){ .wrap{grid-template-columns:1.35fr .9fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .row label{font-weight:700;color:var(--navy);font-size:13.5px;min-width:150px}
+  input[type=range]{flex:1;min-width:160px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:76px;text-align:right;font-size:15px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12.5px;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:9px 11px}
+  .tile .k{font-size:11.5px;color:var(--grey);font-weight:600}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:20px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;font-family:'Cambria Math',Georgia,serif;font-size:15px;color:#233}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:12px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  footer{max-width:1120px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  .eqbox b{color:var(--navy)}
+  .pilarnav{max-width:1120px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  @media(max-width:520px){ .pilarnav{font-size:11.5px} }
+</style>
+<style>
+  .grp{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .grp .t{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .nota{font-size:12px;color:var(--grey);margin:6px 0 0}
+  select,.archivo{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff}
+  .tiles.t3{grid-template-columns:1fr 1fr 1fr} @media(max-width:520px){.tiles.t3{grid-template-columns:1fr 1fr}}
+  .tile .v{font-size:18px} .tile.al .v{color:var(--red)}
+  .two{display:grid;grid-template-columns:1fr;gap:12px} @media(min-width:900px){.two{grid-template-columns:1fr 1fr}}
+  .eqbox{overflow-x:auto} .two>div{min-width:0}
+  .oculto .tile .v,.oculto table.res td,.oculto .resp{filter:blur(7px);user-select:none}
+  .tile .v{overflow-wrap:anywhere}
+  table.tb{border-collapse:collapse;font-size:13px;width:100%} table.tb td,table.tb th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left} table.tb th{color:var(--navy)}
+</style><style>
+  .paso h2{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .np{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:15px;flex:none}
+  .hecho{margin-left:auto;font-size:12.5px;font-weight:400;color:var(--grey);display:flex;align-items:center;gap:7px;cursor:pointer;min-height:32px;padding:0 4px}
+  .hecho input{width:20px;height:20px}
+  .paso.ok .np{background:var(--green)}
+  .paso ol,.paso ul{margin:8px 0 8px 0;padding-left:22px;line-height:1.55;font-size:14.5px} .paso li{margin-bottom:5px}
+  .paso p{font-size:14.5px;line-height:1.55;margin:8px 0}
+  a.btn.dl{display:inline-block;text-decoration:none}
+  .prog{height:6px;background:var(--line);border-radius:3px;margin:12px 0 8px;overflow:hidden} #barra{height:100%;width:0;background:var(--green);transition:width .2s}
+  .indice{display:flex;flex-wrap:wrap;gap:6px} .indice a{font-size:12.5px;text-decoration:none;color:var(--navy);border:1px solid var(--line);border-radius:14px;padding:3px 10px;background:#fff}
+  .indice a.ok{border-color:var(--green);color:var(--green)}
+  code,pre.cod{font-family:Consolas,"Courier New",monospace;font-size:13px;background:#F3F5FA;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  pre.cod{padding:8px 10px;overflow-x:auto;margin:6px 0;white-space:pre}
+  @media(min-width:900px){.two.an{grid-template-columns:1.25fr 1fr}}
+</style>
+<!-- tema:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
+  :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
+        --accent:#C1571B;--serif:"Spectral",Georgia,serif;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{background:var(--bg);font-family:var(--sans)}
+  header{background:transparent;color:var(--ink,#1a1a1a);border-bottom:1px solid var(--line);padding:22px max(20px,calc(50% - 590px)) 14px}
+  header h1{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.15;color:var(--navy,#1F3864);margin:0}
+  header p{color:var(--muted);opacity:1;font-size:15px;margin:6px 0 0;max-width:80ch}
+  header .hk{display:block;font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .card,.intro{box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .card h2,.card h3{font-family:var(--serif);font-weight:600}
+  .card h2{font-size:17px}
+  .eqbox,.tile{background:var(--ice2);border-color:var(--line)}
+  .btn{background:var(--card)}
+  footer .cred{border-top-color:var(--accent)}
+  footer{color:var(--muted)}
+  @media print{header{border-bottom:1px solid #999}}
+</style>
+<!-- tema:fin -->
+<!-- seo:inicio -->
+<meta name="description" content="Ligas para instalar Phyphox y descargar el cuaderno de Jupyter, instrucciones para Colab y Visual Studio Code, y un analizador que reproduce el tratamiento del decaimiento.">
+<link rel="canonical" href="https://elodiestrupiechonski.github.io/vibraciones-exploradores/tutorial_phyphox.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploradores de Vibraciones (UNAM)">
+<meta property="og:title" content="Tutorial: medir con Phyphox y analizar en Python">
+<meta property="og:description" content="Ligas para instalar Phyphox y descargar el cuaderno de Jupyter, instrucciones para Colab y Visual Studio Code, y un analizador que reproduce el tratamiento del decaimiento.">
+<meta property="og:url" content="https://elodiestrupiechonski.github.io/vibraciones-exploradores/tutorial_phyphox.html">
+<meta property="og:locale" content="es_MX">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Tutorial: medir con Phyphox y analizar en Python",
+ "description": "Ligas para instalar Phyphox y descargar el cuaderno de Jupyter, instrucciones para Colab y Visual Studio Code, y un analizador que reproduce el tratamiento del decaimiento.",
+ "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/tutorial_phyphox.html",
+ "inLanguage": "es",
+ "isAccessibleForFree": true,
+ "learningResourceType": "simulación interactiva",
+ "educationalLevel": "Licenciatura",
+ "about": [
+  "Phyphox",
+  "acelerómetro del teléfono",
+  "decremento logarítmico",
+  "Jupyter"
+ ],
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "identifier": "https://doi.org/10.5281/zenodo.23422993",
+ "author": [
+  {
+   "@type": "Person",
+   "name": "Elodie Strupiechonski",
+   "sameAs": "https://orcid.org/0000-0001-8991-8499"
+  },
+  {
+   "@type": "Person",
+   "name": "Andrés de Luna Bugallo",
+   "sameAs": "https://orcid.org/0000-0002-7591-5235"
+  }
+ ],
+ "provider": {
+  "@type": "CollegeOrUniversity",
+  "name": "Universidad Nacional Autónoma de México, ENES Juriquilla"
+ },
+ "isPartOf": {
+  "@type": "Collection",
+  "name": "Vibraciones: exploradores interactivos",
+  "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
+ }
+}
+</script>
+<!-- seo:fin -->
+<!-- movil:inicio -->
+<style>
+  .card{min-width:0}
+  pre{overflow-x:auto;max-width:100%}
+  .row,.tile,.grp,.two>div{min-width:0}
+  input[type=number],select{max-width:100%;min-width:0}
+  canvas{max-width:100%}
+  @media (max-width:480px){
+    .eqbox{font-size:14px}
+    .row,.row.kbrow{flex-wrap:wrap!important}
+    .row>label{min-width:100%!important;flex:1 1 100%}
+    .row>input[type=range]{flex:1 1 120px;min-height:28px}
+    .tiles.t3{grid-template-columns:1fr 1fr}
+    header h1{font-size:22px}
+  }
+</style>
+<!-- movil:fin -->
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Tutorial: medir con Phyphox y analizar en Python</h1>
+    <p><span class="hk">Vibraciones · Tutorial · U7</span>Del teléfono a la frecuencia natural y al amortiguamiento en siete pasos: instalar Phyphox, medir un decaimiento libre, exportar, abrir el cuaderno en Colab o en Visual Studio Code y comprobar el resultado</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="intro full">
+    <b>¿Para qué sirve este tutorial?</b> Con un teléfono y una regla, una hoja de segueta o cualquier estructura ligera se mide un <b>decaimiento libre</b>; de ese registro salen la frecuencia natural <i>f</i><sub>n</sub> y el factor de amortiguamiento ζ. El recorrido tiene siete pasos: instalar la aplicación, medir, exportar, descargar el cuaderno de análisis, abrirlo en Google Colab o en Visual Studio Code, comprobar el resultado con el analizador de esta página y revisar la lista de verificación. Cada paso se puede marcar como hecho; el avance se conserva en este navegador.
+    <div class="prog"><div id="barra"></div></div>
+    <nav class="indice" id="indice" aria-label="Pasos del tutorial"></nav>
+  </div>
+
+<section class="card full paso" id="paso1"><h2><span class="np">1</span>Instalar Phyphox en el teléfono<label class="hecho"><input type="checkbox" data-paso="1"> hecho</label></h2>
+
+  <p>Phyphox (<i>physical phone experiments</i>) es una aplicación gratuita y de código abierto de la Universidad RWTH de Aquisgrán que da acceso a los sensores del teléfono: acelerómetro, giroscopio, magnetómetro, micrófono. No requiere cuenta ni conexión para medir.</p>
+  <div class="btns">
+    <a class="btn dl" href="https://phyphox.org/download/" target="_blank" rel="noopener">Página oficial de descarga (phyphox.org)</a>
+    <a class="btn dl" href="https://play.google.com/store/apps/details?id=de.rwth_aachen.phyphox" target="_blank" rel="noopener">Android: Google Play</a>
+    <a class="btn dl" href="https://apps.apple.com/app/phyphox/id1127716348" target="_blank" rel="noopener">iPhone: App Store</a>
+  </div>
+  <p class="nota">Comprobación: al abrir la aplicación aparece la lista de experimentos; en el grupo «Sensores» está «Aceleración (sin g)». Referencia: Staacks, Hütz, Heinke y Stampfer (2018), Phys. Educ. 53, 045009, <a href="https://doi.org/10.1088/1361-6552/aac05e" target="_blank" rel="noopener">doi:10.1088/1361-6552/aac05e</a>.</p>
+</section>
+
+<section class="card full paso" id="paso2"><h2><span class="np">2</span>Montar el experimento y medir<label class="hecho"><input type="checkbox" data-paso="2"> hecho</label></h2>
+
+  <div class="two"><div>
+  <ol>
+    <li>Sujetar la viga (hoja de segueta, regla) con una prensa al borde de una mesa rígida y medir con el calibrador la <b>longitud libre</b> <i>L</i>, el ancho <i>b</i> y el espesor <i>h</i>.</li>
+    <li>Colocar el teléfono y anotar dónde quedó. Hay dos montajes: (a) <b>teléfono junto al empotramiento</b>, sobre la prensa o la mesa, pegado con cinta: no añade masa a la viga y registra la vibración que esta transmite al soporte, con señal pequeña pero frecuencia sin alterar; (b) <b>teléfono sobre la viga</b>: la señal es grande, pero su masa baja mucho la frecuencia y hay que pesarlo e incluirlo en el cálculo (recuadro de la derecha).</li>
+    <li>Identificar el eje: en Phyphox <i>x</i> va a lo ancho de la pantalla, <i>y</i> a lo largo y <i>z</i> es perpendicular a la pantalla. Se analiza el eje que queda en la dirección del movimiento de la viga.</li>
+    <li>En Phyphox abrir «Aceleración (sin g)». En el menú ⋮ activar «Medición temporizada»: 3 s de retraso y de 10 a 12 s de duración.</li>
+    <li>Iniciar con ▶, esperar el retraso, <b>desplazar la punta y soltarla</b> (o dar un golpe corto) y dejar que la vibración se extinga sin tocar la mesa.</li>
+    <li>Repetir al menos tres veces con la misma longitud y guardar cada registro por separado.</li>
+  </ol>
+  </div><div>
+  <div class="eqbox" style="margin-top:10px;"><span class="lab">1 · Antes de medir: ¿alcanza la frecuencia de muestreo?</span><math display="block"><mrow><msub><mi>f</mi><mi mathvariant="normal">Nyq</mi></msub><mo>=</mo><mfrac><msub><mi>f</mi><mi>s</mi></msub><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"></mspace><msub><mi>f</mi><mi>n</mi></msub><mo>≲</mo><mn>0.8</mn><mspace width="0.17em"></mspace><msub><mi>f</mi><mi mathvariant="normal">Nyq</mi></msub></mrow></math><div class="eqnote">un teléfono típico muestrea entre 100 y 500 Hz; con <i>f</i><sub>s</sub> = 200 Hz conviene que <i>f</i><sub>n</sub> quede por debajo de 80 Hz</div></div>
+  <div class="eqbox" style="margin-top:10px;"><span class="lab">2 · Estimación previa: viga en voladizo sin masa añadida</span><math display="block"><mrow><msub><mi>f</mi><mn>1</mn></msub><mo>=</mo><mfrac><msup><mn>1.875</mn><mn>2</mn></msup><mrow><mn>2</mn><mi>π</mi><msup><mi>L</mi><mn>2</mn></msup></mrow></mfrac><msqrt><mfrac><mrow><mi>E</mi><mspace width="0.17em"></mspace><msup><mi>h</mi><mn>2</mn></msup></mrow><mrow><mn>12</mn><mspace width="0.17em"></mspace><mi>ρ</mi></mrow></mfrac></msqrt></mrow></math><div class="eqnote">acero: <i>E</i> = 200 GPa, ρ = 7850 kg/m<sup>3</sup>. Para <i>L</i> = 10 cm: con el espesor nominal <i>h</i> = 0.64 mm resulta <i>f</i><sub>1</sub> ≈ 52 Hz; con <i>h</i> = 0.50 mm, 41 Hz. La frecuencia es proporcional a <i>h</i>/<i>L</i><sup>2</sup>: el espesor se mide con micrómetro. Si <i>f</i><sub>1</sub> queda cerca de Nyquist, alargar la viga.</div></div>
+  <div class="eqbox" style="margin-top:10px;"><span class="lab">3 · Con una masa <i>M</i> en la punta (teléfono, imán)</span><math display="block"><mrow><msub><mi>f</mi><mn>1</mn></msub><mo>≈</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msqrt><mfrac><mrow><mn>3</mn><mi>E</mi><mi>I</mi></mrow><mrow><msup><mi>L</mi><mn>3</mn></msup><mrow><mo stretchy="true" fence="true">(</mo><mi>M</mi><mo>+</mo><mfrac><mn>33</mn><mn>140</mn></mfrac><mspace width="0.17em"></mspace><msub><mi>m</mi><mi>v</mi></msub><mo stretchy="true" fence="true">)</mo></mrow></mrow></mfrac></msqrt><mo>,</mo><mspace width="2em"></mspace><mi>I</mi><mo>=</mo><mfrac><mrow><mi>b</mi><mspace width="0.17em"></mspace><msup><mi>h</mi><mn>3</mn></msup></mrow><mn>12</mn></mfrac><mo>,</mo><mspace width="2em"></mspace><msub><mi>m</mi><mi>v</mi></msub><mo>=</mo><mi>ρ</mi><mspace width="0.17em"></mspace><mi>b</mi><mspace width="0.17em"></mspace><mi>h</mi><mspace width="0.17em"></mspace><mi>L</mi></mrow></math><div class="eqnote">aproximación de Rayleigh. Una hoja de 10 cm pesa unos 6 g; con un teléfono de 180 g en la punta la frecuencia cae de unos 50 Hz a unos 5 Hz</div></div>
+  </div></div>
+</section>
+
+<section class="card full paso" id="paso3"><h2><span class="np">3</span>Exportar los datos<label class="hecho"><input type="checkbox" data-paso="3"> hecho</label></h2>
+
+  <ol>
+    <li>Con la medición en pantalla, abrir el menú ⋮ y elegir «Exportar datos».</li>
+    <li>Elegir el formato <b>CSV (Comma, decimal point)</b>. Phyphox entrega un archivo ZIP.</li>
+    <li><b>Descomprimir el ZIP</b> y tomar el archivo <code>Raw Data.csv</code>, que contiene cinco columnas: tiempo (s), <i>a</i><sub>x</sub>, <i>a</i><sub>y</sub>, <i>a</i><sub>z</sub> y aceleración absoluta (m/s<sup>2</sup>). El formato Excel también sirve para el cuaderno, pero el analizador del paso 6 solo lee CSV.</li>
+    <li>Enviar el archivo a la computadora (correo, Drive, cable) y renombrarlo sin espacios ni acentos, con la longitud y la repetición: <code>segueta_L10cm_rep1.csv</code>.</li>
+  </ol>
+  <p class="nota">Se analiza un solo eje, el de la dirección del movimiento, nunca la aceleración absoluta: el valor absoluto rectifica la señal y duplica la frecuencia aparente.</p>
+</section>
+
+<section class="card full paso" id="paso4"><h2><span class="np">4</span>Descargar el cuaderno de análisis y el registro de ejemplo<label class="hecho"><input type="checkbox" data-paso="4"> hecho</label></h2>
+
+  <p>El cuaderno de Jupyter contiene el tratamiento completo en once pasos, cada uno con su fundamento matemático y su código en Python: lectura, frecuencia de muestreo real, recorte, espectro, filtro pasabanda, envolvente de Hilbert, decremento logarítmico, análisis por bloques y comparación con la teoría de vigas.</p>
+  <div class="btns">
+    <a class="btn dl" href="Tratamiento_decaimiento_Phyphox.ipynb" download>Descargar el cuaderno (.ipynb)</a>
+    <a class="btn dl" href="segueta_10cm.csv" download>Descargar el registro de ejemplo (.csv)</a>
+    <a class="btn dl" href="https://colab.research.google.com/github/elodiestrupiechonski/vibraciones-exploradores/blob/main/Tratamiento_decaimiento_Phyphox.ipynb" target="_blank" rel="noopener">Abrir el cuaderno directamente en Colab</a>
+  </div>
+  <p class="nota">Registro de ejemplo: hoja de segueta de acero de 10 cm en voladizo, 2390 muestras a 198.9 Hz en 12 s. La frecuencia medida corresponde a la hoja sin masa añadida en la punta. Resultado esperado con el cuaderno: <i>f</i><sub>n</sub> entre 40.3 Hz (espectro) y 40.6 Hz (fase y máximos), ζ = 0.0034 por los dos métodos. El analizador del paso 6 da 40.3 Hz y ζ entre 0.0035 y 0.0036. La frecuencia de este registro sube cerca de 2 % mientras la amplitud decae (de 40.1 a 40.9 Hz), señal de una ligera no linealidad de la sujeción; por eso cada estimador, que pondera distinto el inicio y el final, da un valor algo diferente. Si al pulsar la liga el navegador muestra texto en lugar de descargar, usar el botón derecho y «Guardar enlace como».</p>
+</section>
+
+<section class="card full paso" id="paso5"><h2><span class="np">5</span>Abrir y ejecutar el cuaderno<label class="hecho"><input type="checkbox" data-paso="5"> hecho</label></h2>
+
+  <div class="btns"><button class="btn on" id="tabC">Opción A · Google Colab (sin instalar nada)</button><button class="btn" id="tabV">Opción B · Visual Studio Code (Python instalado)</button></div>
+  <div id="panC">
+  <ol>
+    <li>Abrir <a href="https://colab.research.google.com/github/elodiestrupiechonski/vibraciones-exploradores/blob/main/Tratamiento_decaimiento_Phyphox.ipynb" target="_blank" rel="noopener">el cuaderno en Colab</a> con una cuenta de Google. Otra vía: en <a href="https://colab.research.google.com/" target="_blank" rel="noopener">colab.research.google.com</a>, menú Archivo → Subir cuaderno, y elegir el archivo <code>.ipynb</code> descargado.</li>
+    <li>Guardar una copia propia: Archivo → Guardar una copia en Drive. Sin este paso los cambios se pierden al cerrar.</li>
+    <li>Subir el registro: en la barra izquierda abrir el panel «Archivos» (icono de carpeta), pulsar «Subir al almacenamiento de la sesión» y elegir el CSV. Con el registro de ejemplo no hace falta: el cuaderno lo descarga solo.</li>
+    <li>En la celda del paso 1 escribir el nombre del archivo y el eje: <code>ARCHIVO = "segueta_L10cm_rep1.csv"</code>, <code>EJE = 3</code> (1 = <i>x</i>, 2 = <i>y</i>, 3 = <i>z</i>).</li>
+    <li>Ejecutar todo: Entorno de ejecución → Ejecutar todas (Ctrl + F9). Las gráficas aparecen debajo de cada celda y el resumen al final.</li>
+  </ol>
+  <p class="nota">Los archivos subidos a la sesión se borran cuando Colab se desconecta; el cuaderno guardado en Drive permanece. Las bibliotecas necesarias (NumPy, SciPy, pandas, Matplotlib) ya están instaladas en Colab.</p>
+  </div>
+  <div id="panV" style="display:none">
+  <ol>
+    <li>Requisitos: <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.10 o posterior</a> y <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a> con las extensiones «Python» y «Jupyter» de Microsoft (panel Extensiones, Ctrl + Mayús + X).</li>
+    <li>Crear una carpeta de trabajo y copiar en ella el cuaderno y el archivo CSV. En VS Code: Archivo → Abrir carpeta.</li>
+    <li>Instalar las bibliotecas una sola vez. En el menú Terminal → Nuevo terminal:
+      <pre class="cod">python -m pip install numpy scipy pandas matplotlib openpyxl xlrd ipykernel</pre>
+      En Windows, si <code>python</code> no se reconoce, usar <code>py -m pip install …</code>.</li>
+    <li>Abrir el archivo <code>.ipynb</code>; arriba a la derecha pulsar «Seleccionar kernel» → «Entornos de Python» y elegir la instalación donde se instalaron las bibliotecas.</li>
+    <li>En la celda del paso 1 escribir <code>ARCHIVO</code> y <code>EJE</code>, y pulsar «Ejecutar todo».</li>
+  </ol>
+  <div style="overflow-x:auto"><table class="tb">
+    <tr><th>Mensaje</th><th>Causa</th><th>Solución</th></tr>
+    <tr><td><code>ModuleNotFoundError: No module named 'scipy'</code></td><td>el kernel elegido no es el Python donde se instaló</td><td>cambiar de kernel o repetir la instalación con ese intérprete</td></tr>
+    <tr><td><code>FileNotFoundError</code></td><td>el CSV no está en la carpeta del cuaderno o el nombre no coincide</td><td>copiar el archivo junto al cuaderno; revisar mayúsculas y extensión</td></tr>
+    <tr><td>Se pide instalar <code>ipykernel</code></td><td>falta el paquete que conecta Python con el cuaderno</td><td>aceptar la instalación que ofrece VS Code</td></tr>
+    <tr><td>Columnas desplazadas o texto en lugar de números</td><td>se exportó con coma decimal</td><td>volver a exportar como «CSV (Comma, decimal point)»</td></tr>
+  </table></div>
+  </div>
+</section>
+
+<section class="card full paso" id="paso6"><h2><span class="np">6</span>Comprobar el resultado con el analizador<label class="hecho"><input type="checkbox" data-paso="6"> hecho</label></h2>
+
+  <p>El analizador repite en el navegador los pasos centrales del cuaderno: quita la media, localiza el golpe, calcula el espectro, filtra alrededor del pico, obtiene la envolvente con la transformada de Hilbert y ajusta una recta a ln <i>A</i>(<i>t</i>). Sirve para verificar que el cuaderno y el registro propio dan valores coherentes. El archivo no sale del dispositivo.</p>
+  <div class="two an"><div>
+    <canvas id="c1" width="760" height="260" aria-label="Señal filtrada, envolvente y tramo ajustado"></canvas>
+    <canvas id="c2" width="760" height="300" style="margin-top:10px" aria-label="Espectro y recta de la envolvente"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="border-top-color:var(--grey)"></i> señal medida</span>
+      <span><i class="sw" style="border-top-color:var(--steel)"></i> señal filtrada</span>
+      <span><i class="sw" style="border-top-color:var(--orange)"></i> envolvente <i>A</i>(<i>t</i>)</span>
+      <span><i class="sw" style="border-top-color:var(--red);border-top-style:dashed"></i> ajuste exponencial</span>
+      <span><i class="sw" style="border-top-color:var(--green)"></i> máximos (decremento)</span>
+    </div>
+  </div><div>
+    <div class="grp"><div class="t">Señal</div>
+      <div class="row"><label>Origen</label><select id="origen"><option value="ej">Ejemplo: segueta de 10 cm (registro real)</option><option value="csv">Archivo CSV propio</option><option value="sint">Señal sintética</option></select></div>
+      <div id="gcsv" style="display:none"><input class="archivo" type="file" id="csv" accept=".csv,.txt,text/csv">
+        <div class="row" style="margin-top:8px"><label>Columna</label><select id="col"></select></div>
+        <div class="nota" id="csvinfo">Archivo <code>Raw Data.csv</code> de Phyphox (formato CSV; el Excel no se lee aquí). La primera columna debe ser el tiempo en segundos.</div></div>
+      <div id="gsint" style="display:none">
+        <div class="row"><label>Frecuencia natural <i>f</i><sub>n</sub></label><input id="fn" type="range" min="5" max="300" step="0.5" value="40"><span class="val" id="vfn">40 Hz</span></div>
+        <div class="row"><label>Amortiguamiento ζ</label><input id="ze" type="range" min="0.001" max="0.05" step="0.0005" value="0.004"><span class="val" id="vze">0.004</span></div>
+        <div class="row"><label>Muestreo <i>f</i><sub>s</sub></label><input id="fs" type="range" min="50" max="500" step="1" value="200"><span class="val" id="vfs">200 Hz</span></div>
+        <div class="row"><label>Ruido (% de la amplitud)</label><input id="ru" type="range" min="0" max="20" step="0.5" value="2"><span class="val" id="vru">2 %</span></div>
+      </div>
+    </div>
+    <div class="grp"><div class="t">Análisis</div>
+      <div class="row"><label>Semiancho del filtro (% de <i>f</i><sub>n</sub>)</label><input id="bw" type="range" min="5" max="50" step="1" value="20"><span class="val" id="vbw">20 %</span></div>
+      <div class="row"><label>Inicio del ajuste tras el golpe</label><input id="ti" type="range" min="0" max="1" step="0.01" value="0.05"><span class="val" id="vti">0.05 s</span></div>
+      <div class="row"><label>Fin del ajuste: <i>A</i> cae a</label><input id="um" type="range" min="5" max="80" step="1" value="25"><span class="val" id="vum">25 %</span></div>
+    </div>
+    <div class="tiles">
+      <div class="tile "><div class="k">Muestreo real <i>f</i><sub>s</sub></div><div class="v" id="ofs">…</div></div><div class="tile "><div class="k">Nyquist <i>f</i><sub>s</sub>/2</div><div class="v" id="ony">…</div></div>
+      <div class="tile hl"><div class="k"><i>f</i><sub>d</sub> ≈ <i>f</i><sub>n</sub> (pico del espectro)</div><div class="v" id="ofp">…</div></div><div class="tile "><div class="k"><i>f</i><sub>d</sub> (entre máximos)</div><div class="v" id="ofd">…</div></div>
+      <div class="tile hl"><div class="k">ζ por envolvente</div><div class="v" id="oze">…</div></div><div class="tile hl"><div class="k">ζ por decremento</div><div class="v" id="ozd">…</div></div>
+      <div class="tile "><div class="k">Tasa de decaimiento σ</div><div class="v" id="osg">…</div></div><div class="tile "><div class="k">Ajuste: <i>R</i><sup>2</sup> y ciclos</div><div class="v" id="or2">…</div></div>
+    </div>
+    <div class="nota" id="aviso"></div>
+  </div></div>
+  <div class="two" style="margin-top:10px"><div>
+  <div class="eqbox" style="margin-top:10px;"><span class="lab">4 · Modelo del decaimiento</span><math display="block"><mrow><mi>a</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>t</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><msub><mi>A</mi><mn>0</mn></msub><mspace width="0.17em"></mspace><msup><mi>e</mi><mrow><mo>−</mo><mi>σ</mi><mi>t</mi></mrow></msup><mi mathvariant="normal" data-fn="1">cos</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>2</mn><mi>π</mi><msub><mi>f</mi><mi>d</mi></msub><mi>t</mi><mo>+</mo><mi>φ</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>,</mo><mspace width="2em"></mspace><mi>σ</mi><mo>=</mo><mn>2</mn><mi>π</mi><mi>ζ</mi><msub><mi>f</mi><mi>n</mi></msub></mrow></math></div>
+  <div class="eqbox" style="margin-top:10px;"><span class="lab">5 · Envolvente: recta en escala logarítmica</span><math display="block"><mrow><mi mathvariant="normal" data-fn="1">ln</mi><mspace width="0.17em"></mspace><mi>A</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>t</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><mi mathvariant="normal" data-fn="1">ln</mi><mspace width="0.17em"></mspace><msub><mi>A</mi><mn>0</mn></msub><mo>−</mo><mi>σ</mi><mspace width="0.17em"></mspace><mi>t</mi><mspace width="2em"></mspace><mo>⇒</mo><mspace width="2em"></mspace><mi>ζ</mi><mo>=</mo><mfrac><mi>σ</mi><mrow><mn>2</mn><mi>π</mi><msub><mi>f</mi><mi>n</mi></msub></mrow></mfrac></mrow></math></div>
+  </div><div>
+  <div class="eqbox" style="margin-top:10px;"><span class="lab">6 · Decremento logarítmico con <i>n</i> ciclos</span><math display="block"><mrow><mi>δ</mi><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi mathvariant="normal" data-fn="1">ln</mi><mspace width="0.17em"></mspace><mfrac><msub><mi>x</mi><mn>0</mn></msub><msub><mi>x</mi><mi>n</mi></msub></mfrac><mo>,</mo><mspace width="2em"></mspace><mi>ζ</mi><mo>=</mo><mfrac><mi>δ</mi><msqrt><mrow><mn>4</mn><msup><mi>π</mi><mn>2</mn></msup><mo>+</mo><msup><mi>δ</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mrow></math><div class="eqnote">aquí, y en el cuaderno, δ es el negativo de la pendiente de ln <i>x</i><sub>j</sub> contra el número de ciclo <i>j</i>, que usa todos los máximos</div></div>
+  <div class="eqbox" style="margin-top:10px;"><span class="lab">7 · Aliasing: frecuencia aparente</span><math display="block"><mrow><msub><mi>f</mi><mi>a</mi></msub><mo>=</mo><mo stretchy="false" lspace="0" rspace="0">|</mo><mi>f</mi><mo>−</mo><mi>k</mi><mspace width="0.17em"></mspace><msub><mi>f</mi><mi>s</mi></msub><mo stretchy="false" lspace="0" rspace="0">|</mo></mrow></math><div class="eqnote"><i>k</i> es el entero más cercano a <i>f</i>/<i>f</i><sub>s</sub>. Con la señal sintética, <i>f</i><sub>n</sub> = 150 Hz y <i>f</i><sub>s</sub> = 200 Hz producen un pico falso en 50 Hz, y el amortiguamiento calculado con esa frecuencia resulta tres veces mayor que el verdadero</div></div>
+  </div></div>
+</section>
+
+<section class="card full paso" id="paso7"><h2><span class="np">7</span>Lista de verificación y qué reportar<label class="hecho"><input type="checkbox" data-paso="7"> hecho</label></h2>
+
+  <div class="two"><div>
+  <b>Antes de aceptar un resultado</b>
+  <ul>
+    <li>El pico del espectro queda por debajo de 0.8 <i>f</i><sub>s</sub>/2. Si está pegado a Nyquist puede ser un alias: alargar la viga y repetir.</li>
+    <li>El tramo ajustado contiene al menos 20 ciclos y la recta de ln <i>A</i> tiene <i>R</i><sup>2</sup> ≥ 0.97.</li>
+    <li>Los dos métodos (envolvente y decremento) difieren menos de 30 %. Esa diferencia indica la sensibilidad al tratamiento; la incertidumbre se estima con la desviación estándar de las repeticiones.</li>
+    <li>Las tres repeticiones dan <i>f</i><sub>n</sub> dentro de 2 %.</li>
+    <li>La frecuencia medida se compara con la fórmula que corresponde al montaje (viga sola o con masa en la punta); una diferencia de 10 a 25 % suele deberse al espesor real, a un empotramiento imperfecto o a una masa añadida que no se tomó en cuenta.</li>
+    <li>Son los mismos criterios que imprime el cuaderno al final («cumple» o «NO cumple»).</li>
+  </ul>
+  </div><div>
+  <b>Qué entregar</b>
+  <ul>
+    <li>Fotografía del montaje con la longitud libre visible, posición del teléfono y tabla con <i>L</i>, <i>b</i>, <i>h</i>, la masa del teléfono (si va sobre la viga) y su modelo.</li>
+    <li><i>f</i><sub>s</sub> real, <i>f</i><sub>n</sub> y ζ por los dos métodos, con media y desviación de las repeticiones.</li>
+    <li>Las gráficas del cuaderno: señal, espectro y recta de la envolvente.</li>
+    <li>Comparación con la teoría y discusión de la diferencia.</li>
+    <li>Los archivos CSV y el cuaderno ejecutado, en la carpeta del equipo.</li>
+  </ul>
+  <b>Errores frecuentes</b>
+  <ul>
+    <li>Analizar la aceleración absoluta en lugar de un eje.</li>
+    <li>Incluir el golpe en el tramo de ajuste.</li>
+    <li>Usar el método de media potencia con un registro corto: se requiere <i>T</i> ≥ 2/(ζ <i>f</i><sub>n</sub>), unos 15 s de decaimiento para este ejemplo.</li>
+  </ul>
+  </div></div>
+  <p class="nota">Para profundizar: <a href="senales_interactivo.html">Laboratorio de señales</a> (muestreo, aliasing, ventanas) y <a href="modal_interactivo.html">Extracción de parámetros modales</a> (media potencia y círculo de Nyquist). Bibliografía: Inman, <i>Engineering Vibration</i>, 4.ª ed., secs. 1.3 y 1.6; Rao, <i>Mechanical Vibrations</i>, 5.ª ed., sec. 2.6 (decremento logarítmico) y cap. 8 (vigas); Bendat y Piersol, <i>Random Data</i>, 4.ª ed., cap. 13 (transformada de Hilbert).</p>
+</section>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Tutorial interactivo de medición con el teléfono y tratamiento de datos en Python · material de apoyo del curso de Vibraciones · el analizador funciona sin conexión.</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.2) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+const NAVY='#1F3864',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',RED='#B23A3A',PURPLE='#6B3FA0';
+const $=id=>document.getElementById(id);
+function lienzo(cv,H){ const c=cv.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1,2), W=cv.clientWidth||760; cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px'; c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H); return {c,W,H}; }
+function pasos(a,b,n){ const d=(b-a)/n, p=Math.pow(10,Math.floor(Math.log10(d))), q=d/p, s=(q<1.5?1:q<3?2:q<7?5:10)*p, o=[]; for(let v=Math.ceil(a/s-1e-9)*s; v<=b+1e-9*s; v+=s) o.push(+v.toPrecision(12)); return o; }
+function num(v){ const a=Math.abs(v); if(v===0) return '0'; if(a>=1e4||a<1e-2){ const e=Math.floor(Math.log10(a)+1e-9), m=+(v/Math.pow(10,e)).toPrecision(2); return (String(m)+'×10^'+e).replace(/-/g,'−'); } return String(+v.toPrecision(3)).replace('-','−'); }
+// notación de ingeniería con prefijo SI
+function ing(v,u){ if(!isFinite(v)) return '∞'; if(!(v>0)) return '0 '+u; const P=[[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ'],[1e-9,'n'],[1e-12,'p']]; for(const [f,p] of P){ if(v>=f*0.9995) return (+(v/f).toPrecision(3))+' '+p+u; } return num(v)+' '+u; }
+// modo práctica: oculta las lecturas hasta que se pulse de nuevo
+function practica(id){ const b=$(id); if(!b) return; b.addEventListener('click',()=>{ const on=document.body.classList.toggle('oculto'); b.classList.toggle('on',on); b.textContent=on?'Mostrar lecturas':'Ocultar lecturas (modo práctica)'; }); }
+// Ejes: o={x0,x1,y0,y1,logx,logy,xl,yl,tit}; devuelve los mapeos X, Y y el rectángulo de trazo
+function ejes(g,box,o){ const c=g.c, mL=box.mL||56, mR=box.mR||14, mT=box.mT||24, mB=box.mB||36, x=box.x||0, y=box.y||0, w=(box.w||g.W)-mL-mR, h=(box.h||g.H)-mT-mB, px=x+mL, py=y+mT;
+  const lx=o.logx, ly=o.logy, ax=lx?Math.log10(o.x0):o.x0, bx=lx?Math.log10(o.x1):o.x1, ay=ly?Math.log10(o.y0):o.y0, by=ly?Math.log10(o.y1):o.y1;
+  const X=v=>px+((lx?Math.log10(Math.max(v,1e-300)):v)-ax)/(bx-ax)*w, Y=v=>py+(1-((ly?Math.log10(Math.max(v,1e-300)):v)-ay)/(by-ay))*h;
+  c.lineWidth=1; c.strokeStyle='#E3E9F3'; c.fillStyle=GREY; c.font='11px Arial';
+  const tx=lx?decadas(o.x0,o.x1):pasos(o.x0,o.x1,o.nx||8), ty=ly?decadas(o.y0,o.y1):pasos(o.y0,o.y1,o.ny||5);
+  c.textAlign='center'; c.textBaseline='top'; tx.forEach(v=>{ c.beginPath(); c.moveTo(X(v),py); c.lineTo(X(v),py+h); c.stroke(); c.fillText(lx?pot(v):num(v),X(v),py+h+5); });
+  c.textAlign='right'; c.textBaseline='middle'; ty.forEach(v=>{ c.beginPath(); c.moveTo(px,Y(v)); c.lineTo(px+w,Y(v)); c.stroke(); c.fillText(ly?pot(v):num(v),px-6,Y(v)); });
+  c.strokeStyle='#9AA7BF'; c.strokeRect(px,py,w,h);
+  c.fillStyle=NAVY; c.textAlign='left'; c.textBaseline='top'; if(o.tit){ let fs=12; do{ c.font='bold '+fs+'px Arial'; fs-=0.5; } while(fs>8.5&&c.measureText(o.tit.replace(/[_^]/g,'')).width>w+mR-2); c.fillText(o.tit,px,y+5); } c.font='bold 12px Arial';
+  c.textAlign='center'; if(o.xl) c.fillText(o.xl,px+w/2,py+h+20);
+  if(o.yl){ c.save(); c.translate(x+12,py+h/2); c.rotate(-Math.PI/2); c.textBaseline='middle'; c.fillText(o.yl,0,0); c.restore(); }
+  return {X,Y,px,py,w,h,c,o}; }
+function pot(v){ const e=Math.round(Math.log10(v)); return (e>=-2&&e<=3)?String(+Math.pow(10,e).toPrecision(1)):'10^'+(e<0?'−'+(-e):e); }
+function decadas(a,b){ const o=[]; for(let e=Math.ceil(Math.log10(a)-1e-9); e<=Math.log10(b)+1e-9; e++) o.push(Math.pow(10,e)); return o; }
+function curva(e,pts,color,lw,dash){ const c=e.c; c.save(); c.beginPath(); c.rect(e.px,e.py,e.w,e.h); c.clip(); c.strokeStyle=color; c.lineWidth=lw||1.6; c.setLineDash(dash||[]); c.beginPath(); let on=false;
+  for(const p of pts){ if(!isFinite(p[1])){ on=false; continue; } const x=e.X(p[0]), y=e.Y(p[1]); on?c.lineTo(x,y):c.moveTo(x,y); on=true; } c.stroke(); c.restore(); }
+function funcion(e,f,color,lw,dash,n){ n=n||Math.round(e.w); const o=e.o, pts=[]; for(let i=0;i<=n;i++){ const u=i/n, x=o.logx?o.x0*Math.pow(o.x1/o.x0,u):o.x0+(o.x1-o.x0)*u; pts.push([x,f(x)]); } curva(e,pts,color,lw,dash); }
+function vline(e,x,color,dash,txt,dy){ const c=e.c; if(x<Math.min(e.o.x0,e.o.x1)||x>Math.max(e.o.x0,e.o.x1)) return; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.X(x),e.py); c.lineTo(e.X(x),e.py+e.h); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; const der=e.X(x)>e.px+e.w-110; c.textAlign=der?'right':'left'; c.textBaseline='top'; c.fillText(txt,e.X(x)+(der?-4:4),e.py+4+(dy||0)); } c.restore(); }
+function hline(e,y,color,dash,txt){ const c=e.c; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.px,e.Y(y)); c.lineTo(e.px+e.w,e.Y(y)); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; c.textAlign='right'; c.textBaseline='bottom'; c.fillText(txt,e.px+e.w-4,e.Y(y)-2); } c.restore(); }
+function punto(e,x,y,color,r){ const c=e.c; c.fillStyle=color; c.strokeStyle='#fff'; c.lineWidth=1.5; c.beginPath(); c.arc(e.X(x),e.Y(y),r||5,0,7); c.fill(); c.stroke(); }
+// Enlaza deslizadores: UN = {id:' unidad'}; llama a cb en cada cambio
+function liga(S,UN,cb){ Object.keys(UN).forEach(id=>$(id).addEventListener('input',ev=>{ S[id]=+ev.target.value; $('v'+id).textContent=(+S[id].toPrecision(6))+UN[id]; cb(); })); }
+function pon(S,UN,o,cb){ Object.keys(o).forEach(k=>{ S[k]=o[k]; if($(k)&&UN[k]!==undefined){ $(k).value=o[k]; $('v'+k).textContent=o[k]+UN[k]; } }); cb(); }
+
+const EJ={"t0":0.01457,"dt":0.00502641,"z":[0.0043,0.017,-0.0108,-0.0099,-0.0003,-0.007,-0.0223,-0.012,-0.0181,0.001,0.0101,-0.0041,-0.0131,0.0013,0.0012,-0.0057,-0.0055,0.0085,0.0105,0.0055,-0.0062,-0.0014,0.0079,0.003,-0.0017,-0.0086,0.0033,0.0008,-0.0132,-0.0105,0.0061,0.006,0.0082,-0.0061,-0.0036,-0.0082,-0.0033,0.0061,-0.0081,-0.0056,-0.0031,0.0016,-0.0031,-0.003,-0.0006,-0.0053,-0.0052,0.0043,0.0042,-0.0053,0.0019,-0.0005,-0.0029,-0.0005,0.0066,-0.0053,0.009,0.0017,-0.0077,-0.0147,-0.0121,-0.0049,0.0023,-0.0143,0.0048,0.0118,-0.0072,-0.0,0.0023,-0.0048,-0.0095,-0.0164,-0.002,-0.0091,-0.009,-0.0113,0.0125,0.0124,0.0099,-0.0163,-0.009,0.0124,0.0075,-0.0091,-0.0185,-0.0088,-0.004,0.0032,-0.0016,-0.0087,0.0009,0.0032,-0.0063,-0.0039,0.0009,-0.0038,-0.0109,0.0082,-0.0062,-0.0061,0.0011,0.0058,0.0034,-0.0156,0.0035,0.0035,0.0058,-0.0132,-0.006,0.0131,0.0011,-0.0013,-0.0084,0.0011,0.0106,-0.0037,-0.0037,-0.0084,-0.0012,0.0036,0.0012,0.0012,0.0011,0.0035,-0.0036,-0.0084,-0.013,-0.0082,-0.0034,0.0014,-0.0057,-0.0009,-0.0033,-0.008,0.0087,0.0062,0.0014,0.0038,-0.0034,-0.0105,-0.0104,-0.0032,-0.0008,0.0016,0.0016,-0.0079,-0.0126,-0.0077,0.0161,-0.0078,-0.0101,-0.0005,-0.0029,0.0019,-0.0076,-0.0076,-0.0099,0.0044,-0.0051,-0.0003,0.0116,0.002,-0.0004,0.002,-0.0147,-0.0098,-0.0121,-0.0096,-0.0072,-0.0047,0.0,-0.0047,-0.007,-0.0022,0.0025,0.0168,0.0071,0.0118,-0.0002,-0.0097,0.007,0.0117,0.0045,-0.0074,-0.0026,-0.0002,0.0046,-0.0026,0.0045,-0.0074,-0.0073,0.0094,-0.0049,0.0093,0.0069,0.0045,0.0068,-0.0004,0.0044,-0.0004,-0.0028,-0.0051,0.002,-0.0027,-0.0003,-0.0027,-0.0027,-0.005,0.0021,0.0045,-0.0003,0.0021,0.0044,-0.0051,-0.0003,-0.0051,-0.0026,-0.0097,0.0093,0.0116,-0.0027,-0.0098,-0.0002,0.0021,-0.0074,0.0093,0.0092,-0.0027,-0.0051,-0.0003,-0.0027,-0.0121,-0.0049,-0.0001,-0.0049,0.0047,-0.0001,0.0046,-0.0002,-0.0049,-0.0096,0.0142,0.007,-0.0026,-0.0192,-0.0048,0.0143,0.0118,-0.0049,-0.0073,-0.0048,0.0023,-0.0001,-0.0048,-0.019,-0.0022,0.0049,0.0025,0.0072,-0.0071,0.0048,-0.0023,-0.0047,0.012,0.0048,-0.0095,-0.0047,0.0001,0.0001,0.0001,-0.007,0.0025,0.0049,-0.0094,0.0049,0.0144,0.0024,-0.0119,0.0001,0.0001,0.0048,0.0095,-0.0,-0.0048,-0.0071,-0.0094,-0.0094,-0.0093,0.0003,-0.0045,0.0098,-0.0045,-0.0092,0.0122,0.0074,0.0002,0.0026,0.0025,0.0096,0.0024,-0.0118,0.0049,0.0049,0.0048,0.0024,0.0,0.0095,0.0047,0.0046,-0.0002,0.0046,0.0069,0.0045,0.0021,-0.0027,0.0021,-0.0027,0.0068,-0.0003,-0.0003,-0.0027,0.0021,0.0021,0.002,0.0091,-0.0028,0.002,0.002,-0.0099,-0.0075,0.0045,0.0092,-0.0075,-0.0075,0.0045,-0.0027,0.0163,-0.0004,0.0091,-0.0029,-0.0029,-0.0052,0.0043,-0.0004,-0.0123,0.002,0.0044,-0.0004,0.0044,0.0019,-0.0028,-0.0028,0.0115,-0.0005,-0.0124,-0.0051,0.0092,0.0115,0.0114,0.0018,0.0041,0.0017,0.0112,0.0064,-0.0008,-0.0008,-0.0103,-0.0126,-0.0054,-0.0006,0.0089,-0.0006,0.0017,-0.0078,-0.0101,-0.0052,0.0019,-0.0052,0.0043,0.0019,-0.01,-0.0099,0.0044,0.0091,0.002,-0.0123,0.0115,0.0138,-0.0005,-0.0172,0.0044,0.0257,0.0088,-0.0197,-0.0219,0.0068,0.0257,-0.0006,-0.0101,-0.0053,0.0019,0.0019,0.0066,-0.0125,-0.0029,0.0114,0.0066,-0.003,0.0042,-0.003,-0.0006,-0.0101,-0.0053,0.0019,-0.0052,-0.0028,0.0115,0.009,-0.0053,-0.01,-0.0076,-0.0004,0.002,0.002,-0.017,-0.0216,-0.0001,0.007,-0.0049,-0.0143,-0.0047,-0.0047,0.0072,-0.0118,0.012,0.0167,-0.0049,-0.0119,-0.0047,0.0048,-0.0047,0.0048,0.0,-0.0095,-0.0284,0.0122,0.0002,0.0026,0.0002,-0.0093,0.0145,0.0121,0.0025,-0.0166,-0.0093,0.0098,0.0049,-0.0093,-0.0093,-0.0068,-0.0139,-0.0043,-0.0019,0.0005,-0.0113,-0.0041,0.0102,0.0029,0.0029,0.0076,-0.0019,-0.0019,-0.0019,0.0219,0.0098,0.0097,0.0097,0.0001,-0.0047,0.0001,0.0072,-0.0118,-0.007,0.0097,0.0073,0.0048,0.0,-0.019,-0.0093,0.0003,0.0193,-0.0023,-0.0046,-0.0022,0.0073,0.0025,-0.0118,-0.0259,-0.0067,0.0218,0.0217,-0.0046,-0.0212,-0.0068,0.017,0.0097,-0.007,-0.0093,-0.0044,0.0027,0.0051,0.0074,0.0002,0.0002,0.0026,0.0002,-0.0093,-0.014,0.0051,-0.0163,-0.0185,-0.0017,0.0006,-0.0112,-0.0016,0.0102,-0.0065,-0.0135,-0.0039,0.008,0.0032,0.0008,-0.0064,0.0056,0.0031,0.0007,0.0031,-0.0017,-0.0064,-0.004,0.0008,0.0008,0.0055,-0.0182,-0.011,-0.0109,-0.0155,0.006,-0.0036,-0.0059,-0.0035,0.0013,0.0036,-0.0083,0.0037,0.0013,-0.013,0.0014,0.018,0.0036,-0.0202,-0.0176,0.0039,0.0086,-0.0057,-0.0176,-0.0127,-0.0007,0.0064,-0.0007,-0.0031,-0.0055,-0.003,-0.0006,0.0017,0.0089,0.0183,0.0039,-0.0009,0.0015,0.011,0.0085,0.0061,0.0155,-0.0012,-0.0036,0.0273,-0.0038,-0.075,0.2889,-0.1124,-0.1399,-0.134,0.3846,0.3458,-0.3598,-0.3473,-0.1118,0.535,0.3976,-0.3821,-0.4312,-0.1641,0.5306,0.398,-0.3675,-0.3478,-0.0529,0.4841,0.2451,-0.398,-0.2665,0.0634,0.438,0.1186,-0.4665,-0.1825,0.2274,0.4321,-0.0107,-0.5163,-0.1891,0.2327,0.4586,0.0227,-0.4998,-0.2487,0.2068,0.4235,0.0781,-0.4448,-0.256,0.2091,0.4211,0.0971,-0.4047,-0.247,0.1539,0.3497,0.0999,-0.3449,-0.2329,0.1395,0.3045,0.0812,-0.3398,-0.2135,0.1634,0.2879,0.0576,-0.3489,-0.175,0.1992,0.283,0.029,-0.3511,-0.1559,0.2158,0.2923,0.0406,-0.3515,-0.1776,0.1895,0.3066,0.05,-0.3611,-0.2086,0.1849,0.3045,0.0479,-0.3537,-0.1917,0.166,0.3071,0.0267,-0.3391,-0.1369,0.1658,0.3021,0.0076,-0.3344,-0.1108,0.1774,0.2828,-0.0164,-0.3154,-0.1109,0.163,0.2733,-0.0424,-0.3175,-0.1083,0.2013,0.2732,-0.0543,-0.3127,-0.0869,0.2082,0.254,-0.0473,-0.3033,-0.08,0.2127,0.2228,-0.0758,-0.2865,-0.0609,0.2173,0.2345,-0.0974,-0.2961,-0.0538,0.2126,0.2203,-0.1234,-0.2815,-0.0203,0.2315,0.1963,-0.1472,-0.2599,-0.0156,0.2267,0.1773,-0.147,-0.2337,0.0081,0.2264,0.1652,-0.1638,-0.2432,0.02,0.2335,0.1556,-0.171,-0.2242,0.0294,0.2191,0.1342,-0.1756,-0.2098,0.0603,0.226,0.1101,-0.1899,-0.1812,0.0624,0.2186,0.0791,-0.1875,-0.1764,0.0862,0.2232,0.0504,-0.1993,-0.1597,0.1028,0.204,0.0362,-0.2182,-0.1428,0.122,0.1898,0.0149,-0.187,-0.1166,0.1123,0.2039,0.0099,-0.2133,-0.1,0.1169,0.1919,-0.0067,-0.2038,-0.0905,0.1358,0.1751,-0.0353,-0.2012,-0.0642,0.1595,0.1748,-0.0427,-0.1967,-0.0479,0.1544,0.1412,-0.0689,-0.206,-0.0239,0.1615,0.1364,-0.0831,-0.1798,-0.005,0.1707,0.1218,-0.1023,-0.1775,0.0068,0.173,0.105,-0.1261,-0.1631,0.033,0.1657,0.0836,-0.1284,-0.1369,0.059,0.1439,0.0525,-0.1474,-0.1319,0.0544,0.137,0.0576,-0.1495,-0.1221,0.0736,0.1513,0.0408,-0.1352,-0.1103,0.071,0.1512,0.0241,-0.1399,-0.0842,0.0732,0.1581,0.0262,-0.1568,-0.0962,0.0898,0.1437,-0.0142,-0.1661,-0.065,0.1089,0.1365,-0.0427,-0.1563,-0.0387,0.1397,0.1267,-0.0572,-0.1588,-0.0245,0.1347,0.117,-0.0739,-0.1659,-0.0126,0.1419,0.0979,-0.0881,-0.1372,0.0207,0.1439,0.0644,-0.1095,-0.1394,0.0374,0.1463,0.0549,-0.1212,-0.106,0.0563,0.1413,0.0405,-0.119,-0.0895,0.0656,0.1197,0.0094,-0.1283,-0.0679,0.0799,0.1172,0.0141,-0.1142,-0.0468,0.0818,0.1025,-0.0171,-0.1143,-0.0397,0.0888,0.0952,-0.0362,-0.119,-0.0373,0.0818,0.0953,-0.0408,-0.1069,-0.0134,0.0983,0.0808,-0.0528,-0.1141,-0.0087,0.1243,0.0758,-0.0649,-0.1095,0.0268,0.1168,0.0493,-0.0959,-0.1094,0.0269,0.1193,0.0423,-0.1029,-0.0807,0.0411,0.1025,0.0019,-0.0978,-0.0709,0.0769,0.0952,-0.01,-0.0978,-0.0352,0.0933,0.083,-0.0388,-0.1002,-0.0115,0.0907,0.0638,-0.0459,-0.1002,-0.0115,0.0812,0.0639,-0.0506,-0.0953,-0.0114,0.0766,0.0546,-0.0694,-0.102,0.0104,0.0911,0.0357,-0.0809,-0.0874,0.0226,0.1031,0.0405,-0.0809,-0.0803,0.0391,0.1029,0.0284,-0.0858,-0.0566,0.0555,0.0883,-0.005,-0.0905,-0.0422,0.0697,0.0881,-0.0171,-0.1,-0.0422,0.0745,0.0762,-0.036,-0.1046,-0.004,0.0887,0.0547,-0.0502,-0.0878,0.0031,0.1005,0.0616,-0.0505,-0.0857,0.0076,0.0788,0.0473,-0.0766,-0.0712,0.0268,0.0788,0.0093,-0.0715,-0.052,0.0411,0.0811,0.0068,-0.0811,-0.04,0.06,0.0761,-0.0052,-0.0812,-0.0378,0.0623,0.0665,-0.0195,-0.0882,-0.0091,0.0669,0.0545,-0.0291,-0.0692,-0.0116,0.0668,0.0425,-0.0504,-0.0595,0.0075,0.0668,0.0282,-0.0527,-0.0618,0.0194,0.0596,0.0235,-0.055,-0.0688,0.0267,0.074,0.0259,-0.0598,-0.045,0.0527,0.0712,0.0042,-0.0647,-0.0215,0.0428,0.0496,-0.0125,-0.0599,-0.0167,0.0476,0.0567,-0.0103,-0.0624,-0.0121,0.0545,0.0469,-0.0294,-0.0529,-0.005,0.0639,0.0325,-0.039,-0.041,0.0139,0.0518,0.0181,-0.0319,-0.053,0.0044,0.0495,0.0182,-0.0437,-0.0314,0.0187,0.0565,0.0062,-0.0437,-0.022,0.0352,0.0539,0.0012,-0.0511,-0.0245,0.0327,0.0443,-0.0012,-0.0534,-0.0387,0.0471,0.0585,-0.0108,-0.0511,-0.0055,0.0467,0.0274,-0.0346,-0.0652,-0.0077,0.066,0.0227,-0.0392,-0.0602,0.0115,0.0518,0.0205,-0.0462,-0.0316,0.0304,0.0539,-0.0011,-0.051,-0.0363,0.0328,0.0492,-0.0177,-0.0365,-0.0077,0.0351,0.0443,-0.0178,-0.0438,0.0017,0.042,0.0203,-0.0416,-0.0412,0.0018,0.0374,0.0086,-0.0318,-0.0482,-0.0003,0.0306,0.0113,-0.0315,-0.0289,0.0046,0.0402,0.0185,-0.0196,-0.029,0.0164,0.0376,0.0112,-0.0388,-0.0361,0.0165,0.0496,-0.0007,-0.0482,-0.024,0.0308,0.0376,-0.0125,-0.0338,-0.0217,0.0331,0.0257,-0.0125,-0.0456,-0.0072,0.0308,0.0234,-0.0053,-0.0432,-0.0144,0.0238,0.0307,-0.0123,-0.0407,0.0048,0.0285,0.0211,-0.0266,-0.0358,0.0024,0.038,0.0116,-0.0384,-0.0357,0.005,0.0429,0.0094,-0.0335,-0.0166,0.0263,0.0356,0.0044,-0.0288,-0.0262,0.012,0.019,-0.0073,-0.0333,-0.0236,0.0217,0.0429,-0.0002,-0.0381,-0.007,0.0382,0.026,-0.0146,-0.0429,0.0025,0.031,0.026,-0.0241,-0.0357,0.0049,0.0357,0.0117,-0.0311,-0.0356,0.0074,0.0335,0.0094,-0.0215,-0.0237,0.0169,0.0286,0.0046,-0.0287,-0.0094,0.0286,0.0426,-0.0123,-0.0288,-0.0096,0.019,0.0141,-0.0098,-0.0192,-0.0191,0.0405,0.0282,-0.01,-0.0289,0.007,0.0235,0.002,-0.0171,-0.0288,0.0071,0.0213,0.0282,-0.0124,-0.0099,-0.0003,0.0305,0.0184,-0.0197,-0.0219,0.0115,0.0209,0.0041,-0.0244,-0.01,0.021,0.0374,0.011,-0.0247,-0.0174,0.0207,0.0206,-0.0034,-0.0389,-0.0101,0.0161,0.0326,-0.0128,-0.0246,-0.0125,0.0161,0.0112,-0.015,-0.022,-0.0052,0.0138,0.0137,-0.0244,-0.0218,0.0021,0.0235,0.0066,-0.0314,-0.0169,0.0165,0.0258,0.0066,-0.0124,-0.0194,0.0021,0.0163,-0.0004,-0.0242,-0.0073,0.0141,0.0211,-0.0052,-0.0123,-0.0146,0.0141,0.0211,0.0043,-0.0195,-0.0075,0.0068,0.0163,-0.0005,-0.0218,-0.0074,0.0259,0.0162,-0.0196,-0.0099,-0.0051,0.0258,0.0185,-0.0149,-0.0172,0.0091,0.0256,-0.0078,-0.022,-0.0171,0.0068,0.0115,0.0019,-0.0242,-0.0074,0.0212,0.0234,-0.0077,-0.029,-0.0074,0.0069,0.0187,-0.0194,-0.024,0.0094,0.026,0.0139,-0.0147,-0.0217,-0.0049,0.007,0.0069,-0.0145,-0.0072,-0.0001,0.0118,-0.0002,-0.012,-0.0285,0.0049,0.0144,-0.0024,-0.0284,-0.0211,-0.0019,0.01,-0.0044,-0.0209,-0.0208,0.0079,0.0126,0.0006,-0.0231,-0.004,0.0198,0.0125,-0.0184,-0.023,0.0056,0.0222,0.0197,0.0005,-0.0161,0.0078,0.0243,0.0027,-0.0044,-0.0115,0.0029,0.0194,0.0074,-0.0093,-0.0139,-0.0019,0.0099,-0.0115,-0.0233,-0.0136,0.015,0.0101,0.0077,-0.009,-0.0042,0.0077,0.0148,0.0075,-0.0115,-0.0091,0.01,0.0242,0.0169,-0.007,0.0002,0.0168,0.0095,-0.0096,-0.0237,-0.0117,0.0146,0.0049,-0.0093,-0.0116,-0.0068,0.0194,0.0026,-0.0093,-0.0163,0.0028,0.0218,-0.0022,-0.0188,-0.0139,0.0005,0.0147,-0.002,-0.0162,-0.009,0.0148,0.0218,0.0003,-0.0068,-0.002,0.017,0.0192,0.0048,-0.0118,0.0025,0.012,-0.0024,0.0048,-0.0143,0.0072,0.0095,0.0095,-0.0096,-0.0143,-0.0023,0.0025,0.0072,-0.0071,-0.0142,0.0002,0.0144,-0.0023,-0.0023,-0.0118,0.0073,0.0144,0.0048,-0.0119,-0.0094,0.0097,0.0001,-0.0094,-0.0165,0.0003,0.0003,0.0098,0.0073,-0.0093,-0.0045,0.0026,0.0002,0.0002,-0.0188,-0.002,0.0194,0.0097,-0.0117,-0.0069,0.0003,0.0098,0.0074,-0.0069,-0.0116,-0.0044,0.0051,0.0169,-0.0117,-0.0163,-0.002,0.0147,-0.0021,-0.0092,-0.0091,0.0052,0.0099,-0.0163,-0.0185,-0.0089,0.0078,0.0101,0.0077,-0.0114,-0.0042,0.0149,0.0195,0.0027,-0.0116,-0.0067,0.0076,0.0146,0.0074,-0.0211,-0.0091,0.0052,0.0028,0.0004,-0.0067,-0.0067,0.01,0.0075,-0.0115,-0.009,0.0029,0.0171,0.0027,-0.0258,-0.0137,0.0078,0.0149,-0.0114,-0.0184,-0.004,0.0126,0.0149,0.0053,-0.009,-0.0184,0.0126,0.0149,-0.009,-0.0256,-0.004,0.0079,0.0079,-0.0183,-0.0229,0.0034,0.02,0.0032,0.0055,-0.0016,0.0055,0.0221,0.0148,-0.0091,-0.0066,0.0029,0.0124,0.0099,0.0027,-0.0092,0.0004,0.0217,-0.0022,-0.0069,-0.0187,-0.0067,0.0076,-0.0043,-0.0067,-0.0114,-0.0041,0.0006,0.003,-0.0089,-0.0064,0.0102,0.0078,-0.0065,-0.0112,-0.0016,0.0055,0.0126,-0.0089,-0.0088,0.0031,0.0055,0.0054,-0.0041,-0.0065,0.0055,0.0102,0.0006,0.003,0.0101,-0.0019,0.0029,-0.0067,-0.0137,-0.0041,0.0078,-0.0089,-0.0017,0.0031,0.0149,0.0029,-0.0042,0.0077,-0.0066,-0.0042,-0.0089,0.0054,0.003,0.0053,-0.0161,-0.0088,0.0055,-0.0017,0.0007,0.0031,-0.0064,-0.0016,0.0079,0.0007,-0.0088,0.0079,0.0126,0.0053,-0.0018,0.0006,0.0148,0.0147,-0.0044,-0.0044,-0.0091,-0.0043,0.0029,-0.009,0.0005,0.01,0.0123,-0.002,-0.0091,-0.0043,0.0028,0.0052,-0.0067,0.0005,0.0052,0.0194,-0.0021,0.0003,-0.0021,0.0003,-0.0116,0.0028,-0.0068,0.0004,-0.002,0.0099,0.0098,-0.0092,0.0051,0.005,0.0169,0.0049,-0.0165,-0.0045,0.0145,0.0215,-0.0,-0.0024,-0.0072,-0.0071,0.0048,0.0,-0.0095,-0.0046,0.0002,0.0025,-0.0046,-0.0117,0.005,0.0026,0.005,-0.0022,-0.0069,0.0074,-0.0069,0.0002,0.005,0.0002,-0.0093,0.0027,0.005,0.0026,0.0002,0.0002,0.0002,0.0073,0.0025,-0.007,0.012,0.0191,0.0023,-0.0096,-0.0119,0.0048,0.0095,-0.0072,-0.0095,0.0072,0.0,0.0024,-0.0024,0.0,-0.0071,0.0048,0.0,-0.0047,0.0025,0.0001,0.0167,-0.0048,-0.0,-0.0,0.0118,0.0165,-0.0026,0.0045,-0.0027,-0.005,0.0093,-0.0074,-0.0074,0.0046,0.0117,0.0116,0.002,-0.0099,-0.0075,0.0021,0.0187,-0.0076,-0.017,-0.0074,-0.0026,0.0165,0.0068,-0.0027,-0.0051,-0.0027,0.0116,-0.0004,-0.0004,-0.0122,-0.0074,-0.0002,-0.0097,-0.0096,0.0047,0.007,0.0046,-0.0025,0.0117,-0.0074,0.0046,0.0069,-0.0098,-0.0002,0.0045,-0.0026,-0.0026,-0.0073,-0.0168,-0.0024,0.0095,-0.0072,0.0024,0.0095,0.007,-0.0002,-0.0097,0.007,0.0022,0.007,0.0045,-0.0098,-0.0097,-0.0048,0.0071,-0.0072,-0.0,-0.0024,0.0047,-0.0024,0.0023,-0.0024,0.0047,0.0094,-0.0049,-0.0215,-0.0166,-0.0069,0.005,-0.0022,-0.014,0.0027,0.0074,0.005,0.0002,-0.0045,-0.0021,-0.0045,0.0098,-0.0069,-0.0163,0.0099,0.0027,0.0122,-0.0045,-0.0092,0.0074,0.0121,-0.0022,-0.0022,0.0097,-0.0023,-0.0046,0.0026,-0.007,0.0121,0.0049,0.0072,-0.0071,0.0001,-0.0047,0.0001,0.012,0.0119,-0.0025,0.0047,0.007,-0.0002,-0.0002,0.0022,0.0141,0.0092,-0.0099,-0.0003,-0.0145,-0.0025,0.007,-0.0026,-0.0026,-0.0049,-0.0001,0.0189,-0.0003,-0.0074,0.0022,0.014,0.002,0.0068,-0.0028,0.002,-0.0004,0.0091,-0.0029,-0.0028,-0.0004,-0.0004,0.0019,0.0091,0.0019,0.0042,0.0018,0.0089,-0.0102,-0.0053,-0.0005,0.009,0.0113,-0.0054,0.0041,-0.0007,-0.0007,-0.0007,0.0064,0.0016,0.0016,-0.0079,0.0017,-0.0078,0.0041,0.0065,-0.0007,0.0017,-0.0055,0.0017,0.0017,-0.0007,-0.0031,-0.0031,-0.0054,-0.003,-0.0101,0.0066,0.0137,-0.0078,-0.0077,0.0113,0.0065,0.0017,0.0017,-0.0126,-0.0054,0.0113,0.0112,-0.0055,-0.0102,0.0018,0.0136,0.0016,-0.0008,0.0111,-0.0127,0.0064,0.0253,0.0037,0.0013,0.0132,0.0226,0.0082,-0.0085,-0.0085,0.0059,-0.0013,-0.0037,-0.0155,-0.0154,-0.02,-0.0056,0.0039,-0.0032,0.0111,0.0062,0.0109,0.0085,0.0036,0.0202,0.0129,0.0104,0.008,0.0055,0.0055,-0.0325,-0.0156,0.0177,0.0389,0.003,-0.0445,-0.018,0.0273,0.0223,-0.0111,-0.0111,0.0033,0.0151,0.0197,-0.0042,-0.0041,-0.0065,0.015,-0.0018,0.0006,0.0006,0.0053,0.0077,0.01,0.0052,0.0027,-0.002,-0.0068,0.0099,0.0075,0.0098,-0.0022,0.0026,-0.0022,0.0073,0.0073,0.0001,0.0001,0.0072,-0.0024,0.0,0.0024,0.0024,0.0095,0.0023,-0.0001,-0.0025,0.0142,0.0117,0.0021,-0.0003,-0.0122,0.0045,0.0116,0.002,0.0044,-0.0099,0.0044,-0.0075,-0.0003,0.0045,-0.0003,-0.0027,0.0021,-0.0098,-0.0097,0.007,0.0022,-0.005,-0.0026,-0.012,-0.0001,0.0118,0.0117,-0.005,0.0045,-0.0026,-0.0073,0.0022,-0.0002,-0.0026,-0.0002,-0.0073,0.0094,-0.0073,-0.0001,0.0046,-0.0144,-0.0,-0.0024,-0.0214,-0.0141,0.0145,0.0239,0.019,-0.0026,-0.0144,0.0118,0.0046,0.0046,-0.0097,-0.0073,0.0047,-0.0001,-0.0001,-0.0144,-0.0095,-0.0023,0.012,-0.0024,-0.0024,0.0,0.0095,0.0047,-0.0025,0.0047,-0.0025,0.0023,-0.0072,-0.0143,-0.0047,-0.0118,0.0002,0.0121,0.0001,0.0025,-0.0023,0.0001,0.0072,0.0,-0.0095,0.0049,0.0072,0.0048,0.0023,-0.0095,-0.0213,0.005,-0.0022,-0.0046,-0.0022,0.005,0.0026,0.0002,-0.0141,0.0003,0.0027,0.0121,-0.007,-0.0045,0.005,-0.0069,0.005,-0.0022,-0.0045,0.0026,0.0121,-0.0141,-0.0045,0.005,0.005,0.0026,-0.0069,0.0145,-0.0046,0.0025,-0.0022,-0.0093,0.005,0.0073,0.0001,-0.0094,0.0026,0.0121,0.0167,-0.0095,-0.0071,-0.0023,0.012,0.0095,-0.0001,-0.0167,-0.0094,0.012,0.0024,-0.0166,0.0002,-0.0046,0.0002,-0.0046,-0.0045,-0.0187,-0.0114,-0.0066,0.0006,-0.0042,0.003,-0.0042,-0.0041,0.0054,-0.0065,0.0007,-0.0041,0.0007,0.0031,0.0007,0.003,0.003,0.0125,0.0005,-0.0066,-0.0089,0.0101,0.0077,-0.009,0.0029,-0.0161,-0.0065,-0.004,0.0031,0.0031,0.0078,-0.0041,-0.0041,-0.004,-0.0016,0.0008,-0.0064,0.0127,-0.0136,-0.0111,-0.0181,-0.0061,-0.0084,-0.0036,0.0036,0.0083,-0.0013,-0.0013,0.0059,-0.0013,-0.0108,-0.0059,0.0155,0.0082,-0.0085,-0.0155,0.006,0.0107,-0.0037,-0.0013,-0.0036,-0.0107,-0.0106,-0.0058,-0.0152,-0.0032,0.0063,0.0015,-0.0033,-0.0056,-0.0103,-0.0007,-0.0055,-0.0054,-0.0196,-0.0076,-0.0052,-0.0075,-0.0146,-0.0049,0.0117,-0.0097,-0.0049,-0.0049,0.0047,0.007,-0.0002,-0.0026,-0.0073,-0.0001,-0.0025,0.0023,0.0023,0.0094,0.0117,0.0116,-0.0218,-0.0073,-0.0096,-0.0048,-0.0119,-0.0023,0.0025,-0.0047,0.0025,-0.0023,0.0049,0.0001,-0.0023,0.0048,0.0048,-0.0071,-0.0071,0.0025,0.0025,-0.0023,-0.0046,0.0025,0.0096,0.0,0.0024,0.0048,-0.0095,-0.0023,-0.0023,-0.0023,0.0001,-0.0046,0.0025,0.0001,-0.0046,-0.0022,-0.0046,-0.0117,-0.0068,0.0004,-0.0115,-0.0067,0.0076,0.0076,-0.0139,-0.009,-0.0137,0.0126,-0.0065,-0.0112,-0.0064,0.0032,0.0055,0.0102,-0.0089,-0.0017,0.0031,0.0007,-0.0041,0.0007,-0.0017,-0.0135,-0.0063,0.0033,0.0127,0.0008,-0.0087,-0.0015,0.0032,-0.0039,-0.0015,-0.0015,-0.0039,0.008,0.0032,-0.0111,-0.0038,0.0033,0.0033,-0.0062,0.0009,-0.0062,-0.0014,-0.0014,0.0034,-0.0038,0.001,0.0105,0.008,-0.0015,-0.0039,-0.0039,-0.0015,0.0009,-0.0038,-0.0085,-0.0013,-0.0085,-0.0036,-0.006,0.0083,-0.0036,0.0011,0.0035,0.0059,-0.0179,-0.0154,-0.0248,0.011,0.0157,-0.0248,-0.0032,0.0182,-0.001,-0.0176,-0.0127,0.004,-0.0055,-0.0007,0.0088,0.0182,-0.008,-0.0127,-0.0031,0.0278,0.0299,-0.0321,0.0038,0.018,-0.0011,0.0013,-0.0296,-0.0246,0.0231,0.0158,-0.0152,-0.0341,0.0042,0.0136,-0.0055,-0.0268,-0.0076,0.0186]};
+let S={origen:'ej',fn:40,ze:0.004,fs:200,ru:2,bw:20,ti:0.05,um:25}, CSV=null, R=null;
+const UN={fn:' Hz',ze:'',fs:' Hz',ru:' %',bw:' %',ti:' s',um:' %'}, TP=2*Math.PI;
+function rng(seed){ let a=seed>>>0; return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function fft2(re,im){ const n=re.length; for(let i=1,j=0;i<n;i++){ let b=n>>1; for(;j&b;b>>=1) j^=b; j^=b; if(i<j){ let t=re[i];re[i]=re[j];re[j]=t; t=im[i];im[i]=im[j];im[j]=t; } }
+  for(let len=2;len<=n;len<<=1){ const ang=-2*Math.PI/len, wr=Math.cos(ang), wi=Math.sin(ang); for(let i=0;i<n;i+=len){ let cr=1,ci=0; for(let k=0;k<len/2;k++){ const a=i+k,b=a+len/2, xr=re[b]*cr-im[b]*ci, xi=re[b]*ci+im[b]*cr; re[b]=re[a]-xr; im[b]=im[a]-xi; re[a]+=xr; im[a]+=xi; const t=cr*wr-ci*wi; ci=cr*wi+ci*wr; cr=t; } } } }
+function recta(x,y){ const n=x.length; let sx=0,sy=0,sxx=0,sxy=0,syy=0; for(let i=0;i<n;i++){ sx+=x[i]; sy+=y[i]; sxx+=x[i]*x[i]; sxy+=x[i]*y[i]; syy+=y[i]*y[i]; } const d=n*sxx-sx*sx, m=(n*sxy-sx*sy)/d, b=(sy-m*sx)/n, r=(n*sxy-sx*sy)/Math.sqrt(d*(n*syy-sy*sy)); return {m,b,r2:r*r}; }
+function leerCSV(txt){
+  const filas=txt.split(/\r?\n/).filter(l=>l.trim()); if(filas.length<32) throw new Error('archivo demasiado corto');
+  const sep=[';','\t',','].find(s=>filas[1].split(s).length>1)||','; const num=v=>parseFloat(String(v).replace(/"/g,'').replace(sep===';'?',':'\u0000','.'));
+  const cab=filas[0].split(sep).map(h=>h.replace(/"/g,'').trim()), esCab=isNaN(num(filas[0].split(sep)[0])); const datos=(esCab?filas.slice(1):filas).map(l=>l.split(sep).map(num)).filter(f=>f.every(v=>isFinite(v)));
+  if(!datos.length||datos[0].length<2||datos.length<32) throw new Error('se esperan al menos dos columnas numéricas');
+  const nc=datos[0].length, t=datos.map(f=>f[0]), dur=t[t.length-1]-t[0]; if(!(dur>0)) throw new Error('la primera columna no es un tiempo creciente');
+  const cols=[]; for(let j=1;j<nc;j++) cols.push(datos.map(f=>f[j]));
+  return {t,cols,nombres:(esCab?cab.slice(1):cols.map((_,j)=>'columna '+(j+2))),sel:Math.min(2,cols.length-1)};
+}
+// remuestreo uniforme por interpolación lineal
+function uniforme(t,x){ const N=t.length, fs=(N-1)/(t[N-1]-t[0]), o=new Float64Array(N); let j=0; for(let n=0;n<N;n++){ const tt=t[0]+n/fs; while(j<N-2&&t[j+1]<tt) j++; const u=(tt-t[j])/(t[j+1]-t[j]); o[n]=x[j]+(x[j+1]-x[j])*Math.min(1,Math.max(0,u)); } return {x:o,fs}; }
+function senal(){
+  if(S.origen==='csv'&&CSV) return uniforme(CSV.t,CSV.cols[CSV.sel]);
+  if(S.origen==='sint'){ const fs=S.fs, N=Math.round(12*fs), x=new Float64Array(N), u=rng(20261117), wd=TP*S.fn*Math.sqrt(1-S.ze*S.ze), sg=TP*S.ze*S.fn, n0=Math.round(3*fs);
+    for(let n=0;n<N;n++){ const g=Math.sqrt(-2*Math.log(1-u()))*Math.cos(TP*u()); x[n]=S.ru/100*g+(n>=n0?Math.exp(-sg*(n-n0)/fs)*Math.cos(wd*(n-n0)/fs):0); } return {x,fs}; }
+  return {x:Float64Array.from(EJ.z),fs:1/EJ.dt};
+}
+function analizar(){
+  const s=senal(), fs=s.fs, N=s.x.length, x=new Float64Array(N); let m=0; for(const v of s.x) m+=v; m/=N; for(let n=0;n<N;n++) x[n]=s.x[n]-m;
+  let n0=0; for(let n=1;n<N;n++) if(Math.abs(x[n])>Math.abs(x[n0])) n0=n;                       // golpe
+  // espectro del tramo posterior al golpe (relleno con ceros hasta potencia de 2)
+  const L=N-n0; let M2=1; while(M2<4*L) M2<<=1; const re=new Float64Array(M2), im=new Float64Array(M2);
+  for(let n=0;n<L;n++) re[n]=x[n0+n]*(0.5+0.5*Math.cos(Math.PI*n/L)); fft2(re,im);   // media ventana de Hann decreciente: no borra el inicio del transitorio
+  const df=fs/M2, K=M2/2, mag=new Float64Array(K); let kp=Math.ceil(2/df); for(let k=0;k<K;k++){ mag[k]=Math.hypot(re[k],im[k]); if(k*df>=2&&mag[k]>mag[kp]) kp=k; }
+  let fp=kp*df; if(kp>0&&kp<K-1){ const y0=Math.log(mag[kp-1]), y1=Math.log(mag[kp]), y2=Math.log(mag[kp+1]); fp=(kp+0.5*(y0-y2)/(y0-2*y1+y2))*df; }
+  // señal analítica filtrada: pasabanda ideal fp(1 ± bw) sobre todo el registro
+  let M=1; while(M<N) M<<=1; const ar=new Float64Array(M), ai=new Float64Array(M); for(let n=0;n<N;n++) ar[n]=x[n]; fft2(ar,ai);
+  const fa=fp*(1-S.bw/100), fb=fp*(1+S.bw/100); for(let k=0;k<M;k++){ const f=k*fs/M; if(k<=M/2&&f>=fa&&f<=fb){ ar[k]*=2; ai[k]*=2; } else { ar[k]=0; ai[k]=0; } }
+  for(let k=0;k<M;k++) ai[k]=-ai[k]; fft2(ar,ai); const xf=new Float64Array(N), A=new Float64Array(N); for(let n=0;n<N;n++){ xf[n]=ar[n]/M; const q=-ai[n]/M; A[n]=Math.hypot(xf[n],q); }
+  // tramo de ajuste: desde el golpe + ti hasta que la envolvente cae a um % de su valor inicial
+  const i0=Math.min(N-8,n0+Math.round(S.ti*fs)); let i1=i0; const lim=A[i0]*S.um/100; while(i1<N-1&&A[i1]>lim) i1++;
+  const tt=[], la=[]; for(let n=i0;n<i1;n++){ tt.push((n-i0)/fs); la.push(Math.log(A[n])); }
+  const aj=tt.length>=8?recta(tt,la):{m:NaN,b:NaN,r2:NaN}, sigma=-aj.m, zenv=sigma/(TP*fp);
+  // decremento: máximos positivos de la señal filtrada con interpolación parabólica
+  const pk=[]; for(let n=Math.max(1,i0);n<Math.min(N-1,i1);n++){ if(xf[n]>0&&xf[n]>=xf[n-1]&&xf[n]>xf[n+1]){ const d=0.5*(xf[n-1]-xf[n+1])/(xf[n-1]-2*xf[n]+xf[n+1]); pk.push([(n+d)/fs, xf[n]-0.25*(xf[n-1]-xf[n+1])*d]); } }
+  let zdec=NaN, fd=NaN, delta=NaN; if(pk.length>=4){ const r=recta(pk.map((_,j)=>j),pk.map(p=>Math.log(p[1]))); delta=-r.m; zdec=delta/Math.sqrt(4*Math.PI*Math.PI+delta*delta); fd=(pk.length-1)/(pk[pk.length-1][0]-pk[0][0]); }
+  R={x,xf,A,fs,N,n0,i0,i1,fp,df,mag,K,aj,sigma,zenv,zdec,fd,delta,pk,tt,la,fa,fb,ciclos:pk.length-1}; return R;
+}
+function dibujar(){
+  const ejem=S.origen==='ej'||(S.origen==='csv'&&!CSV), r=analizar(), t0=r.n0/r.fs, tA=Math.max(0,t0-0.3), tB=Math.min(r.N/r.fs,(r.i1/r.fs)+0.8); let am=0; for(let n=0;n<r.N;n++) am=Math.max(am,Math.abs(r.x[n])); am*=1.08;
+  let g=lienzo($('c1'),260), e=ejes(g,{},{x0:tA,x1:tB,y0:-am,y1:am,xl:'t (s)',yl:'a (m/s^2)',tit:(ejem?'Registro de ejemplo':S.origen==='csv'?'Archivo propio':'Señal sintética')+': señal, envolvente y tramo ajustado',ny:4}), c=g.c;
+  c.fillStyle='rgba(197,90,17,.09)'; c.fillRect(e.X(r.i0/r.fs),e.py,e.X(r.i1/r.fs)-e.X(r.i0/r.fs),e.h);
+  const a=Math.floor(tA*r.fs), b=Math.min(r.N-1,Math.ceil(tB*r.fs)), p0=[],p1=[],p2=[],p3=[]; for(let n=a;n<=b;n++){ const t=n/r.fs; p0.push([t,r.x[n]]); p1.push([t,r.xf[n]]); if(n>=r.n0){ p2.push([t,r.A[n]]); p3.push([t,-r.A[n]]); } }
+  curva(e,p0,'#B9BEC8',1); curva(e,p1,STEEL,1.2); curva(e,p2,ORANGE,1.8); curva(e,p3,ORANGE,1.8);
+  if(isFinite(r.sigma)){ const A0=Math.exp(r.aj.b); curva(e,[...Array(60)].map((_,i)=>{ const t=r.i0/r.fs+i/59*(r.i1-r.i0)/r.fs; return [t,A0*Math.exp(-r.sigma*(t-r.i0/r.fs))]; }),RED,1.6,[6,4]); }
+  r.pk.forEach(p=>{ c.fillStyle=GREEN; c.beginPath(); c.arc(e.X(p[0]),e.Y(p[1]),2.4,0,7); c.fill(); });
+  // espectro (izquierda) y ln A (derecha); en pantallas angostas, uno debajo del otro
+  const ang=($('c2').clientWidth||760)<560, H2=ang?520:300; g=lienzo($('c2'),H2); c=g.c; const bx1=ang?{x:0,w:g.W,y:0,h:260}:{x:0,w:g.W/2,h:H2}, bx2=ang?{x:0,w:g.W,y:260,h:260}:{x:g.W/2,w:g.W/2,h:H2};
+  let mx=0; for(let k=1;k<r.K;k++) mx=Math.max(mx,r.mag[k]);
+  e=ejes(g,bx1,{x0:0,x1:r.fs/2,y0:mx*1e-4,y1:mx*2,logy:true,xl:'f (Hz)',yl:'|X| (relativa)',tit:'Espectro tras el golpe',nx:5});
+  c.fillStyle='rgba(68,114,196,.10)'; c.fillRect(e.X(r.fa),e.py,e.X(Math.min(r.fs/2,r.fb))-e.X(r.fa),e.h);
+  const ps=[], st=Math.max(1,Math.floor(r.K/1500)); for(let k=1;k<r.K;k+=st){ let v=0; for(let j=k;j<Math.min(r.K,k+st);j++) v=Math.max(v,r.mag[j]); ps.push([k*r.df,v]); } curva(e,ps,STEEL,1.3);
+  vline(e,r.fp,RED,[5,4],'f_n = '+r.fp.toFixed(2)+' Hz'); vline(e,0.8*r.fs/2,GREY,[2,3],'0.8 f_s/2',16);
+  if(r.tt.length>=8){ const y0=Math.min(...r.la), y1=Math.max(...r.la), pd=(y1-y0)*0.12+1e-6; e=ejes(g,bx2,{x0:0,x1:r.tt[r.tt.length-1],y0:y0-pd,y1:y1+pd,xl:'t desde el inicio del ajuste (s)',yl:'ln A  (A en m/s^2)',tit:'ln A(t) y recta ajustada',nx:5,ny:5});
+    curva(e,r.tt.map((t,i)=>[t,r.la[i]]),ORANGE,1.8); funcion(e,t=>r.aj.b+r.aj.m*t,RED,1.5,[6,4]); }
+  const f=(v,n)=>isFinite(v)?v.toFixed(n):'…';
+  $('ofs').textContent=f(r.fs,1)+' Hz'; $('ony').textContent=f(r.fs/2,1)+' Hz'; $('ofp').textContent=f(r.fp,2)+' Hz'; $('ofd').textContent=f(r.fd,2)+' Hz';
+  $('oze').textContent=f(r.zenv,4); $('ozd').textContent=f(r.zdec,4); $('osg').textContent=f(r.sigma,3)+' 1/s'; $('or2').textContent=f(r.aj.r2,3)+' · '+Math.max(0,r.ciclos)+' ciclos';
+  const av=[];
+  if(S.origen==='csv'&&!CSV) av.push('Todavía no hay un archivo cargado: se muestra el registro de ejemplo.');
+  if(S.origen==='csv'&&CSV&&/abs/i.test(CSV.nombres[CSV.sel])) av.push('Se eligió la aceleración absoluta: el valor absoluto rectifica la señal y la frecuencia aparece duplicada. Elegir un eje (x, y o z).');
+  if(isFinite(r.sigma)&&r.fp*S.bw/100<4*r.sigma/TP) av.push('El filtro es estrecho frente al ancho del pico (2ζ f_n ≈ '+(r.sigma/Math.PI).toFixed(2)+' Hz): ensanchar el semiancho del filtro, porque de lo contrario el amortiguamiento resulta sobrestimado.');
+  if(r.fp>0.8*r.fs/2) av.push('El pico está por encima de 0.8 f_s/2: puede ser un alias de una frecuencia mayor. Conviene alargar la viga y repetir.');
+  if(S.origen==='sint'&&S.fn>S.fs/2) av.push('La frecuencia verdadera ('+S.fn+' Hz) supera Nyquist: el pico en '+r.fp.toFixed(1)+' Hz es un alias, f_a = |f − k f_s|; el amortiguamiento calculado con esa frecuencia tampoco es válido.');
+  if(r.ciclos<20) av.push('El tramo ajustado tiene menos de 20 ciclos: bajar el umbral de fin o revisar el registro.');
+  if(r.aj.r2<0.97) av.push('R^2 menor que 0.97: la envolvente no es una exponencial limpia (ruido, golpe dentro del tramo o amortiguamiento que depende de la amplitud).');
+  if(isFinite(r.zenv)&&isFinite(r.zdec)&&Math.abs(r.zenv-r.zdec)/r.zenv>0.3) av.push('Los dos métodos difieren más de 30 %.');
+  $('aviso').textContent=av.join(' ')||((ejem?'Registro de ejemplo: ':'')+'cumple los criterios de la lista de verificación (pico bajo 0.8 f_s/2, al menos 20 ciclos, R^2 ≥ 0.97, métodos a menos de 30 %).');
+}
+liga(S,UN,dibujar);
+function modo(){ $('gcsv').style.display=S.origen==='csv'?'':'none'; $('gsint').style.display=S.origen==='sint'?'':'none'; }
+$('origen').addEventListener('change',ev=>{ S.origen=ev.target.value; modo(); dibujar(); });
+$('csv').addEventListener('change',ev=>{ const fl=ev.target.files[0]; if(!fl) return; const rd=new FileReader();
+  rd.onload=()=>{ try{ CSV=leerCSV(rd.result); $('col').innerHTML=''; CSV.nombres.forEach((n,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=n; o.selected=i===CSV.sel; $('col').appendChild(o); });
+      $('csvinfo').textContent='Archivo leído: '+CSV.t.length.toLocaleString('es-MX')+' muestras en '+(CSV.t[CSV.t.length-1]-CSV.t[0]).toFixed(1)+' s. Elegir la columna del eje perpendicular a la viga.'; }
+    catch(err){ CSV=null; $('col').innerHTML=''; $('csvinfo').textContent='No se pudo leer el archivo: '+err.message+'. Se muestra el registro de ejemplo.'; } dibujar(); }; rd.readAsText(fl); });
+$('col').addEventListener('change',ev=>{ if(CSV){ CSV.sel=+ev.target.value; dibujar(); } });
+// pestañas Colab / VS Code
+function tab(c){ $('panC').style.display=c?'':'none'; $('panV').style.display=c?'none':''; $('tabC').classList.toggle('on',c); $('tabV').classList.toggle('on',!c); }
+$('tabC').onclick=()=>tab(true); $('tabV').onclick=()=>tab(false);
+// avance del tutorial (se conserva en este navegador si el almacenamiento está disponible)
+const CL='vib-tutorial-phyphox'; let hechos={}; try{ hechos=JSON.parse(localStorage.getItem(CL)||'{}')||{}; }catch(err){ hechos={}; }
+const secs=[...document.querySelectorAll('.paso')];
+$('indice').innerHTML=secs.map((p,i)=>'<a href="#paso'+(i+1)+'" data-i="'+(i+1)+'"></a>').join(''); [...$('indice').children].forEach((a,i)=>a.textContent=(i+1)+' · '+secs[i].querySelector('h2').childNodes[1].textContent.trim());
+function avance(){ let n=0; secs.forEach((p,i)=>{ const ok=!!hechos[i+1]; n+=ok; p.classList.toggle('ok',ok); p.querySelector('input[data-paso]').checked=ok; $('indice').children[i].classList.toggle('ok',ok); }); $('barra').style.width=(100*n/secs.length)+'%'; }
+document.querySelectorAll('input[data-paso]').forEach(ch=>ch.addEventListener('change',()=>{ hechos[ch.dataset.paso]=ch.checked; try{ localStorage.setItem(CL,JSON.stringify(hechos)); }catch(err){} avance(); }));
+window.addEventListener('resize',dibujar);
+window.__tut={S,analizar,leerCSV,res:()=>R};
+modo(); avance(); dibujar();
+
+</script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ n.classList.add('kbmal'); n.value=limpio(actual(),6).replace('-','−'); setTimeout(function(){ n.classList.remove('kbmal'); },900); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
+<!-- contador:inicio -->
+<style>
+  .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
+  .visitas span{display:inline-block;background:#fff;border:1px solid #D3DEEE;border-radius:20px;padding:3px 11px}
+  .visitas b{color:#1F3864;font-weight:700}
+  .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
+</style>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
+<script>
+(function(){
+  if(location.protocol!=='http:' && location.protocol!=='https:') return;   // copia local: sin contador ni peticiones
+  var sc=document.createElement('script'); sc.async=true;
+  sc.setAttribute('data-goatcounter','https://elodiestrupiechonski.goatcounter.com/count');
+  sc.src='https://gc.zgo.at/count.js'; document.head.appendChild(sc);
+  var base='https://elodiestrupiechonski.goatcounter.com/counter/';
+  function pide(path){
+    return fetch(base+encodeURIComponent(path).replace(/%2F/g,'/')+'.json',{cache:'no-cache'})
+      .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+  }
+  var p=location.pathname;
+  if(/\/index\.html$/.test(p)) p=p.replace(/index\.html$/,'');
+  Promise.all([pide(p), pide('TOTAL')]).then(function(res){
+    var a=res[0], b=res[1];
+    if(!a && !b) return;
+    document.getElementById('vis-pag').textContent = a ? a.count : '–';
+    document.getElementById('vis-tot').textContent = b ? b.count : '–';
+    document.getElementById('visitas').style.display='block';
+  });
+})();
+</script>
+<!-- contador:fin -->
+<!-- navegacion:inicio -->
+<style>
+  :root{--nv-w:272px}
+  body{margin-top:0!important}
+  @media (min-width:1360px){ body{margin-left:var(--nv-w)!important} }
+  .nvside{position:fixed;top:0;left:0;bottom:0;width:var(--nv-w);z-index:9999;display:flex;flex-direction:column;
+    background:var(--card,#fff);border-right:1px solid var(--line,#e2dcc9);
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:14px;color:var(--ink,#1a1a1a);
+    box-shadow:1px 0 8px rgba(0,0,0,.05);transition:transform .2s ease}
+  .nvside a{text-decoration:none;color:inherit}
+  .nv-cab{padding:14px 16px 10px;border-bottom:1px solid var(--line,#e2dcc9);position:relative}
+  .nv-marca{display:block;font-family:"Century Gothic","Questrial",Arial,sans-serif;font-weight:700;font-size:15px;
+    line-height:1.25;color:var(--navy,var(--ink,#1F3864))}
+  .nv-marca small{display:block;font-weight:400;font-size:12px;color:var(--muted,var(--grey,#5a5a5a));margin-top:2px}
+  .nv-pasos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+  .nv-paso{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font-size:11px;color:var(--muted,var(--grey,#5a5a5a));min-width:0}
+  .nv-paso b{font-size:12.5px;color:var(--ink,#1a1a1a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nv-paso.sig{text-align:right}
+  .nv-paso:hover{background:var(--bg,#f4f1ea)}
+  .nv-paso[aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-busca{margin-top:8px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font:inherit;background:var(--bg,#f8f6f0);color:inherit}
+  .nv-lista{flex:1;overflow-y:auto;padding:6px 8px 10px}
+  .nv-grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,var(--grey,#5a5a5a));padding:12px 8px 4px}
+  .nv-lista a{display:block;padding:6px 8px 6px 10px;border-radius:6px;border-left:3px solid transparent;line-height:1.3}
+  .nv-lista a small{display:block;font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-lista a:hover{background:var(--bg,#f4f1ea)}
+  .nv-lista a.nv-aqui{background:var(--bg,#f4f1ea);border-left-color:var(--accent,var(--orange,#C1571B));font-weight:700}
+  .nv-nada{padding:10px;font-size:12.5px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-pie{padding:8px 14px;border-top:1px solid var(--line,#e2dcc9);font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-boton{display:none;position:fixed;top:10px;left:10px;z-index:10000;gap:6px}
+  .nv-boton a,.nv-boton button{display:flex;align-items:center;justify-content:center;height:38px;min-width:38px;padding:0 10px;
+    border:1px solid var(--line,#e2dcc9);border-radius:9px;background:var(--card,#fff);color:var(--ink,#1a1a1a);
+    font:600 14px Arial,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .nv-boton [aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-velo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10001}
+  .nv-cierra{display:none;position:absolute;top:10px;right:10px;width:32px;height:32px;border:1px solid var(--line,#e2dcc9);border-radius:8px;background:var(--card,#fff);color:inherit;font-size:16px;cursor:pointer}
+  @media (max-width:1359px){
+    body{margin-top:56px!important}
+    .nvside{transform:translateX(-102%);width:min(320px,88vw)}
+    .nvside.abierto{transform:none;z-index:10002}
+    .nv-cierra{display:block}
+    .nv-pie{display:none}
+    .nv-boton{display:flex}
+    .nvside.abierto ~ .nv-velo{display:block}
+  }
+  @media print{.nvside,.nv-boton,.nv-velo{display:none} body{margin:0!important}}
+</style>
+<nav class="nvside" id="nvside" aria-label="Exploradores del curso">
+  <div class="nv-cab">
+    <button class="nv-cierra" id="nv-cierra" aria-label="Cerrar el temario">✕</button>
+    <a class="nv-marca" href="index.html">Exploradores de Vibraciones<small>ENES Juriquilla, UNAM · inicio</small></a>
+    <div class="nv-pasos">
+      <a class="nv-paso" id="nv-ant" href="#" aria-label="Explorador anterior">‹ anterior<b id="nv-ant-t">…</b></a>
+      <a class="nv-paso sig" id="nv-sig" href="#" aria-label="Explorador siguiente">siguiente ›<b id="nv-sig-t">…</b></a>
+    </div>
+    <input class="nv-busca" id="nv-busca" type="search" placeholder="Buscar (tecla /)" aria-label="Buscar explorador">
+  </div>
+  <div class="nv-lista" id="nv-lista">
+<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
+<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html" data-k="segunda ley de Newton frecuencia natural Frecuencia natural ωn = √(k/m) Energía T ↔ V, resorte equivalente Péndulo y acelerómetro (masa sísmica)">Dinámica de la partícula<small>Pilar 3 · armar la ecuación</small></a>
+<a href="edo_interactivo.html" data-nv="edo_interactivo.html" data-k="ecuaciones diferenciales de segundo orden amortiguamiento Subamortiguado, crítico, sobreamortiguado Inestable = flameo (frontera Re = 0) Respuesta x(t) con condiciones iniciales">EDO lineal de 2.º orden<small>Pilar 2 · resolverla</small></a>
+<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html" data-k="números complejos fasores Formas binómica, polar y de Euler Raíces cuadradas y ecuación auxiliar Fasor: excitación vs. respuesta (desfase θ)">Números complejos<small>Pilar 1 · interpretar las raíces</small></a>
+<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador</div>
+<a href="analogias_interactivo.html" data-nv="analogias_interactivo.html" data-k="analogía electromecánica circuito RLC sistemas de segundo orden Analogías fuerza-tensión y fuerza-corriente Escala de impedancia: ω_n y ζ no cambian Chapoteo, paneles y control de actitud">Analogías entre sistemas<small>2.1 y 2.4 · Pilar 14</small></a>
+<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html" data-k="fricción de Coulomb vibración libre Banda de reposo = Ff/k Caída de amplitud 4Ff/k por ciclo Conteo de ciclos hasta detenerse">Fricción de Coulomb<small>2.3 (fricción seca) · Pilar 4</small></a>
+<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia</div>
+<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html" data-k="respuesta forzada resonancia M = 1/√[(1−r²)²+(2ζr)²] Fase φ y resonancia (r ≈ 1) Aislamiento: aísla si r &gt; √2">Respuesta forzada y resonancia<small>3.1 · Pilar 5</small></a>
+<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html" data-k="método de media potencia factor de calidad Q = 1/(2ζ) = fn/Δf ζ medido = Δf/(2fn) Origen de la asimetría de la curva">Media potencia y factor Q<small>3.1–3.2 · Pilar 6</small></a>
+<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales</div>
+<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html" data-k="vibración aleatoria densidad espectral de potencia ecuación de Miles Grms = √(∫W df) y carga de diseño 3σ Miles: √[(π/2)·fn·Q·W(fn)] Escalas en dB (−3, +3, +6) y por qué log">Del espectro a la carga de diseño<small>4.1–4.2 · Pilar 7</small></a>
+<a href="normas.html" data-nv="normas.html" data-k="normas de ensayo GEVS ECSS MIL-STD-810H, GEVS y ECSS: descarga gratuita DO-160 e ISO: de pago, con vista previa Enlaces que se actualizan desde un solo archivo">Dónde consultar las normas<small>4.1 y 4.3 · apoyo</small></a>
+<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos</div>
+<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html" data-k="círculo de Mohr criterios de falla σ1, σ2, θp y τmáx en vivo Roseta de galgas 0/45/90 → estado de esfuerzo Tres círculos, von Mises y Tresca">Círculo de Mohr<small>5.3 · Pilar 8</small></a>
+<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html" data-k="fatiga regla de Miner Acero con límite, aluminio sin él Esfuerzo medio y concentrador Kf Miner: cuánta vida consume el ensayo">Fatiga: S–N, Haigh y Miner<small>5.4 · Pilar 9</small></a>
+<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento</div>
+<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html" data-k="nivel de presión sonora bandas de octava exposición al ruido Suma energética y ponderación A −6 dB por duplicar la distancia T = 8·2^((90−LA)/3) h">Niveles sonoros y exposición al ruido<small>6.1, 6.2 y 6.4 · Pilar 10</small></a>
+<a href="transmisibilidad_interactivo.html" data-nv="transmisibilidad_interactivo.html" data-k="transmisibilidad aislamiento de vibraciones desbalance rotatorio T_r = 1 en r = √2 para todo ζ Deflexión estática: δ_st = g/ω_n^2 Desbalance rotatorio: F_0 = m_0 e ω^2">Transmisibilidad y aislamiento<small>6.3 · Pilar 13</small></a>
+<div class="nv-grp">Unidad 7 · Pruebas</div>
+<a href="tutorial_phyphox.html" data-nv="tutorial_phyphox.html" data-k="Phyphox acelerómetro del teléfono decremento logarítmico Jupyter Descarga de Phyphox, cuaderno y datos de ejemplo Colab o Visual Studio Code, paso a paso Envolvente de Hilbert y decremento logarítmico">Tutorial: medir con Phyphox y analizar en Python<small>7.1 · Tutorial</small></a>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html" data-k="muestreo aliasing método de Welch Aliasing: f_a = |f − k·f_s| Δf = 1/T_seg y ε_r ≈ 1/√n_d G_rms como área de la PSD (Parseval)">Laboratorio de señales<small>7.1–7.2 · Pilar 11</small></a>
+<a href="modal_interactivo.html" data-nv="modal_interactivo.html" data-k="análisis modal experimental función de respuesta en frecuencia diagrama de Nyquist Media potencia: ζ = (f_b − f_a)/(2 f_n) Círculo de Nyquist por mínimos cuadrados Resolución necesaria: T ≥ 2/(ζ f_n)">Extracción de parámetros modales<small>7.3 · Pilar 15</small></a>
+<div class="nv-grp">Unidad 8 · Sistemas acoplados</div>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html" data-k="dos grados de libertad absorbedor dinámico Valores propios: ω_1, ω_2 y formas modales Absorbedor dinámico y óptimo de Den Hartog Separación de frecuencias equipo–estructura">Dos grados de libertad y absorbedor<small>8.1–8.3 · Pilar 12</small></a>
+<div class="nv-nada" id="nv-nada" style="display:none">Sin coincidencias. Se busca en títulos, temas y palabras clave.</div>
+  </div>
+  <div class="nv-pie">Teclas (fuera de los controles): ← anterior · → siguiente · / buscar · Esc cerrar</div>
+</nav>
+<div class="nv-boton"><button id="nv-abre" aria-controls="nvside" aria-expanded="false">☰ Temario</button>
+  <a id="nv-ant2" href="#" aria-label="Anterior">‹</a><a id="nv-sig2" href="#" aria-label="Siguiente">›</a></div>
+<div class="nv-velo" id="nv-velo"></div>
+<script>
+(function(){
+  var lista=document.getElementById('nv-lista'), side=document.getElementById('nvside');
+  var l=lista.querySelectorAll('a[data-nv]'), orden=[], dat={};
+  for(var i=0;i<l.length;i++){var f=l[i].getAttribute('data-nv');orden.push(f);
+    dat[f]={el:l[i],t:l[i].childNodes[0].textContent.trim()};}
+  var aqui=(location.pathname.split('/').pop()||'index.html'), k=orden.indexOf(aqui);
+  function paso(idA,idT,j){var a=document.getElementById(idA);
+    if(j<0||j>=orden.length){a.setAttribute('aria-disabled','true');a.setAttribute('tabindex','-1');if(idT)document.getElementById(idT).textContent='';return;}
+    a.href=orden[j];a.title=dat[orden[j]].t+(j<k?' (tecla ←)':' (tecla →)');if(idT)document.getElementById(idT).textContent=dat[orden[j]].t;}
+  if(k>=0){dat[aqui].el.className='nv-aqui';dat[aqui].el.setAttribute('aria-current','page');
+    paso('nv-ant','nv-ant-t',k-1);paso('nv-sig','nv-sig-t',k+1);paso('nv-ant2',null,k-1);paso('nv-sig2',null,k+1);
+    setTimeout(function(){var r=dat[aqui].el;lista.scrollTop=r.offsetTop-lista.clientHeight/3;},0);}
+  else{paso('nv-ant','nv-ant-t',-1);paso('nv-sig','nv-sig-t',0);paso('nv-ant2',null,-1);paso('nv-sig2',null,0);}
+  var bus=document.getElementById('nv-busca');
+  function llano(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  bus.addEventListener('input',function(){var q=llano(bus.value), grp=null, vis=0, tot=0;
+    Array.prototype.forEach.call(lista.children,function(c){
+      if(c.classList.contains('nv-grp')){if(grp)grp.style.display=vis?'':'none';grp=c;vis=0;return;}
+      if(!c.getAttribute('data-nv')) return;
+      var ok=!q||llano(c.textContent+' '+(c.getAttribute('data-k')||'')).indexOf(q)>=0;c.style.display=ok?'':'none';if(ok){vis++;tot++;}});
+    if(grp)grp.style.display=vis?'':'none';
+    document.getElementById('nv-nada').style.display=tot?'none':'block';});
+  bus.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){var v=lista.querySelector('a[data-nv]:not([style*="none"])');if(v)location.href=v.href;}
+    if(e.key==='Escape'){bus.value='';bus.dispatchEvent(new Event('input'));bus.blur();cambia(false);}});
+  var abre=document.getElementById('nv-abre'), velo=document.getElementById('nv-velo');
+  function cambia(on){side.classList.toggle('abierto',on);abre.setAttribute('aria-expanded',on?'true':'false');}
+  abre.addEventListener('click',function(){cambia(!side.classList.contains('abierto'));});
+  velo.addEventListener('click',function(){cambia(false);});
+  document.getElementById('nv-cierra').addEventListener('click',function(){cambia(false);});
+  document.addEventListener('keydown',function(e){
+    var t=(e.target.tagName||'').toUpperCase();
+    if(e.key==='Escape'){cambia(false);return;}
+    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||t==='BUTTON'||t==='A'||t==='SUMMARY'||e.target.isContentEditable||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey) return;
+    if(e.key==='/'){e.preventDefault();if(innerWidth<1360)cambia(true);bus.focus();return;}
+    if(k<0) return;
+    if(e.key==='ArrowLeft'&&k>0) location.href=orden[k-1];
+    if(e.key==='ArrowRight'&&k<orden.length-1) location.href=orden[k+1];
+  });
+})();
+</script>
+<!-- navegacion:fin -->
+</body>
+</html>

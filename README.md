@@ -1,41 +1,47 @@
 # Vibraciones: exploradores interactivos
 
-Colección de **ocho exploradores interactivos** (HTML, funcionan sin conexión) de apoyo al curso de **Vibraciones** · Ingeniería Aeroespacial · **ENES Juriquilla, UNAM**.
-
-🔗 **Portal en línea:** https://elodiestrupiechonski.github.io/vibraciones-exploradores/
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23422993.svg)](https://doi.org/10.5281/zenodo.23422993)
 
-## Exploradores
+Colección de recursos educativos abiertos (REA) para el curso de **Vibraciones** de la licenciatura en **Ingeniería Aeroespacial**, ENES Juriquilla, UNAM. Cada explorador es una página HTML autónoma e interactiva: se mueve un control, o se escribe un valor, y se observa cómo responde el sistema.
 
-**Pilares de fundamentos (conocimiento previo)**
-1. `complejos_interactivo.html`: Números complejos (INTERPRETAR)
-2. `edo_interactivo.html`: EDO lineal de 2.º orden (RESOLVER)
-3. `edo3_interactivo.html`: Dinámica de la partícula, ΣF = ma (ARMAR)
+**Versión 1.2 (2026)** · Portal en línea: https://elodiestrupiechonski.github.io/vibraciones-exploradores/
 
-**Temas del curso**
-4. `coulomb_interactivo.html`: Fricción de Coulomb (U2)
-5. `forzada_interactivo.html`: Respuesta forzada y resonancia (U3)
-6. `mediapotencia_interactivo.html`: Media potencia y factor Q (U3)
-7. `espectro_interactivo.html`: Del espectro de ensayo a la carga de diseño (U4)
-8. `mohr_interactivo.html`: Círculo de Mohr, roseta de galgas, tres círculos y criterios de falla estática (U5)
-9. `fatiga_interactivo.html`: Fatiga: curva S–N, diagrama de Haigh y regla de Miner (U5)
-10. `sonido_interactivo.html`: Niveles sonoros, bandas de octava y exposición al ruido, NOM-011-STPS-2001 (U6)
+## Cómo usar
 
-Material de apoyo
+Abrir **`index.html`** en cualquier navegador actual. No se necesita conexión ni instalación: todo el código va incluido en cada archivo. El panel lateral permite recorrer los exploradores en el orden del programa (teclas ← y →) y buscar por nombre (tecla /). Para que las ligas funcionen, todos los archivos deben estar en la misma carpeta.
 
-- `normas.html`: Dónde consultar las normas (enlaces de descarga y de compra)
-- `normas.json`: fuente única de esas referencias: editar este archivo actualiza la guía y el Pilar 7
+## Contenido
 
-- `temario.json`: fuente única de la **barra de navegación** y del **índice por unidades**: unidades, subtemas y qué explorador pertenece a cada una
-- `build_index.py`: genera `index.html` desde `temario.json` (mismo lenguaje visual que el sitio de Teoría Electromagnética)
-- `add_navbar.py`: barra de navegación fija (‹ › Temario, teclas ← →) en todas las páginas, desde `temario.json`
-- `add_tema.py`: tema visual común de los exploradores (fondo papel, Spectral + IBM Plex, cabecera sobria)
-- `add_contador.py`: contador de visitas (GoatCounter)
+| Archivo | Contenido | Unidad · tema |
+|---|---|---|
+| `index.html` | Portada de la colección | |
+| `edo3_interactivo.html` | Dinámica de la partícula: Al arrastrar la masa se ve el diagrama de cuerpo libre en vivo y se arma ΣF = ma → m·x″ + c·x′ + k·x = 0 | Fundamentos · Pilar 3 |
+| `edo_interactivo.html` | EDO lineal de 2.º orden: Al mover los coeficientes o arrastrar las raíces en el plano s se observan Δ = b²−4ac y los cuatro regímenes | Fundamentos · Pilar 2 |
+| `complejos_interactivo.html` | Números complejos: Al arrastrar z en el plano de Argand se leen |z| como amplitud, θ como desfase y sus raíces como régimen | Fundamentos · Pilar 1 |
+| `analogias_interactivo.html` | Analogías entre sistemas: Al fijar masa, amortiguador y resorte se obtienen el circuito RLC análogo, el sistema de torsión y el hidráulico, con la misma frecuencia natural y el mismo amortiguamiento | U2 · 2.1 y 2.4 |
+| `coulomb_interactivo.html` | Fricción de Coulomb: Al soltar el bloque se observa cómo la fricción seca Ff = μN hace que la amplitud caiga en línea recta (no exponencial) hasta detenerse dentro de una banda | U2 · 2.3 (fricción seca) |
+| `forzada_interactivo.html` | Respuesta forzada y resonancia: Al barrer la frecuencia r = ω/ωn se observan el factor de amplificación M, la fase φ y el pico de resonancia | U3 · 3.1 |
+| `mediapotencia_interactivo.html` | Media potencia y factor Q: Al variar el amortiguamiento se observa cómo el pico sube y se angosta. Los puntos donde la amplitud cae a Mmáx/√2 dan el ancho de banda Δf | U3 · 3.1–3.2 |
+| `espectro_interactivo.html` | Del espectro a la carga de diseño: Tres paneles encadenados: lo que impone la norma W(f), lo que aporta la resonancia del equipo |H(f)|² y la respuesta que resulta | U4 · 4.1–4.2 |
+| `normas.html` | Dónde consultar las normas: Las normas citadas en la Unidad 4, con el enlace oficial de cada una y el aviso de si la descarga es libre o hay que comprarla | U4 · 4.1 y 4.3 · apoyo |
+| `mohr_interactivo.html` | Círculo de Mohr: El elemento diferencial y el círculo de Mohr, lado a lado y sincronizados: al girar el corte un ángulo θ, el punto recorre el círculo a 2θ. Incluye la roseta de galgas y los tres círculos | U5 · 5.3 |
+| `fatiga_interactivo.html` | Fatiga: S–N, Haigh y Miner: Curva S–N en log–log y diagrama de Haigh con el estado de la pieza; Goodman, Soderberg y Gerber; daño acumulado de un ensayo de vibración aleatoria con las tres bandas de Steinberg | U5 · 5.4 |
+| `sonido_interactivo.html` | Niveles sonoros y exposición al ruido: Espectro en bandas de octava editable, nivel total y ponderado A, ley de distancia, varias fuentes y tiempo permitido según la NOM-011-STPS-2001. Con micrófono relativo opcional | U6 · 6.1, 6.2 y 6.4 |
+| `transmisibilidad_interactivo.html` | Transmisibilidad y aislamiento: Al variar masa, rigidez, amortiguamiento y frecuencia se lee cuánto movimiento o cuánta fuerza se transmite, y desde qué frecuencia el soporte aísla | U6 · 6.3 |
+| `tutorial_phyphox.html` | Tutorial: medir con Phyphox y analizar en Python: Ligas para instalar Phyphox y descargar el cuaderno de Jupyter, instrucciones para Colab y Visual Studio Code, y un analizador que reproduce el tratamiento del decaimiento | U7 · 7.1 |
+| `senales_interactivo.html` | Laboratorio de señales: Una señal sintética o un CSV de Phyphox se muestrea, se corta en segmentos y se promedia: aliasing, fuga, resolución y error aleatorio a la vista | U7 · 7.1–7.2 |
+| `modal_interactivo.html` | Extracción de parámetros modales: Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa | U7 · 7.3 |
+| `dosgdl_interactivo.html` | Dos grados de libertad y absorbedor: Al montar un segundo sistema sobre la estructura, la resonancia se divide en dos modos; un absorbedor sintonizado anula la respuesta en su frecuencia | U8 · 8.1–8.3 |
 
-Orden para regenerar el sitio: `build_index.py` → `add_tema.py` → `add_contador.py CODIGO` → `add_navbar.py`. Todos son idempotentes; para una página nueva basta registrarla en `temario.json` y volver a correrlos
+Otros archivos: `Tratamiento_decaimiento_Phyphox.ipynb` (cuaderno de Jupyter del tutorial), `segueta_10cm.csv` (registro de ejemplo), `Hoja_alumno_Pilar1_Complejos.docx`, `Hoja_alumno_Pilar2_EDO.docx` y `Hoja_alumno_Pilar3_Dinamica.docx` (hojas de trabajo), `normas.json` (referencias normativas), `temario.json` (fuente única del panel de navegación, del índice y de los metadatos), `sitemap.xml`, `CHANGELOG.md`.
 
-Punto de partida: `index.html`.
+## Reglas de estilo
+
+Las mismas que en el sitio de Teoría Electromagnética: tipografía institucional (Century Gothic o equivalente en títulos, Arial en texto, Cambria en fórmulas); fórmulas en notación matemática con subíndices y superíndices reales, también en las gráficas; redacción impersonal, sin rayas ni emojis decorativos; todo valor se puede fijar con el deslizador o escribirse con el teclado; cada resultado numérico se verifica con un cálculo independiente; las referencias son libros de texto reconocidos o publicaciones con DOI comprobado.
+
+## Mantenimiento
+
+La carpeta `herramientas/` contiene los scripts de Python que generan y homologan las páginas (todos idempotentes salvo `mejoras.py`, que se aplicó una sola vez en la versión 1.1). Para añadir un explorador: registrarlo en `temario.json` dentro de su unidad, en el orden del programa, y ejecutar `integra2.py`. `construir.sh` reconstruye la versión actual a partir de la anterior; `rev12.py`, `teclado.py`, `nuevos.py` y `audit.py` son las pruebas automáticas (Playwright) que comparan las lecturas con cálculos independientes.
 
 ## Licencia
 
@@ -43,18 +49,11 @@ Creative Commons Attribution 4.0 International (**CC BY 4.0**).
 
 ## Cómo citar
 
-Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones: exploradores interactivos* (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
+Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones: exploradores interactivos* (Versión 1.2) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
 
 ## Autoría
 
 - Elodie Strupiechonski: ENES Juriquilla, UNAM · ORCID [0000-0001-8991-8499](https://orcid.org/0000-0001-8991-8499)
 - Andrés de Luna Bugallo: CFATA, UNAM · ORCID [0000-0002-7591-5235](https://orcid.org/0000-0002-7591-5235)
 
-## Revisión de noviembre de 2026
-
-- Dos exploradores nuevos: `senales_interactivo.html` (Pilar 11, Unidad 7: muestreo, aliasing, ventanas y método de Welch, con lectura de archivos CSV de Phyphox) y `dosgdl_interactivo.html` (Pilar 12, Unidad 8: dos grados de libertad, formas modales y absorbedor dinámico).
-- Entrada por teclado: cada deslizador tiene una casilla numérica contigua; el valor escrito no queda limitado al paso del deslizador y se valida contra su intervalo.
-- Fórmulas en notación matemática (MathML incrustado, sin bibliotecas externas): fracciones, radicales y subíndices reales, también en las etiquetas de las gráficas.
-- Tipografía institucional (Century Gothic o equivalente en títulos, Arial en texto, Cambria en fórmulas), redacción impersonal y sin rayas.
-- Correcciones: botones principales de los Pilares 1 a 5 (texto blanco sobre fondo blanco), aproximaciones marcadas con ≈ en media potencia y Miles, criterio de Gerber, formato del daño de Miner.
-- Todos los resultados numéricos se verificaron con cálculos independientes (Python y NumPy) mediante pruebas automáticas en navegador.
+El historial de cambios está en [`CHANGELOG.md`](CHANGELOG.md).

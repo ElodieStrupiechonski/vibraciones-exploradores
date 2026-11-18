@@ -1,8 +1,8 @@
 {
  "curso": "Vibraciones",
  "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
- "actualizado": "2026-11-11",
- "nota": "Fuente única de la barra de navegación y del índice. Títulos, subtemas, horas y objetivos tomados del programa oficial (Vibraciones.pdf). Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos'), 3) ejecutar add_navbar.py.",
+ "actualizado": "2026-11-17",
+ "nota": "Fuente única del panel de navegación, del índice, del mapa del sitio y de los metadatos. Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos') en el orden del programa, 3) ejecutar integra2.py.",
  "paginas": {
   "complejos_interactivo.html": {
    "corto": "Pilar 1 · Números complejos",
@@ -20,7 +20,11 @@
     "#C55A11",
     "#4472C4"
    ],
-   "hoja": "Hoja_alumno_Pilar1_Complejos.docx"
+   "hoja": "Hoja_alumno_Pilar1_Complejos.docx",
+   "claves": [
+    "números complejos",
+    "fasores"
+   ]
   },
   "edo_interactivo.html": {
    "corto": "Pilar 2 · EDO 2.º orden",
@@ -38,7 +42,11 @@
     "#2E5496",
     "#C55A11"
    ],
-   "hoja": "Hoja_alumno_Pilar2_EDO.docx"
+   "hoja": "Hoja_alumno_Pilar2_EDO.docx",
+   "claves": [
+    "ecuaciones diferenciales de segundo orden",
+    "amortiguamiento"
+   ]
   },
   "edo3_interactivo.html": {
    "corto": "Pilar 3 · Dinámica (ΣF = ma)",
@@ -56,7 +64,11 @@
     "#2E7D46",
     "#2E5496"
    ],
-   "hoja": "Hoja_alumno_Pilar3_Dinamica.docx"
+   "hoja": "Hoja_alumno_Pilar3_Dinamica.docx",
+   "claves": [
+    "segunda ley de Newton",
+    "frecuencia natural"
+   ]
   },
   "coulomb_interactivo.html": {
    "corto": "Pilar 4 · Fricción de Coulomb",
@@ -68,10 +80,14 @@
     "Caída de amplitud 4Ff/k por ciclo",
     "Conteo de ciclos hasta detenerse"
    ],
-   "tema": "tema 2.3",
+   "tema": "tema 2.3 (fricción seca)",
    "swatch": [
     "#B23A3A",
     "#C55A11"
+   ],
+   "claves": [
+    "fricción de Coulomb",
+    "vibración libre"
    ]
   },
   "forzada_interactivo.html": {
@@ -88,6 +104,10 @@
    "swatch": [
     "#6B3FA0",
     "#4472C4"
+   ],
+   "claves": [
+    "respuesta forzada",
+    "resonancia"
    ]
   },
   "mediapotencia_interactivo.html": {
@@ -104,6 +124,10 @@
    "swatch": [
     "#2E7D46",
     "#6B3FA0"
+   ],
+   "claves": [
+    "método de media potencia",
+    "factor de calidad"
    ]
   },
   "espectro_interactivo.html": {
@@ -120,6 +144,11 @@
    "swatch": [
     "#1F3864",
     "#C55A11"
+   ],
+   "claves": [
+    "vibración aleatoria",
+    "densidad espectral de potencia",
+    "ecuación de Miles"
    ]
   },
   "mohr_interactivo.html": {
@@ -136,6 +165,10 @@
    "swatch": [
     "#2E7D46",
     "#C55A11"
+   ],
+   "claves": [
+    "círculo de Mohr",
+    "criterios de falla"
    ]
   },
   "normas.html": {
@@ -153,6 +186,11 @@
    "swatch": [
     "#6B3FA0",
     "#8a8fa0"
+   ],
+   "claves": [
+    "normas de ensayo",
+    "GEVS",
+    "ECSS"
    ]
   },
   "fatiga_interactivo.html": {
@@ -169,6 +207,10 @@
    "swatch": [
     "#B23A3A",
     "#6B3FA0"
+   ],
+   "claves": [
+    "fatiga",
+    "regla de Miner"
    ]
   },
   "sonido_interactivo.html": {
@@ -181,10 +223,15 @@
     "−6 dB por duplicar la distancia",
     "T = 8·2^((90−LA)/3) h"
    ],
-   "tema": "temas 6.3–6.4",
+   "tema": "temas 6.1, 6.2 y 6.4",
    "swatch": [
     "#4472C4",
     "#2E7D46"
+   ],
+   "claves": [
+    "nivel de presión sonora",
+    "bandas de octava",
+    "exposición al ruido"
    ]
   },
   "senales_interactivo.html": {
@@ -201,6 +248,11 @@
    "swatch": [
     "#2E5496",
     "#2E7D46"
+   ],
+   "claves": [
+    "muestreo",
+    "aliasing",
+    "método de Welch"
    ]
   },
   "dosgdl_interactivo.html": {
@@ -217,21 +269,115 @@
    "swatch": [
     "#1F3864",
     "#6B3FA0"
+   ],
+   "claves": [
+    "dos grados de libertad",
+    "absorbedor dinámico"
+   ]
+  },
+  "analogias_interactivo.html": {
+   "corto": "Pilar 14 · Analogías entre sistemas",
+   "titulo": "Analogías entre sistemas",
+   "enfoque": "MODELAR · una misma ecuación en cuatro dominios",
+   "descripcion": "Al fijar masa, amortiguador y resorte se obtienen el circuito RLC análogo, el sistema de torsión y el hidráulico, con la misma frecuencia natural y el mismo amortiguamiento.",
+   "puntos": [
+    "Analogías fuerza-tensión y fuerza-corriente",
+    "Escala de impedancia: ω_n y ζ no cambian",
+    "Chapoteo, paneles y control de actitud"
+   ],
+   "tema": "temas 2.1 y 2.4",
+   "swatch": [
+    "#2E5496",
+    "#C55A11"
+   ],
+   "claves": [
+    "analogía electromecánica",
+    "circuito RLC",
+    "sistemas de segundo orden"
+   ]
+  },
+  "transmisibilidad_interactivo.html": {
+   "corto": "Pilar 13 · Transmisibilidad y aislamiento",
+   "titulo": "Transmisibilidad y aislamiento",
+   "enfoque": "AISLAR · cuánto pasa del piso al equipo",
+   "descripcion": "Al variar masa, rigidez, amortiguamiento y frecuencia se lee cuánto movimiento o cuánta fuerza se transmite, y desde qué frecuencia el soporte aísla.",
+   "puntos": [
+    "T_r = 1 en r = √2 para todo ζ",
+    "Deflexión estática: δ_st = g/ω_n^2",
+    "Desbalance rotatorio: F_0 = m_0 e ω^2"
+   ],
+   "tema": "tema 6.3",
+   "swatch": [
+    "#2E7D46",
+    "#2E5496"
+   ],
+   "claves": [
+    "transmisibilidad",
+    "aislamiento de vibraciones",
+    "desbalance rotatorio"
+   ]
+  },
+  "tutorial_phyphox.html": {
+   "corto": "Tutorial · Phyphox y Python",
+   "titulo": "Tutorial: medir con Phyphox y analizar en Python",
+   "enfoque": "MEDIR · del teléfono a f_n y ζ en siete pasos",
+   "descripcion": "Ligas para instalar Phyphox y descargar el cuaderno de Jupyter, instrucciones para Colab y Visual Studio Code, y un analizador que reproduce el tratamiento del decaimiento.",
+   "puntos": [
+    "Descarga de Phyphox, cuaderno y datos de ejemplo",
+    "Colab o Visual Studio Code, paso a paso",
+    "Envolvente de Hilbert y decremento logarítmico"
+   ],
+   "tema": "tema 7.1",
+   "swatch": [
+    "#C55A11",
+    "#2E7D46"
+   ],
+   "claves": [
+    "Phyphox",
+    "acelerómetro del teléfono",
+    "decremento logarítmico",
+    "Jupyter"
+   ]
+  },
+  "modal_interactivo.html": {
+   "corto": "Pilar 15 · Extracción modal",
+   "titulo": "Extracción de parámetros modales",
+   "enfoque": "IDENTIFICAR · f_n y ζ desde la FRF",
+   "descripcion": "Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa.",
+   "puntos": [
+    "Media potencia: ζ = (f_b − f_a)/(2 f_n)",
+    "Círculo de Nyquist por mínimos cuadrados",
+    "Resolución necesaria: T ≥ 2/(ζ f_n)"
+   ],
+   "tema": "tema 7.3",
+   "swatch": [
+    "#6B3FA0",
+    "#2E5496"
+   ],
+   "claves": [
+    "análisis modal experimental",
+    "función de respuesta en frecuencia",
+    "diagrama de Nyquist"
    ]
   }
  },
  "recorrido": [
-  "complejos_interactivo.html",
-  "edo_interactivo.html",
   "edo3_interactivo.html",
+  "edo_interactivo.html",
+  "complejos_interactivo.html",
+  "analogias_interactivo.html",
   "coulomb_interactivo.html",
   "forzada_interactivo.html",
   "mediapotencia_interactivo.html",
   "espectro_interactivo.html",
+  "normas.html",
   "mohr_interactivo.html",
   "fatiga_interactivo.html",
   "sonido_interactivo.html",
+  "transmisibilidad_interactivo.html",
+  "tutorial_phyphox.html",
   "senales_interactivo.html",
+  "modal_interactivo.html",
   "dosgdl_interactivo.html"
  ],
  "fundamentos": {
@@ -253,7 +399,14 @@
     "1.1 Ruido y vibraciones, conceptos básicos",
     "1.2 Frecuencias naturales, amortiguamiento, sistemas rotatorios, vibración libre y forzada"
    ],
-   "paginas": []
+   "paginas": [],
+   "pendientes": "1.1 (conceptos generales de ruido y vibraciones)",
+   "remite": "Esta unidad se apoya en los pilares de fundamentos (vibración libre, frecuencia natural, amortiguamiento) y, para los sistemas rotatorios del tema 1.2, en el explorador de transmisibilidad y desbalance.",
+   "remite_a": [
+    "edo3_interactivo.html",
+    "edo_interactivo.html",
+    "transmisibilidad_interactivo.html"
+   ]
   },
   {
    "n": 2,
@@ -268,7 +421,14 @@
     "2.5 Acoplamiento entre sistemas"
    ],
    "paginas": [
+    "analogias_interactivo.html",
     "coulomb_interactivo.html"
+   ],
+   "remite": "Los temas 2.2 y 2.3 (sistema masa-resorte-amortiguador y sus tres regímenes) se trabajan en los pilares de fundamentos; el 2.5 (acoplamiento), en el explorador de dos grados de libertad.",
+   "remite_a": [
+    "edo3_interactivo.html",
+    "edo_interactivo.html",
+    "dosgdl_interactivo.html"
    ]
   },
   {
@@ -283,6 +443,11 @@
    "paginas": [
     "forzada_interactivo.html",
     "mediapotencia_interactivo.html"
+   ],
+   "remite": "El análisis modal (3.2) continúa en la unidad 7 con la extracción de parámetros modales, y la transmisión de la vibración al soporte, en la unidad 6.",
+   "remite_a": [
+    "modal_interactivo.html",
+    "transmisibilidad_interactivo.html"
    ]
   },
   {
@@ -301,7 +466,8 @@
    ],
    "apoyo": [
     "normas.html"
-   ]
+   ],
+   "pendientes": "4.4 (elementos de falla más comunes)"
   },
   {
    "n": 5,
@@ -317,7 +483,8 @@
    "paginas": [
     "mohr_interactivo.html",
     "fatiga_interactivo.html"
-   ]
+   ],
+   "pendientes": "5.1 y 5.2 (esfuerzos normales y cortantes directos)"
   },
   {
    "n": 6,
@@ -331,8 +498,10 @@
     "6.4 Sistemas anecoicos y electrónicos para medición y modelado de ruido"
    ],
    "paginas": [
-    "sonido_interactivo.html"
-   ]
+    "sonido_interactivo.html",
+    "transmisibilidad_interactivo.html"
+   ],
+   "pendientes": "6.3 en su parte acústica (pérdida por transmisión) y 6.4 (cámaras anecoicas)"
   },
   {
    "n": 7,
@@ -346,8 +515,11 @@
     "7.4 Prueba de vibración para resistencia y diagnóstico"
    ],
    "paginas": [
-    "senales_interactivo.html"
-   ]
+    "tutorial_phyphox.html",
+    "senales_interactivo.html",
+    "modal_interactivo.html"
+   ],
+   "pendientes": "7.4 (prueba de vibración para resistencia y diagnóstico)"
   },
   {
    "n": 8,

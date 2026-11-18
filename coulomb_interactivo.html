@@ -224,6 +224,73 @@
   @media print{header{border-bottom:1px solid #999}}
 </style>
 <!-- tema:fin -->
+<!-- seo:inicio -->
+<meta name="description" content="Al soltar el bloque se observa cómo la fricción seca Ff = μN hace que la amplitud caiga en línea recta (no exponencial) hasta detenerse dentro de una banda.">
+<link rel="canonical" href="https://elodiestrupiechonski.github.io/vibraciones-exploradores/coulomb_interactivo.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploradores de Vibraciones (UNAM)">
+<meta property="og:title" content="Fricción de Coulomb">
+<meta property="og:description" content="Al soltar el bloque se observa cómo la fricción seca Ff = μN hace que la amplitud caiga en línea recta (no exponencial) hasta detenerse dentro de una banda.">
+<meta property="og:url" content="https://elodiestrupiechonski.github.io/vibraciones-exploradores/coulomb_interactivo.html">
+<meta property="og:locale" content="es_MX">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Fricción de Coulomb",
+ "description": "Al soltar el bloque se observa cómo la fricción seca Ff = μN hace que la amplitud caiga en línea recta (no exponencial) hasta detenerse dentro de una banda.",
+ "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/coulomb_interactivo.html",
+ "inLanguage": "es",
+ "isAccessibleForFree": true,
+ "learningResourceType": "simulación interactiva",
+ "educationalLevel": "Licenciatura",
+ "about": [
+  "fricción de Coulomb",
+  "vibración libre"
+ ],
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "identifier": "https://doi.org/10.5281/zenodo.23422993",
+ "author": [
+  {
+   "@type": "Person",
+   "name": "Elodie Strupiechonski",
+   "sameAs": "https://orcid.org/0000-0001-8991-8499"
+  },
+  {
+   "@type": "Person",
+   "name": "Andrés de Luna Bugallo",
+   "sameAs": "https://orcid.org/0000-0002-7591-5235"
+  }
+ ],
+ "provider": {
+  "@type": "CollegeOrUniversity",
+  "name": "Universidad Nacional Autónoma de México, ENES Juriquilla"
+ },
+ "isPartOf": {
+  "@type": "Collection",
+  "name": "Vibraciones: exploradores interactivos",
+  "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
+ }
+}
+</script>
+<!-- seo:fin -->
+<!-- movil:inicio -->
+<style>
+  .card{min-width:0}
+  pre{overflow-x:auto;max-width:100%}
+  .row,.tile,.grp,.two>div{min-width:0}
+  input[type=number],select{max-width:100%;min-width:0}
+  canvas{max-width:100%}
+  @media (max-width:480px){
+    .eqbox{font-size:14px}
+    .row,.row.kbrow{flex-wrap:wrap!important}
+    .row>label{min-width:100%!important;flex:1 1 100%}
+    .row>input[type=range]{flex:1 1 120px;min-height:28px}
+    .tiles.t3{grid-template-columns:1fr 1fr}
+    header h1{font-size:22px}
+  }
+</style>
+<!-- movil:fin -->
 </head>
 <body>
 <header>
@@ -236,14 +303,14 @@
   <div>
     <div class="aero">
       <h3>En la aeronave · ¿por qué importa?</h3>
-      <p>La fricción seca no es solo el bloque de la clase: es un <b>mecanismo real de disipación de energía</b> en la estructura. En un fuselaje con miles de <b>uniones remachadas y atornilladas</b>, las láminas frotan una contra otra con un <b>microdeslizamiento</b> (microslip) cada vez que la estructura vibra.</p>
+      <p>La fricción seca no es solo el bloque de la clase: es un <b>mecanismo real de disipación de energía</b> en la estructura. En un fuselaje con miles de <b>uniones remachadas y atornilladas</b>, las láminas frotan una contra otra con un <b>microdeslizamiento</b> (<i>microslip</i>) cada vez que la estructura vibra.</p>
       <ul>
         <li><b>Amortiguamiento estructural:</b> ese roce en las juntas convierte energía de vibración en calor. Por eso las uniones <b>aportan amortiguamiento</b> a la estructura, incluso sin ningún amortiguador dedicado.</li>
-        <li><b>Modelo de Coulomb:</b> la fuerza de fricción tiene <b>magnitud casi constante</b> <span class="num">F<sub>f</sub> = μ·N</span> y solo <b>cambia de signo</b> con la velocidad: igual que en este explorador.</li>
-        <li><b>Firma característica:</b> la amplitud cae de forma <b>lineal</b> (una recta), no exponencial; los ingenieros usan esa firma para identificar cuándo domina la fricción seca en un ensayo de vibración.</li>
-        <li><b>Diseño:</b> demasiado apriete reduce el microslip y el amortiguamiento; muy poco, genera fatiga por rozamiento (<i>fretting</i>). Hay un óptimo.</li>
+        <li><b>Modelo de Coulomb:</b> la fuerza de fricción tiene <b>magnitud casi constante</b> <span class="num">F<sub>f</sub> = μ·N</span> y solo <b>cambia de signo</b> con la velocidad: es el modelo ideal de este explorador (deslizamiento total, μ<sub>s</sub> = μ<sub>k</sub>).</li>
+        <li><b>Firma característica:</b> en el modelo ideal la amplitud cae de forma <b>lineal</b> (una recta), no exponencial; en uniones reales el microdeslizamiento produce un amortiguamiento que depende de la amplitud y el decaimiento se aparta de la recta; los ingenieros usan esa firma para identificar cuándo domina la fricción seca en un ensayo de vibración.</li>
+        <li><b>Diseño:</b> demasiado apriete reduce el microdeslizamiento y el amortiguamiento; muy poco, genera fatiga por rozamiento (<i>fretting</i>). Hay un óptimo.</li>
       </ul>
-      <div class="src">Valores y mecanismos ilustrativos; el amortiguamiento por fricción en juntas se trata en bibliografía como Rao, <i>Mechanical Vibrations</i>; Den Hartog, <i>Mechanical Vibrations</i>; y en estudios de <i>joint damping / microslip</i>.</div>
+      <div class="src">Valores y mecanismos ilustrativos; el amortiguamiento por fricción en juntas se trata en bibliografía como Rao, <i>Mechanical Vibrations</i>; Den Hartog, <i>Mechanical Vibrations</i>; y en estudios de amortiguamiento en uniones (<i>joint damping</i>).</div>
     </div>
 
     <div class="card">
@@ -266,8 +333,8 @@
     </div>
 
     <div class="card">
-      <h2>2 · Respuesta x(t) · decaimiento LINEAL</h2>
-      <div style="font-size:12.5px;color:var(--grey);margin:2px 0 6px">Sinusoide a trozos (SHM a ω<sub>n</sub> alrededor de un centro ±F<sub>f</sub>/k que alterna). La <b>envolvente es recta</b>: une los picos con líneas, no con una exponencial.</div>
+      <h2>2 · Respuesta x(t) · decaimiento lineal</h2>
+      <div style="font-size:12.5px;color:var(--grey);margin:2px 0 6px">Sinusoide a trozos (movimiento armónico simple a ω<sub>n</sub> alrededor de un centro ±F<sub>f</sub>/k que alterna). La <b>envolvente es recta</b>: une los picos con líneas, no con una exponencial.</div>
       <canvas id="resp"></canvas>
       <div class="diagctrls" style="margin-top:6px">
         <label class="toggle"><input type="checkbox" id="ck-visc"> comparar con viscoso (exponencial)</label>
@@ -293,7 +360,7 @@
         <button class="btn small ghost" id="release">▶ soltar desde x<sub>0</sub></button>
         <label class="toggle"><input type="checkbox" id="ck-forces" checked> mostrar fuerzas</label>
       </div>
-      <div class="hint">La flecha roja (fricción) <b>voltea de sentido</b> cada vez que el bloque cambia de dirección: siempre se opone a la velocidad. La banda sombreada es la zona de reposo ±F<sub>f</sub>/k.</div>
+      <div class="hint">La flecha roja (fricción) <b>cambia de sentido</b> cada vez que el bloque cambia de dirección: siempre se opone a la velocidad. La banda sombreada es la zona de reposo ±F<sub>f</sub>/k.</div>
     </div>
 
     <div class="card practico">
@@ -304,9 +371,9 @@
         <summary>Glosario (F<sub>f</sub>=μN, banda de reposo, lineal vs exponencial, ω)</summary>
         <ul>
           <li><b>F<sub>f</sub> = μ·N = μ·m·g</b>: fuerza de fricción de Coulomb (seca): magnitud <b>constante</b>, solo cambia de signo para oponerse a la velocidad. No depende de la velocidad ni del desplazamiento.</li>
-          <li><b>Banda de reposo (zona muerta)</b>: intervalo ±F<sub>f</sub>/k alrededor del equilibrio. Si el bloque se detiene ahí, la fuerza del resorte k·x no supera la fricción estática y <b>ya no arranca</b>: queda en reposo permanente (no necesariamente en x = 0).</li>
+          <li><b>Banda de reposo (zona muerta)</b>: intervalo ±F<sub>f</sub>/k alrededor del equilibrio. Si el bloque se detiene ahí, la fuerza del resorte k·x no supera la fricción estática y <b>ya no reanuda el movimiento</b>: queda en reposo permanente (no necesariamente en x = 0).</li>
           <li><b>Decaimiento lineal vs exponencial</b>: con fricción seca la amplitud pierde <b>2F<sub>f</sub>/k por semiciclo</b> (cantidad fija) → los picos caen sobre una <b>recta</b>. Con amortiguamiento <b>viscoso</b> pierde una <b>fracción</b> fija → caída <b>exponencial</b>.</li>
-          <li><b>¿Por qué ω no cambia?</b>: en cada semiciclo la EOM es m·x″ + k·x = ∓F<sub>f</sub>: es SHM a <b><math><mrow><msub><mi>ω</mi><mi>n</mi></msub><mo>=</mo><msqrt><mrow><mi>k</mi><mo lspace="0.05em" rspace="0.05em">/</mo><mi>m</mi></mrow></msqrt></mrow></math></b> solo que alrededor de un centro corrido ±F<sub>f</sub>/k. El término de fricción mueve el centro pero <b>no toca</b> la frecuencia. Por eso <b>T no cambia</b> con la fricción (a diferencia de ω<sub>d</sub> en el caso viscoso).</li>
+          <li><b>¿Por qué ω no cambia?</b>: en cada semiciclo la ecuación de movimiento es m·x″ + k·x = ∓F<sub>f</sub>: es un movimiento armónico simple a <b><math><mrow><msub><mi>ω</mi><mi>n</mi></msub><mo>=</mo><msqrt><mrow><mi>k</mi><mo lspace="0.05em" rspace="0.05em">/</mo><mi>m</mi></mrow></msqrt></mrow></math></b> solo que alrededor de un centro corrido ±F<sub>f</sub>/k. El término de fricción mueve el centro pero <b>no toca</b> la frecuencia. Por eso <b>T no cambia</b> con la fricción (a diferencia de ω<sub>d</sub> en el caso viscoso).</li>
           <li><b>Nº de semiciclos hasta el paro</b>: <math><mrow><mi>n</mi><mo>=</mo><mrow><mo stretchy="true" fence="true">⌈</mo><mfrac><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>−</mo><msub><mi>F</mi><mi>f</mi></msub><mo lspace="0.05em" rspace="0.05em">/</mo><mi>k</mi></mrow><mrow><mn>2</mn><msub><mi>F</mi><mi>f</mi></msub><mo lspace="0.05em" rspace="0.05em">/</mo><mi>k</mi></mrow></mfrac><mo stretchy="true" fence="true">⌉</mo></mrow></mrow></math> (función techo, porque se completa el semiciclo en curso). Ciclos completos = n/2.</li>
         </ul>
       </details>
@@ -329,7 +396,7 @@
     </div>
     <div style="font-weight:700;color:var(--navy);margin:8px 0 4px">Cómo citar:</div>
     <div style="background:var(--ice);border-left:4px solid var(--steel);border-radius:4px;padding:8px 10px;font-style:italic;color:#333;line-height:1.5">
-      Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.1) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.
+      Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.2) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.
     </div>
   </div>
 </footer>
@@ -443,7 +510,7 @@ function refresh(){
     +tile('ω<sub>n</sub>', fmt(M.wn,3)+' rad/s','frecuencia natural = √(k/m)')
     +tile('f<sub>n</sub>', fmt(M.fn,3)+' Hz','f_n = ω_n / 2π')
     +tile('T', (M.T?fmt(M.T,3)+' s':'…'),'periodo = 2π/ω_n: NO cambia con la fricción')
-    +tile('caída / ciclo', mm(M.perCycle)+' mm','4F_f/k (decaimiento LINEAL)')
+    +tile('caída / ciclo', mm(M.perCycle)+' mm','4F_f/k (decaimiento lineal)')
     +tile('banda reposo', '±'+mm(M.d)+' mm','F_f/k (zona muerta)')
     +tile('nº semiciclos', (isFinite(M.nHalf)?M.nHalf:'∞'),'⌈(x0−F_f/k)/(2F_f/k)⌉')
     +tile('nº ciclos ≈', (isFinite(M.cycles)?fmt(M.cycles,2):'∞'),'n_semiciclos / 2')
@@ -452,7 +519,7 @@ function refresh(){
     +'</div>';
   document.getElementById('practico').innerHTML =
     '<p style="margin:2px 0"><span class="k">La frecuencia NO cambia con la fricción</span> <span class="pill" style="background:var(--navy)">ω_n = √(k/m)</span></p>'+ro+
-    '<p style="margin:4px 0 2px">La fricción seca corre el <b>centro</b> de cada semiciclo a ±F<sub>f</sub>/k, pero la EOM sigue siendo SHM a <b>ω<sub>n</sub></b>: por eso <b>T no cambia</b> y la envolvente cae en <b>línea recta</b>, no exponencial.</p>';
+    '<p style="margin:4px 0 2px">La fricción seca corre el <b>centro</b> de cada semiciclo a ±F<sub>f</sub>/k, pero el movimiento sigue siendo armónico simple a <b>ω<sub>n</sub></b>: por eso <b>T no cambia</b> y la envolvente cae en <b>línea recta</b>, no exponencial.</p>';
   syncInputs();
   drawResponse();
 }
@@ -511,7 +578,7 @@ function drawResponse(phFrac){
       c.lineTo(px(Tmax),py(s*Math.abs(M.finalX)));
       c.stroke(); }
     c.setLineDash([]);
-    c.fillStyle='rgba(178,58,58,.9)'; c.font='bold 10px Segoe UI'; c.textAlign='left'; c.fillText('envolvente LINEAL',x0+70,py(M.x0)-2);
+    c.fillStyle='rgba(178,58,58,.9)'; c.font='bold 10px Segoe UI'; c.textAlign='left'; c.fillText('envolvente lineal',x0+70,py(M.x0)-2);
   }
   // ---- x(t) exacta (a trozos) ----
   c.strokeStyle=NAVY; c.lineWidth=2.3; c.beginPath();
@@ -727,7 +794,7 @@ requestAnimationFrame(respLoop);
     r.addEventListener('input',function(){ mostrar(); });
     function aplicar(){
       var v=parseFloat(n.value.replace('−','-').replace(',','.'));
-      if(isNaN(v)){ mostrar(); return; }
+      if(isNaN(v)){ n.classList.add('kbmal'); n.value=limpio(actual(),6).replace('-','−'); setTimeout(function(){ n.classList.remove('kbmal'); },900); return; }
       if(ENTEROS[r.id]) v=Math.round(v);
       if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
       r.value=mp?mp.v2s(v):v;
@@ -785,121 +852,139 @@ requestAnimationFrame(respLoop);
 })();
 </script>
 <!-- contador:fin -->
-<!-- navbar:inicio -->
+<!-- navegacion:inicio -->
 <style>
-  body{margin-top:50px!important}
-  .nvbar{position:fixed;top:0;left:0;right:0;z-index:9999;height:44px;display:flex;align-items:center;
-    gap:10px;padding:0 14px;background:var(--card,#fff);border-bottom:1px solid var(--line,#e2dcc9);
-    font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
-  .nvbar a{text-decoration:none;color:var(--navy,var(--ink,#1F3864))}
-  .nv-home{font-weight:700;white-space:nowrap}
-  .nv-home small{font-weight:400;color:var(--muted,#5a5a5a)}
-  .nv-step{display:flex;align-items:center;justify-content:center;width:34px;height:30px;border:1px solid var(--line,#e2dcc9);
-    border-radius:8px;font-size:17px;line-height:1}
-  .nv-step:hover{background:var(--bg,#f4f1ea)}
-  .nv-step[aria-disabled="true"]{opacity:.25;pointer-events:none}
-  .nv-aquibar{flex:1;min-width:0;text-align:center;font-weight:700;color:var(--ink,#1a1a1a);
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .nv-aquibar small{font-weight:400;color:var(--muted,#8a8fa0)}
-  .nvbar details{position:relative}
-  .nvbar summary{list-style:none;cursor:pointer;font-weight:700;color:var(--accent,#C1571B);
-    border:1px solid var(--line,#e2dcc9);border-radius:8px;padding:5px 12px;user-select:none;white-space:nowrap}
-  .nvbar summary::-webkit-details-marker{display:none}
-  .nv-menu{position:absolute;right:0;top:40px;width:min(680px,calc(100vw - 24px));max-height:calc(100vh - 70px);overflow:auto;
-    background:var(--card,#fff);border:1px solid var(--line,#e2dcc9);border-radius:12px;
-    box-shadow:0 8px 30px rgba(0,0,0,.18);padding:10px;column-count:2;column-gap:18px}
-  .nv-grp{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted,#8a8fa0);
-    padding:10px 10px 5px;break-after:avoid;border-top:1px solid var(--line,#eee)}
-  .nv-menu .nv-grp:first-child{border-top:0;padding-top:4px}
-  .nv-menu a{display:block;padding:8px 10px;border-radius:7px;color:var(--ink,#1a1a1a);break-inside:avoid}
-  .nv-menu a small{color:var(--muted,#8a8fa0);margin-left:4px}
-  .nv-menu a:hover{background:var(--bg,#f4f1ea)}
-  .nv-menu a.nv-aqui{background:var(--bg,#f4f1ea);font-weight:700;color:var(--accent,#C1571B)}
-  .nv-vacio{display:block;padding:4px 10px 8px;font-size:12px;font-style:italic;color:var(--muted,#8a8fa0);break-inside:avoid}
-  .nv-pie{column-span:all;margin-top:6px;padding:7px 10px 2px;border-top:1px solid var(--line,#eee);
-    font-size:11.5px;color:var(--muted,#8a8fa0)}
-  @media (max-width:720px){
-    .nv-home small{display:none}
-    .nv-aquibar{display:none}
-    .nv-menu{column-count:1;position:fixed;left:12px;right:12px;top:50px;width:auto}
+  :root{--nv-w:272px}
+  body{margin-top:0!important}
+  @media (min-width:1360px){ body{margin-left:var(--nv-w)!important} }
+  .nvside{position:fixed;top:0;left:0;bottom:0;width:var(--nv-w);z-index:9999;display:flex;flex-direction:column;
+    background:var(--card,#fff);border-right:1px solid var(--line,#e2dcc9);
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:14px;color:var(--ink,#1a1a1a);
+    box-shadow:1px 0 8px rgba(0,0,0,.05);transition:transform .2s ease}
+  .nvside a{text-decoration:none;color:inherit}
+  .nv-cab{padding:14px 16px 10px;border-bottom:1px solid var(--line,#e2dcc9);position:relative}
+  .nv-marca{display:block;font-family:"Century Gothic","Questrial",Arial,sans-serif;font-weight:700;font-size:15px;
+    line-height:1.25;color:var(--navy,var(--ink,#1F3864))}
+  .nv-marca small{display:block;font-weight:400;font-size:12px;color:var(--muted,var(--grey,#5a5a5a));margin-top:2px}
+  .nv-pasos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+  .nv-paso{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font-size:11px;color:var(--muted,var(--grey,#5a5a5a));min-width:0}
+  .nv-paso b{font-size:12.5px;color:var(--ink,#1a1a1a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nv-paso.sig{text-align:right}
+  .nv-paso:hover{background:var(--bg,#f4f1ea)}
+  .nv-paso[aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-busca{margin-top:8px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font:inherit;background:var(--bg,#f8f6f0);color:inherit}
+  .nv-lista{flex:1;overflow-y:auto;padding:6px 8px 10px}
+  .nv-grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,var(--grey,#5a5a5a));padding:12px 8px 4px}
+  .nv-lista a{display:block;padding:6px 8px 6px 10px;border-radius:6px;border-left:3px solid transparent;line-height:1.3}
+  .nv-lista a small{display:block;font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-lista a:hover{background:var(--bg,#f4f1ea)}
+  .nv-lista a.nv-aqui{background:var(--bg,#f4f1ea);border-left-color:var(--accent,var(--orange,#C1571B));font-weight:700}
+  .nv-nada{padding:10px;font-size:12.5px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-pie{padding:8px 14px;border-top:1px solid var(--line,#e2dcc9);font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-boton{display:none;position:fixed;top:10px;left:10px;z-index:10000;gap:6px}
+  .nv-boton a,.nv-boton button{display:flex;align-items:center;justify-content:center;height:38px;min-width:38px;padding:0 10px;
+    border:1px solid var(--line,#e2dcc9);border-radius:9px;background:var(--card,#fff);color:var(--ink,#1a1a1a);
+    font:600 14px Arial,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .nv-boton [aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-velo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10001}
+  .nv-cierra{display:none;position:absolute;top:10px;right:10px;width:32px;height:32px;border:1px solid var(--line,#e2dcc9);border-radius:8px;background:var(--card,#fff);color:inherit;font-size:16px;cursor:pointer}
+  @media (max-width:1359px){
+    body{margin-top:56px!important}
+    .nvside{transform:translateX(-102%);width:min(320px,88vw)}
+    .nvside.abierto{transform:none;z-index:10002}
+    .nv-cierra{display:block}
+    .nv-pie{display:none}
+    .nv-boton{display:flex}
+    .nvside.abierto ~ .nv-velo{display:block}
   }
-  @media print{.nvbar{display:none} body{margin-top:0!important}}
+  @media print{.nvside,.nv-boton,.nv-velo{display:none} body{margin:0!important}}
 </style>
-<nav class="nvbar" aria-label="Navegación del sitio">
-  <a class="nv-home" href="index.html">⌁ Exploradores de Vibraciones <small>· ENES Juriquilla</small></a>
-  <a class="nv-step" id="nv-ant" href="#" title="Explorador anterior (tecla ←)" aria-label="Anterior">‹</a>
-  <span class="nv-aquibar" id="nv-aqui-bar"></span>
-  <a class="nv-step" id="nv-sig" href="#" title="Explorador siguiente (tecla →)" aria-label="Siguiente">›</a>
-  <details id="nvdet"><summary>Temario ▾</summary>
-    <div class="nv-menu">
-<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
-<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html">Dinámica de la partícula <small>Pilar 3 · armar</small></a>
-<a href="edo_interactivo.html" data-nv="edo_interactivo.html">EDO lineal de 2.º orden <small>Pilar 2 · resolver</small></a>
-<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html">Números complejos <small>Pilar 1 · interpretar</small></a>
-<div class="nv-grp">Unidad 1 · Conceptos básicos · 4 h</div>
-<span class="nv-vacio">sin explorador todavía</span>
-<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador · 4 h</div>
-<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html">Fricción de Coulomb <small>Pilar 4 · tema 2.3</small></a>
-<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia · 6 h</div>
-<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html">Respuesta forzada y resonancia <small>Pilar 5 · tema 3.1</small></a>
-<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html">Media potencia y factor Q <small>Pilar 6 · temas 3.1–3.2</small></a>
-<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales · 6 h</div>
-<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html">Del espectro a la carga de diseño <small>Pilar 7 · temas 4.1–4.2</small></a>
-<a href="normas.html" data-nv="normas.html">Dónde consultar las normas <small>temas 4.1 y 4.3 · apoyo</small></a>
-<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos · 6 h</div>
-<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html">Círculo de Mohr <small>Pilar 8 · tema 5.3</small></a>
-<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html">Fatiga: S–N, Haigh y Miner <small>Pilar 9 · tema 5.4</small></a>
-<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento · 6 h</div>
-<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html">Niveles sonoros y exposición al ruido <small>Pilar 10 · temas 6.3–6.4</small></a>
-<div class="nv-grp">Unidad 7 · Pruebas · 10 h</div>
-<a href="senales_interactivo.html" data-nv="senales_interactivo.html">Laboratorio de señales <small>Pilar 11 · temas 7.1–7.2</small></a>
-<div class="nv-grp">Unidad 8 · Sistemas acoplados · 6 h</div>
-<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html">Dos grados de libertad y absorbedor <small>Pilar 12 · temas 8.1–8.3</small></a>
-
-
-    <div class="nv-pie">Atajos: ← anterior · → siguiente · Esc cierra el menú · Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM</div>
+<nav class="nvside" id="nvside" aria-label="Exploradores del curso">
+  <div class="nv-cab">
+    <button class="nv-cierra" id="nv-cierra" aria-label="Cerrar el temario">✕</button>
+    <a class="nv-marca" href="index.html">Exploradores de Vibraciones<small>ENES Juriquilla, UNAM · inicio</small></a>
+    <div class="nv-pasos">
+      <a class="nv-paso" id="nv-ant" href="#" aria-label="Explorador anterior">‹ anterior<b id="nv-ant-t">…</b></a>
+      <a class="nv-paso sig" id="nv-sig" href="#" aria-label="Explorador siguiente">siguiente ›<b id="nv-sig-t">…</b></a>
     </div>
-  </details>
+    <input class="nv-busca" id="nv-busca" type="search" placeholder="Buscar (tecla /)" aria-label="Buscar explorador">
+  </div>
+  <div class="nv-lista" id="nv-lista">
+<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
+<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html" data-k="segunda ley de Newton frecuencia natural Frecuencia natural ωn = √(k/m) Energía T ↔ V, resorte equivalente Péndulo y acelerómetro (masa sísmica)">Dinámica de la partícula<small>Pilar 3 · armar la ecuación</small></a>
+<a href="edo_interactivo.html" data-nv="edo_interactivo.html" data-k="ecuaciones diferenciales de segundo orden amortiguamiento Subamortiguado, crítico, sobreamortiguado Inestable = flameo (frontera Re = 0) Respuesta x(t) con condiciones iniciales">EDO lineal de 2.º orden<small>Pilar 2 · resolverla</small></a>
+<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html" data-k="números complejos fasores Formas binómica, polar y de Euler Raíces cuadradas y ecuación auxiliar Fasor: excitación vs. respuesta (desfase θ)">Números complejos<small>Pilar 1 · interpretar las raíces</small></a>
+<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador</div>
+<a href="analogias_interactivo.html" data-nv="analogias_interactivo.html" data-k="analogía electromecánica circuito RLC sistemas de segundo orden Analogías fuerza-tensión y fuerza-corriente Escala de impedancia: ω_n y ζ no cambian Chapoteo, paneles y control de actitud">Analogías entre sistemas<small>2.1 y 2.4 · Pilar 14</small></a>
+<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html" data-k="fricción de Coulomb vibración libre Banda de reposo = Ff/k Caída de amplitud 4Ff/k por ciclo Conteo de ciclos hasta detenerse">Fricción de Coulomb<small>2.3 (fricción seca) · Pilar 4</small></a>
+<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia</div>
+<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html" data-k="respuesta forzada resonancia M = 1/√[(1−r²)²+(2ζr)²] Fase φ y resonancia (r ≈ 1) Aislamiento: aísla si r &gt; √2">Respuesta forzada y resonancia<small>3.1 · Pilar 5</small></a>
+<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html" data-k="método de media potencia factor de calidad Q = 1/(2ζ) = fn/Δf ζ medido = Δf/(2fn) Origen de la asimetría de la curva">Media potencia y factor Q<small>3.1–3.2 · Pilar 6</small></a>
+<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales</div>
+<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html" data-k="vibración aleatoria densidad espectral de potencia ecuación de Miles Grms = √(∫W df) y carga de diseño 3σ Miles: √[(π/2)·fn·Q·W(fn)] Escalas en dB (−3, +3, +6) y por qué log">Del espectro a la carga de diseño<small>4.1–4.2 · Pilar 7</small></a>
+<a href="normas.html" data-nv="normas.html" data-k="normas de ensayo GEVS ECSS MIL-STD-810H, GEVS y ECSS: descarga gratuita DO-160 e ISO: de pago, con vista previa Enlaces que se actualizan desde un solo archivo">Dónde consultar las normas<small>4.1 y 4.3 · apoyo</small></a>
+<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos</div>
+<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html" data-k="círculo de Mohr criterios de falla σ1, σ2, θp y τmáx en vivo Roseta de galgas 0/45/90 → estado de esfuerzo Tres círculos, von Mises y Tresca">Círculo de Mohr<small>5.3 · Pilar 8</small></a>
+<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html" data-k="fatiga regla de Miner Acero con límite, aluminio sin él Esfuerzo medio y concentrador Kf Miner: cuánta vida consume el ensayo">Fatiga: S–N, Haigh y Miner<small>5.4 · Pilar 9</small></a>
+<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento</div>
+<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html" data-k="nivel de presión sonora bandas de octava exposición al ruido Suma energética y ponderación A −6 dB por duplicar la distancia T = 8·2^((90−LA)/3) h">Niveles sonoros y exposición al ruido<small>6.1, 6.2 y 6.4 · Pilar 10</small></a>
+<a href="transmisibilidad_interactivo.html" data-nv="transmisibilidad_interactivo.html" data-k="transmisibilidad aislamiento de vibraciones desbalance rotatorio T_r = 1 en r = √2 para todo ζ Deflexión estática: δ_st = g/ω_n^2 Desbalance rotatorio: F_0 = m_0 e ω^2">Transmisibilidad y aislamiento<small>6.3 · Pilar 13</small></a>
+<div class="nv-grp">Unidad 7 · Pruebas</div>
+<a href="tutorial_phyphox.html" data-nv="tutorial_phyphox.html" data-k="Phyphox acelerómetro del teléfono decremento logarítmico Jupyter Descarga de Phyphox, cuaderno y datos de ejemplo Colab o Visual Studio Code, paso a paso Envolvente de Hilbert y decremento logarítmico">Tutorial: medir con Phyphox y analizar en Python<small>7.1 · Tutorial</small></a>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html" data-k="muestreo aliasing método de Welch Aliasing: f_a = |f − k·f_s| Δf = 1/T_seg y ε_r ≈ 1/√n_d G_rms como área de la PSD (Parseval)">Laboratorio de señales<small>7.1–7.2 · Pilar 11</small></a>
+<a href="modal_interactivo.html" data-nv="modal_interactivo.html" data-k="análisis modal experimental función de respuesta en frecuencia diagrama de Nyquist Media potencia: ζ = (f_b − f_a)/(2 f_n) Círculo de Nyquist por mínimos cuadrados Resolución necesaria: T ≥ 2/(ζ f_n)">Extracción de parámetros modales<small>7.3 · Pilar 15</small></a>
+<div class="nv-grp">Unidad 8 · Sistemas acoplados</div>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html" data-k="dos grados de libertad absorbedor dinámico Valores propios: ω_1, ω_2 y formas modales Absorbedor dinámico y óptimo de Den Hartog Separación de frecuencias equipo–estructura">Dos grados de libertad y absorbedor<small>8.1–8.3 · Pilar 12</small></a>
+<div class="nv-nada" id="nv-nada" style="display:none">Sin coincidencias. Se busca en títulos, temas y palabras clave.</div>
+  </div>
+  <div class="nv-pie">Teclas (fuera de los controles): ← anterior · → siguiente · / buscar · Esc cerrar</div>
 </nav>
+<div class="nv-boton"><button id="nv-abre" aria-controls="nvside" aria-expanded="false">☰ Temario</button>
+  <a id="nv-ant2" href="#" aria-label="Anterior">‹</a><a id="nv-sig2" href="#" aria-label="Siguiente">›</a></div>
+<div class="nv-velo" id="nv-velo"></div>
 <script>
 (function(){
-  var orden=[], datos={};
-  var l=document.querySelectorAll('.nv-menu a[data-nv]');
-  for(var i=0;i<l.length;i++){
-    var f=l[i].getAttribute('data-nv'); orden.push(f);
-    datos[f]={el:l[i], titulo:l[i].childNodes[0].textContent.trim(),
-               sub:(l[i].querySelector('small')||{textContent:''}).textContent};
-  }
-  var aqui=(location.pathname.split('/').pop()||'index.html');
-  var idx=orden.indexOf(aqui);
-  var ant=document.getElementById('nv-ant'), sig=document.getElementById('nv-sig'),
-      bar=document.getElementById('nv-aqui-bar');
-  if(idx>=0){
-    datos[aqui].el.className='nv-aqui';
-    bar.innerHTML=datos[aqui].titulo+' <small>'+datos[aqui].sub+'</small>';
-    if(idx>0) ant.href=orden[idx-1]; else ant.setAttribute('aria-disabled','true');
-    if(idx<orden.length-1) sig.href=orden[idx+1]; else sig.setAttribute('aria-disabled','true');
-    if(idx>0) ant.title='Anterior: '+datos[orden[idx-1]].titulo+'  (tecla ←)';
-    if(idx<orden.length-1) sig.title='Siguiente: '+datos[orden[idx+1]].titulo+'  (tecla →)';
-  } else {
-    ant.setAttribute('aria-disabled','true'); sig.setAttribute('aria-disabled','true');
-    bar.textContent='';
-  }
-  document.addEventListener('click',function(e){
-    var d=document.getElementById('nvdet');
-    if(d&&d.open&&!d.contains(e.target)) d.open=false;
-  });
+  var lista=document.getElementById('nv-lista'), side=document.getElementById('nvside');
+  var l=lista.querySelectorAll('a[data-nv]'), orden=[], dat={};
+  for(var i=0;i<l.length;i++){var f=l[i].getAttribute('data-nv');orden.push(f);
+    dat[f]={el:l[i],t:l[i].childNodes[0].textContent.trim()};}
+  var aqui=(location.pathname.split('/').pop()||'index.html'), k=orden.indexOf(aqui);
+  function paso(idA,idT,j){var a=document.getElementById(idA);
+    if(j<0||j>=orden.length){a.setAttribute('aria-disabled','true');a.setAttribute('tabindex','-1');if(idT)document.getElementById(idT).textContent='';return;}
+    a.href=orden[j];a.title=dat[orden[j]].t+(j<k?' (tecla ←)':' (tecla →)');if(idT)document.getElementById(idT).textContent=dat[orden[j]].t;}
+  if(k>=0){dat[aqui].el.className='nv-aqui';dat[aqui].el.setAttribute('aria-current','page');
+    paso('nv-ant','nv-ant-t',k-1);paso('nv-sig','nv-sig-t',k+1);paso('nv-ant2',null,k-1);paso('nv-sig2',null,k+1);
+    setTimeout(function(){var r=dat[aqui].el;lista.scrollTop=r.offsetTop-lista.clientHeight/3;},0);}
+  else{paso('nv-ant','nv-ant-t',-1);paso('nv-sig','nv-sig-t',0);paso('nv-ant2',null,-1);paso('nv-sig2',null,0);}
+  var bus=document.getElementById('nv-busca');
+  function llano(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  bus.addEventListener('input',function(){var q=llano(bus.value), grp=null, vis=0, tot=0;
+    Array.prototype.forEach.call(lista.children,function(c){
+      if(c.classList.contains('nv-grp')){if(grp)grp.style.display=vis?'':'none';grp=c;vis=0;return;}
+      if(!c.getAttribute('data-nv')) return;
+      var ok=!q||llano(c.textContent+' '+(c.getAttribute('data-k')||'')).indexOf(q)>=0;c.style.display=ok?'':'none';if(ok){vis++;tot++;}});
+    if(grp)grp.style.display=vis?'':'none';
+    document.getElementById('nv-nada').style.display=tot?'none':'block';});
+  bus.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){var v=lista.querySelector('a[data-nv]:not([style*="none"])');if(v)location.href=v.href;}
+    if(e.key==='Escape'){bus.value='';bus.dispatchEvent(new Event('input'));bus.blur();cambia(false);}});
+  var abre=document.getElementById('nv-abre'), velo=document.getElementById('nv-velo');
+  function cambia(on){side.classList.toggle('abierto',on);abre.setAttribute('aria-expanded',on?'true':'false');}
+  abre.addEventListener('click',function(){cambia(!side.classList.contains('abierto'));});
+  velo.addEventListener('click',function(){cambia(false);});
+  document.getElementById('nv-cierra').addEventListener('click',function(){cambia(false);});
   document.addEventListener('keydown',function(e){
     var t=(e.target.tagName||'').toUpperCase();
-    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||e.altKey||e.ctrlKey||e.metaKey) return;
-    var d=document.getElementById('nvdet');
-    if(e.key==='Escape'&&d&&d.open){d.open=false;return;}
-    if(idx<0) return;
-    if(e.key==='ArrowLeft'&&idx>0) location.href=orden[idx-1];
-    if(e.key==='ArrowRight'&&idx<orden.length-1) location.href=orden[idx+1];
+    if(e.key==='Escape'){cambia(false);return;}
+    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||t==='BUTTON'||t==='A'||t==='SUMMARY'||e.target.isContentEditable||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey) return;
+    if(e.key==='/'){e.preventDefault();if(innerWidth<1360)cambia(true);bus.focus();return;}
+    if(k<0) return;
+    if(e.key==='ArrowLeft'&&k>0) location.href=orden[k-1];
+    if(e.key==='ArrowRight'&&k<orden.length-1) location.href=orden[k+1];
   });
 })();
 </script>
-<!-- navbar:fin -->
+<!-- navegacion:fin -->
 </body>
 </html>
