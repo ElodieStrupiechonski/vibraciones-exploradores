@@ -1,7 +1,7 @@
 {
  "curso": "Vibraciones",
  "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
- "actualizado": "2026-11-18",
+ "actualizado": "2026-11-20",
  "nota": "Fuente única del panel de navegación, del índice, del mapa del sitio y de los metadatos. Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos') en el orden del programa, 3) ejecutar integra2.py.",
  "paginas": {
   "complejos_interactivo.html": {
@@ -382,6 +382,78 @@
     "semiseno",
     "prueba de vibración"
    ]
+  },
+  "esfuerzos_interactivo.html": {
+   "corto": "Pilar 17 · Esfuerzos directos",
+   "titulo": "Esfuerzos directos en una unión con pernos",
+   "enfoque": "DIMENSIONAR · cuatro maneras de fallar, cuatro áreas",
+   "descripcion": "En una unión a traslape con pernos se calculan el cortante del perno, el aplastamiento, la tensión en la sección neta y el desgarre, y se identifica el modo que gobierna.",
+   "puntos": [
+    "σ = P/A y τ = V/A: cada modo tiene su área",
+    "Cortante simple y cortante doble",
+    "Factor de seguridad y carga que inicia la fluencia"
+   ],
+   "tema": "temas 5.1 y 5.2",
+   "swatch": [
+    "#2E5496",
+    "#B23A3A"
+   ],
+   "claves": [
+    "esfuerzo normal",
+    "esfuerzo cortante directo",
+    "aplastamiento",
+    "unión atornillada",
+    "sección neta",
+    "remache"
+   ]
+  },
+  "perdida_interactivo.html": {
+   "corto": "Pilar 18 · Pérdida por transmisión",
+   "titulo": "Pérdida por transmisión de un panel",
+   "enfoque": "AISLAR · cuánto sonido atraviesa un panel",
+   "descripcion": "Al variar material, espesor y amortiguamiento de un panel se obtiene su pérdida por transmisión en cada frecuencia: ley de masa, caída por coincidencia y zona controlada por el amortiguamiento.",
+   "puntos": [
+    "Ley de masa: +6 dB por duplicar m″ o f",
+    "Frecuencia crítica: f_c h es constante del material",
+    "Sobre f_c solo ayuda el amortiguamiento"
+   ],
+   "tema": "tema 6.3 (vía aérea)",
+   "swatch": [
+    "#6B3FA0",
+    "#2E7D46"
+   ],
+   "claves": [
+    "pérdida por transmisión",
+    "ley de masa",
+    "frecuencia crítica",
+    "coincidencia",
+    "aislamiento acústico",
+    "fuselaje"
+   ]
+  },
+  "anecoica_interactivo.html": {
+   "corto": "Pilar 19 · Cámara anecoica",
+   "titulo": "Campo libre y cámara anecoica",
+   "enfoque": "MEDIR · dónde termina el campo libre",
+   "descripcion": "Nivel sonoro en función de la distancia en un recinto: campo directo, campo reverberante, radio crítico y frecuencia de corte de las cuñas de una cámara anecoica.",
+   "puntos": [
+    "L_p = L_W + 10 log(Q/4πr² + 4/R)",
+    "Radio crítico: r_c = √(QR/16π)",
+    "Cuñas: profundidad de un cuarto de onda"
+   ],
+   "tema": "tema 6.4",
+   "swatch": [
+    "#C55A11",
+    "#4472C4"
+   ],
+   "claves": [
+    "cámara anecoica",
+    "campo libre",
+    "campo reverberante",
+    "radio crítico",
+    "tiempo de reverberación",
+    "cámara reverberante"
+   ]
   }
  },
  "recorrido": [
@@ -394,10 +466,13 @@
   "mediapotencia_interactivo.html",
   "espectro_interactivo.html",
   "normas.html",
+  "esfuerzos_interactivo.html",
   "mohr_interactivo.html",
   "fatiga_interactivo.html",
   "sonido_interactivo.html",
   "transmisibilidad_interactivo.html",
+  "perdida_interactivo.html",
+  "anecoica_interactivo.html",
   "tutorial_phyphox.html",
   "senales_interactivo.html",
   "modal_interactivo.html",
@@ -505,10 +580,10 @@
     "5.4 Mecanismos de falla, estática y dinámica"
    ],
    "paginas": [
+    "esfuerzos_interactivo.html",
     "mohr_interactivo.html",
     "fatiga_interactivo.html"
-   ],
-   "pendientes": "5.1 y 5.2 (esfuerzos normales y cortantes directos)"
+   ]
   },
   {
    "n": 6,
@@ -523,9 +598,10 @@
    ],
    "paginas": [
     "sonido_interactivo.html",
-    "transmisibilidad_interactivo.html"
-   ],
-   "pendientes": "6.3 en su parte acústica (pérdida por transmisión) y 6.4 (cámaras anecoicas)"
+    "transmisibilidad_interactivo.html",
+    "perdida_interactivo.html",
+    "anecoica_interactivo.html"
+   ]
   },
   {
    "n": 7,

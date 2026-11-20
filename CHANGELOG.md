@@ -2,6 +2,22 @@
 
 La numeración sigue las etiquetas (*tags*) de GitHub, que son las versiones archivadas en Zenodo. El DOI de concepto [10.5281/zenodo.23422993](https://doi.org/10.5281/zenodo.23422993) (citar «todas las versiones») resuelve siempre a la más reciente.
 
+## [1.4] · 2026-11-20 · DOI de versión: se anota al publicar la *release* v1.4 en Zenodo
+
+Diecinueve exploradores y un tutorial. Cubre los subtemas de las unidades 5 y 6 que el índice señalaba como «sin explorador todavía».
+
+### Exploradores nuevos
+- `esfuerzos_interactivo.html` (Pilar 17 · U5 · 5.1 y 5.2): unión a traslape con pernos en cortante simple o doble; esfuerzo cortante en el perno, aplastamiento, tensión en la sección neta y desgarre de la placa, cada uno con su área; aprovechamiento frente al admisible de fluencia, modo que gobierna, factor de seguridad y carga que inicia la fluencia; esquema en dos vistas con el modo crítico resaltado.
+- `perdida_interactivo.html` (Pilar 18 · U6 · 6.3, vía aérea): pérdida por transmisión de un panel infinito, homogéneo y delgado en incidencia normal (ley de masa), oblicua y de campo difuso (integración numérica de 0° a 78°); frecuencia crítica, coincidencia y efecto del amortiguamiento; ganancia real al duplicar el espesor.
+- `anecoica_interactivo.html` (Pilar 19 · U6 · 6.4): campo directo y campo reverberante en un recinto, radio crítico, desviación respecto del campo libre, tiempo de reverberación (Eyring) y frecuencia de corte de las cuñas (un cuarto de onda); preajustes de aula, cámara reverberante, anecoica y semianecoica; planta del recinto con la zona de campo libre.
+
+### Orden e índice
+- Unidad 5: esfuerzos directos, círculo de Mohr, fatiga. Unidad 6: niveles sonoros, transmisibilidad, pérdida por transmisión, cámara anecoica.
+- Desaparecen del índice las notas «Sin explorador todavía» de las unidades 5 y 6; quedan las de los subtemas 1.1 y 4.4.
+
+### Verificación
+- `rev12.py` compara las lecturas de las tres páginas con cálculos independientes en Python (fórmulas cerradas para la unión y el recinto; cuadratura adaptativa de SciPy para el campo difuso).
+
 ## [1.3] · 2026-11-18 · DOI de versión: se anota al publicar la *release* v1.3 en Zenodo
 
 Dieciséis exploradores y un tutorial. Reúne todo lo posterior a la v1.2 del 16 de octubre.

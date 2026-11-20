@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Pérdida por transmisión de un panel · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1120px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:900px){ .wrap{grid-template-columns:1.35fr .9fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .row label{font-weight:700;color:var(--navy);font-size:13.5px;min-width:150px}
+  input[type=range]{flex:1;min-width:160px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:76px;text-align:right;font-size:15px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12.5px;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:9px 11px}
+  .tile .k{font-size:11.5px;color:var(--grey);font-weight:600}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:20px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;font-family:'Cambria Math',Georgia,serif;font-size:15px;color:#233}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:12px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  footer{max-width:1120px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  .eqbox b{color:var(--navy)}
+  .pilarnav{max-width:1120px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  @media(max-width:520px){ .pilarnav{font-size:11.5px} }
+</style>
+<style>
+  .grp{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .grp .t{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .nota{font-size:12px;color:var(--grey);margin:6px 0 0}
+  select,.archivo{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff}
+  .tiles.t3{grid-template-columns:1fr 1fr 1fr} @media(max-width:520px){.tiles.t3{grid-template-columns:1fr 1fr}}
+  .tile .v{font-size:18px} .tile.al .v{color:var(--red)}
+  .two{display:grid;grid-template-columns:1fr;gap:12px} @media(min-width:900px){.two{grid-template-columns:1fr 1fr}}
+  .eqbox{overflow-x:auto} .two>div{min-width:0}
+  .oculto .tile .v,.oculto table.res td,.oculto .resp{filter:blur(7px);user-select:none}
+  .tile .v{overflow-wrap:anywhere}
+  table.tb{border-collapse:collapse;font-size:13px;width:100%} table.tb td,table.tb th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left} table.tb th{color:var(--navy)}
+</style>
+<!-- tema:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
+  :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
+        --accent:#C1571B;--serif:"Spectral",Georgia,serif;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{background:var(--bg);font-family:var(--sans)}
+  header{background:transparent;color:var(--ink,#1a1a1a);border-bottom:1px solid var(--line);padding:22px max(20px,calc(50% - 590px)) 14px}
+  header h1{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.15;color:var(--navy,#1F3864);margin:0}
+  header p{color:var(--muted);opacity:1;font-size:15px;margin:6px 0 0;max-width:80ch}
+  header .hk{display:block;font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .card,.intro{box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .card h2,.card h3{font-family:var(--serif);font-weight:600}
+  .card h2{font-size:17px}
+  .eqbox,.tile{background:var(--ice2);border-color:var(--line)}
+  .btn{background:var(--card)}
+  footer .cred{border-top-color:var(--accent)}
+  footer{color:var(--muted)}
+  @media print{header{border-bottom:1px solid #999}}
+</style>
+<!-- tema:fin -->
+<!-- seo:inicio -->
+<meta name="description" content="Al variar material, espesor y amortiguamiento de un panel se obtiene su pérdida por transmisión en cada frecuencia: ley de masa, caída por coincidencia y zona controlada por el amortiguamiento.">
+<link rel="canonical" href="https://elodiestrupiechonski.github.io/vibraciones-exploradores/perdida_interactivo.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploradores de Vibraciones (UNAM)">
+<meta property="og:title" content="Pérdida por transmisión de un panel">
+<meta property="og:description" content="Al variar material, espesor y amortiguamiento de un panel se obtiene su pérdida por transmisión en cada frecuencia: ley de masa, caída por coincidencia y zona controlada por el amortiguamiento.">
+<meta property="og:url" content="https://elodiestrupiechonski.github.io/vibraciones-exploradores/perdida_interactivo.html">
+<meta property="og:locale" content="es_MX">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Pérdida por transmisión de un panel",
+ "description": "Al variar material, espesor y amortiguamiento de un panel se obtiene su pérdida por transmisión en cada frecuencia: ley de masa, caída por coincidencia y zona controlada por el amortiguamiento.",
+ "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/perdida_interactivo.html",
+ "inLanguage": "es",
+ "isAccessibleForFree": true,
+ "learningResourceType": "simulación interactiva",
+ "educationalLevel": "Licenciatura",
+ "about": [
+  "pérdida por transmisión",
+  "ley de masa",
+  "frecuencia crítica",
+  "coincidencia",
+  "aislamiento acústico",
+  "fuselaje"
+ ],
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "identifier": "https://doi.org/10.5281/zenodo.23422993",
+ "author": [
+  {
+   "@type": "Person",
+   "name": "Elodie Strupiechonski",
+   "sameAs": "https://orcid.org/0000-0001-8991-8499"
+  },
+  {
+   "@type": "Person",
+   "name": "Andrés de Luna Bugallo",
+   "sameAs": "https://orcid.org/0000-0002-7591-5235"
+  }
+ ],
+ "provider": {
+  "@type": "CollegeOrUniversity",
+  "name": "Universidad Nacional Autónoma de México, ENES Juriquilla"
+ },
+ "isPartOf": {
+  "@type": "Collection",
+  "name": "Vibraciones: exploradores interactivos",
+  "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
+ }
+}
+</script>
+<!-- seo:fin -->
+<!-- movil:inicio -->
+<style>
+  .card{min-width:0}
+  pre{overflow-x:auto;max-width:100%}
+  .row,.tile,.grp,.two>div{min-width:0}
+  input[type=number],select{max-width:100%;min-width:0}
+  canvas{max-width:100%}
+  @media (max-width:480px){
+    .eqbox{font-size:14px}
+    .row,.row.kbrow{flex-wrap:wrap!important}
+    .row>label{min-width:100%!important;flex:1 1 100%}
+    .row>input[type=range]{flex:1 1 120px;min-height:28px}
+    .tiles.t3{grid-template-columns:1fr 1fr}
+    header h1{font-size:22px}
+  }
+</style>
+<!-- movil:fin -->
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Pérdida por transmisión de un panel</h1>
+    <p><span class="hk">Vibraciones · Pilar 18 · U6</span>Al variar el material, el espesor y el amortiguamiento de un panel se observa cuánto sonido deja pasar en cada frecuencia: ley de masa, coincidencia y control por amortiguamiento</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="intro full">
+    <b>¿Qué muestra?</b> Un panel separa la fuente de ruido del recinto que se quiere proteger: el fuselaje frente a la capa límite turbulenta, la cofia frente al ruido del despegue, una pared frente a una máquina. La <b>pérdida por transmisión</b> <i>TL</i> indica cuántos decibeles pierde el sonido al atravesarlo. A baja frecuencia manda la masa del panel (<b>ley de masa</b>: +6 dB por octava). Cerca de la <b>frecuencia crítica</b> <i>f</i><sub>c</sub> la onda de flexión del panel viaja a la misma velocidad que la traza de la onda sonora, el panel deja pasar el sonido y la curva se hunde (<b>coincidencia</b>); ahí solo ayuda el amortiguamiento. El explorador calcula la curva de un panel infinito, homogéneo y delgado, en incidencia normal, oblicua y de campo difuso.
+  </div>
+
+  <div class="card">
+    <canvas id="ctl" width="760" height="430" aria-label="Pérdida por transmisión en función de la frecuencia"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="border-top-color:var(--steel)"></i> campo difuso (0° a 78°)</span>
+      <span><i class="sw" style="border-top-color:var(--orange);border-top-style:dashed"></i> ley de masa, incidencia normal</span>
+      <span><i class="sw" style="border-top-color:var(--purple)"></i> incidencia oblicua θ</span>
+      <span><i class="sw" style="border-top-color:var(--green);border-top-style:dashed"></i> frecuencia crítica <i>f</i><sub>c</sub></span>
+      <span><i class="sw" style="border-top-color:var(--red)"></i> frecuencia de lectura</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Controles</h2>
+    <div class="grp"><div class="t">Panel</div>
+      <div class="btns"><button class="btn on" data-mat="al">Aluminio</button><button class="btn" data-mat="ac">Acero</button><button class="btn" data-mat="vi">Vidrio</button><button class="btn" data-mat="ye">Panel de yeso</button><button class="btn" data-mat="co">Concreto</button></div>
+      <div class="row"><label>Módulo de Young <i>E</i></label><input id="E" type="range" min="1" max="220" step="0.5" value="70"><span class="val" id="vE">70 GPa</span></div>
+      <div class="row"><label>Densidad ρ</label><input id="rho" type="range" min="300" max="8000" step="10" value="2700"><span class="val" id="vrho">2700 kg/m³</span></div>
+      <div class="row"><label>Espesor <i>h</i></label><input id="h" type="range" min="0.5" max="200" step="0.5" value="2"><span class="val" id="vh">2 mm</span></div>
+      <div class="row"><label>Factor de pérdida η</label><input id="eta" type="range" min="0.005" max="0.3" step="0.005" value="0.01"><span class="val" id="veta">0.01</span></div>
+    </div>
+    <div class="grp"><div class="t">Onda incidente</div>
+      <div class="row"><label>Frecuencia de lectura <i>f</i></label><input id="f" type="range" min="50" max="10000" step="10" value="1000"><span class="val" id="vf">1000 Hz</span></div>
+      <div class="row"><label>Ángulo de incidencia θ</label><input id="th" type="range" min="0" max="85" step="1" value="60"><span class="val" id="vth">60 °</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn" data-pre="F">Piel de fuselaje, 2 mm</button><button class="btn" data-pre="V">Ventana, 6 mm</button><button class="btn" data-pre="M">Muro de concreto, 100 mm</button><button class="btn" data-pre="A">Mismo panel con capa amortiguadora</button>
+      <button class="btn" id="pra">Ocultar lecturas (modo práctica)</button>
+    </div>
+    <div class="tiles t3" style="margin-top:10px">
+      <div class="tile "><div class="k">Masa superficial <i>m</i>″</div><div class="v" id="om">…</div></div><div class="tile hl"><div class="k">Frecuencia crítica <i>f</i><sub>c</sub></div><div class="v" id="ofc">…</div></div><div class="tile "><div class="k">Coincidencia para θ</div><div class="v" id="ofco">…</div></div>
+      <div class="tile hl"><div class="k"><i>TL</i> en campo difuso</div><div class="v" id="otl">…</div></div><div class="tile "><div class="k">Fracción de potencia transmitida τ</div><div class="v" id="otau">…</div></div><div class="tile "><div class="k">Ley de masa (normal)</div><div class="v" id="otn">…</div></div>
+      <div class="tile "><div class="k"><i>TL</i> para el ángulo θ</div><div class="v" id="oto">…</div></div><div class="tile "><div class="k">Ganancia al duplicar el espesor</div><div class="v" id="odup">…</div></div><div class="tile "><div class="k">Rigidez a flexión <i>B</i></div><div class="v" id="oB">…</div></div>
+    </div>
+    <div class="nota" id="olect"></div>
+  </div>
+
+  <div class="card full">
+    <h2>Las fórmulas en pantalla</h2>
+    <div class="two"><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">1 · Definición</span><math display="block"><mrow><mi>T</mi><mi>L</mi><mo>=</mo><mn>10</mn><msub><mi mathvariant="normal" data-fn="1">log</mi><mn>10</mn></msub><mspace width="0.17em"></mspace><mfrac><mn>1</mn><mi>τ</mi></mfrac><mo>,</mo><mspace width="2em"></mspace><mi>τ</mi><mo>=</mo><mfrac><msub><mi>W</mi><mtext>transmitida</mtext></msub><msub><mi>W</mi><mtext>incidente</mtext></msub></mfrac></mrow></math><div class="eqnote"><i>TL</i> = 30 dB significa que pasa una milésima de la potencia sonora</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">2 · Ley de masa en incidencia normal</span><math display="block"><mrow><mi>T</mi><msub><mi>L</mi><mn>0</mn></msub><mo>=</mo><mn>10</mn><msub><mi mathvariant="normal" data-fn="1">log</mi><mn>10</mn></msub><mrow><mo stretchy="true" fence="true">[</mo><mn>1</mn><mo>+</mo><msup><mrow><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mi>π</mi><mi>f</mi><mspace width="0.17em"></mspace><msup><mi>m</mi><mrow><mo>′</mo><mo>′</mo></mrow></msup></mrow><mrow><msub><mi>ρ</mi><mn>0</mn></msub><mi>c</mi></mrow></mfrac><mo stretchy="true" fence="true">)</mo></mrow><mn>2</mn></msup><mo stretchy="true" fence="true">]</mo></mrow><mo>≈</mo><mn>20</mn><msub><mi mathvariant="normal" data-fn="1">log</mi><mn>10</mn></msub><mrow><mo stretchy="true" fence="true">(</mo><mi>f</mi><mspace width="0.17em"></mspace><msup><mi>m</mi><mrow><mo>′</mo><mo>′</mo></mrow></msup><mo stretchy="true" fence="true">)</mo></mrow><mo>−</mo><mn>42.4</mn><mspace width="0.25em"></mspace><mtext>dB</mtext></mrow></math><div class="eqnote"><i>m</i>″ = ρ<i>h</i> en kg/m², <i>f</i> en Hz; aire a 20 °C: ρ<sub>0</sub><i>c</i> = 413 Pa·s/m. Duplicar la masa o la frecuencia suma 6 dB</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">3 · Frecuencia crítica</span><math display="block"><mrow><msub><mi>f</mi><mi>c</mi></msub><mo>=</mo><mfrac><msup><mi>c</mi><mn>2</mn></msup><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msqrt><mfrac><msup><mi>m</mi><mrow><mo>′</mo><mo>′</mo></mrow></msup><mi>B</mi></mfrac></msqrt><mo>,</mo><mspace width="2em"></mspace><mi>B</mi><mo>=</mo><mfrac><mrow><mi>E</mi><mspace width="0.17em"></mspace><msup><mi>h</mi><mn>3</mn></msup></mrow><mrow><mn>12</mn><mspace width="0.17em"></mspace><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>1</mn><mo>−</mo><msup><mi>ν</mi><mn>2</mn></msup><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow></mfrac></mrow></math><div class="eqnote">en ella la longitud de onda de flexión del panel iguala a la del sonido en el aire; como <i>f</i><sub>c</sub> es proporcional a 1/<i>h</i>, el producto <i>f</i><sub>c</sub><i>h</i> es una constante del material</div></div>
+    </div><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">4 · Panel infinito en incidencia oblicua</span><math display="block"><mrow><mi>τ</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>θ</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><msup><mrow><mo stretchy="true" fence="true">|</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>Z</mi><mi mathvariant="normal" data-fn="1">cos</mi><mspace width="0.17em"></mspace><mi>θ</mi></mrow><mrow><mn>2</mn><msub><mi>ρ</mi><mn>0</mn></msub><mi>c</mi></mrow></mfrac><mo stretchy="true" fence="true">|</mo></mrow><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>,</mo><mspace width="2em"></mspace><mi>Z</mi><mo>=</mo><mi>j</mi><mi>ω</mi><msup><mi>m</mi><mrow><mo>′</mo><mo>′</mo></mrow></msup><mrow><mo stretchy="true" fence="true">[</mo><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="true" fence="true">(</mo><mfrac><mi>f</mi><msub><mi>f</mi><mi>c</mi></msub></mfrac><mo stretchy="true" fence="true">)</mo></mrow><mn>2</mn></msup><msup><mi mathvariant="normal">sen</mi><mn>4</mn></msup><mi>θ</mi><mspace width="0.17em"></mspace><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>1</mn><mo>+</mo><mi>j</mi><mi>η</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo stretchy="true" fence="true">]</mo></mrow></mrow></math><div class="eqnote">la parte imaginaria de <i>Z</i> se anula en la frecuencia de coincidencia <i>f</i><sub>c</sub>/sen²θ; ahí solo queda el término de amortiguamiento</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">5 · Campo difuso</span><math display="block"><mrow><msub><mi>τ</mi><mi>d</mi></msub><mo>=</mo><mfrac><mrow><munderover><mo largeop="true" movablelimits="false">∫</mo><mn>0</mn><msub><mi>θ</mi><mi>l</mi></msub></munderover><mi>τ</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>θ</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mspace width="0.17em"></mspace><mi mathvariant="normal">sen</mi><mspace width="0.17em"></mspace><mn>2</mn><mi>θ</mi><mspace width="0.17em"></mspace><mi>d</mi><mi>θ</mi></mrow><mrow><munderover><mo largeop="true" movablelimits="false">∫</mo><mn>0</mn><msub><mi>θ</mi><mi>l</mi></msub></munderover><mi mathvariant="normal">sen</mi><mspace width="0.17em"></mspace><mn>2</mn><mi>θ</mi><mspace width="0.17em"></mspace><mi>d</mi><mi>θ</mi></mrow></mfrac><mo>,</mo><mspace width="2em"></mspace><msub><mi>θ</mi><mi>l</mi></msub><mo>=</mo><mn>78</mn><mo>°</mo></mrow></math><div class="eqnote">promedio sobre los ángulos de incidencia; el límite de 78° («incidencia de campo») es la convención que mejor reproduce las mediciones; la integral se evalúa numéricamente</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">6 · Por encima de la frecuencia crítica</span><math display="block"><mrow><mi>f</mi><mo>&gt;</mo><msub><mi>f</mi><mi>c</mi></msub><mo>:</mo><mspace width="2em"></mspace><mi>T</mi><mi>L</mi><mo>≈</mo><mi>T</mi><msub><mi>L</mi><mn>0</mn></msub><mo>+</mo><mn>10</mn><msub><mi mathvariant="normal" data-fn="1">log</mi><mn>10</mn></msub><mrow><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>2</mn><mi>η</mi></mrow><mi>π</mi></mfrac><mspace width="0.17em"></mspace><mfrac><mi>f</mi><msub><mi>f</mi><mi>c</mi></msub></mfrac><mo stretchy="true" fence="true">)</mo></mrow></mrow></math><div class="eqnote">la pérdida depende del amortiguamiento y crece 9 dB por octava</div></div>
+    </div></div>
+    <div class="intro" style="margin-top:12px"><b>Hipótesis y límites del modelo.</b> Panel plano, infinito, homogéneo, isótropo y delgado (teoría de placas de Kirchhoff), con aire a 20 °C en ambas caras (ρ<sub>0</sub> = 1.204 kg/m³, <i>c</i> = 343 m/s). No se modelan: las resonancias del panel finito y la zona controlada por la rigidez, por debajo de su primera frecuencia natural; las fugas por juntas y rendijas, que en la práctica suelen limitar el aislamiento; las paredes dobles ni los paneles de emparedado, cuyo núcleo ligero y rígido baja la frecuencia crítica. Los valores de <i>E</i>, ρ, ν y η de los botones son representativos; el factor de pérdida de un panel instalado depende sobre todo de sus uniones.</div>
+    <div class="takeaway" style="margin-top:10px"><b>Cómo explorar:</b> (1) «Piel de fuselaje»: aluminio de 2 mm, 5.4 kg/m²; la frecuencia crítica queda cerca de 6 kHz y en la banda de la voz (500 Hz a 2 kHz) la curva sigue la ley de masa. (2) Al duplicar el espesor la curva sube unos 6 dB a baja frecuencia, pero la frecuencia crítica baja a la mitad: la lectura «Ganancia al duplicar el espesor» resulta negativa entre la mitad de la frecuencia crítica original y esa frecuencia (por ejemplo, −6 dB a 3 kHz). (3) «Ventana»: vidrio de 6 mm con <i>f</i><sub>c</sub> cercana a 2 kHz, dentro de la banda donde el oído es más sensible. (4) «Muro de concreto»: <i>f</i><sub>c</sub> cae cerca de 180 Hz y casi toda la curva queda por encima de ella, controlada por el amortiguamiento. (5) «Capa amortiguadora»: al subir η de 0.01 a 0.1 la curva no cambia por debajo de <i>f</i><sub>c</sub>/2 y gana de 8 a 10 dB a partir de 1.3 <i>f</i><sub>c</sub>. (6) Al mover θ, el mínimo de la curva oblicua se desplaza a <i>f</i><sub>c</sub>/sen²θ: en incidencia normal no hay coincidencia. <b>Relación con el tema 6.3:</b> el explorador de transmisibilidad trata la vía estructural (el soporte que aísla); este trata la vía aérea. En ambos casos el aislamiento a baja frecuencia cuesta masa, y cerca de la resonancia o de la coincidencia solo lo aporta el amortiguamiento. Referencias: Fahy y Gardonio, <i>Sound and Structural Vibration</i>, 2.ª ed., Academic Press, 2007, cap. 5; Bies, Hansen y Howard, <i>Engineering Noise Control</i>, 5.ª ed., CRC Press, 2017 (capítulo de particiones y encapsulados); Cremer, Heckl y Petersson, <i>Structure-Borne Sound</i>, 3.ª ed., Springer, 2005; Kinsler, Frey, Coppens y Sanders, <i>Fundamentals of Acoustics</i>, 4.ª ed., Wiley, 2000 (transmisión a través de una capa y ley de masa).</div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Explorador didáctico de la pérdida por transmisión sonora de un panel (ley de masa y coincidencia) · material de apoyo del curso de Vibraciones · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.4) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+const NAVY='#1F3864',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',RED='#B23A3A',PURPLE='#6B3FA0';
+const $=id=>document.getElementById(id);
+function lienzo(cv,H){ const c=cv.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1,2), W=cv.clientWidth||760; cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px'; c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H); return {c,W,H}; }
+function pasos(a,b,n){ const d=(b-a)/n, p=Math.pow(10,Math.floor(Math.log10(d))), q=d/p, s=(q<1.5?1:q<3?2:q<7?5:10)*p, o=[]; for(let v=Math.ceil(a/s-1e-9)*s; v<=b+1e-9*s; v+=s) o.push(+v.toPrecision(12)); return o; }
+function num(v){ const a=Math.abs(v); if(v===0) return '0'; if(a>=1e4||a<1e-2){ const e=Math.floor(Math.log10(a)+1e-9), m=+(v/Math.pow(10,e)).toPrecision(2); return (String(m)+'×10^'+e).replace(/-/g,'−'); } return String(+v.toPrecision(3)).replace('-','−'); }
+// notación de ingeniería con prefijo SI
+function ing(v,u){ if(!isFinite(v)) return '∞'; if(!(v>0)) return '0 '+u; const P=[[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ'],[1e-9,'n'],[1e-12,'p']]; for(const [f,p] of P){ if(v>=f*0.9995) return (+(v/f).toPrecision(3))+' '+p+u; } return num(v)+' '+u; }
+// modo práctica: oculta las lecturas hasta que se pulse de nuevo
+function practica(id){ const b=$(id); if(!b) return; b.addEventListener('click',()=>{ const on=document.body.classList.toggle('oculto'); b.classList.toggle('on',on); b.textContent=on?'Mostrar lecturas':'Ocultar lecturas (modo práctica)'; }); }
+// Ejes: o={x0,x1,y0,y1,logx,logy,xl,yl,tit}; devuelve los mapeos X, Y y el rectángulo de trazo
+function ejes(g,box,o){ const c=g.c, mL=box.mL||56, mR=box.mR||14, mT=box.mT||24, mB=box.mB||36, x=box.x||0, y=box.y||0, w=(box.w||g.W)-mL-mR, h=(box.h||g.H)-mT-mB, px=x+mL, py=y+mT;
+  const lx=o.logx, ly=o.logy, ax=lx?Math.log10(o.x0):o.x0, bx=lx?Math.log10(o.x1):o.x1, ay=ly?Math.log10(o.y0):o.y0, by=ly?Math.log10(o.y1):o.y1;
+  const X=v=>px+((lx?Math.log10(Math.max(v,1e-300)):v)-ax)/(bx-ax)*w, Y=v=>py+(1-((ly?Math.log10(Math.max(v,1e-300)):v)-ay)/(by-ay))*h;
+  c.lineWidth=1; c.strokeStyle='#E3E9F3'; c.fillStyle=GREY; c.font='11px Arial';
+  const tx=lx?decadas(o.x0,o.x1):pasos(o.x0,o.x1,o.nx||8), ty=ly?decadas(o.y0,o.y1):pasos(o.y0,o.y1,o.ny||5);
+  c.textAlign='center'; c.textBaseline='top'; tx.forEach(v=>{ c.beginPath(); c.moveTo(X(v),py); c.lineTo(X(v),py+h); c.stroke(); c.fillText(lx?pot(v):num(v),X(v),py+h+5); });
+  c.textAlign='right'; c.textBaseline='middle'; ty.forEach(v=>{ c.beginPath(); c.moveTo(px,Y(v)); c.lineTo(px+w,Y(v)); c.stroke(); c.fillText(ly?pot(v):num(v),px-6,Y(v)); });
+  c.strokeStyle='#9AA7BF'; c.strokeRect(px,py,w,h);
+  c.fillStyle=NAVY; c.textAlign='left'; c.textBaseline='top'; if(o.tit){ let fs=12; do{ c.font='bold '+fs+'px Arial'; fs-=0.5; } while(fs>8.5&&c.measureText(o.tit.replace(/[_^]/g,'')).width>w+mR-2); c.fillText(o.tit,px,y+5); } c.font='bold 12px Arial';
+  c.textAlign='center'; if(o.xl) c.fillText(o.xl,px+w/2,py+h+20);
+  if(o.yl){ c.save(); c.translate(x+12,py+h/2); c.rotate(-Math.PI/2); c.textBaseline='middle'; c.fillText(o.yl,0,0); c.restore(); }
+  return {X,Y,px,py,w,h,c,o}; }
+function pot(v){ const e=Math.round(Math.log10(v)); return (e>=-2&&e<=3)?String(+Math.pow(10,e).toPrecision(1)):'10^'+(e<0?'−'+(-e):e); }
+function decadas(a,b){ const o=[]; for(let e=Math.ceil(Math.log10(a)-1e-9); e<=Math.log10(b)+1e-9; e++) o.push(Math.pow(10,e)); return o; }
+function curva(e,pts,color,lw,dash){ const c=e.c; c.save(); c.beginPath(); c.rect(e.px,e.py,e.w,e.h); c.clip(); c.strokeStyle=color; c.lineWidth=lw||1.6; c.setLineDash(dash||[]); c.beginPath(); let on=false;
+  for(const p of pts){ if(!isFinite(p[1])){ on=false; continue; } const x=e.X(p[0]), y=e.Y(p[1]); on?c.lineTo(x,y):c.moveTo(x,y); on=true; } c.stroke(); c.restore(); }
+function funcion(e,f,color,lw,dash,n){ n=n||Math.round(e.w); const o=e.o, pts=[]; for(let i=0;i<=n;i++){ const u=i/n, x=o.logx?o.x0*Math.pow(o.x1/o.x0,u):o.x0+(o.x1-o.x0)*u; pts.push([x,f(x)]); } curva(e,pts,color,lw,dash); }
+function vline(e,x,color,dash,txt,dy){ const c=e.c; if(x<Math.min(e.o.x0,e.o.x1)||x>Math.max(e.o.x0,e.o.x1)) return; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.X(x),e.py); c.lineTo(e.X(x),e.py+e.h); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; const der=e.X(x)>e.px+e.w-110; c.textAlign=der?'right':'left'; c.textBaseline='top'; c.fillText(txt,e.X(x)+(der?-4:4),e.py+4+(dy||0)); } c.restore(); }
+function hline(e,y,color,dash,txt){ const c=e.c; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.px,e.Y(y)); c.lineTo(e.px+e.w,e.Y(y)); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; c.textAlign='right'; c.textBaseline='bottom'; c.fillText(txt,e.px+e.w-4,e.Y(y)-2); } c.restore(); }
+function punto(e,x,y,color,r){ const c=e.c; c.fillStyle=color; c.strokeStyle='#fff'; c.lineWidth=1.5; c.beginPath(); c.arc(e.X(x),e.Y(y),r||5,0,7); c.fill(); c.stroke(); }
+// Enlaza deslizadores: UN = {id:' unidad'}; llama a cb en cada cambio
+function liga(S,UN,cb){ Object.keys(UN).forEach(id=>$(id).addEventListener('input',ev=>{ S[id]=+ev.target.value; $('v'+id).textContent=(+S[id].toPrecision(6))+UN[id]; cb(); })); }
+function pon(S,UN,o,cb){ Object.keys(o).forEach(k=>{ S[k]=o[k]; if($(k)&&UN[k]!==undefined){ $(k).value=o[k]; $('v'+k).textContent=o[k]+UN[k]; } }); cb(); }
+
+let S={E:70,rho:2700,h:2,eta:0.01,f:1000,th:60,nu:0.33};
+const UN={E:' GPa',rho:' kg/m³',h:' mm',eta:'',f:' Hz',th:'°'}, RHO0=1.204, C0=343, Z0=RHO0*C0, UL=Math.pow(Math.sin(78*Math.PI/180),2), NI=6000;
+function panel(h){ h=(h===undefined?S.h:h)*1e-3; const m=S.rho*h, B=S.E*1e9*h*h*h/(12*(1-S.nu*S.nu)); return {m,B,fc:C0*C0/(2*Math.PI)*Math.sqrt(m/B)}; }
+// coeficiente de transmisión para u = sen²θ
+function tauU(f,u,p){ const a=2*Math.PI*f*p.m*Math.sqrt(1-u)/(2*Z0), r=f/p.fc, q=r*r*u*u, ar=a*S.eta*q, ai=a*(1-q); return 1/((1+ar)*(1+ar)+ai*ai); }
+function tauDif(f,p){ let s=0; const du=UL/NI; for(let i=0;i<NI;i++) s+=tauU(f,(i+0.5)*du,p); return s/NI; }
+const TL=t=>-10*Math.log10(t), tl0=(f,p)=>10*Math.log10(1+Math.pow(Math.PI*f*p.m/Z0,2));
+const FR=[]; for(let i=0;i<=150;i++) FR.push(50*Math.pow(200,i/150));       // 50 Hz a 10 kHz
+let CU=null, clave='';
+function curvas(){ const k=[S.E,S.rho,S.h,S.eta,S.nu].join('|'); if(k!==clave){ clave=k; const p=panel(); CU=FR.map(f=>TL(tauDif(f,p))); } return CU; }
+function calc(){ const p=panel(), p2=panel(2*S.h), u=Math.pow(Math.sin(S.th*Math.PI/180),2), td=tauDif(S.f,p);
+  return {p, u, tld:TL(td), taud:td, tln:tl0(S.f,p), tlo:TL(tauU(S.f,u,p)), fco:u>0?p.fc/u:Infinity, dup:TL(tauDif(S.f,p2))-TL(td), cu:curvas()}; }
+function dibujar(){
+  const q=calc(), p=q.p, g=lienzo($('ctl'),430), ymax=Math.max(40,Math.ceil((Math.max(...q.cu,tl0(1e4,p))+4)/10)*10);
+  const e=ejes(g,{},{x0:50,x1:1e4,y0:0,y1:ymax,logx:true,xl:'frecuencia (Hz)',yl:'pérdida por transmisión TL (dB)',tit:'Panel de '+S.h+' mm  ·  m″ = '+(+p.m.toPrecision(3))+' kg/m²  ·  η = '+S.eta,ny:8});
+  funcion(e,f=>tl0(f,p),ORANGE,1.5,[6,4],300); const u=q.u; funcion(e,f=>TL(tauU(f,u,p)),PURPLE,1.4,null,700);
+  curva(e,FR.map((f,i)=>[f,q.cu[i]]),STEEL,2.6);
+  vline(e,p.fc,GREEN,[6,4],'f_c = '+ing(p.fc,'Hz')); vline(e,S.f,RED,[2,3]); punto(e,S.f,q.tld,RED,5.5);
+  const c=g.c; c.fillStyle=RED; c.font='bold 11px Arial'; c.textAlign=S.f>3000?'right':'left'; c.textBaseline='bottom'; c.fillText(q.tld.toFixed(1)+' dB',e.X(S.f)+(S.f>3000?-8:8),e.Y(Math.min(q.tld,ymax))-6);
+  const d1=v=>v.toFixed(1)+' dB';
+  $('om').textContent=(+p.m.toPrecision(3))+' kg/m²'; $('ofc').textContent=ing(p.fc,'Hz'); $('ofco').textContent=isFinite(q.fco)?ing(q.fco,'Hz'):'no hay (θ = 0)';
+  $('otl').textContent=d1(q.tld); $('otau').textContent=num(q.taud); $('otn').textContent=d1(q.tln); $('oto').textContent=d1(q.tlo);
+  $('odup').textContent=(q.dup>=0?'+':'−')+Math.abs(q.dup).toFixed(1)+' dB'; $('odup').parentNode.classList.toggle('al',q.dup<0); $('oB').textContent=ing(p.B,'N·m');
+  const r=S.f/p.fc; $('olect').textContent=r<0.5?'Zona de la ley de masa (f < f_c/2): la pérdida depende solo de la masa superficial y de la frecuencia; el amortiguamiento no influye.':r<=1.5?'Zona de coincidencia (f cercana a f_c): el panel irradia con eficiencia y la pérdida cae por debajo de la ley de masa; solo el amortiguamiento la limita.':'Por encima de la frecuencia crítica: la pérdida crece 9 dB por octava y aumenta cerca de 10 dB por cada década de η.';
+}
+liga(S,UN,dibujar); practica('pra');
+const MAT={al:{E:70,rho:2700,nu:0.33,eta:0.01}, ac:{E:200,rho:7850,nu:0.30,eta:0.01}, vi:{E:70,rho:2500,nu:0.22,eta:0.02}, ye:{E:2,rho:700,nu:0.30,eta:0.03}, co:{E:30,rho:2300,nu:0.20,eta:0.02}};
+function mat(k,extra){ document.querySelectorAll('[data-mat]').forEach(b=>b.classList.toggle('on',b.dataset.mat===k)); const o=Object.assign({},MAT[k],extra||{}); S.nu=o.nu; delete o.nu; pon(S,UN,o,dibujar); }
+document.querySelectorAll('[data-mat]').forEach(b=>b.addEventListener('click',()=>mat(b.dataset.mat)));
+const PRE={F:['al',{h:2,f:1000}], V:['vi',{h:6,f:2000}], M:['co',{h:100,f:500}]};
+document.querySelectorAll('[data-pre]').forEach(b=>b.addEventListener('click',()=>{ if(b.dataset.pre==='A'){ pon(S,UN,{eta:0.1},dibujar); return; } const o=PRE[b.dataset.pre]; mat(o[0],o[1]); }));
+window.addEventListener('resize',dibujar);
+window.__tl={S,calc,panel,tauDif,tauU,FR};
+dibujar();
+
+</script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ n.classList.add('kbmal'); n.value=limpio(actual(),6).replace('-','−'); setTimeout(function(){ n.classList.remove('kbmal'); },900); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
+<!-- contador:inicio -->
+<style>
+  .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
+  .visitas span{display:inline-block;background:#fff;border:1px solid #D3DEEE;border-radius:20px;padding:3px 11px}
+  .visitas b{color:#1F3864;font-weight:700}
+  .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
+</style>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
+<script>
+(function(){
+  if(location.protocol!=='http:' && location.protocol!=='https:') return;   // copia local: sin contador ni peticiones
+  var sc=document.createElement('script'); sc.async=true;
+  sc.setAttribute('data-goatcounter','https://elodiestrupiechonski.goatcounter.com/count');
+  sc.src='https://gc.zgo.at/count.js'; document.head.appendChild(sc);
+  var base='https://elodiestrupiechonski.goatcounter.com/counter/';
+  function pide(path){
+    return fetch(base+encodeURIComponent(path).replace(/%2F/g,'/')+'.json',{cache:'no-cache'})
+      .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+  }
+  var p=location.pathname;
+  if(/\/index\.html$/.test(p)) p=p.replace(/index\.html$/,'');
+  Promise.all([pide(p), pide('TOTAL')]).then(function(res){
+    var a=res[0], b=res[1];
+    if(!a && !b) return;
+    document.getElementById('vis-pag').textContent = a ? a.count : '–';
+    document.getElementById('vis-tot').textContent = b ? b.count : '–';
+    document.getElementById('visitas').style.display='block';
+  });
+})();
+</script>
+<!-- contador:fin -->
+<!-- navegacion:inicio -->
+<style>
+  :root{--nv-w:272px}
+  body{margin-top:0!important}
+  @media (min-width:1360px){ body{margin-left:var(--nv-w)!important} }
+  .nvside{position:fixed;top:0;left:0;bottom:0;width:var(--nv-w);z-index:9999;display:flex;flex-direction:column;
+    background:var(--card,#fff);border-right:1px solid var(--line,#e2dcc9);
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:14px;color:var(--ink,#1a1a1a);
+    box-shadow:1px 0 8px rgba(0,0,0,.05);transition:transform .2s ease}
+  .nvside a{text-decoration:none;color:inherit}
+  .nv-cab{padding:14px 16px 10px;border-bottom:1px solid var(--line,#e2dcc9);position:relative}
+  .nv-marca{display:block;font-family:"Century Gothic","Questrial",Arial,sans-serif;font-weight:700;font-size:15px;
+    line-height:1.25;color:var(--navy,var(--ink,#1F3864))}
+  .nv-marca small{display:block;font-weight:400;font-size:12px;color:var(--muted,var(--grey,#5a5a5a));margin-top:2px}
+  .nv-pasos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+  .nv-paso{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font-size:11px;color:var(--muted,var(--grey,#5a5a5a));min-width:0}
+  .nv-paso b{font-size:12.5px;color:var(--ink,#1a1a1a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nv-paso.sig{text-align:right}
+  .nv-paso:hover{background:var(--bg,#f4f1ea)}
+  .nv-paso[aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-busca{margin-top:8px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font:inherit;background:var(--bg,#f8f6f0);color:inherit}
+  .nv-lista{flex:1;overflow-y:auto;padding:6px 8px 10px}
+  .nv-grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,var(--grey,#5a5a5a));padding:12px 8px 4px}
+  .nv-lista a{display:block;padding:6px 8px 6px 10px;border-radius:6px;border-left:3px solid transparent;line-height:1.3}
+  .nv-lista a small{display:block;font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-lista a:hover{background:var(--bg,#f4f1ea)}
+  .nv-lista a.nv-aqui{background:var(--bg,#f4f1ea);border-left-color:var(--accent,var(--orange,#C1571B));font-weight:700}
+  .nv-nada{padding:10px;font-size:12.5px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-pie{padding:8px 14px;border-top:1px solid var(--line,#e2dcc9);font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-boton{display:none;position:fixed;top:10px;left:10px;z-index:10000;gap:6px}
+  .nv-boton a,.nv-boton button{display:flex;align-items:center;justify-content:center;height:38px;min-width:38px;padding:0 10px;
+    border:1px solid var(--line,#e2dcc9);border-radius:9px;background:var(--card,#fff);color:var(--ink,#1a1a1a);
+    font:600 14px Arial,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .nv-boton [aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-velo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10001}
+  .nv-cierra{display:none;position:absolute;top:10px;right:10px;width:32px;height:32px;border:1px solid var(--line,#e2dcc9);border-radius:8px;background:var(--card,#fff);color:inherit;font-size:16px;cursor:pointer}
+  @media (max-width:1359px){
+    body{margin-top:56px!important}
+    .nvside{transform:translateX(-102%);width:min(320px,88vw)}
+    .nvside.abierto{transform:none;z-index:10002}
+    .nv-cierra{display:block}
+    .nv-pie{display:none}
+    .nv-boton{display:flex}
+    .nvside.abierto ~ .nv-velo{display:block}
+  }
+  @media print{.nvside,.nv-boton,.nv-velo{display:none} body{margin:0!important}}
+</style>
+<nav class="nvside" id="nvside" aria-label="Exploradores del curso">
+  <div class="nv-cab">
+    <button class="nv-cierra" id="nv-cierra" aria-label="Cerrar el temario">✕</button>
+    <a class="nv-marca" href="index.html">Exploradores de Vibraciones<small>ENES Juriquilla, UNAM · inicio</small></a>
+    <div class="nv-pasos">
+      <a class="nv-paso" id="nv-ant" href="#" aria-label="Explorador anterior">‹ anterior<b id="nv-ant-t">…</b></a>
+      <a class="nv-paso sig" id="nv-sig" href="#" aria-label="Explorador siguiente">siguiente ›<b id="nv-sig-t">…</b></a>
+    </div>
+    <input class="nv-busca" id="nv-busca" type="search" placeholder="Buscar (tecla /)" aria-label="Buscar explorador">
+  </div>
+  <div class="nv-lista" id="nv-lista">
+<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
+<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html" data-k="segunda ley de Newton frecuencia natural Frecuencia natural ωn = √(k/m) Energía T ↔ V, resorte equivalente Péndulo y acelerómetro (masa sísmica)">Dinámica de la partícula<small>Pilar 3 · armar la ecuación</small></a>
+<a href="edo_interactivo.html" data-nv="edo_interactivo.html" data-k="ecuaciones diferenciales de segundo orden amortiguamiento Subamortiguado, crítico, sobreamortiguado Inestable = flameo (frontera Re = 0) Respuesta x(t) con condiciones iniciales">EDO lineal de 2.º orden<small>Pilar 2 · resolverla</small></a>
+<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html" data-k="números complejos fasores Formas binómica, polar y de Euler Raíces cuadradas y ecuación auxiliar Fasor: excitación vs. respuesta (desfase θ)">Números complejos<small>Pilar 1 · interpretar las raíces</small></a>
+<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador</div>
+<a href="analogias_interactivo.html" data-nv="analogias_interactivo.html" data-k="analogía electromecánica circuito RLC sistemas de segundo orden Analogías fuerza-tensión y fuerza-corriente Escala de impedancia: ω_n y ζ no cambian Chapoteo, paneles y control de actitud">Analogías entre sistemas<small>2.1 y 2.4 · Pilar 14</small></a>
+<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html" data-k="fricción de Coulomb vibración libre Banda de reposo = Ff/k Caída de amplitud 4Ff/k por ciclo Conteo de ciclos hasta detenerse">Fricción de Coulomb<small>2.3 (fricción seca) · Pilar 4</small></a>
+<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia</div>
+<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html" data-k="respuesta forzada resonancia M = 1/√[(1−r²)²+(2ζr)²] Fase φ y resonancia (r ≈ 1) Aislamiento: aísla si r &gt; √2">Respuesta forzada y resonancia<small>3.1 · Pilar 5</small></a>
+<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html" data-k="método de media potencia factor de calidad Q = 1/(2ζ) = fn/Δf ζ medido = Δf/(2fn) Origen de la asimetría de la curva">Media potencia y factor Q<small>3.1–3.2 · Pilar 6</small></a>
+<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales</div>
+<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html" data-k="vibración aleatoria densidad espectral de potencia ecuación de Miles Grms = √(∫W df) y carga de diseño 3σ Miles: √[(π/2)·fn·Q·W(fn)] Escalas en dB (−3, +3, +6) y por qué log">Del espectro a la carga de diseño<small>4.1–4.2 · Pilar 7</small></a>
+<a href="normas.html" data-nv="normas.html" data-k="normas de ensayo GEVS ECSS MIL-STD-810H, GEVS y ECSS: descarga gratuita DO-160 e ISO: de pago, con vista previa Enlaces que se actualizan desde un solo archivo">Dónde consultar las normas<small>4.1 y 4.3 · apoyo</small></a>
+<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos</div>
+<a href="esfuerzos_interactivo.html" data-nv="esfuerzos_interactivo.html" data-k="esfuerzo normal esfuerzo cortante directo aplastamiento unión atornillada sección neta remache σ = P/A y τ = V/A: cada modo tiene su área Cortante simple y cortante doble Factor de seguridad y carga que inicia la fluencia">Esfuerzos directos en una unión con pernos<small>5.1 y 5.2 · Pilar 17</small></a>
+<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html" data-k="círculo de Mohr criterios de falla σ1, σ2, θp y τmáx en vivo Roseta de galgas 0/45/90 → estado de esfuerzo Tres círculos, von Mises y Tresca">Círculo de Mohr<small>5.3 · Pilar 8</small></a>
+<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html" data-k="fatiga regla de Miner Acero con límite, aluminio sin él Esfuerzo medio y concentrador Kf Miner: cuánta vida consume el ensayo">Fatiga: S–N, Haigh y Miner<small>5.4 · Pilar 9</small></a>
+<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento</div>
+<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html" data-k="nivel de presión sonora bandas de octava exposición al ruido Suma energética y ponderación A −6 dB por duplicar la distancia T = 8·2^((90−LA)/3) h">Niveles sonoros y exposición al ruido<small>6.1, 6.2 y 6.4 · Pilar 10</small></a>
+<a href="transmisibilidad_interactivo.html" data-nv="transmisibilidad_interactivo.html" data-k="transmisibilidad aislamiento de vibraciones desbalance rotatorio T_r = 1 en r = √2 para todo ζ Deflexión estática: δ_st = g/ω_n^2 Desbalance rotatorio: F_0 = m_0 e ω^2">Transmisibilidad y aislamiento<small>6.3 · Pilar 13</small></a>
+<a href="perdida_interactivo.html" data-nv="perdida_interactivo.html" data-k="pérdida por transmisión ley de masa frecuencia crítica coincidencia aislamiento acústico fuselaje Ley de masa: +6 dB por duplicar m″ o f Frecuencia crítica: f_c h es constante del material Sobre f_c solo ayuda el amortiguamiento">Pérdida por transmisión de un panel<small>6.3 (vía aérea) · Pilar 18</small></a>
+<a href="anecoica_interactivo.html" data-nv="anecoica_interactivo.html" data-k="cámara anecoica campo libre campo reverberante radio crítico tiempo de reverberación cámara reverberante L_p = L_W + 10 log(Q/4πr² + 4/R) Radio crítico: r_c = √(QR/16π) Cuñas: profundidad de un cuarto de onda">Campo libre y cámara anecoica<small>6.4 · Pilar 19</small></a>
+<div class="nv-grp">Unidad 7 · Pruebas</div>
+<a href="tutorial_phyphox.html" data-nv="tutorial_phyphox.html" data-k="Phyphox acelerómetro del teléfono decremento logarítmico Jupyter Descarga de Phyphox, cuaderno y datos de ejemplo Colab o Visual Studio Code, paso a paso Envolvente de Hilbert y decremento logarítmico">Tutorial: medir con Phyphox y analizar en Python<small>7.1 · Tutorial</small></a>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html" data-k="muestreo aliasing método de Welch Aliasing: f_a = |f − k·f_s| Δf = 1/T_seg y ε_r ≈ 1/√n_d G_rms como área de la PSD (Parseval)">Laboratorio de señales<small>7.1–7.2 · Pilar 11</small></a>
+<a href="modal_interactivo.html" data-nv="modal_interactivo.html" data-k="análisis modal experimental función de respuesta en frecuencia diagrama de Nyquist Media potencia: ζ = (f_b − f_a)/(2 f_n) Círculo de Nyquist por mínimos cuadrados Resolución necesaria: T ≥ 2/(ζ f_n)">Extracción de parámetros modales<small>7.3 · Pilar 15</small></a>
+<a href="choque_interactivo.html" data-nv="choque_interactivo.html" data-k="ensayo de choque espectro de respuesta al choque SRS semiseno prueba de vibración SRS: máximo de |a(t)| para cada f_n, con Q = 10 Blando: 2π f_n Δv; rígido: A Senoidal, aleatorio y choque; diagnóstico por corrimiento de f_n">Ensayo de choque y espectro de respuesta<small>7.4 · Pilar 16</small></a>
+<div class="nv-grp">Unidad 8 · Sistemas acoplados</div>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html" data-k="dos grados de libertad absorbedor dinámico Valores propios: ω_1, ω_2 y formas modales Absorbedor dinámico y óptimo de Den Hartog Separación de frecuencias equipo–estructura">Dos grados de libertad y absorbedor<small>8.1–8.3 · Pilar 12</small></a>
+<div class="nv-nada" id="nv-nada" style="display:none">Sin coincidencias. Se busca en títulos, temas y palabras clave.</div>
+  </div>
+  <div class="nv-pie">Teclas (fuera de los controles): ← anterior · → siguiente · / buscar · Esc cerrar</div>
+</nav>
+<div class="nv-boton"><button id="nv-abre" aria-controls="nvside" aria-expanded="false">☰ Temario</button>
+  <a id="nv-ant2" href="#" aria-label="Anterior">‹</a><a id="nv-sig2" href="#" aria-label="Siguiente">›</a></div>
+<div class="nv-velo" id="nv-velo"></div>
+<script>
+(function(){
+  var lista=document.getElementById('nv-lista'), side=document.getElementById('nvside');
+  var l=lista.querySelectorAll('a[data-nv]'), orden=[], dat={};
+  for(var i=0;i<l.length;i++){var f=l[i].getAttribute('data-nv');orden.push(f);
+    dat[f]={el:l[i],t:l[i].childNodes[0].textContent.trim()};}
+  var aqui=(location.pathname.split('/').pop()||'index.html'), k=orden.indexOf(aqui);
+  function paso(idA,idT,j){var a=document.getElementById(idA);
+    if(j<0||j>=orden.length){a.setAttribute('aria-disabled','true');a.setAttribute('tabindex','-1');if(idT)document.getElementById(idT).textContent='';return;}
+    a.href=orden[j];a.title=dat[orden[j]].t+(j<k?' (tecla ←)':' (tecla →)');if(idT)document.getElementById(idT).textContent=dat[orden[j]].t;}
+  if(k>=0){dat[aqui].el.className='nv-aqui';dat[aqui].el.setAttribute('aria-current','page');
+    paso('nv-ant','nv-ant-t',k-1);paso('nv-sig','nv-sig-t',k+1);paso('nv-ant2',null,k-1);paso('nv-sig2',null,k+1);
+    setTimeout(function(){var r=dat[aqui].el;lista.scrollTop=r.offsetTop-lista.clientHeight/3;},0);}
+  else{paso('nv-ant','nv-ant-t',-1);paso('nv-sig','nv-sig-t',0);paso('nv-ant2',null,-1);paso('nv-sig2',null,0);}
+  var bus=document.getElementById('nv-busca');
+  function llano(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  bus.addEventListener('input',function(){var q=llano(bus.value), grp=null, vis=0, tot=0;
+    Array.prototype.forEach.call(lista.children,function(c){
+      if(c.classList.contains('nv-grp')){if(grp)grp.style.display=vis?'':'none';grp=c;vis=0;return;}
+      if(!c.getAttribute('data-nv')) return;
+      var ok=!q||llano(c.textContent+' '+(c.getAttribute('data-k')||'')).indexOf(q)>=0;c.style.display=ok?'':'none';if(ok){vis++;tot++;}});
+    if(grp)grp.style.display=vis?'':'none';
+    document.getElementById('nv-nada').style.display=tot?'none':'block';});
+  bus.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){var v=lista.querySelector('a[data-nv]:not([style*="none"])');if(v)location.href=v.href;}
+    if(e.key==='Escape'){bus.value='';bus.dispatchEvent(new Event('input'));bus.blur();cambia(false);}});
+  var abre=document.getElementById('nv-abre'), velo=document.getElementById('nv-velo');
+  function cambia(on){side.classList.toggle('abierto',on);abre.setAttribute('aria-expanded',on?'true':'false');}
+  abre.addEventListener('click',function(){cambia(!side.classList.contains('abierto'));});
+  velo.addEventListener('click',function(){cambia(false);});
+  document.getElementById('nv-cierra').addEventListener('click',function(){cambia(false);});
+  document.addEventListener('keydown',function(e){
+    var t=(e.target.tagName||'').toUpperCase();
+    if(e.key==='Escape'){cambia(false);return;}
+    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||t==='BUTTON'||t==='A'||t==='SUMMARY'||e.target.isContentEditable||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey) return;
+    if(e.key==='/'){e.preventDefault();if(innerWidth<1360)cambia(true);bus.focus();return;}
+    if(k<0) return;
+    if(e.key==='ArrowLeft'&&k>0) location.href=orden[k-1];
+    if(e.key==='ArrowRight'&&k<orden.length-1) location.href=orden[k+1];
+  });
+})();
+</script>
+<!-- navegacion:fin -->
+</body>
+</html>

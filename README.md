@@ -4,7 +4,7 @@
 
 Colección de recursos educativos abiertos (REA) para el curso de **Vibraciones** de la licenciatura en **Ingeniería Aeroespacial**, ENES Juriquilla, UNAM. Cada explorador es una página HTML autónoma e interactiva: se mueve un control, o se escribe un valor, y se observa cómo responde el sistema.
 
-**Versión 1.3 (2026)** · Portal en línea: https://elodiestrupiechonski.github.io/vibraciones-exploradores/
+**Versión 1.4 (2026)** · Portal en línea: https://elodiestrupiechonski.github.io/vibraciones-exploradores/
 
 ## Cómo usar
 
@@ -24,10 +24,13 @@ Abrir **`index.html`** en cualquier navegador actual. No se necesita conexión n
 | `mediapotencia_interactivo.html` | Media potencia y factor Q: Al variar el amortiguamiento se observa cómo el pico sube y se angosta. Los puntos donde la amplitud cae a Mmáx/√2 dan el ancho de banda Δf | U3 · 3.1–3.2 |
 | `espectro_interactivo.html` | Del espectro a la carga de diseño: Tres paneles encadenados: lo que impone la norma W(f), lo que aporta la resonancia del equipo |H(f)|² y la respuesta que resulta | U4 · 4.1–4.2 |
 | `normas.html` | Dónde consultar las normas: Las normas citadas en la Unidad 4, con el enlace oficial de cada una y el aviso de si la descarga es libre o hay que comprarla | U4 · 4.1 y 4.3 · apoyo |
+| `esfuerzos_interactivo.html` | Esfuerzos directos en una unión con pernos: En una unión a traslape con pernos se calculan el cortante del perno, el aplastamiento, la tensión en la sección neta y el desgarre, y se identifica el modo que gobierna | U5 · 5.1 y 5.2 |
 | `mohr_interactivo.html` | Círculo de Mohr: El elemento diferencial y el círculo de Mohr, lado a lado y sincronizados: al girar el corte un ángulo θ, el punto recorre el círculo a 2θ. Incluye la roseta de galgas y los tres círculos | U5 · 5.3 |
 | `fatiga_interactivo.html` | Fatiga: S–N, Haigh y Miner: Curva S–N en log–log y diagrama de Haigh con el estado de la pieza; Goodman, Soderberg y Gerber; daño acumulado de un ensayo de vibración aleatoria con las tres bandas de Steinberg | U5 · 5.4 |
 | `sonido_interactivo.html` | Niveles sonoros y exposición al ruido: Espectro en bandas de octava editable, nivel total y ponderado A, ley de distancia, varias fuentes y tiempo permitido según la NOM-011-STPS-2001. Con micrófono relativo opcional | U6 · 6.1, 6.2 y 6.4 |
 | `transmisibilidad_interactivo.html` | Transmisibilidad y aislamiento: Al variar masa, rigidez, amortiguamiento y frecuencia se lee cuánto movimiento o cuánta fuerza se transmite, y desde qué frecuencia el soporte aísla | U6 · 6.3 |
+| `perdida_interactivo.html` | Pérdida por transmisión de un panel: Al variar material, espesor y amortiguamiento de un panel se obtiene su pérdida por transmisión en cada frecuencia: ley de masa, caída por coincidencia y zona controlada por el amortiguamiento | U6 · 6.3 (vía aérea) |
+| `anecoica_interactivo.html` | Campo libre y cámara anecoica: Nivel sonoro en función de la distancia en un recinto: campo directo, campo reverberante, radio crítico y frecuencia de corte de las cuñas de una cámara anecoica | U6 · 6.4 |
 | `tutorial_phyphox.html` | Tutorial: medir con Phyphox y analizar en Python: Ligas para instalar Phyphox y descargar el cuaderno de Jupyter, instrucciones para Colab y Visual Studio Code, y un analizador que reproduce el tratamiento del decaimiento | U7 · 7.1 |
 | `senales_interactivo.html` | Laboratorio de señales: Una señal sintética o un CSV de Phyphox se muestrea, se corta en segmentos y se promedia: aliasing, fuga, resolución y error aleatorio a la vista | U7 · 7.1–7.2 |
 | `modal_interactivo.html` | Extracción de parámetros modales: Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa | U7 · 7.3 |
@@ -50,7 +53,7 @@ Creative Commons Attribution 4.0 International (**CC BY 4.0**).
 
 ## Cómo citar
 
-Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones: exploradores interactivos* (Versión 1.3) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
+Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones: exploradores interactivos* (Versión 1.4) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
 
 ## Autoría
 
