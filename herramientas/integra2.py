@@ -39,10 +39,15 @@ NUEVAS = {
    "descripcion": "Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa.",
    "puntos": ["Media potencia: ζ = (f_b − f_a)/(2 f_n)", "Círculo de Nyquist por mínimos cuadrados", "Resolución necesaria: T ≥ 2/(ζ f_n)"], "tema": "tema 7.3", "swatch": ["#6B3FA0", "#2E5496"],
    "claves": ["análisis modal experimental", "función de respuesta en frecuencia", "diagrama de Nyquist"]}),
+ "choque_interactivo.html": (7, {"corto": "Pilar 16 · Choque y SRS", "titulo": "Ensayo de choque y espectro de respuesta",
+   "enfoque": "ENSAYAR · qué recibe cada componente en un choque",
+   "descripcion": "Un pulso de semiseno, diente de sierra o rectangular sacude la base; el espectro de respuesta al choque muestra la aceleración máxima de cada componente según su frecuencia natural.",
+   "puntos": ["SRS: máximo de |a(t)| para cada f_n, con Q = 10", "Blando: 2π f_n Δv; rígido: A", "Senoidal, aleatorio y choque; diagnóstico por corrimiento de f_n"], "tema": "tema 7.4", "swatch": ["#B23A3A", "#2E5496"],
+   "claves": ["ensayo de choque", "espectro de respuesta al choque", "SRS", "semiseno", "prueba de vibración"]}),
 }
 ORDEN = {2: ["analogias_interactivo.html", "coulomb_interactivo.html"],
          6: ["sonido_interactivo.html", "transmisibilidad_interactivo.html"],
-         7: ["tutorial_phyphox.html", "senales_interactivo.html", "modal_interactivo.html"]}
+         7: ["tutorial_phyphox.html", "senales_interactivo.html", "modal_interactivo.html", "choque_interactivo.html"]}
 CLAVES = {"complejos_interactivo.html": ["números complejos", "fasores"], "edo_interactivo.html": ["ecuaciones diferenciales de segundo orden", "amortiguamiento"],
           "edo3_interactivo.html": ["segunda ley de Newton", "frecuencia natural"], "coulomb_interactivo.html": ["fricción de Coulomb", "vibración libre"],
           "forzada_interactivo.html": ["respuesta forzada", "resonancia"], "mediapotencia_interactivo.html": ["método de media potencia", "factor de calidad"],
@@ -55,7 +60,7 @@ for f, c in CLAVES.items(): P[f]["claves"] = c
 P["sonido_interactivo.html"]["tema"] = "temas 6.1, 6.2 y 6.4"
 P["coulomb_interactivo.html"]["tema"] = "tema 2.3 (fricción seca)"
 PEND = {1: "1.1 (conceptos generales de ruido y vibraciones)", 4: "4.4 (elementos de falla más comunes)", 5: "5.1 y 5.2 (esfuerzos normales y cortantes directos)",
-        6: "6.3 en su parte acústica (pérdida por transmisión) y 6.4 (cámaras anecoicas)", 7: "7.4 (prueba de vibración para resistencia y diagnóstico)"}
+        6: "6.3 en su parte acústica (pérdida por transmisión) y 6.4 (cámaras anecoicas)"}
 REMITE = {2: ("Los temas 2.2 y 2.3 (sistema masa-resorte-amortiguador y sus tres regímenes) se trabajan en los pilares de fundamentos; el 2.5 (acoplamiento), en el explorador de dos grados de libertad.",
               ["edo3_interactivo.html", "edo_interactivo.html", "dosgdl_interactivo.html"]),
           3: ("El análisis modal (3.2) continúa en la unidad 7 con la extracción de parámetros modales, y la transmisión de la vibración al soporte, en la unidad 6.",
@@ -287,7 +292,7 @@ for u in T["unidades"]:
         ligas = ", ".join('<a href="%s">%s</a>' % (f, esc(P[f]["titulo"])) for f in u.get("remite_a", []))
         cuerpo += '<div class="nota"><b>Dónde se trabaja.</b> %s Exploradores: %s.</div>\n' % (esc(u["remite"]), ligas)
     if u.get("pendientes"):
-        cuerpo += '<div class="nota"><b>Sin explorador todavía:</b> %s; se cubre en clase y en las tareas.</div>\n' % esc(u["pendientes"])
+        cuerpo += '<div class="nota"><b>Sin explorador todavía:</b> %s.</div>\n' % esc(u["pendientes"])
     s = pat.sub(lambda m: m.group(1) + cuerpo + m.group(3), s, count=1)
 s = s.replace("la barra superior permite saltar entre exploradores (teclas ← y →) y abrir el temario desde cualquier página.",
               "el panel lateral permite saltar entre exploradores (teclas ← y →), buscar por nombre (tecla /) y ver el temario completo desde cualquier página; en pantallas de menos de 1360 px se abre con «☰ Temario», para que las gráficas conserven su tamaño.")
@@ -361,8 +366,8 @@ El historial de cambios está en [`CHANGELOG.md`](CHANGELOG.md).
 """
 open(os.path.join(D, "README.md"), "w", encoding="utf-8").write(README)
 def zen(a):
-    a = a.replace("Colección de doce exploradores interactivos", "Colección de quince exploradores interactivos y un tutorial de medición")
+    a = a.replace("Colección de doce exploradores interactivos", "Colección de dieciséis exploradores interactivos y un tutorial de medición")
     if "analogías electromecánicas" not in a:
-        a = a.replace(" Recurso educativo abierto.", " La versión 1.3 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
+        a = a.replace(" Recurso educativo abierto.", " La versión 1.3 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7), ensayo de choque y espectro de respuesta (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
     return a
 cambia(".zenodo.json", zen)

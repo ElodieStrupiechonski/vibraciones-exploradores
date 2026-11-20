@@ -6,8 +6,8 @@ set -e
 H=$(cd "$(dirname "$0")" && pwd); O=$(cd "$1" && pwd); mkdir -p "$2"; B=$(cd "$2" && pwd)
 rm -rf "$B"; mkdir -p "$B"; (cd "$O" && find . -maxdepth 1 -type f ! -name '.git*' -exec cp {} "$B"/ \;)
 cd "$H"
-NUEVAS="analogias_interactivo.html transmisibilidad_interactivo.html modal_interactivo.html tutorial_phyphox.html"
-python3 gen_analog.py "$B"; python3 gen_trans.py "$B"; python3 gen_modal.py "$B"; python3 gen_tutorial.py "$B" "$4"
+NUEVAS="analogias_interactivo.html transmisibilidad_interactivo.html modal_interactivo.html tutorial_phyphox.html choque_interactivo.html"
+python3 gen_analog.py "$B"; python3 gen_trans.py "$B"; python3 gen_modal.py "$B"; python3 gen_choque.py "$B"; python3 gen_tutorial.py "$B" "$4"
 python3 mejoras_nuevas.py "$B" $NUEVAS
 [ -f retoques12.py ] && python3 retoques12.py "$B"
 python3 integra2.py "$B"

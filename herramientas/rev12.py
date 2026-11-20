@@ -92,6 +92,24 @@ async def main():
         await pg.check('input[data-paso="1"]'); wdt=await pg.evaluate("()=>document.getElementById('barra').style.width"); print('   barra de avance:',wdt); await pg.click('#tabV'); assert await pg.locator('#panV').is_visible() and not await pg.locator('#panC').is_visible()
         hrefs=await pg.evaluate("()=>[...document.querySelectorAll('.paso a[href]')].map(a=>a.getAttribute('href'))"); print('   ligas:',len(hrefs)); [print('     ',h) for h in sorted(set(hrefs)) if h.startswith('http')]
         if pg._e: fails.append('js tut'); print(pg._e)
+        # ---------------- choque
+        print('== choque'); pg=await op('choque_interactivo.html')
+        def srs_ref(forma,D,fn,Q):
+            z=1/(2*Q); w=2*np.pi*fn; Tn=1/fn; tt=np.linspace(0,D+4*Tn,int(max(4000,(D+4*Tn)/min(D/400,Tn/200)))+1); u=tt/D
+            a=np.where(u<=1,{'sen':np.sin(np.pi*u),'sie':u,'rec':np.ones_like(u)}[forma],0.0)
+            import warnings; warnings.simplefilter('ignore')
+            _,y,_=signal.lsim(signal.lti([2*z*w,w*w],[1,2*z*w,w*w]),a,tt); return float(np.abs(y).max())
+        for forma in ('sen','sie','rec'):
+            await pg.click(f'[data-p={forma}]')
+            for (A,D,fn,Q) in [(20,11,73,10),(20,11,5,10),(35,4.5,410,25),(8,30,12,4)]:
+                for i,v in zip(['A','D','fn','Q'],(A,D,fn,Q)): await setv(pg,i,v)
+                q=await pg.evaluate('()=>{const q=__ch.calc();return [q.pk,q.dv,q.zmax,q.smax]}'); ref=srs_ref(forma,D*1e-3,fn,Q)
+                chk(f'{forma} A={A} D={D} fn={fn} Q={Q}: pico',q[0],A*ref,0.004); chk(' Δv',q[1],{'sen':2/math.pi,'sie':0.5,'rec':1}[forma]*A*9.80665*D*1e-3,1e-9)
+            js=await pg.evaluate('()=>__ch.calc().sr'); FR=await pg.evaluate('()=>__ch.FR'); k=[5,25,40,55,70]; chk(f'{forma}: SRS en 5 frecuencias (máx. error rel.)',1+max(abs(js[i]/srs_ref(forma,30e-3,FR[i],4)-1) for i in k),1,0.006)
+        await pg.click('[data-pre=C]'); print('   clásico:',await T(pg,'opk'),await T(pg,'oam'),'| máx:',await T(pg,'osm'),await T(pg,'ofm'))
+        await pg.click('[data-pre=B]'); print('   blando:',await T(pg,'opk'),'asíntota',round(2*math.pi*5*2/math.pi*20*0.011,2)); await pg.click('[data-pre=R]'); print('   rígido:',await T(pg,'opk'))
+        await pg.click('[data-p=sie]'); print('   sierra máx:',await T(pg,'osm')); await pg.click('[data-p=rec]'); print('   rectangular máx:',await T(pg,'osm'))
+        if pg._e: fails.append('js choque'); print(pg._e)
         # ---------------- navegación y sitio
         print('== navegación'); TJ=json.load(open(os.path.join(SITE,'temario.json'),encoding='utf-8')); rec=TJ['recorrido']
         for i,f in enumerate(rec):
