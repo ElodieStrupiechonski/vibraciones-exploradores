@@ -109,6 +109,19 @@ async def main():
         await pg.click('[data-pre=C]'); print('   clásico:',await T(pg,'opk'),await T(pg,'oam'),'| máx:',await T(pg,'osm'),await T(pg,'ofm'))
         await pg.click('[data-pre=B]'); print('   blando:',await T(pg,'opk'),'asíntota',round(2*math.pi*5*2/math.pi*20*0.011,2)); await pg.click('[data-pre=R]'); print('   rígido:',await T(pg,'opk'))
         await pg.click('[data-p=sie]'); print('   sierra máx:',await T(pg,'osm')); await pg.click('[data-p=rec]'); print('   rectangular máx:',await T(pg,'osm'))
+        # esquema animado: y(t) analítica y z(t) frente a una integración independiente en coordenadas absolutas
+        from scipy.integrate import solve_ivp, cumulative_trapezoid
+        for forma,(A,D,fn,Q) in {'sen':(20,11,73,10),'sie':(35,4.5,120,25),'rec':(8,30,12,4)}.items():
+            await pg.click(f'[data-p={forma}]')
+            for i,v in zip(['A','D','fn','Q'],(A,D,fn,Q)): await setv(pg,i,v)
+            Ds=D*1e-3; Ag=A*9.80665; z_=1/(2*Q); w=2*math.pi*fn; tf=await pg.evaluate('()=>__ch.calc().r.tf')
+            ab=lambda t: (Ag*{'sen':math.sin(math.pi*t/Ds),'sie':t/Ds,'rec':1.0}[forma]) if t<=Ds else 0.0
+            tt=np.linspace(0,tf,200001); acc=np.array([ab(t) for t in tt]); vv=cumulative_trapezoid(acc,tt,initial=0); yy=cumulative_trapezoid(vv,tt,initial=0)
+            sol=solve_ivp(lambda t,u:[u[1],-2*z_*w*(u[1]-np.interp(t,tt,vv))-w*w*(u[0]-np.interp(t,tt,yy))],[0,tf],[0,0],t_eval=tt[::2000],rtol=1e-10,atol=1e-13,max_step=min(Ds,1/fn)/300)
+            for fr in (0.13,0.37,0.61,0.93):
+                e=await pg.evaluate('(fr)=>{__ch.AN.q=__ch.calc();return __ch.estado(fr)}',fr); t=e['t']
+                chk(f'esquema {forma} fr={fr}: y',e['y']+1,float(np.interp(t,tt,yy))+1,2e-5); chk(' x absoluta',e['x']+1,float(np.interp(t,sol.t,sol.y[0]))+1,3e-5); chk(' z = x − y',e['z']+1,e['x']-e['y']+1,1e-12)
+        await pg.click('#bplay'); await pg.click('#bini'); e0=await pg.evaluate('()=>__ch.estado(0)'); chk('esquema en t = 0: x+y+z',abs(e0['x'])+abs(e0['y'])+abs(e0['z'])+1,1,1e-12)
         if pg._e: fails.append('js choque'); print(pg._e)
         # ---------------- esfuerzos directos
         print('== esfuerzos'); pg=await op('esfuerzos_interactivo.html')
