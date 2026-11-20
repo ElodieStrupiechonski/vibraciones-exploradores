@@ -359,6 +359,29 @@
     "función de respuesta en frecuencia",
     "diagrama de Nyquist"
    ]
+  },
+  "choque_interactivo.html": {
+   "corto": "Pilar 16 · Choque y SRS",
+   "titulo": "Ensayo de choque y espectro de respuesta",
+   "enfoque": "ENSAYAR · qué recibe cada componente en un choque",
+   "descripcion": "Un pulso de semiseno, diente de sierra o rectangular sacude la base; el espectro de respuesta al choque muestra la aceleración máxima de cada componente según su frecuencia natural.",
+   "puntos": [
+    "SRS: máximo de |a(t)| para cada f_n, con Q = 10",
+    "Blando: 2π f_n Δv; rígido: A",
+    "Senoidal, aleatorio y choque; diagnóstico por corrimiento de f_n"
+   ],
+   "tema": "tema 7.4",
+   "swatch": [
+    "#B23A3A",
+    "#2E5496"
+   ],
+   "claves": [
+    "ensayo de choque",
+    "espectro de respuesta al choque",
+    "SRS",
+    "semiseno",
+    "prueba de vibración"
+   ]
   }
  },
  "recorrido": [
@@ -378,6 +401,7 @@
   "tutorial_phyphox.html",
   "senales_interactivo.html",
   "modal_interactivo.html",
+  "choque_interactivo.html",
   "dosgdl_interactivo.html"
  ],
  "fundamentos": {
@@ -517,9 +541,9 @@
    "paginas": [
     "tutorial_phyphox.html",
     "senales_interactivo.html",
-    "modal_interactivo.html"
-   ],
-   "pendientes": "7.4 (prueba de vibración para resistencia y diagnóstico)"
+    "modal_interactivo.html",
+    "choque_interactivo.html"
+   ]
   },
   {
    "n": 8,
