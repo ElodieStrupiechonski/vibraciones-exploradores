@@ -12,7 +12,7 @@ Electromagnética. Idempotente. Uso: python3 integra2.py CARPETA
 """
 import json, os, re, sys, html
 D = sys.argv[1]; esc = lambda s: html.escape(s, quote=True)
-VERSION, FECHA = "1.3", "2026-11-18"
+VERSION, FECHA = "1.4", "2026-11-20"
 BASE = "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
 DOI = "10.5281/zenodo.23422993"
 tp = os.path.join(D, "temario.json"); T = json.load(open(tp, encoding="utf-8")); P = T["paginas"]
@@ -44,9 +44,25 @@ NUEVAS = {
    "descripcion": "Un pulso de semiseno, diente de sierra o rectangular sacude la base; el espectro de respuesta al choque muestra la aceleración máxima de cada componente según su frecuencia natural.",
    "puntos": ["SRS: máximo de |a(t)| para cada f_n, con Q = 10", "Blando: 2π f_n Δv; rígido: A", "Senoidal, aleatorio y choque; diagnóstico por corrimiento de f_n"], "tema": "tema 7.4", "swatch": ["#B23A3A", "#2E5496"],
    "claves": ["ensayo de choque", "espectro de respuesta al choque", "SRS", "semiseno", "prueba de vibración"]}),
+ "esfuerzos_interactivo.html": (5, {"corto": "Pilar 17 · Esfuerzos directos", "titulo": "Esfuerzos directos en una unión con pernos",
+   "enfoque": "DIMENSIONAR · cuatro maneras de fallar, cuatro áreas",
+   "descripcion": "En una unión a traslape con pernos se calculan el cortante del perno, el aplastamiento, la tensión en la sección neta y el desgarre, y se identifica el modo que gobierna.",
+   "puntos": ["σ = P/A y τ = V/A: cada modo tiene su área", "Cortante simple y cortante doble", "Factor de seguridad y carga que inicia la fluencia"], "tema": "temas 5.1 y 5.2", "swatch": ["#2E5496", "#B23A3A"],
+   "claves": ["esfuerzo normal", "esfuerzo cortante directo", "aplastamiento", "unión atornillada", "sección neta", "remache"]}),
+ "perdida_interactivo.html": (6, {"corto": "Pilar 18 · Pérdida por transmisión", "titulo": "Pérdida por transmisión de un panel",
+   "enfoque": "AISLAR · cuánto sonido atraviesa un panel",
+   "descripcion": "Al variar material, espesor y amortiguamiento de un panel se obtiene su pérdida por transmisión en cada frecuencia: ley de masa, caída por coincidencia y zona controlada por el amortiguamiento.",
+   "puntos": ["Ley de masa: +6 dB por duplicar m″ o f", "Frecuencia crítica: f_c h es constante del material", "Sobre f_c solo ayuda el amortiguamiento"], "tema": "tema 6.3 (vía aérea)", "swatch": ["#6B3FA0", "#2E7D46"],
+   "claves": ["pérdida por transmisión", "ley de masa", "frecuencia crítica", "coincidencia", "aislamiento acústico", "fuselaje"]}),
+ "anecoica_interactivo.html": (6, {"corto": "Pilar 19 · Cámara anecoica", "titulo": "Campo libre y cámara anecoica",
+   "enfoque": "MEDIR · dónde termina el campo libre",
+   "descripcion": "Nivel sonoro en función de la distancia en un recinto: campo directo, campo reverberante, radio crítico y frecuencia de corte de las cuñas de una cámara anecoica.",
+   "puntos": ["L_p = L_W + 10 log(Q/4πr² + 4/R)", "Radio crítico: r_c = √(QR/16π)", "Cuñas: profundidad de un cuarto de onda"], "tema": "tema 6.4", "swatch": ["#C55A11", "#4472C4"],
+   "claves": ["cámara anecoica", "campo libre", "campo reverberante", "radio crítico", "tiempo de reverberación", "cámara reverberante"]}),
 }
 ORDEN = {2: ["analogias_interactivo.html", "coulomb_interactivo.html"],
-         6: ["sonido_interactivo.html", "transmisibilidad_interactivo.html"],
+         5: ["esfuerzos_interactivo.html", "mohr_interactivo.html", "fatiga_interactivo.html"],
+         6: ["sonido_interactivo.html", "transmisibilidad_interactivo.html", "perdida_interactivo.html", "anecoica_interactivo.html"],
          7: ["tutorial_phyphox.html", "senales_interactivo.html", "modal_interactivo.html", "choque_interactivo.html"]}
 CLAVES = {"complejos_interactivo.html": ["números complejos", "fasores"], "edo_interactivo.html": ["ecuaciones diferenciales de segundo orden", "amortiguamiento"],
           "edo3_interactivo.html": ["segunda ley de Newton", "frecuencia natural"], "coulomb_interactivo.html": ["fricción de Coulomb", "vibración libre"],
@@ -59,13 +75,13 @@ for f, (n, d) in NUEVAS.items(): P[f] = d
 for f, c in CLAVES.items(): P[f]["claves"] = c
 P["sonido_interactivo.html"]["tema"] = "temas 6.1, 6.2 y 6.4"
 P["coulomb_interactivo.html"]["tema"] = "tema 2.3 (fricción seca)"
-PEND = {1: "1.1 (conceptos generales de ruido y vibraciones)", 4: "4.4 (elementos de falla más comunes)", 5: "5.1 y 5.2 (esfuerzos normales y cortantes directos)",
-        6: "6.3 en su parte acústica (pérdida por transmisión) y 6.4 (cámaras anecoicas)"}
+PEND = {1: "1.1 (conceptos generales de ruido y vibraciones)", 4: "4.4 (elementos de falla más comunes)"}
 REMITE = {2: ("Los temas 2.2 y 2.3 (sistema masa-resorte-amortiguador y sus tres regímenes) se trabajan en los pilares de fundamentos; el 2.5 (acoplamiento), en el explorador de dos grados de libertad.",
               ["edo3_interactivo.html", "edo_interactivo.html", "dosgdl_interactivo.html"]),
           3: ("El análisis modal (3.2) continúa en la unidad 7 con la extracción de parámetros modales, y la transmisión de la vibración al soporte, en la unidad 6.",
               ["modal_interactivo.html", "transmisibilidad_interactivo.html"])}
 for u in T["unidades"]:
+    u.pop("pendientes", None)
     if u["n"] in PEND: u["pendientes"] = PEND[u["n"]]
     if u["n"] in REMITE: u["remite"], u["remite_a"] = REMITE[u["n"]]
 for u in T["unidades"]:
@@ -366,8 +382,9 @@ El historial de cambios está en [`CHANGELOG.md`](CHANGELOG.md).
 """
 open(os.path.join(D, "README.md"), "w", encoding="utf-8").write(README)
 def zen(a):
-    a = a.replace("Colección de doce exploradores interactivos", "Colección de dieciséis exploradores interactivos y un tutorial de medición")
+    a = a.replace("Colección de doce exploradores interactivos", "Colección de diecinueve exploradores interactivos y un tutorial de medición").replace("Colección de dieciséis exploradores", "Colección de diecinueve exploradores")
     if "analogías electromecánicas" not in a:
-        a = a.replace(" Recurso educativo abierto.", " La versión 1.3 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7), ensayo de choque y espectro de respuesta (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
+        a = a.replace(" Recurso educativo abierto.", " La versión 1.4 añade esfuerzos normales y cortantes directos en una unión con pernos (U5), pérdida por transmisión sonora de un panel (U6) y campo libre, campo reverberante y cámaras anecoicas (U6). Recurso educativo abierto.", 1)
+        a = a.replace(" La versión 1.4 añade", " La versión 1.3 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7), ensayo de choque y espectro de respuesta (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
     return a
 cambia(".zenodo.json", zen)

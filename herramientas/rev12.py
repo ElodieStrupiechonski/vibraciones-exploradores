@@ -110,6 +110,50 @@ async def main():
         await pg.click('[data-pre=B]'); print('   blando:',await T(pg,'opk'),'asíntota',round(2*math.pi*5*2/math.pi*20*0.011,2)); await pg.click('[data-pre=R]'); print('   rígido:',await T(pg,'opk'))
         await pg.click('[data-p=sie]'); print('   sierra máx:',await T(pg,'osm')); await pg.click('[data-p=rec]'); print('   rectangular máx:',await T(pg,'osm'))
         if pg._e: fails.append('js choque'); print(pg._e)
+        # ---------------- esfuerzos directos
+        print('== esfuerzos'); pg=await op('esfuerzos_interactivo.html')
+        for (P,d,n,sb,t,w,e,sy,ns) in [(5,6,1,640,3,30,12,345,1),(8,4,1,640,6,40,12,345,1),(20,8,2,640,3,28,20,345,2),(6,6,1,640,3,40,5,345,2),(33.5,9.5,2,900,4.2,61,22.5,480,1)]:
+            await pg.click(f'[data-ns="{ns}"]')
+            for i,v in zip(['P','d','n','sb','t','w','e','sy'],(P,d,n,sb,t,w,e,sy)): await setv(pg,i,v)
+            F=P*1e3; tau=F/(n*ns*math.pi*d*d/4); ap=F/(n*d*t); net=F/((w-n*d)*t); des=F/(n*2*t*(e-d/2)); k3=1/math.sqrt(3)
+            us=[tau/(k3*sb),ap/min(sy,sb),net/sy,des/(k3*sy)]; fs=1/max(us)
+            chk('τ perno',await T(pg,'otau'),tau); chk('aplast.',await T(pg,'oap'),ap); chk('neta',await T(pg,'onet'),net); chk('desgarre',await T(pg,'odes'),des); chk('bruta',await T(pg,'obr'),F/(w*t))
+            chk('FS',await T(pg,'ofs'),fs,0.006); chk('Pmáx',await T(pg,'opm'),fs*P)
+            mod=await T(pg,'omod'); esp=['perno','aplastamiento','sección neta','desgarre'][us.index(max(us))]; print('    modo:',mod)
+            if mod!=esp: fails.append('modo esfuerzos')
+        if pg._e: fails.append('js esfuerzos'); print(pg._e)
+        # ---------------- pérdida por transmisión
+        print('== pérdida por transmisión'); pg=await op('perdida_interactivo.html')
+        from scipy import integrate
+        def tl_ref(E,rho,h,eta,nu,f,th=None):
+            h=h*1e-3; m=rho*h; B=E*1e9*h**3/(12*(1-nu*nu)); c=343.0; z0=1.204*c; fc=c*c/(2*math.pi)*math.sqrt(m/B); w=2*math.pi*f
+            def tau(theta):
+                Z=1j*w*m*(1-(f/fc)**2*math.sin(theta)**4*(1+1j*eta)); return 1/abs(1+Z*math.cos(theta)/(2*z0))**2
+            if th is not None: return -10*math.log10(tau(math.radians(th))), fc, m
+            tl=math.radians(78); thc=math.asin(math.sqrt(fc/f)) if f>fc else None
+            pts=[thc] if (thc and thc<tl) else None
+            num=integrate.quad(lambda x: tau(x)*math.sin(2*x),0,tl,points=pts,limit=400,epsabs=0,epsrel=1e-9)[0]; return -10*math.log10(num/math.sin(tl)**2), fc, m
+        for mat,(E,rho,nu) in {'al':(70,2700,0.33),'ac':(200,7850,0.30),'vi':(70,2500,0.22),'co':(30,2300,0.20)}.items():
+            await pg.click(f'[data-mat={mat}]')
+            for (h,eta,f,th) in [(2,0.01,1000,60),(6,0.02,2000,35),(100,0.02,500,70),(1,0.005,9000,80),(12,0.1,4000,50)]:
+                for i,v in zip(['E','rho','h','eta','f','th'],(E,rho,h,eta,f,th)): await setv(pg,i,v)
+                rd,fc,m=tl_ref(E,rho,h,eta,nu,f); ro,_,_=tl_ref(E,rho,h,eta,nu,f,th); q=await pg.evaluate('()=>{const q=__tl.calc();return [q.tld,q.tlo,q.tln,q.p.fc,q.p.m,q.dup]}')
+                r2,_,_=tl_ref(E,rho,2*h,eta,nu,f)
+                chk(f'{mat} h={h} η={eta} f={f}: TL difuso',q[0],rd,0.004); chk(' TL θ',q[1],ro,1e-6); chk(' ley de masa',q[2],10*math.log10(1+(math.pi*f*m/(1.204*343))**2),1e-9); chk(' fc',q[3],fc,1e-9); chk(' duplicar',q[5]+100,r2-rd+100,0.001)
+        for pre in 'FVM': await pg.click(f'[data-pre={pre}]'); print('   preajuste',pre,'m″',await T(pg,'om'),'fc',await T(pg,'ofc'),'TL',await T(pg,'otl'),'duplicar',await T(pg,'odup'))
+        await pg.click('[data-pre=M]'); a=float((await T(pg,'otl')).split()[0]); await pg.click('[data-pre=A]'); b_=float((await T(pg,'otl')).split()[0]); print('   capa amortiguadora sobre el muro a 500 Hz: +%.1f dB'%(b_-a))
+        if pg._e: fails.append('js perdida'); print(pg._e)
+        # ---------------- cámara anecoica
+        print('== anecoica'); pg=await op('anecoica_interactivo.html')
+        for (LW,r,Lx,Ly,Lz,al,dc,f,Q) in [(100,2,8,6,3,0.15,0.85,250,1),(100,2,6,5,4,0.02,0.85,250,1),(100,2,6,5,4,0.99,0.85,250,2),(123,7.3,21.5,12,9.5,0.37,0.3,60,8),(88,0.4,4,3.5,2.5,0.9,1.2,45,4)]:
+            await pg.click(f'[data-q="{Q}"]')
+            for i,v in zip(['LW','r','Lx','Ly','Lz','al','dc','f'],(LW,r,Lx,Ly,Lz,al,dc,f)): await setv(pg,i,v)
+            Sup=2*(Lx*Ly+Lx*Lz+Ly*Lz); V=Lx*Ly*Lz; R=Sup*al/(1-al); rc=math.sqrt(Q*R/(16*math.pi)); Ld=LW+10*math.log10(Q/(4*math.pi*r*r)); Lr=LW+10*math.log10(4/R); Lp=10*math.log10(10**(Ld/10)+10**(Lr/10))
+            chk(f'ᾱ={al} Q={Q}: Lp',await T(pg,'olp'),Lp,0.001); chk(' directo',await T(pg,'old'),Ld,0.001); chk(' reverb.',await T(pg,'olr'),Lr,0.001); chk(' desviación',float((await T(pg,'odev')).replace('+','').split()[0])+50,Lp-Ld+50,0.0012)
+            chk(' rc',await T(pg,'orc'),rc); chk(' r1.5',await T(pg,'or15'),rc*math.sqrt(10**0.15-1)); chk(' R',await T(pg,'oR'),R); chk(' T60',await T(pg,'oT'),0.161*V/(-Sup*math.log(1-al)),0.03); chk(' f corte',await T(pg,'ofc'),343/(4*dc))
+        for pre in 'ARNS': await pg.click(f'[data-pre={pre}]'); print('   preajuste',pre,'Lp',await T(pg,'olp'),'desv.',await T(pg,'odev'),'rc',await T(pg,'orc'),'T',await T(pg,'oT'))
+        await pg.click('[data-pre=N]'); await setv(pg,'f',50); print('   aviso:',(await T(pg,'olect'))[-150:])
+        if pg._e: fails.append('js anecoica'); print(pg._e)
         # ---------------- navegación y sitio
         print('== navegación'); TJ=json.load(open(os.path.join(SITE,'temario.json'),encoding='utf-8')); rec=TJ['recorrido']
         for i,f in enumerate(rec):
