@@ -12,7 +12,7 @@ Diecinueve exploradores y un tutorial. Cubre los subtemas de las unidades 5 y 6 
 - `anecoica_interactivo.html` (Pilar 19 · U6 · 6.4): campo directo y campo reverberante en un recinto, radio crítico, desviación respecto del campo libre, tiempo de reverberación (Eyring) y frecuencia de corte de las cuñas (un cuarto de onda); preajustes de aula, cámara reverberante, anecoica y semianecoica; planta del recinto con la zona de campo libre.
 
 ### Esquema animado en el explorador de choque
-- `choque_interactivo.html`: esquema animado de la base y del componente con las tres coordenadas de la deducción (y de la base, x absoluta de la masa, z = x − y), sincronizado con los controles; posición inicial punteada, lecturas reales de t, y, x, z y a, factor de ampliación de z indicado, botones de pausa y de regreso a t = 0, y respeto de la preferencia de movimiento reducido del sistema.
+- `choque_interactivo.html`: esquema animado de la base y del componente con las tres coordenadas de la deducción (y de la base, x absoluta de la masa, z = x − y), sincronizado con los controles; posición inicial punteada, lecturas reales de t, y, x, z y a, ampliación de z indicada con palabras («z, ampliada 2 veces») en la flecha y en el recuadro, botones de pausa y de regreso a t = 0, y respeto de la preferencia de movimiento reducido del sistema.
 
 ### Orden e índice
 - Unidad 5: esfuerzos directos, círculo de Mohr, fatiga. Unidad 6: niveles sonoros, transmisibilidad, pérdida por transmisión, cámara anecoica.
