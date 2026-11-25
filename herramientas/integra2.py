@@ -12,7 +12,7 @@ Electromagnética. Idempotente. Uso: python3 integra2.py CARPETA
 """
 import json, os, re, sys, html
 D = sys.argv[1]; esc = lambda s: html.escape(s, quote=True)
-VERSION, FECHA = "1.5", "2026-11-25"
+VERSION, FECHA = "1.6", "2026-11-25"
 BASE = "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
 DOI = "10.5281/zenodo.23422993"
 tp = os.path.join(D, "temario.json"); T = json.load(open(tp, encoding="utf-8")); P = T["paginas"]
@@ -95,8 +95,25 @@ P["autoevaluacion.html"] = {"corto": "Repaso · Autoevaluación", "titulo": "Aut
    "descripcion": "Problemas de las unidades 1 a 8 con datos aleatorios, comprobación inmediata con 2 % de tolerancia y solución paso a paso con los números del problema.",
    "puntos": ["Trece problemas, de la señal armónica a los dos grados de libertad", "Comprobación con 2 % (0.2 dB en niveles)", "Solución completa al terminar"], "tema": "unidades 1 a 8", "swatch": ["#1F3864", "#C55A11"],
    "claves": ["examen final", "repaso", "autoevaluación", "problemas resueltos", "práctica"]}
+PROY = {
+ "proy_sensores.html": ("¿Mi teléfono puede medirlo?", "ELEGIR · acelerómetro, micrófono, magnetómetro o cámara",
+   "Con la frecuencia, la amplitud y el amortiguamiento esperados se revisa qué sensor del teléfono sirve: muestreo y alias, señal frente a ruido, carga de masa y resolución.",
+   ["Nyquist y alias de cada sensor", "Señal frente a ruido del acelerómetro", "Carga de masa del teléfono"], ["sensores del teléfono", "acelerómetro", "micrófono", "magnetómetro", "Phyphox", "aliasing", "carga de masa"], ["#4472C4", "#2E7D46"]),
+ "proy_rigidez.html": ("Caracterizar la rigidez de un resorte o una placa", "MEDIR · tres caminos para obtener k",
+   "Rigidez k por cargas y deflexión, por frecuencia con masa añadida y por la fórmula de la viga en voladizo, con ajuste por mínimos cuadrados e incertidumbre.",
+   ["Estática: k = 1/pendiente de δ contra F", "Masa añadida: recta de 1/f² contra ΔM", "Voladizo: k = 3EI/L³"], ["rigidez", "constante del resorte", "masa añadida", "viga en voladizo", "ligas", "tapete"], ["#2E7D46", "#C55A11"]),
+ "proy_bobina.html": ("Bobina e imán: fuerza y tensión inducida", "DISEÑAR · del calibre y las vueltas a la fuerza",
+   "A partir de la geometría de la bobina y del imán se calculan la resistencia, la corriente, la fuerza sobre el imán (actuador) y la tensión inducida (sensor).",
+   ["Resistencia y corriente según el calibre AWG", "F = K I y e = K v con la misma K", "Potencia disipada y calentamiento"], ["solenoide", "bobina", "imán de neodimio", "fuerza magnética", "fem inducida", "AWG"], ["#6B3FA0", "#C55A11"]),
+ "proy_datos.html": ("Del dato al resultado: análisis por proyecto", "ANALIZAR · pegar las mediciones y obtener el resultado",
+   "Cada equipo pega sus mediciones: transmisibilidad con ajuste de f_n y ζ (A), curva de vida de Basquin y Miner (B) y decremento logarítmico por configuración (C).",
+   ["A: ajuste de f_n y ζ sobre T_r", "B: Basquin y Miner", "C: decremento por regresión"], ["transmisibilidad", "Basquin", "Miner", "decremento logarítmico", "análisis de datos", "proyecto final"], ["#B23A3A", "#1F3864"]),
+}
+for f, (tit, enf, desc, pts, cl, sw) in PROY.items():
+    P[f] = {"corto": "Proyectos · " + tit, "titulo": tit, "enfoque": enf, "descripcion": desc, "puntos": pts, "tema": "apoyo a los proyectos", "swatch": sw, "claves": cl}
+T["proyectos"] = {"titulo": "Apoyo a los proyectos", "paginas": list(PROY)}
 T["repaso"] = {"titulo": "Repaso para el examen final", "paginas": ["autoevaluacion.html"]}
-T["recorrido"] = T["fundamentos"]["paginas"] + [f for u in T["unidades"] for f in u.get("paginas", []) + u.get("apoyo", [])] + T["repaso"]["paginas"]
+T["recorrido"] = T["fundamentos"]["paginas"] + [f for u in T["unidades"] for f in u.get("paginas", []) + u.get("apoyo", [])] + T["proyectos"]["paginas"] + T["repaso"]["paginas"]
 T["actualizado"] = FECHA
 T["nota"] = "Fuente única del panel de navegación, del índice, del mapa del sitio y de los metadatos. Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos') en el orden del programa, 3) ejecutar integra2.py."
 json.dump(T, open(tp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
@@ -108,6 +125,7 @@ def sub_de(f):
     p = P[f]; c = p["corto"].split(" · ")[0]; t = p.get("tema", "")
     t = re.sub(r"^temas? ", "", t)
     if f in T["fundamentos"]["paginas"]: return c + " · " + {"armar": "armar la ecuación", "resolver": "resolverla", "interpretar": "interpretar las raíces"}.get(t, t)
+    if c in ("Proyectos", "Repaso"): return t
     return (t + " · " + c) if c.startswith(("Pilar", "Tutorial")) else t
 def menu_html():
     g = [f'<div class="nv-grp">{esc(T["fundamentos"]["titulo"])} · conocimiento previo</div>']
@@ -118,7 +136,7 @@ def menu_html():
         if not fs: continue
         g.append(f'<div class="nv-grp">Unidad {u["n"]} · {esc(u["titulo"])}</div>')
         g += [it(f) for f in fs]
-    g.append(f'<div class="nv-grp">{esc(T["repaso"]["titulo"])}</div>'); g += [it(f) for f in T["repaso"]["paginas"]]
+    for kk in ("proyectos", "repaso"): g.append(f'<div class="nv-grp">{esc(T[kk]["titulo"])}</div>'); g += [it(f) for f in T[kk]["paginas"]]
     return "\n".join(g)
 
 NAV = f"""{INI}
@@ -320,18 +338,26 @@ for u in T["unidades"]:
 s = s.replace("la barra superior permite saltar entre exploradores (teclas ← y →) y abrir el temario desde cualquier página.",
               "el panel lateral permite saltar entre exploradores (teclas ← y →), buscar por nombre (tecla /) y ver el temario completo desde cualquier página; en pantallas de menos de 1360 px se abre con «☰ Temario», para que las gráficas conserven su tamaño.")
 s = s.replace("Unidad 6 · temas 6.3–6.4 · Pilar 10", "Unidad 6 · temas 6.1, 6.2 y 6.4 · Pilar 10").replace("Unidad 2 · tema 2.3 · Pilar 4", "Unidad 2 · tema 2.3 (fricción seca) · Pilar 4")
+def _card_extra(f, eti, chip):
+    p = P[f]; sw = p["swatch"]
+    return f'''<div class="cw"><a class="card" href="{f}">
+      <div class="swatch" style="background:linear-gradient(90deg,{sw[0]},{sw[1]})"></div>
+      <div class="u">{esc(eti)}</div>
+      <div class="ct">{esc(p["titulo"])}</div>
+      <div class="ce">{esc(p["enfoque"])}</div>
+      <div class="cd">{esc(p["descripcion"])}</div>
+      <div class="cp">{esc(" · ".join(p["puntos"]))}</div>
+      <div class="chip">{chip} →</div>
+    </a></div>'''
 REP = """<!-- repaso:inicio -->
+<section><div class="sect"><div class="sk">Proyectos<small>apoyo a los equipos</small></div><h2>Apoyo a los proyectos finales</h2><p>Herramientas para planear la medición, caracterizar el montaje y analizar los datos de cada equipo.</p></div>
+<div class="grid">
+""" + "\n".join(_card_extra(f, "Proyectos · apoyo", "Abrir la herramienta") for f in T["proyectos"]["paginas"]) + """
+</div>
+</section>
 <section><div class="sect"><div class="sk">Repaso<small>unidades 1 a 8</small></div><h2>Preparación para el examen final</h2><p>Problemas de todas las unidades con datos nuevos cada vez y comprobación inmediata.</p></div>
 <div class="grid">
-<div class="cw"><a class="card" href="autoevaluacion.html">
-      <div class="swatch" style="background:linear-gradient(90deg,#1F3864,#C55A11)"></div>
-      <div class="u">Repaso · unidades 1 a 8</div>
-      <div class="ct">Autoevaluación para el examen final</div>
-      <div class="ce">PRACTICAR · un problema de cada unidad, con datos nuevos cada vez</div>
-      <div class="cd">Problemas de las unidades 1 a 8 con datos aleatorios, comprobación inmediata con 2 % de tolerancia y solución paso a paso con los números del problema.</div>
-      <div class="cp">Trece problemas · Comprobación con 2 % · Solución completa al terminar</div>
-      <div class="chip">Abrir la autoevaluación →</div>
-    </a></div>
+""" + _card_extra("autoevaluacion.html", "Repaso · unidades 1 a 8", "Abrir la autoevaluación") + """
 </div>
 </section>
 <!-- repaso:fin -->
@@ -365,6 +391,7 @@ tabla = ["| Archivo | Contenido | Unidad · tema |", "|---|---|---|", "| `index.
 tabla += [fila_md(f, "Fundamentos · " + P[f]["corto"].split(" · ")[0]) for f in T["fundamentos"]["paginas"]]
 for u in T["unidades"]:
     tabla += [fila_md(f, "U%d · %s" % (u["n"], re.sub(r"^temas? ", "", P[f].get("tema", "")))) for f in u.get("paginas", []) + u.get("apoyo", [])]
+tabla += [fila_md(f, "Apoyo a los proyectos") for f in T["proyectos"]["paginas"]]
 tabla += [fila_md(f, "Repaso · U1 a U8") for f in T["repaso"]["paginas"]]
 README = f"""# Vibraciones: exploradores interactivos
 
@@ -411,7 +438,7 @@ open(os.path.join(D, "README.md"), "w", encoding="utf-8").write(README)
 def zen(a):
     a = a.replace("Colección de doce exploradores interactivos", "Colección de diecinueve exploradores interactivos y un tutorial de medición").replace("Colección de dieciséis exploradores", "Colección de diecinueve exploradores")
     if "analogías electromecánicas" not in a:
-        a = a.replace(" Recurso educativo abierto.", " La versión 1.5 añade una autoevaluación con problemas de las unidades 1 a 8 para preparar el examen final. La versión 1.4 añade esfuerzos normales y cortantes directos en una unión con pernos (U5), pérdida por transmisión sonora de un panel (U6) y campo libre, campo reverberante y cámaras anecoicas (U6). Recurso educativo abierto.", 1)
+        a = a.replace(" Recurso educativo abierto.", " La versión 1.6 añade cuatro herramientas de apoyo a los proyectos (sensores del teléfono, rigidez, bobina e imán, análisis de datos). La versión 1.5 añade una autoevaluación con problemas de las unidades 1 a 8 para preparar el examen final. La versión 1.4 añade esfuerzos normales y cortantes directos en una unión con pernos (U5), pérdida por transmisión sonora de un panel (U6) y campo libre, campo reverberante y cámaras anecoicas (U6). Recurso educativo abierto.", 1)
         a = a.replace(" La versión 1.4 añade", " La versión 1.3 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7), ensayo de choque y espectro de respuesta (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
     return a
 cambia(".zenodo.json", zen)
