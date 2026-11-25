@@ -12,7 +12,7 @@ Electromagnética. Idempotente. Uso: python3 integra2.py CARPETA
 """
 import json, os, re, sys, html
 D = sys.argv[1]; esc = lambda s: html.escape(s, quote=True)
-VERSION, FECHA = "1.4", "2026-11-20"
+VERSION, FECHA = "1.5", "2026-11-25"
 BASE = "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
 DOI = "10.5281/zenodo.23422993"
 tp = os.path.join(D, "temario.json"); T = json.load(open(tp, encoding="utf-8")); P = T["paginas"]
@@ -90,7 +90,13 @@ for u in T["unidades"]:
 uni1 = next(u for u in T["unidades"] if u["n"] == 1)
 uni1["remite"] = "Esta unidad se apoya en los pilares de fundamentos (vibración libre, frecuencia natural, amortiguamiento) y, para los sistemas rotatorios del tema 1.2, en el explorador de transmisibilidad y desbalance."
 uni1["remite_a"] = ["edo3_interactivo.html", "edo_interactivo.html", "transmisibilidad_interactivo.html"]
-T["recorrido"] = T["fundamentos"]["paginas"] + [f for u in T["unidades"] for f in u.get("paginas", []) + u.get("apoyo", [])]
+P["autoevaluacion.html"] = {"corto": "Repaso · Autoevaluación", "titulo": "Autoevaluación para el examen final",
+   "enfoque": "PRACTICAR · un problema de cada unidad, con datos nuevos cada vez",
+   "descripcion": "Problemas de las unidades 1 a 8 con datos aleatorios, comprobación inmediata con 2 % de tolerancia y solución paso a paso con los números del problema.",
+   "puntos": ["Trece problemas, de la señal armónica a los dos grados de libertad", "Comprobación con 2 % (0.2 dB en niveles)", "Solución completa al terminar"], "tema": "unidades 1 a 8", "swatch": ["#1F3864", "#C55A11"],
+   "claves": ["examen final", "repaso", "autoevaluación", "problemas resueltos", "práctica"]}
+T["repaso"] = {"titulo": "Repaso para el examen final", "paginas": ["autoevaluacion.html"]}
+T["recorrido"] = T["fundamentos"]["paginas"] + [f for u in T["unidades"] for f in u.get("paginas", []) + u.get("apoyo", [])] + T["repaso"]["paginas"]
 T["actualizado"] = FECHA
 T["nota"] = "Fuente única del panel de navegación, del índice, del mapa del sitio y de los metadatos. Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos') en el orden del programa, 3) ejecutar integra2.py."
 json.dump(T, open(tp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
@@ -112,6 +118,7 @@ def menu_html():
         if not fs: continue
         g.append(f'<div class="nv-grp">Unidad {u["n"]} · {esc(u["titulo"])}</div>')
         g += [it(f) for f in fs]
+    g.append(f'<div class="nv-grp">{esc(T["repaso"]["titulo"])}</div>'); g += [it(f) for f in T["repaso"]["paginas"]]
     return "\n".join(g)
 
 NAV = f"""{INI}
@@ -313,6 +320,25 @@ for u in T["unidades"]:
 s = s.replace("la barra superior permite saltar entre exploradores (teclas ← y →) y abrir el temario desde cualquier página.",
               "el panel lateral permite saltar entre exploradores (teclas ← y →), buscar por nombre (tecla /) y ver el temario completo desde cualquier página; en pantallas de menos de 1360 px se abre con «☰ Temario», para que las gráficas conserven su tamaño.")
 s = s.replace("Unidad 6 · temas 6.3–6.4 · Pilar 10", "Unidad 6 · temas 6.1, 6.2 y 6.4 · Pilar 10").replace("Unidad 2 · tema 2.3 · Pilar 4", "Unidad 2 · tema 2.3 (fricción seca) · Pilar 4")
+REP = """<!-- repaso:inicio -->
+<section><div class="sect"><div class="sk">Repaso<small>unidades 1 a 8</small></div><h2>Preparación para el examen final</h2><p>Problemas de todas las unidades con datos nuevos cada vez y comprobación inmediata.</p></div>
+<div class="grid">
+<div class="cw"><a class="card" href="autoevaluacion.html">
+      <div class="swatch" style="background:linear-gradient(90deg,#1F3864,#C55A11)"></div>
+      <div class="u">Repaso · unidades 1 a 8</div>
+      <div class="ct">Autoevaluación para el examen final</div>
+      <div class="ce">PRACTICAR · un problema de cada unidad, con datos nuevos cada vez</div>
+      <div class="cd">Problemas de las unidades 1 a 8 con datos aleatorios, comprobación inmediata con 2 % de tolerancia y solución paso a paso con los números del problema.</div>
+      <div class="cp">Trece problemas · Comprobación con 2 % · Solución completa al terminar</div>
+      <div class="chip">Abrir la autoevaluación →</div>
+    </a></div>
+</div>
+</section>
+<!-- repaso:fin -->
+"""
+s = re.sub(r"<!-- repaso:inicio -->.*?<!-- repaso:fin -->\n?", "", s, flags=re.S)
+i8 = s.index('<div class="sk">Unidad 8<'); j8 = s.index("</section>", i8) + len("</section>\n")
+s = s[:j8] + REP + s[j8:]
 open(ip, "w", encoding="utf-8").write(s)
 
 # ------------------------------------------------------------------------------------------------ 3b. mapa del sitio
@@ -339,6 +365,7 @@ tabla = ["| Archivo | Contenido | Unidad · tema |", "|---|---|---|", "| `index.
 tabla += [fila_md(f, "Fundamentos · " + P[f]["corto"].split(" · ")[0]) for f in T["fundamentos"]["paginas"]]
 for u in T["unidades"]:
     tabla += [fila_md(f, "U%d · %s" % (u["n"], re.sub(r"^temas? ", "", P[f].get("tema", "")))) for f in u.get("paginas", []) + u.get("apoyo", [])]
+tabla += [fila_md(f, "Repaso · U1 a U8") for f in T["repaso"]["paginas"]]
 README = f"""# Vibraciones: exploradores interactivos
 
 [![DOI](https://zenodo.org/badge/DOI/{DOI}.svg)](https://doi.org/{DOI})
@@ -384,7 +411,7 @@ open(os.path.join(D, "README.md"), "w", encoding="utf-8").write(README)
 def zen(a):
     a = a.replace("Colección de doce exploradores interactivos", "Colección de diecinueve exploradores interactivos y un tutorial de medición").replace("Colección de dieciséis exploradores", "Colección de diecinueve exploradores")
     if "analogías electromecánicas" not in a:
-        a = a.replace(" Recurso educativo abierto.", " La versión 1.4 añade esfuerzos normales y cortantes directos en una unión con pernos (U5), pérdida por transmisión sonora de un panel (U6) y campo libre, campo reverberante y cámaras anecoicas (U6). Recurso educativo abierto.", 1)
+        a = a.replace(" Recurso educativo abierto.", " La versión 1.5 añade una autoevaluación con problemas de las unidades 1 a 8 para preparar el examen final. La versión 1.4 añade esfuerzos normales y cortantes directos en una unión con pernos (U5), pérdida por transmisión sonora de un panel (U6) y campo libre, campo reverberante y cámaras anecoicas (U6). Recurso educativo abierto.", 1)
         a = a.replace(" La versión 1.4 añade", " La versión 1.3 añade analogías electromecánicas (U2), transmisibilidad, aislamiento y desbalance rotatorio (U6), extracción de parámetros modales de una función de respuesta en frecuencia (U7), ensayo de choque y espectro de respuesta (U7) y un tutorial para medir un decaimiento libre con Phyphox y analizarlo en Python (U7). Recurso educativo abierto.", 1)
     return a
 cambia(".zenodo.json", zen)
