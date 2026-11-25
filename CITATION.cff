@@ -10,7 +10,7 @@ authors:
     given-names: Andrés
     orcid: "https://orcid.org/0000-0002-7591-5235"
     affiliation: "CFATA, UNAM"
-version: "1.5"
+version: "1.6"
 date-released: "2026-11-25"
 license: CC-BY-4.0
 type: software

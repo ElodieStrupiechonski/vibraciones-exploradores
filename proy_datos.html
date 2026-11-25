@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Del dato al resultado: análisis por proyecto · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1120px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:900px){ .wrap{grid-template-columns:1.35fr .9fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .row label{font-weight:700;color:var(--navy);font-size:13.5px;min-width:150px}
+  input[type=range]{flex:1;min-width:160px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:76px;text-align:right;font-size:15px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12.5px;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:9px 11px}
+  .tile .k{font-size:11.5px;color:var(--grey);font-weight:600}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:20px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;font-family:'Cambria Math',Georgia,serif;font-size:15px;color:#233}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:12px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  footer{max-width:1120px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  .eqbox b{color:var(--navy)}
+  .pilarnav{max-width:1120px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  @media(max-width:520px){ .pilarnav{font-size:11.5px} }
+</style>
+<style>
+  .grp{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .grp .t{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .nota{font-size:12px;color:var(--grey);margin:6px 0 0}
+  select,.archivo{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff}
+  .tiles.t3{grid-template-columns:1fr 1fr 1fr} @media(max-width:520px){.tiles.t3{grid-template-columns:1fr 1fr}}
+  .tile .v{font-size:18px} .tile.al .v{color:var(--red)}
+  .two{display:grid;grid-template-columns:1fr;gap:12px} @media(min-width:900px){.two{grid-template-columns:1fr 1fr}}
+  .eqbox{overflow-x:auto} .two>div{min-width:0}
+  .oculto .tile .v,.oculto table.res td,.oculto .resp{filter:blur(7px);user-select:none}
+  .tile .v{overflow-wrap:anywhere}
+  table.tb{border-collapse:collapse;font-size:13px;width:100%} table.tb td,table.tb th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left} table.tb th{color:var(--navy)}
+</style>
+<!-- tema:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
+  :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
+        --accent:#C1571B;--serif:"Spectral",Georgia,serif;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{background:var(--bg);font-family:var(--sans)}
+  header{background:transparent;color:var(--ink,#1a1a1a);border-bottom:1px solid var(--line);padding:22px max(20px,calc(50% - 590px)) 14px}
+  header h1{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.15;color:var(--navy,#1F3864);margin:0}
+  header p{color:var(--muted);opacity:1;font-size:15px;margin:6px 0 0;max-width:80ch}
+  header .hk{display:block;font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .card,.intro{box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .card h2,.card h3{font-family:var(--serif);font-weight:600}
+  .card h2{font-size:17px}
+  .eqbox,.tile{background:var(--ice2);border-color:var(--line)}
+  .btn{background:var(--card)}
+  footer .cred{border-top-color:var(--accent)}
+  footer{color:var(--muted)}
+  @media print{header{border-bottom:1px solid #999}}
+</style>
+<!-- tema:fin -->
+<!-- seo:inicio -->
+<meta name="description" content="Cada equipo pega sus mediciones: transmisibilidad con ajuste de f_n y ζ (A), curva de vida de Basquin y Miner (B) y decremento logarítmico por configuración (C).">
+<link rel="canonical" href="https://elodiestrupiechonski.github.io/vibraciones-exploradores/proy_datos.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploradores de Vibraciones (UNAM)">
+<meta property="og:title" content="Del dato al resultado: análisis por proyecto">
+<meta property="og:description" content="Cada equipo pega sus mediciones: transmisibilidad con ajuste de f_n y ζ (A), curva de vida de Basquin y Miner (B) y decremento logarítmico por configuración (C).">
+<meta property="og:url" content="https://elodiestrupiechonski.github.io/vibraciones-exploradores/proy_datos.html">
+<meta property="og:locale" content="es_MX">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Del dato al resultado: análisis por proyecto",
+ "description": "Cada equipo pega sus mediciones: transmisibilidad con ajuste de f_n y ζ (A), curva de vida de Basquin y Miner (B) y decremento logarítmico por configuración (C).",
+ "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/proy_datos.html",
+ "inLanguage": "es",
+ "isAccessibleForFree": true,
+ "learningResourceType": "simulación interactiva",
+ "educationalLevel": "Licenciatura",
+ "about": [
+  "transmisibilidad",
+  "Basquin",
+  "Miner",
+  "decremento logarítmico",
+  "análisis de datos",
+  "proyecto final"
+ ],
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "identifier": "https://doi.org/10.5281/zenodo.23422993",
+ "author": [
+  {
+   "@type": "Person",
+   "name": "Elodie Strupiechonski",
+   "sameAs": "https://orcid.org/0000-0001-8991-8499"
+  },
+  {
+   "@type": "Person",
+   "name": "Andrés de Luna Bugallo",
+   "sameAs": "https://orcid.org/0000-0002-7591-5235"
+  }
+ ],
+ "provider": {
+  "@type": "CollegeOrUniversity",
+  "name": "Universidad Nacional Autónoma de México, ENES Juriquilla"
+ },
+ "isPartOf": {
+  "@type": "Collection",
+  "name": "Vibraciones: exploradores interactivos",
+  "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
+ }
+}
+</script>
+<!-- seo:fin -->
+<!-- movil:inicio -->
+<style>
+  .card{min-width:0}
+  pre{overflow-x:auto;max-width:100%}
+  .row,.tile,.grp,.two>div{min-width:0}
+  input[type=number],select{max-width:100%;min-width:0}
+  canvas{max-width:100%}
+  @media (max-width:480px){
+    .eqbox{font-size:14px}
+    .row,.row.kbrow{flex-wrap:wrap!important}
+    .row>label{min-width:100%!important;flex:1 1 100%}
+    .row>input[type=range]{flex:1 1 120px;min-height:28px}
+    .tiles.t3{grid-template-columns:1fr 1fr}
+    header h1{font-size:22px}
+  }
+</style>
+<!-- movil:fin -->
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Del dato al resultado: análisis por proyecto</h1>
+    <p><span class="hk">Vibraciones · Apoyo a los proyectos</span>Cada equipo pega sus mediciones y obtiene su resultado: transmisibilidad con ajuste de f_n y ζ (A), curva de vida y Miner (B) y decremento por configuración (C)</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<style>
+  .dat{width:100%;min-height:170px;font:13px/1.45 'IBM Plex Mono',Consolas,monospace;border:1px solid var(--line);border-radius:8px;padding:8px;box-sizing:border-box}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px} .pan{display:none} .pan.on{display:block}
+  .err{color:var(--red);font-size:12.5px;margin-top:4px} .tres{display:grid;grid-template-columns:1fr;gap:8px} @media(min-width:700px){.tres{grid-template-columns:1fr 1fr 1fr}}
+  .tres label{font-size:12.5px;color:var(--grey)} .tres input{width:100%;box-sizing:border-box;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:7px;padding:4px 6px;margin-bottom:4px}
+  table.tb td,table.tb th{font-size:13px}
+</style>
+  <div class="intro full">
+    <b>¿Qué resuelve?</b> Cada equipo pega aquí sus mediciones y obtiene el resultado que va en el póster, con el procedimiento de la ficha del proyecto: <b>A</b>, la transmisibilidad medida, el ajuste de <i>f</i><sub>n</sub> y ζ y el porcentaje de aislamiento; <b>B</b>, la curva de vida de Basquin, su dispersión y la predicción de Miner; <b>C</b>, el decremento logarítmico de cada configuración y el amortiguamiento que aporta cada placa. Los datos de ejemplo son <b>inventados</b>, sólo para probar la página: hay que borrarlos y pegar los propios. Lo escrito se conserva en este navegador.
+  </div>
+  <div class="card full">
+    <div class="tabs"><button class="btn on" data-t="A">Equipo A · transmisibilidad</button><button class="btn" data-t="B">Equipo B · curva de vida</button><button class="btn" data-t="C">Equipo C · decremento</button></div>
+
+    <div class="pan on" id="p-A"><div class="two"><div>
+      <p>Un renglón por velocidad del motor: <b>frecuencia (Hz), <i>T</i><sub>r</sub> medida</b> = aceleración rms de la plataforma entre aceleración rms de la base, en el mismo eje.</p>
+      <textarea class="dat" id="dA" spellcheck="false"></textarea><div class="err" id="eA"></div>
+      <div class="row"><label>Rigidez de las ligas <i>k</i> (para la predicción)</label><input id="kA" type="range" min="10" max="5000" step="1" value="426"><span class="val" id="vkA">426 N/m</span></div>
+      <div class="row"><label>Masa de la plataforma con teléfono <i>m</i></label><input id="mA" type="range" min="10" max="3000" step="1" value="300"><span class="val" id="vmA">300 g</span></div>
+      <div class="tiles t3" style="margin-top:10px"><div class="tile hl"><div class="k"><i>f</i><sub>n</sub> ajustada</div><div class="v" id="afn">…</div></div><div class="tile hl"><div class="k">ζ ajustada</div><div class="v" id="az">…</div></div><div class="tile "><div class="k"><i>f</i><sub>n</sub> predicha √(<i>k</i>/<i>m</i>)/2π</div><div class="v" id="afp">…</div></div>
+        <div class="tile "><div class="k"><i>T</i><sub>r</sub> = 1 en √2 <i>f</i><sub>n</sub></div><div class="v" id="acr">…</div></div><div class="tile "><div class="k">Aislamiento a la frecuencia mayor</div><div class="v" id="ais">…</div></div><div class="tile "><div class="k">Error rms del ajuste</div><div class="v" id="arms">…</div></div></div>
+      <div class="nota" id="nA"></div>
+    </div><div><canvas id="cA" width="420" height="330" aria-label="Transmisibilidad medida y ajustada"></canvas></div></div></div>
+
+    <div class="pan" id="p-B"><div class="two"><div>
+      <p>Un renglón por probeta: <b>amplitud δ en la punta (mm), ciclos hasta la rotura <i>N</i></b>. El esfuerzo se calcula con la geometría de abajo (usar el espesor medido con micrómetro).</p>
+      <textarea class="dat" id="dB" spellcheck="false"></textarea><div class="err" id="eB"></div>
+      <div class="row"><label>Módulo <i>E</i> del PLA</label><input id="EB" type="range" min="1" max="5" step="0.05" value="3"><span class="val" id="vEB">3 GPa</span></div>
+      <div class="row"><label>Espesor <i>h</i></label><input id="hB" type="range" min="0.5" max="5" step="0.01" value="2"><span class="val" id="vhB">2 mm</span></div>
+      <div class="row"><label>Longitud libre <i>L</i></label><input id="LB" type="range" min="10" max="100" step="0.5" value="40"><span class="val" id="vLB">40 mm</span></div>
+      <div class="row"><label>Frecuencia de la máquina</label><input id="fB" type="range" min="0.5" max="20" step="0.1" value="4"><span class="val" id="vfB">4 Hz</span></div>
+      <div class="grp"><div class="t">Ensayo de Miner en dos niveles</div>
+      <div class="row"><label>Primer nivel δ<sub>1</sub></label><input id="d1" type="range" min="1" max="10" step="0.1" value="6"><span class="val" id="vd1">6 mm</span></div>
+      <div class="row"><label>Ciclos aplicados en el primer nivel <i>n</i><sub>1</sub></label><input id="n1" type="range" min="0" max="20000" step="10" value="200"><span class="val" id="vn1">200</span></div>
+      <div class="row"><label>Segundo nivel δ<sub>2</sub></label><input id="d2" type="range" min="1" max="10" step="0.1" value="5"><span class="val" id="vd2">5 mm</span></div></div>
+      <div class="tiles t3" style="margin-top:10px"><div class="tile "><div class="k">Basquin: <i>a</i></div><div class="v" id="ba">…</div></div><div class="tile hl"><div class="k">Basquin: exponente <i>b</i></div><div class="v" id="bb">…</div></div><div class="tile "><div class="k">Ajuste <i>R</i>²</div><div class="v" id="br2">…</div></div>
+        <div class="tile "><div class="k"><i>N</i><sub>1</sub> y <i>N</i><sub>2</sub> del ajuste</div><div class="v" id="bN12">…</div></div><div class="tile hl"><div class="k">Miner: ciclos restantes en δ<sub>2</sub></div><div class="v" id="bn2">…</div></div><div class="tile "><div class="k">Tiempo de máquina del segundo nivel</div><div class="v" id="bt">…</div></div></div>
+      <div class="nota" id="nB"></div>
+    </div><div><canvas id="cB" width="420" height="330" aria-label="Curva de vida en escala logarítmica"></canvas></div></div></div>
+
+    <div class="pan" id="p-C">
+      <p>Un renglón por máximo sucesivo del decaimiento: <b>tiempo (s), amplitud</b> (en cualquier unidad: mV del osciloscopio, mm, m/s²). Una columna por configuración; la primera es la referencia sin placa.</p>
+      <div class="tres">
+        <div><input id="nC1" value="sin placa (acrílico)" aria-label="Nombre de la configuración 1"><textarea class="dat" id="dC1" spellcheck="false"></textarea></div>
+        <div><input id="nC2" value="aluminio a 4 mm" aria-label="Nombre de la configuración 2"><textarea class="dat" id="dC2" spellcheck="false"></textarea></div>
+        <div><input id="nC3" value="cobre a 4 mm" aria-label="Nombre de la configuración 3"><textarea class="dat" id="dC3" spellcheck="false"></textarea></div>
+      </div><div class="err" id="eC"></div>
+      <div class="two" style="margin-top:8px"><div><table class="tb" id="tC"></table><div class="nota" id="nC"></div></div><div><canvas id="cC" width="420" height="330" aria-label="Logaritmo de la amplitud contra el tiempo"></canvas></div></div>
+    </div>
+  </div>
+  <div class="card full">
+    <h2>Las fórmulas en pantalla</h2>
+    <div class="two"><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">A · Transmisibilidad (excitación por la base)</span><math display="block"><mrow><msub><mi>T</mi><mi>r</mi></msub><mo>=</mo><msqrt><mfrac><mrow><mn>1</mn><mo>+</mo><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>2</mn><mi>ζ</mi><mi>r</mi><msup><mo stretchy="false" lspace="0" rspace="0">)</mo><mn>2</mn></msup></mrow><mrow><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>1</mn><mo>−</mo><msup><mi>r</mi><mn>2</mn></msup><msup><mo stretchy="false" lspace="0" rspace="0">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>2</mn><mi>ζ</mi><mi>r</mi><msup><mo stretchy="false" lspace="0" rspace="0">)</mo><mn>2</mn></msup></mrow></mfrac></msqrt><mo>,</mo><mspace width="2em"></mspace><mi>r</mi><mo>=</mo><mfrac><mi>f</mi><msub><mi>f</mi><mi>n</mi></msub></mfrac></mrow></math><div class="eqnote">f<sub>n</sub> y ζ se ajustan por mínimos cuadrados sobre log T<sub>r</sub> (búsqueda en malla y refinamiento), para que los puntos pequeños de la zona de aislamiento pesen igual que los del pico</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">B · Esfuerzo en el empotramiento y Basquin</span><math display="block"><mrow><msub><mi>σ</mi><mi>a</mi></msub><mo>=</mo><mfrac><mrow><mn>3</mn><mi>E</mi><mi>h</mi><mspace width="0.17em"></mspace><mi>δ</mi></mrow><mrow><mn>2</mn><msup><mi>L</mi><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mspace width="2em"></mspace><msub><mi>σ</mi><mi>a</mi></msub><mo>=</mo><mi>a</mi><mspace width="0.17em"></mspace><msup><mi>N</mi><mi>b</mi></msup><mspace width="0.25em"></mspace><mo>⇒</mo><mspace width="0.25em"></mspace><mi mathvariant="normal" data-fn="1">log</mi><mspace width="0.17em"></mspace><msub><mi>σ</mi><mi>a</mi></msub><mo>=</mo><mi mathvariant="normal" data-fn="1">log</mi><mspace width="0.17em"></mspace><mi>a</mi><mo>+</mo><mi>b</mi><mi mathvariant="normal" data-fn="1">log</mi><mspace width="0.17em"></mspace><mi>N</mi></mrow></math><div class="eqnote">la recta se ajusta con log N como variable independiente; como la dispersión está en N, conviene al menos tres probetas por nivel</div></div>
+    </div><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">B · Regla de Miner en dos niveles</span><math display="block"><mrow><mfrac><msub><mi>n</mi><mn>1</mn></msub><msub><mi>N</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><msub><mi>n</mi><mn>2</mn></msub><msub><mi>N</mi><mn>2</mn></msub></mfrac><mo>=</mo><mn>1</mn><mspace width="1em"></mspace><mo>⇒</mo><mspace width="1em"></mspace><msub><mi>n</mi><mn>2</mn></msub><mo>=</mo><msub><mi>N</mi><mn>2</mn></msub><mrow><mo stretchy="true" fence="true">(</mo><mn>1</mn><mo>−</mo><mfrac><msub><mi>n</mi><mn>1</mn></msub><msub><mi>N</mi><mn>1</mn></msub></mfrac><mo stretchy="true" fence="true">)</mo></mrow></mrow></math></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">C · Decremento por regresión</span><math display="block"><mrow><mi mathvariant="normal" data-fn="1">ln</mi><mspace width="0.17em"></mspace><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal" data-fn="1">ln</mi><mspace width="0.17em"></mspace><msub><mi>x</mi><mn>0</mn></msub><mo>−</mo><mi>σ</mi><msub><mi>t</mi><mi>i</mi></msub><mo>,</mo><mspace width="2em"></mspace><msub><mi>f</mi><mi>d</mi></msub><mo>=</mo><mfrac><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mrow><msub><mi>t</mi><mi>n</mi></msub><mo>−</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></mfrac></mrow></math><math display="block"><mrow><mi>δ</mi><mo>=</mo><mfrac><mi>σ</mi><msub><mi>f</mi><mi>d</mi></msub></mfrac><mo>,</mo><mspace width="2em"></mspace><mi>ζ</mi><mo>=</mo><mfrac><mi>δ</mi><msqrt><mrow><mn>4</mn><msup><mi>π</mi><mn>2</mn></msup><mo>+</mo><msup><mi>δ</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mrow></math><div class="eqnote">usar todos los máximos con una recta es más robusto que sólo el primero y el último; ζ<sub>placa</sub> = ζ − ζ<sub>sin placa</sub></div></div>
+    </div></div>
+    <div class="takeaway" style="margin-top:10px"><b>Qué reportar en el póster.</b> Cada resultado con su incertidumbre y su número de repeticiones; la gráfica de los datos con el ajuste encima; y la comparación con la predicción de la ficha. <b>A:</b> la <i>T</i><sub>r</sub> que miden con dos teléfonos depende sólo de la plataforma (<i>k</i>, <i>m</i>): su máximo está en la frecuencia de la plataforma, aunque el motor también excite la resonancia del conjunto con la placa base (sesión del 20/11). <b>B:</b> la dispersión de la fatiga es grande; un factor 2 entre probetas del mismo nivel es normal. <b>C:</b> si la frecuencia cambia al poner la placa de acero, no es amortiguamiento: es la atracción del imán. Referencias: Rao, <i>Mechanical Vibrations</i>, 5.ª ed., Pearson (transmisibilidad y decremento logarítmico); Basquin, «The exponential law of endurance tests», <i>Proc. ASTM</i> 10, 625–630 (1910); Miner, «Cumulative damage in fatigue», <i>J. Appl. Mech.</i> 12, A159–A164 (1945), doi:10.1115/1.4009458.</div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Apoyo a los proyectos del curso de Vibraciones: análisis de datos de los equipos A, B y C · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.6) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+const NAVY='#1F3864',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',RED='#B23A3A',PURPLE='#6B3FA0';
+const $=id=>document.getElementById(id);
+function lienzo(cv,H){ const c=cv.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1,2), W=cv.clientWidth||760; cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px'; c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H); return {c,W,H}; }
+function pasos(a,b,n){ const d=(b-a)/n, p=Math.pow(10,Math.floor(Math.log10(d))), q=d/p, s=(q<1.5?1:q<3?2:q<7?5:10)*p, o=[]; for(let v=Math.ceil(a/s-1e-9)*s; v<=b+1e-9*s; v+=s) o.push(+v.toPrecision(12)); return o; }
+function num(v){ const a=Math.abs(v); if(v===0) return '0'; if(a>=1e4||a<1e-2){ const e=Math.floor(Math.log10(a)+1e-9), m=+(v/Math.pow(10,e)).toPrecision(2); return (String(m)+'×10^'+e).replace(/-/g,'−'); } return String(+v.toPrecision(3)).replace('-','−'); }
+// notación de ingeniería con prefijo SI
+function ing(v,u){ if(!isFinite(v)) return '∞'; if(!(v>0)) return '0 '+u; const P=[[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ'],[1e-9,'n'],[1e-12,'p']]; for(const [f,p] of P){ if(v>=f*0.9995) return (+(v/f).toPrecision(3))+' '+p+u; } return num(v)+' '+u; }
+// modo práctica: oculta las lecturas hasta que se pulse de nuevo
+function practica(id){ const b=$(id); if(!b) return; b.addEventListener('click',()=>{ const on=document.body.classList.toggle('oculto'); b.classList.toggle('on',on); b.textContent=on?'Mostrar lecturas':'Ocultar lecturas (modo práctica)'; }); }
+// Ejes: o={x0,x1,y0,y1,logx,logy,xl,yl,tit}; devuelve los mapeos X, Y y el rectángulo de trazo
+function ejes(g,box,o){ const c=g.c, mL=box.mL||56, mR=box.mR||14, mT=box.mT||24, mB=box.mB||36, x=box.x||0, y=box.y||0, w=(box.w||g.W)-mL-mR, h=(box.h||g.H)-mT-mB, px=x+mL, py=y+mT;
+  const lx=o.logx, ly=o.logy, ax=lx?Math.log10(o.x0):o.x0, bx=lx?Math.log10(o.x1):o.x1, ay=ly?Math.log10(o.y0):o.y0, by=ly?Math.log10(o.y1):o.y1;
+  const X=v=>px+((lx?Math.log10(Math.max(v,1e-300)):v)-ax)/(bx-ax)*w, Y=v=>py+(1-((ly?Math.log10(Math.max(v,1e-300)):v)-ay)/(by-ay))*h;
+  c.lineWidth=1; c.strokeStyle='#E3E9F3'; c.fillStyle=GREY; c.font='11px Arial';
+  const tx=lx?decadas(o.x0,o.x1):pasos(o.x0,o.x1,o.nx||8), ty=ly?decadas(o.y0,o.y1):pasos(o.y0,o.y1,o.ny||5);
+  c.textAlign='center'; c.textBaseline='top'; tx.forEach(v=>{ c.beginPath(); c.moveTo(X(v),py); c.lineTo(X(v),py+h); c.stroke(); c.fillText(lx?pot(v):num(v),X(v),py+h+5); });
+  c.textAlign='right'; c.textBaseline='middle'; ty.forEach(v=>{ c.beginPath(); c.moveTo(px,Y(v)); c.lineTo(px+w,Y(v)); c.stroke(); c.fillText(ly?pot(v):num(v),px-6,Y(v)); });
+  c.strokeStyle='#9AA7BF'; c.strokeRect(px,py,w,h);
+  c.fillStyle=NAVY; c.textAlign='left'; c.textBaseline='top'; if(o.tit){ let fs=12; do{ c.font='bold '+fs+'px Arial'; fs-=0.5; } while(fs>8.5&&c.measureText(o.tit.replace(/[_^]/g,'')).width>w+mR-2); c.fillText(o.tit,px,y+5); } c.font='bold 12px Arial';
+  c.textAlign='center'; if(o.xl) c.fillText(o.xl,px+w/2,py+h+20);
+  if(o.yl){ c.save(); c.translate(x+12,py+h/2); c.rotate(-Math.PI/2); c.textBaseline='middle'; c.fillText(o.yl,0,0); c.restore(); }
+  return {X,Y,px,py,w,h,c,o}; }
+function pot(v){ const e=Math.round(Math.log10(v)); return (e>=-2&&e<=3)?String(+Math.pow(10,e).toPrecision(1)):'10^'+(e<0?'−'+(-e):e); }
+function decadas(a,b){ const o=[]; for(let e=Math.ceil(Math.log10(a)-1e-9); e<=Math.log10(b)+1e-9; e++) o.push(Math.pow(10,e)); return o; }
+function curva(e,pts,color,lw,dash){ const c=e.c; c.save(); c.beginPath(); c.rect(e.px,e.py,e.w,e.h); c.clip(); c.strokeStyle=color; c.lineWidth=lw||1.6; c.setLineDash(dash||[]); c.beginPath(); let on=false;
+  for(const p of pts){ if(!isFinite(p[1])){ on=false; continue; } const x=e.X(p[0]), y=e.Y(p[1]); on?c.lineTo(x,y):c.moveTo(x,y); on=true; } c.stroke(); c.restore(); }
+function funcion(e,f,color,lw,dash,n){ n=n||Math.round(e.w); const o=e.o, pts=[]; for(let i=0;i<=n;i++){ const u=i/n, x=o.logx?o.x0*Math.pow(o.x1/o.x0,u):o.x0+(o.x1-o.x0)*u; pts.push([x,f(x)]); } curva(e,pts,color,lw,dash); }
+function vline(e,x,color,dash,txt,dy){ const c=e.c; if(x<Math.min(e.o.x0,e.o.x1)||x>Math.max(e.o.x0,e.o.x1)) return; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.X(x),e.py); c.lineTo(e.X(x),e.py+e.h); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; const der=e.X(x)>e.px+e.w-110; c.textAlign=der?'right':'left'; c.textBaseline='top'; c.fillText(txt,e.X(x)+(der?-4:4),e.py+4+(dy||0)); } c.restore(); }
+function hline(e,y,color,dash,txt){ const c=e.c; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.px,e.Y(y)); c.lineTo(e.px+e.w,e.Y(y)); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; c.textAlign='right'; c.textBaseline='bottom'; c.fillText(txt,e.px+e.w-4,e.Y(y)-2); } c.restore(); }
+function punto(e,x,y,color,r){ const c=e.c; c.fillStyle=color; c.strokeStyle='#fff'; c.lineWidth=1.5; c.beginPath(); c.arc(e.X(x),e.Y(y),r||5,0,7); c.fill(); c.stroke(); }
+// Enlaza deslizadores: UN = {id:' unidad'}; llama a cb en cada cambio
+function liga(S,UN,cb){ Object.keys(UN).forEach(id=>$(id).addEventListener('input',ev=>{ S[id]=+ev.target.value; $('v'+id).textContent=(+S[id].toPrecision(6))+UN[id]; cb(); })); }
+function pon(S,UN,o,cb){ Object.keys(o).forEach(k=>{ S[k]=o[k]; if($(k)&&UN[k]!==undefined){ $(k).value=o[k]; $('v'+k).textContent=o[k]+UN[k]; } }); cb(); }
+
+const TP=2*Math.PI;
+let S={kA:426,mA:300,EB:3,hB:2,LB:40,fB:4,d1:6,n1:200,d2:5};
+const UN={kA:' N/m',mA:' g',EB:' GPa',hB:' mm',LB:' mm',fB:' Hz',d1:' mm',n1:'',d2:' mm'};
+const EJ={A:'# datos inventados para probar la página\n2, 1.12\n3, 1.36\n4, 1.76\n4.5, 2.13\n5, 3.04\n5.5, 4.88\n6, 8.42\n6.5, 5.02\n7, 2.53\n8, 1.23\n9, 0.828\n10, 0.582\n12, 0.344\n15, 0.187\n20, 0.106\n25, 0.0712\n30, 0.0447',
+ B:'# datos inventados para probar la página\n6, 510\n6, 310\n6, 380\n5.5, 820\n5.5, 1450\n5.5, 1010\n5, 4980\n5, 4790\n5, 4240',
+ C1:'# inventados\n0.0120, 9.748\n0.1549, 9.639\n0.2977, 9.386\n0.4406, 9.111\n0.5834, 8.684\n0.7263, 8.506\n0.8692, 8.201\n1.0120, 7.961\n1.1549, 7.860\n1.2977, 7.476\n1.4406, 7.302\n1.5834, 7.141\n1.7263, 6.819\n1.8692, 6.640\n2.0120, 6.449\n2.1549, 6.246\n2.2977, 5.975\n2.4406, 5.867\n2.5835, 5.758\n2.7263, 5.420',
+ C2:'# inventados\n0.0120, 10.086\n0.1549, 9.111\n0.2977, 8.229\n0.4406, 7.688\n0.5835, 6.911\n0.7264, 6.167\n0.8692, 5.685\n1.0121, 5.199\n1.1550, 4.696\n1.2979, 4.311\n1.4407, 3.894\n1.5836, 3.569',
+ C3:'# inventados\n0.0120, 10.144\n0.1549, 8.225\n0.2978, 6.872\n0.4408, 5.653\n0.5837, 4.709\n0.7266, 3.849\n0.8695, 3.207\n1.0125, 2.666\n1.1554, 2.232\n1.2983, 1.853\n1.4412, 1.497\n1.5841, 1.246'};
+function leer(t){ const P=[], mal=[]; t.split(/\n/).forEach((l,i)=>{ l=l.trim(); if(!l||l[0]==='#') return; const v=l.split(/[\s;,\t]+/).map(x=>Number(x.replace('−','-'))); if(v.length<2||!isFinite(v[0])||!isFinite(v[1])) mal.push(i+1); else P.push([v[0],v[1]]); }); return {P,mal}; }
+function recta(P){ const n=P.length, mx=P.reduce((a,p)=>a+p[0],0)/n, my=P.reduce((a,p)=>a+p[1],0)/n; let sxx=0,sxy=0,syy=0; P.forEach(p=>{ sxx+=(p[0]-mx)**2; sxy+=(p[0]-mx)*(p[1]-my); syy+=(p[1]-my)**2; });
+  const s=sxy/sxx, a=my-s*mx, ssr=P.reduce((q,p)=>q+(p[1]-a-s*p[0])**2,0); return {s,a,se:n>2?Math.sqrt(ssr/(n-2)/sxx):NaN,r2:syy>0?1-ssr/syy:1,n}; }
+const Tr=(f,fn,z)=>{ const r=f/fn; return Math.sqrt((1+(2*z*r)**2)/((1-r*r)**2+(2*z*r)**2)); };
+// ---------------- A
+function ajusteA(P){ const fmin=Math.min(...P.map(p=>p[0])), fmax=Math.max(...P.map(p=>p[0])); const err=(fn,z)=>P.reduce((s,p)=>s+(Math.log(Tr(p[0],fn,z))-Math.log(p[1]))**2,0);
+  let best=[1,0.1,Infinity]; for(let i=0;i<=240;i++){ const fn=0.5*fmin*Math.pow(2*fmax/(0.5*fmin),i/240); for(let j=0;j<=80;j++){ const z=0.003*Math.pow(0.6/0.003,j/80); const e=err(fn,z); if(e<best[2]) best=[fn,z,e]; } }
+  let [fn,z,e]=best, sf=fn*0.02, sz=z*0.1; for(let it=0;it<60;it++){ let mej=false; for(const [a,b] of [[sf,0],[-sf,0],[0,sz],[0,-sz]]){ const f2=fn+a, z2=Math.max(1e-4,z+b), e2=err(f2,z2); if(e2<e){ fn=f2; z=z2; e=e2; mej=true; } } if(!mej){ sf/=2; sz/=2; } }
+  return {fn,z,rms:Math.sqrt(e/P.length)}; }
+function pA(){ const {P,mal}=leer($('dA').value); $('eA').textContent=mal.length?'Renglones no válidos: '+mal.join(', '):''; const g=lienzo($('cA'),330);
+  if(P.length<4||P.some(p=>!(p[1]>0)||!(p[0]>0))){ $('eA').textContent='Hacen falta al menos cuatro renglones con frecuencia y T_r positivas.'; return; }
+  const R=ajusteA(P), fp=Math.sqrt(S.kA/(S.mA/1e3))/TP, fmax=Math.max(...P.map(p=>p[0]));
+  const e=ejes(g,{mL:52},{x0:Math.min(...P.map(p=>p[0]))*0.8,x1:fmax*1.2,y0:0.01,y1:Math.max(30,Math.max(...P.map(p=>p[1]))*2),logx:true,logy:true,xl:'frecuencia (Hz)',yl:'T_r',tit:'Transmisibilidad medida y ajuste'});
+  hline(e,1,GREY,[3,3]); funcion(e,f=>Tr(f,fp,R.z),ORANGE,1.3,[6,4]); funcion(e,f=>Tr(f,R.fn,R.z),STEEL,2.2); P.forEach(p=>punto(e,p[0],p[1],RED,4)); vline(e,Math.SQRT2*R.fn,GREEN,[4,3],'√2 f_n');
+  $('afn').textContent=(+R.fn.toPrecision(3))+' Hz'; $('az').textContent=(+R.z.toPrecision(2))+''; $('afp').textContent=(+fp.toPrecision(3))+' Hz ('+(100*(R.fn/fp-1)>=0?'+':'−')+Math.abs(100*(R.fn/fp-1)).toFixed(0)+' %)';
+  $('acr').textContent=(+(Math.SQRT2*R.fn).toPrecision(3))+' Hz'; const tr=Tr(fmax,R.fn,R.z); $('ais').textContent=(tr<1?(100*(1-tr)).toFixed(0)+' %':'no aísla')+' a '+fmax+' Hz'; $('arms').textContent=(100*(Math.exp(R.rms)-1)).toFixed(0)+' %';
+  $('nA').textContent='Curva azul: ajuste; naranja punteada: predicción con k y m (con la ζ ajustada). '+(Math.abs(R.fn/fp-1)>0.15?'La f_n medida difiere más de 15 % de la predicha: revisar k (medida con la carga de trabajo) y m (con teléfono).':'La f_n medida coincide con la predicha a menos de 15 %.'); }
+// ---------------- B
+function pB(){ const {P,mal}=leer($('dB').value); $('eB').textContent=mal.length?'Renglones no válidos: '+mal.join(', '):''; const g=lienzo($('cB'),330);
+  if(P.length<3||P.some(p=>!(p[0]>0)||!(p[1]>0))){ $('eB').textContent='Hacen falta al menos tres probetas con δ y N positivos.'; return; }
+  const sig=d=>3*S.EB*1e3*S.hB*d/(2*S.LB*S.LB); const Q=P.map(p=>[Math.log10(p[1]),Math.log10(sig(p[0]))]); const r=recta(Q); const a=Math.pow(10,r.a), b=r.s;
+  const Nde=d=>Math.pow(sig(d)/a,1/b), N1=Nde(S.d1), N2=Nde(S.d2), n2=N2*(1-S.n1/N1);
+  const xs=Q.map(p=>p[0]), ys=Q.map(p=>Math.pow(10,p[1])); const e=ejes(g,{mL:52},{x0:Math.pow(10,Math.floor(Math.min(...xs))),x1:Math.pow(10,Math.ceil(Math.max(...xs))),y0:Math.min(...ys)*0.7,y1:Math.max(...ys)*1.4,logx:true,logy:true,xl:'ciclos hasta la rotura N',yl:'σ_a (MPa)',tit:'Curva de vida: σ_a = a N^b'});
+  funcion(e,N=>a*Math.pow(N,b),STEEL,2.2); Q.forEach(p=>punto(e,Math.pow(10,p[0]),Math.pow(10,p[1]),RED,4));
+  $('ba').textContent=(+a.toPrecision(3))+' MPa'; $('bb').textContent=b.toFixed(3); $('bb').parentNode.classList.toggle('al',!(b<-0.04&&b>-0.3)); $('br2').textContent=r.r2.toFixed(3);
+  $('bN12').textContent=(+N1.toPrecision(3))+' y '+(+N2.toPrecision(3)); $('bn2').textContent=n2>0?(+n2.toPrecision(3))+' ciclos':'ya falló en el primer nivel'; $('bt').textContent=n2>0?(+(n2/S.fB/60).toPrecision(3))+' min':'…';
+  const niveles={}; P.forEach(p=>{ (niveles[p[0]]=niveles[p[0]]||[]).push(p[1]); }); const disp=Object.entries(niveles).filter(([k,v])=>v.length>1).map(([k,v])=>'δ = '+k+' mm: σ_a = '+(+sig(+k).toPrecision(3))+' MPa, N de '+Math.min(...v)+' a '+Math.max(...v)+' (factor '+(Math.max(...v)/Math.min(...v)).toFixed(1)+')');
+  $('nB').textContent=(disp.length?'Dispersión por nivel: '+disp.join('; ')+'. ':'')+(b<-0.04&&b>-0.3?'El exponente está en el intervalo esperado para polímeros (entre −0.04 y −0.3, orientativo).':'El exponente sale fuera del intervalo esperado: revisar datos o la geometría.'); }
+// ---------------- C
+function serieC(t){ const {P}=leer(t); if(P.length<3||P.some(p=>!(p[1]>0))) return null; P.sort((x,y)=>x[0]-y[0]); const r=recta(P.map(p=>[p[0],Math.log(p[1])])); const sg=-r.s, fd=(P.length-1)/(P[P.length-1][0]-P[0][0]), d=sg/fd;
+  return {n:P.length,fd,d,z:d/Math.sqrt(4*Math.PI*Math.PI+d*d),r2:r.r2,r,P,zse:r.se/fd/TP}; }
+function pC(){ const g=lienzo($('cC'),330), cols=[STEEL,ORANGE,GREEN], R=[1,2,3].map(i=>({nom:$('nC'+i).value,s:serieC($('dC'+i).value)}));
+  const val=R.filter(x=>x.s); $('eC').textContent=val.length?'':'Cada columna necesita al menos tres máximos con amplitud positiva.'; if(!val.length){ $('tC').innerHTML=''; return; }
+  const tmax=Math.max(...val.map(x=>x.s.P[x.s.P.length-1][0])), ys=val.flatMap(x=>x.s.P.map(p=>Math.log(p[1])));
+  const e=ejes(g,{mL:52},{x0:0,x1:tmax*1.05,y0:Math.min(...ys)-0.2,y1:Math.max(...ys)+0.2,xl:'tiempo (s)',yl:'ln(amplitud)',tit:'Rectas de decaimiento'});
+  R.forEach((x,i)=>{ if(!x.s) return; funcion(e,t=>x.s.r.a+x.s.r.s*t,cols[i],2); x.s.P.forEach(p=>punto(e,p[0],Math.log(p[1]),cols[i],3.5)); });
+  const z0=R[0].s?R[0].s.z:null;
+  $('tC').innerHTML='<tr><th>Configuración</th><th>máximos</th><th>f_d (Hz)</th><th>ζ</th><th>R²</th><th>ζ − ζ<sub>ref</sub></th></tr>'+R.map((x,i)=>x.s?'<tr><td><span style="color:'+cols[i]+'">■</span> '+x.nom.replace(/</g,'&lt;')+'</td><td>'+x.s.n+'</td><td>'+(+x.s.fd.toPrecision(4))+'</td><td>'+(+x.s.z.toPrecision(3))+' ± '+(+x.s.zse.toPrecision(1))+'</td><td>'+x.s.r2.toFixed(4)+'</td><td>'+(i&&z0!==null?(+(x.s.z-z0).toPrecision(3)):'referencia')+'</td></tr>':'').join('');
+  let t=[]; if(R[0].s) R.slice(1).forEach(x=>{ if(x.s&&Math.abs(x.s.fd/R[0].s.fd-1)>0.02) t.push('«'+x.nom+'» cambia la frecuencia '+(100*(x.s.fd/R[0].s.fd-1)).toFixed(1)+' %: no es sólo amortiguamiento (atracción del imán o sujeción).'); });
+  if(R[1].s&&R[2].s&&z0!==null) t.push('Razón de amortiguamientos añadidos: '+(+((R[2].s.z-z0)/(R[1].s.z-z0)).toPrecision(3))+' (con igual espesor y hueco, la teoría espera la razón de conductividades, 5.96/3.77 = 1.58 para cobre frente a aluminio).');
+  $('nC').textContent=t.join(' '); }
+liga(S,UN,()=>{ pA(); pB(); });
+const guardar=()=>{ try{ localStorage.setItem('datos-vib',JSON.stringify(['dA','dB','dC1','dC2','dC3','nC1','nC2','nC3'].map(i=>$(i).value))); }catch(e){} };
+let G=null; try{ G=JSON.parse(localStorage.getItem('datos-vib')||'null'); }catch(e){}
+[['dA','A'],['dB','B'],['dC1','C1'],['dC2','C2'],['dC3','C3']].forEach(([i,k],j)=>{ $(i).value=(G&&G[j])||EJ[k]; });
+if(G) ['nC1','nC2','nC3'].forEach((i,j)=>{ if(G[5+j]) $(i).value=G[5+j]; });
+['dA','dB','dC1','dC2','dC3','nC1','nC2','nC3'].forEach(i=>$(i).addEventListener('input',()=>{ guardar(); if(i==='dA') pA(); else if(i==='dB') pB(); else pC(); }));
+document.querySelectorAll('[data-t]').forEach(bt=>bt.addEventListener('click',()=>{ document.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===bt)); document.querySelectorAll('.pan').forEach(p=>p.classList.toggle('on',p.id==='p-'+bt.dataset.t)); pA(); pB(); pC(); }));
+window.addEventListener('resize',()=>{ pA(); pB(); pC(); });
+window.__da={S,ajusteA,serieC,Tr,recta,leer};
+pA(); pB(); pC();
+
+</script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ n.classList.add('kbmal'); n.value=limpio(actual(),6).replace('-','−'); setTimeout(function(){ n.classList.remove('kbmal'); },900); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
+<!-- contador:inicio -->
+<style>
+  .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
+  .visitas span{display:inline-block;background:#fff;border:1px solid #D3DEEE;border-radius:20px;padding:3px 11px}
+  .visitas b{color:#1F3864;font-weight:700}
+  .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
+</style>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
+<script>
+(function(){
+  if(location.protocol!=='http:' && location.protocol!=='https:') return;   // copia local: sin contador ni peticiones
+  var sc=document.createElement('script'); sc.async=true;
+  sc.setAttribute('data-goatcounter','https://elodiestrupiechonski.goatcounter.com/count');
+  sc.src='https://gc.zgo.at/count.js'; document.head.appendChild(sc);
+  var base='https://elodiestrupiechonski.goatcounter.com/counter/';
+  function pide(path){
+    return fetch(base+encodeURIComponent(path).replace(/%2F/g,'/')+'.json',{cache:'no-cache'})
+      .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+  }
+  var p=location.pathname;
+  if(/\/index\.html$/.test(p)) p=p.replace(/index\.html$/,'');
+  Promise.all([pide(p), pide('TOTAL')]).then(function(res){
+    var a=res[0], b=res[1];
+    if(!a && !b) return;
+    document.getElementById('vis-pag').textContent = a ? a.count : '–';
+    document.getElementById('vis-tot').textContent = b ? b.count : '–';
+    document.getElementById('visitas').style.display='block';
+  });
+})();
+</script>
+<!-- contador:fin -->
+<!-- navegacion:inicio -->
+<style>
+  :root{--nv-w:272px}
+  body{margin-top:0!important}
+  @media (min-width:1360px){ body{margin-left:var(--nv-w)!important} }
+  .nvside{position:fixed;top:0;left:0;bottom:0;width:var(--nv-w);z-index:9999;display:flex;flex-direction:column;
+    background:var(--card,#fff);border-right:1px solid var(--line,#e2dcc9);
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:14px;color:var(--ink,#1a1a1a);
+    box-shadow:1px 0 8px rgba(0,0,0,.05);transition:transform .2s ease}
+  .nvside a{text-decoration:none;color:inherit}
+  .nv-cab{padding:14px 16px 10px;border-bottom:1px solid var(--line,#e2dcc9);position:relative}
+  .nv-marca{display:block;font-family:"Century Gothic","Questrial",Arial,sans-serif;font-weight:700;font-size:15px;
+    line-height:1.25;color:var(--navy,var(--ink,#1F3864))}
+  .nv-marca small{display:block;font-weight:400;font-size:12px;color:var(--muted,var(--grey,#5a5a5a));margin-top:2px}
+  .nv-pasos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+  .nv-paso{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font-size:11px;color:var(--muted,var(--grey,#5a5a5a));min-width:0}
+  .nv-paso b{font-size:12.5px;color:var(--ink,#1a1a1a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nv-paso.sig{text-align:right}
+  .nv-paso:hover{background:var(--bg,#f4f1ea)}
+  .nv-paso[aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-busca{margin-top:8px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font:inherit;background:var(--bg,#f8f6f0);color:inherit}
+  .nv-lista{flex:1;overflow-y:auto;padding:6px 8px 10px}
+  .nv-grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,var(--grey,#5a5a5a));padding:12px 8px 4px}
+  .nv-lista a{display:block;padding:6px 8px 6px 10px;border-radius:6px;border-left:3px solid transparent;line-height:1.3}
+  .nv-lista a small{display:block;font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-lista a:hover{background:var(--bg,#f4f1ea)}
+  .nv-lista a.nv-aqui{background:var(--bg,#f4f1ea);border-left-color:var(--accent,var(--orange,#C1571B));font-weight:700}
+  .nv-nada{padding:10px;font-size:12.5px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-pie{padding:8px 14px;border-top:1px solid var(--line,#e2dcc9);font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-boton{display:none;position:fixed;top:10px;left:10px;z-index:10000;gap:6px}
+  .nv-boton a,.nv-boton button{display:flex;align-items:center;justify-content:center;height:38px;min-width:38px;padding:0 10px;
+    border:1px solid var(--line,#e2dcc9);border-radius:9px;background:var(--card,#fff);color:var(--ink,#1a1a1a);
+    font:600 14px Arial,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .nv-boton [aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-velo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10001}
+  .nv-cierra{display:none;position:absolute;top:10px;right:10px;width:32px;height:32px;border:1px solid var(--line,#e2dcc9);border-radius:8px;background:var(--card,#fff);color:inherit;font-size:16px;cursor:pointer}
+  @media (max-width:1359px){
+    body{margin-top:56px!important}
+    .nvside{transform:translateX(-102%);width:min(320px,88vw)}
+    .nvside.abierto{transform:none;z-index:10002}
+    .nv-cierra{display:block}
+    .nv-pie{display:none}
+    .nv-boton{display:flex}
+    .nvside.abierto ~ .nv-velo{display:block}
+  }
+  @media print{.nvside,.nv-boton,.nv-velo{display:none} body{margin:0!important}}
+</style>
+<nav class="nvside" id="nvside" aria-label="Exploradores del curso">
+  <div class="nv-cab">
+    <button class="nv-cierra" id="nv-cierra" aria-label="Cerrar el temario">✕</button>
+    <a class="nv-marca" href="index.html">Exploradores de Vibraciones<small>ENES Juriquilla, UNAM · inicio</small></a>
+    <div class="nv-pasos">
+      <a class="nv-paso" id="nv-ant" href="#" aria-label="Explorador anterior">‹ anterior<b id="nv-ant-t">…</b></a>
+      <a class="nv-paso sig" id="nv-sig" href="#" aria-label="Explorador siguiente">siguiente ›<b id="nv-sig-t">…</b></a>
+    </div>
+    <input class="nv-busca" id="nv-busca" type="search" placeholder="Buscar (tecla /)" aria-label="Buscar explorador">
+  </div>
+  <div class="nv-lista" id="nv-lista">
+<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
+<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html" data-k="segunda ley de Newton frecuencia natural Frecuencia natural ωn = √(k/m) Energía T ↔ V, resorte equivalente Péndulo y acelerómetro (masa sísmica)">Dinámica de la partícula<small>Pilar 3 · armar la ecuación</small></a>
+<a href="edo_interactivo.html" data-nv="edo_interactivo.html" data-k="ecuaciones diferenciales de segundo orden amortiguamiento Subamortiguado, crítico, sobreamortiguado Inestable = flameo (frontera Re = 0) Respuesta x(t) con condiciones iniciales">EDO lineal de 2.º orden<small>Pilar 2 · resolverla</small></a>
+<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html" data-k="números complejos fasores Formas binómica, polar y de Euler Raíces cuadradas y ecuación auxiliar Fasor: excitación vs. respuesta (desfase θ)">Números complejos<small>Pilar 1 · interpretar las raíces</small></a>
+<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador</div>
+<a href="analogias_interactivo.html" data-nv="analogias_interactivo.html" data-k="analogía electromecánica circuito RLC sistemas de segundo orden Analogías fuerza-tensión y fuerza-corriente Escala de impedancia: ω_n y ζ no cambian Chapoteo, paneles y control de actitud">Analogías entre sistemas<small>2.1 y 2.4 · Pilar 14</small></a>
+<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html" data-k="fricción de Coulomb vibración libre Banda de reposo = Ff/k Caída de amplitud 4Ff/k por ciclo Conteo de ciclos hasta detenerse">Fricción de Coulomb<small>2.3 (fricción seca) · Pilar 4</small></a>
+<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia</div>
+<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html" data-k="respuesta forzada resonancia M = 1/√[(1−r²)²+(2ζr)²] Fase φ y resonancia (r ≈ 1) Aislamiento: aísla si r &gt; √2">Respuesta forzada y resonancia<small>3.1 · Pilar 5</small></a>
+<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html" data-k="método de media potencia factor de calidad Q = 1/(2ζ) = fn/Δf ζ medido = Δf/(2fn) Origen de la asimetría de la curva">Media potencia y factor Q<small>3.1–3.2 · Pilar 6</small></a>
+<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales</div>
+<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html" data-k="vibración aleatoria densidad espectral de potencia ecuación de Miles Grms = √(∫W df) y carga de diseño 3σ Miles: √[(π/2)·fn·Q·W(fn)] Escalas en dB (−3, +3, +6) y por qué log">Del espectro a la carga de diseño<small>4.1–4.2 · Pilar 7</small></a>
+<a href="normas.html" data-nv="normas.html" data-k="normas de ensayo GEVS ECSS MIL-STD-810H, GEVS y ECSS: descarga gratuita DO-160 e ISO: de pago, con vista previa Enlaces que se actualizan desde un solo archivo">Dónde consultar las normas<small>4.1 y 4.3 · apoyo</small></a>
+<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos</div>
+<a href="esfuerzos_interactivo.html" data-nv="esfuerzos_interactivo.html" data-k="esfuerzo normal esfuerzo cortante directo aplastamiento unión atornillada sección neta remache σ = P/A y τ = V/A: cada modo tiene su área Cortante simple y cortante doble Factor de seguridad y carga que inicia la fluencia">Esfuerzos directos en una unión con pernos<small>5.1 y 5.2 · Pilar 17</small></a>
+<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html" data-k="círculo de Mohr criterios de falla σ1, σ2, θp y τmáx en vivo Roseta de galgas 0/45/90 → estado de esfuerzo Tres círculos, von Mises y Tresca">Círculo de Mohr<small>5.3 · Pilar 8</small></a>
+<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html" data-k="fatiga regla de Miner Acero con límite, aluminio sin él Esfuerzo medio y concentrador Kf Miner: cuánta vida consume el ensayo">Fatiga: S–N, Haigh y Miner<small>5.4 · Pilar 9</small></a>
+<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento</div>
+<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html" data-k="nivel de presión sonora bandas de octava exposición al ruido Suma energética y ponderación A −6 dB por duplicar la distancia T = 8·2^((90−LA)/3) h">Niveles sonoros y exposición al ruido<small>6.1, 6.2 y 6.4 · Pilar 10</small></a>
+<a href="transmisibilidad_interactivo.html" data-nv="transmisibilidad_interactivo.html" data-k="transmisibilidad aislamiento de vibraciones desbalance rotatorio T_r = 1 en r = √2 para todo ζ Deflexión estática: δ_st = g/ω_n^2 Desbalance rotatorio: F_0 = m_0 e ω^2">Transmisibilidad y aislamiento<small>6.3 · Pilar 13</small></a>
+<a href="perdida_interactivo.html" data-nv="perdida_interactivo.html" data-k="pérdida por transmisión ley de masa frecuencia crítica coincidencia aislamiento acústico fuselaje Ley de masa: +6 dB por duplicar m″ o f Frecuencia crítica: f_c h es constante del material Sobre f_c solo ayuda el amortiguamiento">Pérdida por transmisión de un panel<small>6.3 (vía aérea) · Pilar 18</small></a>
+<a href="anecoica_interactivo.html" data-nv="anecoica_interactivo.html" data-k="cámara anecoica campo libre campo reverberante radio crítico tiempo de reverberación cámara reverberante L_p = L_W + 10 log(Q/4πr² + 4/R) Radio crítico: r_c = √(QR/16π) Cuñas: profundidad de un cuarto de onda">Campo libre y cámara anecoica<small>6.4 · Pilar 19</small></a>
+<div class="nv-grp">Unidad 7 · Pruebas</div>
+<a href="tutorial_phyphox.html" data-nv="tutorial_phyphox.html" data-k="Phyphox acelerómetro del teléfono decremento logarítmico Jupyter Descarga de Phyphox, cuaderno y datos de ejemplo Colab o Visual Studio Code, paso a paso Envolvente de Hilbert y decremento logarítmico">Tutorial: medir con Phyphox y analizar en Python<small>7.1 · Tutorial</small></a>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html" data-k="muestreo aliasing método de Welch Aliasing: f_a = |f − k·f_s| Δf = 1/T_seg y ε_r ≈ 1/√n_d G_rms como área de la PSD (Parseval)">Laboratorio de señales<small>7.1–7.2 · Pilar 11</small></a>
+<a href="modal_interactivo.html" data-nv="modal_interactivo.html" data-k="análisis modal experimental función de respuesta en frecuencia diagrama de Nyquist Media potencia: ζ = (f_b − f_a)/(2 f_n) Círculo de Nyquist por mínimos cuadrados Resolución necesaria: T ≥ 2/(ζ f_n)">Extracción de parámetros modales<small>7.3 · Pilar 15</small></a>
+<a href="choque_interactivo.html" data-nv="choque_interactivo.html" data-k="ensayo de choque espectro de respuesta al choque SRS semiseno prueba de vibración SRS: máximo de |a(t)| para cada f_n, con Q = 10 Blando: 2π f_n Δv; rígido: A Senoidal, aleatorio y choque; diagnóstico por corrimiento de f_n">Ensayo de choque y espectro de respuesta<small>7.4 · Pilar 16</small></a>
+<div class="nv-grp">Unidad 8 · Sistemas acoplados</div>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html" data-k="dos grados de libertad absorbedor dinámico Valores propios: ω_1, ω_2 y formas modales Absorbedor dinámico y óptimo de Den Hartog Separación de frecuencias equipo–estructura">Dos grados de libertad y absorbedor<small>8.1–8.3 · Pilar 12</small></a>
+<div class="nv-grp">Apoyo a los proyectos</div>
+<a href="proy_sensores.html" data-nv="proy_sensores.html" data-k="sensores del teléfono acelerómetro micrófono magnetómetro Phyphox aliasing carga de masa Nyquist y alias de cada sensor Señal frente a ruido del acelerómetro Carga de masa del teléfono">¿Mi teléfono puede medirlo?<small>apoyo a los proyectos</small></a>
+<a href="proy_rigidez.html" data-nv="proy_rigidez.html" data-k="rigidez constante del resorte masa añadida viga en voladizo ligas tapete Estática: k = 1/pendiente de δ contra F Masa añadida: recta de 1/f² contra ΔM Voladizo: k = 3EI/L³">Caracterizar la rigidez de un resorte o una placa<small>apoyo a los proyectos</small></a>
+<a href="proy_bobina.html" data-nv="proy_bobina.html" data-k="solenoide bobina imán de neodimio fuerza magnética fem inducida AWG Resistencia y corriente según el calibre AWG F = K I y e = K v con la misma K Potencia disipada y calentamiento">Bobina e imán: fuerza y tensión inducida<small>apoyo a los proyectos</small></a>
+<a href="proy_datos.html" data-nv="proy_datos.html" data-k="transmisibilidad Basquin Miner decremento logarítmico análisis de datos proyecto final A: ajuste de f_n y ζ sobre T_r B: Basquin y Miner C: decremento por regresión">Del dato al resultado: análisis por proyecto<small>apoyo a los proyectos</small></a>
+<div class="nv-grp">Repaso para el examen final</div>
+<a href="autoevaluacion.html" data-nv="autoevaluacion.html" data-k="examen final repaso autoevaluación problemas resueltos práctica Trece problemas, de la señal armónica a los dos grados de libertad Comprobación con 2 % (0.2 dB en niveles) Solución completa al terminar">Autoevaluación para el examen final<small>unidades 1 a 8</small></a>
+<div class="nv-nada" id="nv-nada" style="display:none">Sin coincidencias. Se busca en títulos, temas y palabras clave.</div>
+  </div>
+  <div class="nv-pie">Teclas (fuera de los controles): ← anterior · → siguiente · / buscar · Esc cerrar</div>
+</nav>
+<div class="nv-boton"><button id="nv-abre" aria-controls="nvside" aria-expanded="false">☰ Temario</button>
+  <a id="nv-ant2" href="#" aria-label="Anterior">‹</a><a id="nv-sig2" href="#" aria-label="Siguiente">›</a></div>
+<div class="nv-velo" id="nv-velo"></div>
+<script>
+(function(){
+  var lista=document.getElementById('nv-lista'), side=document.getElementById('nvside');
+  var l=lista.querySelectorAll('a[data-nv]'), orden=[], dat={};
+  for(var i=0;i<l.length;i++){var f=l[i].getAttribute('data-nv');orden.push(f);
+    dat[f]={el:l[i],t:l[i].childNodes[0].textContent.trim()};}
+  var aqui=(location.pathname.split('/').pop()||'index.html'), k=orden.indexOf(aqui);
+  function paso(idA,idT,j){var a=document.getElementById(idA);
+    if(j<0||j>=orden.length){a.setAttribute('aria-disabled','true');a.setAttribute('tabindex','-1');if(idT)document.getElementById(idT).textContent='';return;}
+    a.href=orden[j];a.title=dat[orden[j]].t+(j<k?' (tecla ←)':' (tecla →)');if(idT)document.getElementById(idT).textContent=dat[orden[j]].t;}
+  if(k>=0){dat[aqui].el.className='nv-aqui';dat[aqui].el.setAttribute('aria-current','page');
+    paso('nv-ant','nv-ant-t',k-1);paso('nv-sig','nv-sig-t',k+1);paso('nv-ant2',null,k-1);paso('nv-sig2',null,k+1);
+    setTimeout(function(){var r=dat[aqui].el;lista.scrollTop=r.offsetTop-lista.clientHeight/3;},0);}
+  else{paso('nv-ant','nv-ant-t',-1);paso('nv-sig','nv-sig-t',0);paso('nv-ant2',null,-1);paso('nv-sig2',null,0);}
+  var bus=document.getElementById('nv-busca');
+  function llano(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  bus.addEventListener('input',function(){var q=llano(bus.value), grp=null, vis=0, tot=0;
+    Array.prototype.forEach.call(lista.children,function(c){
+      if(c.classList.contains('nv-grp')){if(grp)grp.style.display=vis?'':'none';grp=c;vis=0;return;}
+      if(!c.getAttribute('data-nv')) return;
+      var ok=!q||llano(c.textContent+' '+(c.getAttribute('data-k')||'')).indexOf(q)>=0;c.style.display=ok?'':'none';if(ok){vis++;tot++;}});
+    if(grp)grp.style.display=vis?'':'none';
+    document.getElementById('nv-nada').style.display=tot?'none':'block';});
+  bus.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){var v=lista.querySelector('a[data-nv]:not([style*="none"])');if(v)location.href=v.href;}
+    if(e.key==='Escape'){bus.value='';bus.dispatchEvent(new Event('input'));bus.blur();cambia(false);}});
+  var abre=document.getElementById('nv-abre'), velo=document.getElementById('nv-velo');
+  function cambia(on){side.classList.toggle('abierto',on);abre.setAttribute('aria-expanded',on?'true':'false');}
+  abre.addEventListener('click',function(){cambia(!side.classList.contains('abierto'));});
+  velo.addEventListener('click',function(){cambia(false);});
+  document.getElementById('nv-cierra').addEventListener('click',function(){cambia(false);});
+  document.addEventListener('keydown',function(e){
+    var t=(e.target.tagName||'').toUpperCase();
+    if(e.key==='Escape'){cambia(false);return;}
+    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||t==='BUTTON'||t==='A'||t==='SUMMARY'||e.target.isContentEditable||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey) return;
+    if(e.key==='/'){e.preventDefault();if(innerWidth<1360)cambia(true);bus.focus();return;}
+    if(k<0) return;
+    if(e.key==='ArrowLeft'&&k>0) location.href=orden[k-1];
+    if(e.key==='ArrowRight'&&k<orden.length-1) location.href=orden[k+1];
+  });
+})();
+</script>
+<!-- navegacion:fin -->
+</body>
+</html>

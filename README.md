@@ -4,7 +4,7 @@
 
 Colección de recursos educativos abiertos (REA) para el curso de **Vibraciones** de la licenciatura en **Ingeniería Aeroespacial**, ENES Juriquilla, UNAM. Cada explorador es una página HTML autónoma e interactiva: se mueve un control, o se escribe un valor, y se observa cómo responde el sistema.
 
-**Versión 1.5 (2026)** · Portal en línea: https://elodiestrupiechonski.github.io/vibraciones-exploradores/
+**Versión 1.6 (2026)** · Portal en línea: https://elodiestrupiechonski.github.io/vibraciones-exploradores/
 
 ## Cómo usar
 
@@ -36,6 +36,10 @@ Abrir **`index.html`** en cualquier navegador actual. No se necesita conexión n
 | `modal_interactivo.html` | Extracción de parámetros modales: Sobre una función de respuesta en frecuencia con dos modos y ruido se comparan tres métodos: media potencia, círculo de Nyquist y recta de la FRF inversa | U7 · 7.3 |
 | `choque_interactivo.html` | Ensayo de choque y espectro de respuesta: Un pulso de semiseno, diente de sierra o rectangular sacude la base; el espectro de respuesta al choque muestra la aceleración máxima de cada componente según su frecuencia natural | U7 · 7.4 |
 | `dosgdl_interactivo.html` | Dos grados de libertad y absorbedor: Al montar un segundo sistema sobre la estructura, la resonancia se divide en dos modos; un absorbedor sintonizado anula la respuesta en su frecuencia | U8 · 8.1–8.3 |
+| `proy_sensores.html` | ¿Mi teléfono puede medirlo?: Con la frecuencia, la amplitud y el amortiguamiento esperados se revisa qué sensor del teléfono sirve: muestreo y alias, señal frente a ruido, carga de masa y resolución | Apoyo a los proyectos |
+| `proy_rigidez.html` | Caracterizar la rigidez de un resorte o una placa: Rigidez k por cargas y deflexión, por frecuencia con masa añadida y por la fórmula de la viga en voladizo, con ajuste por mínimos cuadrados e incertidumbre | Apoyo a los proyectos |
+| `proy_bobina.html` | Bobina e imán: fuerza y tensión inducida: A partir de la geometría de la bobina y del imán se calculan la resistencia, la corriente, la fuerza sobre el imán (actuador) y la tensión inducida (sensor) | Apoyo a los proyectos |
+| `proy_datos.html` | Del dato al resultado: análisis por proyecto: Cada equipo pega sus mediciones: transmisibilidad con ajuste de f_n y ζ (A), curva de vida de Basquin y Miner (B) y decremento logarítmico por configuración (C) | Apoyo a los proyectos |
 | `autoevaluacion.html` | Autoevaluación para el examen final: Problemas de las unidades 1 a 8 con datos aleatorios, comprobación inmediata con 2 % de tolerancia y solución paso a paso con los números del problema | Repaso · U1 a U8 |
 
 Otros archivos: `Tratamiento_decaimiento_Phyphox.ipynb` (cuaderno de Jupyter del tutorial), `segueta_10cm.csv` (registro de ejemplo), `Hoja_alumno_Pilar1_Complejos.docx`, `Hoja_alumno_Pilar2_EDO.docx` y `Hoja_alumno_Pilar3_Dinamica.docx` (hojas de trabajo), `normas.json` (referencias normativas), `temario.json` (fuente única del panel de navegación, del índice y de los metadatos), `sitemap.xml`, `CHANGELOG.md`.
@@ -54,7 +58,7 @@ Creative Commons Attribution 4.0 International (**CC BY 4.0**).
 
 ## Cómo citar
 
-Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones: exploradores interactivos* (Versión 1.5) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
+Strupiechonski, E., & de Luna Bugallo, A. (2026). *Vibraciones: exploradores interactivos* (Versión 1.6) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: 10.5281/zenodo.23422993
 
 ## Autoría
 

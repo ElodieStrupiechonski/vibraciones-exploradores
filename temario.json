@@ -477,6 +477,103 @@
     "problemas resueltos",
     "práctica"
    ]
+  },
+  "proy_sensores.html": {
+   "corto": "Proyectos · ¿Mi teléfono puede medirlo?",
+   "titulo": "¿Mi teléfono puede medirlo?",
+   "enfoque": "ELEGIR · acelerómetro, micrófono, magnetómetro o cámara",
+   "descripcion": "Con la frecuencia, la amplitud y el amortiguamiento esperados se revisa qué sensor del teléfono sirve: muestreo y alias, señal frente a ruido, carga de masa y resolución.",
+   "puntos": [
+    "Nyquist y alias de cada sensor",
+    "Señal frente a ruido del acelerómetro",
+    "Carga de masa del teléfono"
+   ],
+   "tema": "apoyo a los proyectos",
+   "swatch": [
+    "#4472C4",
+    "#2E7D46"
+   ],
+   "claves": [
+    "sensores del teléfono",
+    "acelerómetro",
+    "micrófono",
+    "magnetómetro",
+    "Phyphox",
+    "aliasing",
+    "carga de masa"
+   ]
+  },
+  "proy_rigidez.html": {
+   "corto": "Proyectos · Caracterizar la rigidez de un resorte o una placa",
+   "titulo": "Caracterizar la rigidez de un resorte o una placa",
+   "enfoque": "MEDIR · tres caminos para obtener k",
+   "descripcion": "Rigidez k por cargas y deflexión, por frecuencia con masa añadida y por la fórmula de la viga en voladizo, con ajuste por mínimos cuadrados e incertidumbre.",
+   "puntos": [
+    "Estática: k = 1/pendiente de δ contra F",
+    "Masa añadida: recta de 1/f² contra ΔM",
+    "Voladizo: k = 3EI/L³"
+   ],
+   "tema": "apoyo a los proyectos",
+   "swatch": [
+    "#2E7D46",
+    "#C55A11"
+   ],
+   "claves": [
+    "rigidez",
+    "constante del resorte",
+    "masa añadida",
+    "viga en voladizo",
+    "ligas",
+    "tapete"
+   ]
+  },
+  "proy_bobina.html": {
+   "corto": "Proyectos · Bobina e imán: fuerza y tensión inducida",
+   "titulo": "Bobina e imán: fuerza y tensión inducida",
+   "enfoque": "DISEÑAR · del calibre y las vueltas a la fuerza",
+   "descripcion": "A partir de la geometría de la bobina y del imán se calculan la resistencia, la corriente, la fuerza sobre el imán (actuador) y la tensión inducida (sensor).",
+   "puntos": [
+    "Resistencia y corriente según el calibre AWG",
+    "F = K I y e = K v con la misma K",
+    "Potencia disipada y calentamiento"
+   ],
+   "tema": "apoyo a los proyectos",
+   "swatch": [
+    "#6B3FA0",
+    "#C55A11"
+   ],
+   "claves": [
+    "solenoide",
+    "bobina",
+    "imán de neodimio",
+    "fuerza magnética",
+    "fem inducida",
+    "AWG"
+   ]
+  },
+  "proy_datos.html": {
+   "corto": "Proyectos · Del dato al resultado: análisis por proyecto",
+   "titulo": "Del dato al resultado: análisis por proyecto",
+   "enfoque": "ANALIZAR · pegar las mediciones y obtener el resultado",
+   "descripcion": "Cada equipo pega sus mediciones: transmisibilidad con ajuste de f_n y ζ (A), curva de vida de Basquin y Miner (B) y decremento logarítmico por configuración (C).",
+   "puntos": [
+    "A: ajuste de f_n y ζ sobre T_r",
+    "B: Basquin y Miner",
+    "C: decremento por regresión"
+   ],
+   "tema": "apoyo a los proyectos",
+   "swatch": [
+    "#B23A3A",
+    "#1F3864"
+   ],
+   "claves": [
+    "transmisibilidad",
+    "Basquin",
+    "Miner",
+    "decremento logarítmico",
+    "análisis de datos",
+    "proyecto final"
+   ]
   }
  },
  "recorrido": [
@@ -501,6 +598,10 @@
   "modal_interactivo.html",
   "choque_interactivo.html",
   "dosgdl_interactivo.html",
+  "proy_sensores.html",
+  "proy_rigidez.html",
+  "proy_bobina.html",
+  "proy_datos.html",
   "autoevaluacion.html"
  ],
  "fundamentos": {
@@ -684,6 +785,15 @@
     "complejos_interactivo.html",
     "interpretar"
    ]
+  ]
+ },
+ "proyectos": {
+  "titulo": "Apoyo a los proyectos",
+  "paginas": [
+   "proy_sensores.html",
+   "proy_rigidez.html",
+   "proy_bobina.html",
+   "proy_datos.html"
   ]
  },
  "repaso": {

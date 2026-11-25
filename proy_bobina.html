@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- tipografia:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Tipografías del Manual de identidad gráfica de la ENES Juriquilla (nov. 2025): Century Gothic en títulos,
+     Arial en texto y lecturas, Cambria en fórmulas. Mismo bloque que el sitio de Teoría Electromagnética. */
+  :root:root{
+    --f-tit:"Century Gothic","Questrial","URW Gothic","Avant Garde",sans-serif;
+    --sans:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",Calibri,sans-serif;
+    --serif:Cambria,"STIX Two Text","Times New Roman",serif;
+    --mono:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;
+  }
+  body,button,input,select,textarea{font-family:var(--sans)}
+  body{font-variant-numeric:tabular-nums}
+  h1,h2,h3,.ct,.eyebrow,header .hk{font-family:var(--f-tit)!important;letter-spacing:0}
+  header .hk{letter-spacing:.08em}
+  sub,sup{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+  sub{bottom:-.25em} sup{top:-.45em}
+  math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.08em}
+  math[display="block"]{margin:.35em 0}
+  .eqbox math[display="block"]{font-size:1.16em;margin:.5em 0}
+  .eqbox{overflow-x:auto;overflow-y:hidden;max-width:100%}
+  .wrap>*,.card,.two>*,.grid3>*{min-width:0}
+  @media(max-width:560px){.eqbox math[display="block"]{font-size:.95em}}
+  body .btn{color:var(--blue,#2E5496)} body .btn.on{color:#fff}
+  .eqnote{font-family:var(--sans);font-size:12.5px;color:var(--grey,#5a5a5a);text-align:center;margin:.15em 0 .1em}
+  .mth,.val,.tile .v,.eqbox{font-family:var(--serif)!important}
+  .legend>span,.reglegend .it{display:inline-block!important}
+  .legend .sw,.legend .dot,.reglegend .gl{margin-right:6px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  var UNI="₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ", ASC="0123456789aeoxhklmnpstiruvj";
+  function asc(s){return s.split('').map(function(c){return ASC[UNI.indexOf(c)];}).join('');}
+  // ---- lienzos: subíndices y superíndices (M_máx, f_n, fₙ, 10^3) con tamaño y posición correctos ----
+  var RX=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ,]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var P=CanvasRenderingContext2D.prototype, F=P.fillText;
+  P.fillText=function(t,x,y,mw){
+    t=String(t);
+    if(!/[_^₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]/.test(t)||/\.(html|py|png|csv|txt|svg|jpg|pdf)\b/i.test(t)) return F.call(this,t,x,y,mw);
+    var sg=[],last=0,m; RX.lastIndex=0;
+    while((m=RX.exec(t))){
+      if(m[1]){sg.push([t.slice(last,m.index)+m[1],0]);sg.push([m[2].replace(/[{}]/g,''),1]);}
+      else if(m[3]){sg.push([t.slice(last,m.index),0]);sg.push([m[3].replace(/[{}()]/g,''),2]);}
+      else{sg.push([t.slice(last,m.index),0]);sg.push([asc(m[4]),1]);}
+      last=RX.lastIndex;
+    }
+    if(!sg.length) return F.call(this,t,x,y,mw);
+    sg.push([t.slice(last),0]);
+    var f0=this.font, mm=/(\d+(?:\.\d+)?)px/.exec(f0), px=mm?+mm[1]:12,
+        fs=mm?f0.replace(mm[0],(px*0.72).toFixed(1)+'px'):f0, W=0,i;
+    for(i=0;i<sg.length;i++){this.font=sg[i][1]?fs:f0;sg[i][2]=this.measureText(sg[i][0]).width;W+=sg[i][2];}
+    var a=this.textAlign, x0=x;
+    if(a==='center') x0=x-W/2; else if(a==='right'||a==='end') x0=x-W;
+    this.textAlign='left';
+    for(i=0;i<sg.length;i++){
+      this.font=sg[i][1]?fs:f0;
+      F.call(this,sg[i][0],x0,y+(sg[i][1]===1?0.28*px:sg[i][1]===2?-0.38*px:0));
+      x0+=sg[i][2];
+    }
+    this.font=f0; this.textAlign=a;
+  };
+  // ---- texto generado por los scripts: la misma notación en <sub>/<sup> ----
+  var US=/([A-Za-zΑ-Ωα-ω′])_(\{[^}]+\}|[A-Za-z0-9áéíóúñ]{1,6})|\^(\{[^}]+\}|\([^)]+\)|[−-]?\d{1,3})|([₀-₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢᵣᵤᵥⱼ]+)/g;
+  var SALTA={SCRIPT:1,STYLE:1,TEXTAREA:1,OPTION:1,PRE:1,CODE:1,TITLE:1,INPUT:1,SELECT:1,BUTTON:0};
+  function dentroDe(p){for(;p;p=p.parentNode){var n=p.nodeName; if(SALTA[n]||n==='math'||n==='MATH'||n==='svg') return true;} return false;}
+  function arreglar(n){
+    var p=n.parentNode; if(!p||dentroDe(p)) return;
+    var t=n.nodeValue; US.lastIndex=0; if(!US.test(t)||/\.(html|py|png|csv)\b/.test(t)) return;
+    US.lastIndex=0; var fr=document.createDocumentFragment(), last=0, m, e;
+    while((m=US.exec(t))){
+      var antes=t.slice(last,m.index);
+      if(m[1]){fr.appendChild(document.createTextNode(antes+m[1]));e=document.createElement('sub');e.textContent=m[2].replace(/[{}]/g,'');}
+      else if(m[3]){fr.appendChild(document.createTextNode(antes));e=document.createElement('sup');e.textContent=m[3].replace(/[{}()]/g,'');}
+      else{fr.appendChild(document.createTextNode(antes));e=document.createElement('sub');e.textContent=asc(m[4]);}
+      fr.appendChild(e); last=US.lastIndex;
+    }
+    fr.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(fr,n);
+  }
+  function recorrer(r){
+    if(r.nodeType===3){arreglar(r);return;}
+    if(r.nodeType!==1||SALTA[r.nodeName]) return;
+    var w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT,null), l=[], n;
+    while((n=w.nextNode())) l.push(n);
+    l.forEach(arreglar);
+  }
+  function inicio(){
+    recorrer(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==='characterData') arreglar(m.target); else m.addedNodes.forEach(recorrer);
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- tipografia:fin -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Elodie Strupiechonski; Andrés de Luna Bugallo">
+<title>Bobina e imán: fuerza y tensión inducida · Explorador · Vibraciones · ENES Juriquilla</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5496; --steel:#4472C4; --ice:#DCE6F1; --ice2:#EEF3FA;
+    --orange:#C55A11; --amber:#FCF3D6; --amberb:#E8B84B; --green:#2E7D46; --red:#B23A3A; --purple:#6B3FA0;
+    --ink:#1A1A1A; --grey:#5B5B5B; --line:#D3DEEE; --bg:#F4F7FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Calibri,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:18px 20px;border-bottom:4px solid var(--orange)}
+  header .in{max-width:1120px;margin:0 auto}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:5px 0 0;font-size:13.5px;color:var(--ice);opacity:.92}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 18px 40px;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:900px){ .wrap{grid-template-columns:1.35fr .9fr} .full{grid-column:1 / -1} }
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 5px rgba(31,56,100,.07);padding:14px 16px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy)}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--steel);border-radius:12px;padding:13px 16px;font-size:13.5px}
+  .intro b{color:var(--navy)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .ctl{display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .row label{font-weight:700;color:var(--navy);font-size:13.5px;min-width:150px}
+  input[type=range]{flex:1;min-width:160px;accent-color:var(--steel)}
+  .val{font-family:'Cambria Math',Georgia,serif;font-weight:700;color:var(--orange);min-width:76px;text-align:right;font-size:15px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--blue);font-weight:600;font-size:12.5px;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .btn:hover{background:var(--ice2)} .btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+  .tile{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:9px 11px}
+  .tile .k{font-size:11.5px;color:var(--grey);font-weight:600}
+  .tile .v{font-family:'Cambria Math',Georgia,serif;font-size:20px;font-weight:700;color:var(--navy);margin-top:1px}
+  .tile.hl{background:#FBF3E4;border-color:var(--amberb)} .tile.hl .v{color:var(--orange)}
+  .eqbox{background:var(--ice2);border:1px solid var(--ice);border-radius:10px;padding:11px 13px;font-family:'Cambria Math',Georgia,serif;font-size:15px;color:#233}
+  .eqbox .lab{font-family:'Segoe UI',sans-serif;font-size:12px;color:var(--grey);font-weight:700;display:block;margin-bottom:3px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:#33455f}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:16px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block}
+  .takeaway{background:var(--amber);border:1px solid var(--amberb);border-left:5px solid var(--amberb);border-radius:10px;padding:11px 14px;font-size:13px}
+  .takeaway b{color:var(--navy)}
+  footer{max-width:1120px;margin:0 auto;padding:6px 18px 30px;color:var(--grey);font-size:12px}
+  footer .cred{border-top:3px solid var(--orange);padding-top:8px;margin-top:6px}
+  footer .h{font-weight:700;color:var(--navy);font-size:13px}
+  footer a{color:var(--blue)}
+  .eqbox b{color:var(--navy)}
+  .pilarnav{max-width:1120px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .pilarnav .lab{color:var(--grey);font-weight:700;margin-right:2px}
+  .pilarnav a,.pilarnav .cur{padding:5px 11px;border-radius:20px;text-decoration:none;border:1px solid var(--line);font-weight:600}
+  .pilarnav a{color:var(--blue);background:#fff} .pilarnav a:hover{background:var(--ice)}
+  .pilarnav .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pilarnav .arw{color:#98a7bd}
+  @media(max-width:520px){ .pilarnav{font-size:11.5px} }
+</style>
+<style>
+  .grp{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .grp .t{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .nota{font-size:12px;color:var(--grey);margin:6px 0 0}
+  select,.archivo{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff}
+  .tiles.t3{grid-template-columns:1fr 1fr 1fr} @media(max-width:520px){.tiles.t3{grid-template-columns:1fr 1fr}}
+  .tile .v{font-size:18px} .tile.al .v{color:var(--red)}
+  .two{display:grid;grid-template-columns:1fr;gap:12px} @media(min-width:900px){.two{grid-template-columns:1fr 1fr}}
+  .eqbox{overflow-x:auto} .two>div{min-width:0}
+  .oculto .tile .v,.oculto table.res td,.oculto .resp{filter:blur(7px);user-select:none}
+  .tile .v{overflow-wrap:anywhere}
+  table.tb{border-collapse:collapse;font-size:13px;width:100%} table.tb td,table.tb th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left} table.tb th{color:var(--navy)}
+</style>
+<!-- tema:inicio -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  /* Tema común del sitio (homogéneo con Exploradores EM). Prevalece sobre la hoja propia de la página. */
+  :root{--bg:#f4f1ea;--card:#fff;--line:#e2dcc9;--ice2:#fcfbf7;--ice:#efe9dc;--muted:#5a5a5a;--grey:#5a5a5a;
+        --accent:#C1571B;--serif:"Spectral",Georgia,serif;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{background:var(--bg);font-family:var(--sans)}
+  header{background:transparent;color:var(--ink,#1a1a1a);border-bottom:1px solid var(--line);padding:22px max(20px,calc(50% - 590px)) 14px}
+  header h1{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.15;color:var(--navy,#1F3864);margin:0}
+  header p{color:var(--muted);opacity:1;font-size:15px;margin:6px 0 0;max-width:80ch}
+  header .hk{display:block;font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .card,.intro{box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .card h2,.card h3{font-family:var(--serif);font-weight:600}
+  .card h2{font-size:17px}
+  .eqbox,.tile{background:var(--ice2);border-color:var(--line)}
+  .btn{background:var(--card)}
+  footer .cred{border-top-color:var(--accent)}
+  footer{color:var(--muted)}
+  @media print{header{border-bottom:1px solid #999}}
+</style>
+<!-- tema:fin -->
+<!-- seo:inicio -->
+<meta name="description" content="A partir de la geometría de la bobina y del imán se calculan la resistencia, la corriente, la fuerza sobre el imán (actuador) y la tensión inducida (sensor).">
+<link rel="canonical" href="https://elodiestrupiechonski.github.io/vibraciones-exploradores/proy_bobina.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploradores de Vibraciones (UNAM)">
+<meta property="og:title" content="Bobina e imán: fuerza y tensión inducida">
+<meta property="og:description" content="A partir de la geometría de la bobina y del imán se calculan la resistencia, la corriente, la fuerza sobre el imán (actuador) y la tensión inducida (sensor).">
+<meta property="og:url" content="https://elodiestrupiechonski.github.io/vibraciones-exploradores/proy_bobina.html">
+<meta property="og:locale" content="es_MX">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Bobina e imán: fuerza y tensión inducida",
+ "description": "A partir de la geometría de la bobina y del imán se calculan la resistencia, la corriente, la fuerza sobre el imán (actuador) y la tensión inducida (sensor).",
+ "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/proy_bobina.html",
+ "inLanguage": "es",
+ "isAccessibleForFree": true,
+ "learningResourceType": "simulación interactiva",
+ "educationalLevel": "Licenciatura",
+ "about": [
+  "solenoide",
+  "bobina",
+  "imán de neodimio",
+  "fuerza magnética",
+  "fem inducida",
+  "AWG"
+ ],
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "identifier": "https://doi.org/10.5281/zenodo.23422993",
+ "author": [
+  {
+   "@type": "Person",
+   "name": "Elodie Strupiechonski",
+   "sameAs": "https://orcid.org/0000-0001-8991-8499"
+  },
+  {
+   "@type": "Person",
+   "name": "Andrés de Luna Bugallo",
+   "sameAs": "https://orcid.org/0000-0002-7591-5235"
+  }
+ ],
+ "provider": {
+  "@type": "CollegeOrUniversity",
+  "name": "Universidad Nacional Autónoma de México, ENES Juriquilla"
+ },
+ "isPartOf": {
+  "@type": "Collection",
+  "name": "Vibraciones: exploradores interactivos",
+  "url": "https://elodiestrupiechonski.github.io/vibraciones-exploradores/"
+ }
+}
+</script>
+<!-- seo:fin -->
+<!-- movil:inicio -->
+<style>
+  .card{min-width:0}
+  pre{overflow-x:auto;max-width:100%}
+  .row,.tile,.grp,.two>div{min-width:0}
+  input[type=number],select{max-width:100%;min-width:0}
+  canvas{max-width:100%}
+  @media (max-width:480px){
+    .eqbox{font-size:14px}
+    .row,.row.kbrow{flex-wrap:wrap!important}
+    .row>label{min-width:100%!important;flex:1 1 100%}
+    .row>input[type=range]{flex:1 1 120px;min-height:28px}
+    .tiles.t3{grid-template-columns:1fr 1fr}
+    header h1{font-size:22px}
+  }
+</style>
+<!-- movil:fin -->
+</head>
+<body>
+<header>
+  <div class="in">
+    <h1>Bobina e imán: fuerza y tensión inducida</h1>
+    <p><span class="hk">Vibraciones · Apoyo a los proyectos</span>A partir de la geometría de la bobina y del imán se calculan la resistencia, la corriente, la fuerza que la bobina ejerce sobre el imán y la tensión que induce el imán al moverse</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="intro full">
+    <b>¿Qué resuelve?</b> Una bobina frente a un imán sirve para dos cosas: como <b>actuador</b>, empuja o jala el imán cuando circula corriente; como <b>sensor</b>, produce una tensión cuando el imán se mueve. Las dos usan la misma constante de acoplamiento <i>K</i> = d<i>Φ</i>/d<i>z</i> (en N/A, que es lo mismo que V·s/m): la fuerza es <i>F</i> = <i>K I</i> y la tensión inducida es <i>e</i> = <i>K v</i>. La página calcula <i>K</i> a partir de la geometría de la bobina (diámetro, largo, calibre AWG y número de vueltas) y del imán (diámetro, espesor y remanencia), junto con la resistencia, la corriente, la potencia que se disipa y el campo en el centro de la bobina.
+  </div>
+  <div class="card">
+    <canvas id="ck" width="760" height="330" aria-label="Constante de acoplamiento y fuerza contra la separación"></canvas>
+    <canvas id="cg" width="760" height="210" style="margin-top:8px" aria-label="Esquema de la bobina y el imán a escala"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="border-top-color:var(--steel)"></i> fuerza con la corriente actual</span>
+      <span><i class="sw" style="border-top-color:var(--orange);border-top-style:dashed"></i> peso del imán</span>
+      <span><i class="sw" style="border-top-color:var(--red)"></i> separación elegida</span>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Controles</h2>
+    <div class="btns"><button class="btn" data-pre="C">Equipo C: bobina de 200 vueltas como sensor</button><button class="btn" data-pre="E">Excitador: 500 vueltas, 1 A</button></div>
+    <div class="grp"><div class="t">Bobina</div>
+      <div class="row"><label>Diámetro interior</label><input id="di" type="range" min="3" max="60" step="0.5" value="20"><span class="val" id="vdi">20 mm</span></div>
+      <div class="row"><label>Largo del devanado</label><input id="lb" type="range" min="2" max="60" step="0.5" value="10"><span class="val" id="vlb">10 mm</span></div>
+      <div class="row"><label>Calibre del alambre</label><input id="awg" type="range" min="20" max="38" step="1" value="30"><span class="val" id="vawg">30 AWG</span></div>
+      <div class="row"><label>Número de vueltas <i>N</i></label><input id="N" type="range" min="10" max="3000" step="1" value="200"><span class="val" id="vN">200</span></div>
+    </div>
+    <div class="grp"><div class="t">Fuente (modo actuador)</div>
+      <div class="row"><label>Tensión de la fuente</label><input id="V" type="range" min="0" max="30" step="0.1" value="5"><span class="val" id="vV">5 V</span></div>
+      <div class="row"><label>Límite de corriente</label><input id="Il" type="range" min="0.01" max="5" step="0.01" value="1"><span class="val" id="vIl">1 A</span></div>
+    </div>
+    <div class="grp"><div class="t">Imán (coaxial, frente a una cara de la bobina)</div>
+      <div class="row"><label>Diámetro del imán</label><input id="dm" type="range" min="2" max="50" step="0.5" value="28"><span class="val" id="vdm">28 mm</span></div>
+      <div class="row"><label>Espesor del imán</label><input id="tm" type="range" min="0.5" max="30" step="0.5" value="5"><span class="val" id="vtm">5 mm</span></div>
+      <div class="row"><label>Remanencia <i>B</i><sub>r</sub></label><input id="Br" type="range" min="0.2" max="1.45" step="0.01" value="1.25"><span class="val" id="vBr">1.25 T</span></div>
+      <div class="row"><label>Separación cara a cara <i>s</i></label><input id="s" type="range" min="0.2" max="40" step="0.1" value="5"><span class="val" id="vs">5 mm</span></div>
+      <div class="row"><label>Velocidad del imán (modo sensor)</label><input id="v" type="range" min="0" max="3" step="0.01" value="0.44"><span class="val" id="vv">0.44 m/s</span></div>
+    </div>
+    <div class="tiles t3" style="margin-top:10px">
+      <div class="tile "><div class="k">Vueltas por capa · capas</div><div class="v" id="ocap">…</div></div><div class="tile "><div class="k">Diámetro exterior</div><div class="v" id="oext">…</div></div><div class="tile "><div class="k">Longitud de alambre</div><div class="v" id="olong">…</div></div>
+      <div class="tile "><div class="k">Resistencia <i>R</i></div><div class="v" id="oR">…</div></div><div class="tile "><div class="k">Corriente <i>I</i></div><div class="v" id="oI">…</div></div><div class="tile "><div class="k">Potencia disipada</div><div class="v" id="oP">…</div></div>
+      <div class="tile "><div class="k">Campo en el centro de la bobina</div><div class="v" id="oB">…</div></div><div class="tile hl"><div class="k">Acoplamiento <i>K</i> en <i>s</i></div><div class="v" id="oK">…</div></div><div class="tile hl"><div class="k">Fuerza sobre el imán</div><div class="v" id="oF">…</div></div>
+      <div class="tile "><div class="k">Fuerza / peso del imán</div><div class="v" id="oFw">…</div></div><div class="tile hl"><div class="k">Tensión inducida <i>e</i> = <i>Kv</i></div><div class="v" id="oe">…</div></div><div class="tile "><div class="k"><i>K</i> máximo y dónde</div><div class="v" id="oKm">…</div></div>
+    </div>
+    <div class="nota" id="olect"></div>
+  </div>
+  <div class="card full">
+    <h2>Las fórmulas en pantalla</h2>
+    <div class="two"><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">1 · Alambre y resistencia</span><math display="block"><mrow><msub><mi>d</mi><mi mathvariant="normal">Cu</mi></msub><mo>=</mo><mn>0.127</mn><mspace width="0.25em"></mspace><mi mathvariant="normal">mm</mi><mo>×</mo><msup><mn>92</mn><mrow><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>36</mn><mo>−</mo><mi>n</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo lspace="0.05em" rspace="0.05em">/</mo><mn>39</mn></mrow></msup><mo>,</mo><mspace width="2em"></mspace><mi>R</mi><mo>=</mo><msub><mi>ρ</mi><mi mathvariant="normal">Cu</mi></msub><mspace width="0.17em"></mspace><mfrac><msub><mi>L</mi><mi>w</mi></msub><mrow><mi>π</mi><msubsup><mi>d</mi><mi mathvariant="normal">Cu</mi><mn>2</mn></msubsup><mo lspace="0.05em" rspace="0.05em">/</mo><mn>4</mn></mrow></mfrac></mrow></math><math display="block"><mrow><msub><mi>ρ</mi><mi mathvariant="normal">Cu</mi></msub><mo>=</mo><mn>1.72</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>8</mn></mrow></msup><mspace width="0.25em"></mspace><mi>Ω</mi><mspace width="0.17em"></mspace><mi mathvariant="normal">m</mi></mrow></math><div class="eqnote">n es el calibre AWG; L<sub>w</sub> es la longitud total del alambre, suma del perímetro medio de cada capa; con esmalte, el diámetro se estima en 1.1 veces el del cobre (aproximado)</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">2 · Campo en el eje de la bobina</span><math display="block"><mrow><mi>B</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>z</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>=</mo><munder><mo largeop="true" movablelimits="false">∑</mo><mtext>espiras</mtext></munder><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><mi>I</mi><mspace width="0.17em"></mspace><msup><mi>a</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><msup><mrow><mo stretchy="true" fence="true">(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo stretchy="true" fence="true">)</mo></mrow><mrow><mn>3</mn><mo lspace="0.05em" rspace="0.05em">/</mo><mn>2</mn></mrow></msup></mrow></mfrac></mrow></math><div class="eqnote">suma sobre cada espira de radio a; en el centro de una bobina larga y delgada tiende a μ<sub>0</sub>NI/ℓ<sub>b</sub></div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">3 · Fuerza y tensión inducida</span><math display="block"><mrow><mi>K</mi><mo>=</mo><mfrac><mrow><mo>∂</mo><msub><mi>Φ</mi><mtext>imán</mtext></msub></mrow><mrow><mo>∂</mo><mi>z</mi></mrow></mfrac><mo>,</mo><mspace width="2em"></mspace><mi>F</mi><mo>=</mo><mi>K</mi><mspace width="0.17em"></mspace><mi>I</mi><mo>,</mo><mspace width="2em"></mspace><mi>e</mi><mo>=</mo><mi>K</mi><mspace width="0.17em"></mspace><mi>v</mi></mrow></math><div class="eqnote">Φ es el flujo del imán a través de las N espiras; la misma K da la fuerza (actuador) y la tensión (sensor), por reciprocidad</div></div>
+    </div><div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">4 · El imán como corriente superficial</span><math display="block"><mrow><msub><mi>I</mi><mi>m</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>B</mi><mi>r</mi></msub><mspace width="0.17em"></mspace><mi>t</mi></mrow><msub><mi>μ</mi><mn>0</mn></msub></mfrac><mo>,</mo><mspace width="2em"></mspace><mi>K</mi><mo>=</mo><mfrac><msub><mi>I</mi><mi>m</mi></msub><msub><mi>n</mi><mi>m</mi></msub></mfrac><munder><mo largeop="true" movablelimits="false">∑</mo><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></munder><mfrac><mrow><mo>∂</mo><msub><mi>M</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><mrow><mo>∂</mo><mi>z</mi></mrow></mfrac></mrow></math><div class="eqnote">un cilindro imantado uniformemente equivale a una bobina de su mismo tamaño con corriente total B<sub>r</sub>t/μ<sub>0</sub>; se reparte en n<sub>m</sub> espiras</div></div>
+    <div class="eqbox" style="margin-top:10px;"><span class="lab">5 · Inductancia mutua de dos espiras coaxiales</span><math display="block"><mrow><mi>M</mi><mo>=</mo><msub><mi>μ</mi><mn>0</mn></msub><msqrt><mrow><mi>a</mi><mi>b</mi></mrow></msqrt><mrow><mo stretchy="true" fence="true">[</mo><mrow><mo stretchy="true" fence="true">(</mo><mfrac><mn>2</mn><mi>k</mi></mfrac><mo>−</mo><mi>k</mi><mo stretchy="true" fence="true">)</mo></mrow><mi>K</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>k</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo>−</mo><mfrac><mn>2</mn><mi>k</mi></mfrac><mi>E</mi><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>k</mi><mo stretchy="false" lspace="0" rspace="0">)</mo><mo stretchy="true" fence="true">]</mo></mrow><mo>,</mo><mspace width="2em"></mspace><msup><mi>k</mi><mn>2</mn></msup><mo>=</mo><mfrac><mrow><mn>4</mn><mi>a</mi><mi>b</mi></mrow><mrow><mo stretchy="false" lspace="0" rspace="0">(</mo><mi>a</mi><mo>+</mo><mi>b</mi><msup><mo stretchy="false" lspace="0" rspace="0">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>d</mi><mn>2</mn></msup></mrow></mfrac></mrow></math><div class="eqnote">a y b son los radios, d la separación axial; K y E son las integrales elípticas completas, calculadas con la media aritmético-geométrica</div></div>
+    </div></div>
+    <div class="intro" style="margin-top:12px"><b>Hipótesis y límites.</b> Bobina e imán coaxiales, sin núcleo de hierro y sin piezas ferromagnéticas cerca (una placa de acero cambia el campo); imán uniformemente imantado con la remanencia de su grado (N35 ≈ 1.2 T, N42 ≈ 1.3 T, N52 ≈ 1.45 T; valores típicos, el del fabricante puede variar); devanado ordenado por capas. Si el imán no está centrado en el eje, <i>K</i> baja. En modo sensor con el osciloscopio no circula corriente apreciable, así que la bobina no frena al imán; si se cierra en corto o con una resistencia baja, sí lo frena: es otra forma de amortiguamiento magnético. La potencia disipada calienta la bobina: el esmalte típico soporta del orden de 130 a 180 °C, pero el carrete de PLA se ablanda cerca de 60 °C, así que en régimen continuo conviene mantener la potencia baja y medir la temperatura. Referencias: Jackson, <i>Classical Electrodynamics</i>, 3.ª ed., Wiley, 1999, sec. 5.5 (espira circular) y sec. 5.8 (imantación y corriente equivalente); Griffiths, <i>Introduction to Electrodynamics</i>, 4.ª ed., Cambridge University Press, 2017, cap. 6 y 7.</div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px">Apoyo a los proyectos del curso de Vibraciones: bobina como actuador y como sensor · funciona sin conexión (un solo archivo).</div>
+  <div class="cred">
+    <div class="h">Créditos y cómo citar</div>
+    <div style="line-height:1.5;margin-top:3px"><b>Autoría:</b> Elodie Strupiechonski (ENES Juriquilla, UNAM · ORCID <a href="https://orcid.org/0000-0001-8991-8499">0000-0001-8991-8499</a>) y Andrés de Luna Bugallo (CFATA, UNAM · ORCID <a href="https://orcid.org/0000-0002-7591-5235">0000-0002-7591-5235</a>). Licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</div>
+    <div style="line-height:1.5;margin-top:6px;background:var(--ice2);border-left:4px solid var(--steel);border-radius:4px;padding:7px 10px;font-style:italic">Strupiechonski, E., &amp; de Luna Bugallo, A. (2026). Vibraciones: exploradores interactivos (Versión 1.6) [Recurso educativo abierto]. UNAM, ENES Juriquilla. DOI: <a href="https://doi.org/10.5281/zenodo.23422993" style="color:inherit">10.5281/zenodo.23422993</a>.</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+const NAVY='#1F3864',STEEL='#4472C4',ORANGE='#C55A11',GREEN='#2E7D46',GREY='#5B5B5B',RED='#B23A3A',PURPLE='#6B3FA0';
+const $=id=>document.getElementById(id);
+function lienzo(cv,H){ const c=cv.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1,2), W=cv.clientWidth||760; cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px'; c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H); return {c,W,H}; }
+function pasos(a,b,n){ const d=(b-a)/n, p=Math.pow(10,Math.floor(Math.log10(d))), q=d/p, s=(q<1.5?1:q<3?2:q<7?5:10)*p, o=[]; for(let v=Math.ceil(a/s-1e-9)*s; v<=b+1e-9*s; v+=s) o.push(+v.toPrecision(12)); return o; }
+function num(v){ const a=Math.abs(v); if(v===0) return '0'; if(a>=1e4||a<1e-2){ const e=Math.floor(Math.log10(a)+1e-9), m=+(v/Math.pow(10,e)).toPrecision(2); return (String(m)+'×10^'+e).replace(/-/g,'−'); } return String(+v.toPrecision(3)).replace('-','−'); }
+// notación de ingeniería con prefijo SI
+function ing(v,u){ if(!isFinite(v)) return '∞'; if(!(v>0)) return '0 '+u; const P=[[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ'],[1e-9,'n'],[1e-12,'p']]; for(const [f,p] of P){ if(v>=f*0.9995) return (+(v/f).toPrecision(3))+' '+p+u; } return num(v)+' '+u; }
+// modo práctica: oculta las lecturas hasta que se pulse de nuevo
+function practica(id){ const b=$(id); if(!b) return; b.addEventListener('click',()=>{ const on=document.body.classList.toggle('oculto'); b.classList.toggle('on',on); b.textContent=on?'Mostrar lecturas':'Ocultar lecturas (modo práctica)'; }); }
+// Ejes: o={x0,x1,y0,y1,logx,logy,xl,yl,tit}; devuelve los mapeos X, Y y el rectángulo de trazo
+function ejes(g,box,o){ const c=g.c, mL=box.mL||56, mR=box.mR||14, mT=box.mT||24, mB=box.mB||36, x=box.x||0, y=box.y||0, w=(box.w||g.W)-mL-mR, h=(box.h||g.H)-mT-mB, px=x+mL, py=y+mT;
+  const lx=o.logx, ly=o.logy, ax=lx?Math.log10(o.x0):o.x0, bx=lx?Math.log10(o.x1):o.x1, ay=ly?Math.log10(o.y0):o.y0, by=ly?Math.log10(o.y1):o.y1;
+  const X=v=>px+((lx?Math.log10(Math.max(v,1e-300)):v)-ax)/(bx-ax)*w, Y=v=>py+(1-((ly?Math.log10(Math.max(v,1e-300)):v)-ay)/(by-ay))*h;
+  c.lineWidth=1; c.strokeStyle='#E3E9F3'; c.fillStyle=GREY; c.font='11px Arial';
+  const tx=lx?decadas(o.x0,o.x1):pasos(o.x0,o.x1,o.nx||8), ty=ly?decadas(o.y0,o.y1):pasos(o.y0,o.y1,o.ny||5);
+  c.textAlign='center'; c.textBaseline='top'; tx.forEach(v=>{ c.beginPath(); c.moveTo(X(v),py); c.lineTo(X(v),py+h); c.stroke(); c.fillText(lx?pot(v):num(v),X(v),py+h+5); });
+  c.textAlign='right'; c.textBaseline='middle'; ty.forEach(v=>{ c.beginPath(); c.moveTo(px,Y(v)); c.lineTo(px+w,Y(v)); c.stroke(); c.fillText(ly?pot(v):num(v),px-6,Y(v)); });
+  c.strokeStyle='#9AA7BF'; c.strokeRect(px,py,w,h);
+  c.fillStyle=NAVY; c.textAlign='left'; c.textBaseline='top'; if(o.tit){ let fs=12; do{ c.font='bold '+fs+'px Arial'; fs-=0.5; } while(fs>8.5&&c.measureText(o.tit.replace(/[_^]/g,'')).width>w+mR-2); c.fillText(o.tit,px,y+5); } c.font='bold 12px Arial';
+  c.textAlign='center'; if(o.xl) c.fillText(o.xl,px+w/2,py+h+20);
+  if(o.yl){ c.save(); c.translate(x+12,py+h/2); c.rotate(-Math.PI/2); c.textBaseline='middle'; c.fillText(o.yl,0,0); c.restore(); }
+  return {X,Y,px,py,w,h,c,o}; }
+function pot(v){ const e=Math.round(Math.log10(v)); return (e>=-2&&e<=3)?String(+Math.pow(10,e).toPrecision(1)):'10^'+(e<0?'−'+(-e):e); }
+function decadas(a,b){ const o=[]; for(let e=Math.ceil(Math.log10(a)-1e-9); e<=Math.log10(b)+1e-9; e++) o.push(Math.pow(10,e)); return o; }
+function curva(e,pts,color,lw,dash){ const c=e.c; c.save(); c.beginPath(); c.rect(e.px,e.py,e.w,e.h); c.clip(); c.strokeStyle=color; c.lineWidth=lw||1.6; c.setLineDash(dash||[]); c.beginPath(); let on=false;
+  for(const p of pts){ if(!isFinite(p[1])){ on=false; continue; } const x=e.X(p[0]), y=e.Y(p[1]); on?c.lineTo(x,y):c.moveTo(x,y); on=true; } c.stroke(); c.restore(); }
+function funcion(e,f,color,lw,dash,n){ n=n||Math.round(e.w); const o=e.o, pts=[]; for(let i=0;i<=n;i++){ const u=i/n, x=o.logx?o.x0*Math.pow(o.x1/o.x0,u):o.x0+(o.x1-o.x0)*u; pts.push([x,f(x)]); } curva(e,pts,color,lw,dash); }
+function vline(e,x,color,dash,txt,dy){ const c=e.c; if(x<Math.min(e.o.x0,e.o.x1)||x>Math.max(e.o.x0,e.o.x1)) return; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.X(x),e.py); c.lineTo(e.X(x),e.py+e.h); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; const der=e.X(x)>e.px+e.w-110; c.textAlign=der?'right':'left'; c.textBaseline='top'; c.fillText(txt,e.X(x)+(der?-4:4),e.py+4+(dy||0)); } c.restore(); }
+function hline(e,y,color,dash,txt){ const c=e.c; c.save(); c.strokeStyle=color; c.setLineDash(dash||[5,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(e.px,e.Y(y)); c.lineTo(e.px+e.w,e.Y(y)); c.stroke(); c.setLineDash([]);
+  if(txt){ c.fillStyle=color; c.font='bold 11px Arial'; c.textAlign='right'; c.textBaseline='bottom'; c.fillText(txt,e.px+e.w-4,e.Y(y)-2); } c.restore(); }
+function punto(e,x,y,color,r){ const c=e.c; c.fillStyle=color; c.strokeStyle='#fff'; c.lineWidth=1.5; c.beginPath(); c.arc(e.X(x),e.Y(y),r||5,0,7); c.fill(); c.stroke(); }
+// Enlaza deslizadores: UN = {id:' unidad'}; llama a cb en cada cambio
+function liga(S,UN,cb){ Object.keys(UN).forEach(id=>$(id).addEventListener('input',ev=>{ S[id]=+ev.target.value; $('v'+id).textContent=(+S[id].toPrecision(6))+UN[id]; cb(); })); }
+function pon(S,UN,o,cb){ Object.keys(o).forEach(k=>{ S[k]=o[k]; if($(k)&&UN[k]!==undefined){ $(k).value=o[k]; $('v'+k).textContent=o[k]+UN[k]; } }); cb(); }
+
+let S={di:20,lb:10,awg:30,N:200,V:5,Il:1,dm:28,tm:5,Br:1.25,s:5,v:0.44};
+const UN={di:' mm',lb:' mm',awg:'',N:'',V:' V',Il:' A',dm:' mm',tm:' mm',Br:' T',s:' mm',v:' m/s'}, MU0=4e-7*Math.PI, RHO=1.72e-8, G0=9.80665;
+function KE(k){ // integrales elípticas completas K(k), E(k) por la media aritmético-geométrica
+  let a=1, b=Math.sqrt(1-k*k), c=k, sum=0.5*c*c, p=1; for(let i=0;i<40;i++){ const an=(a+b)/2, bn=Math.sqrt(a*b); c=(a-b)/2; a=an; b=bn; p*=2; sum+=p*c*c/2; if(Math.abs(c)<1e-16) break; }
+  const K=Math.PI/(2*a); return [K, K*(1-sum)]; }
+function mutua(a,b,d){ const k2=4*a*b/((a+b)**2+d*d), k=Math.sqrt(Math.min(k2,1-1e-15)); const [K,E]=KE(k); return MU0*Math.sqrt(a*b)*((2/k-k)*K-2/k*E); }
+function bobina(){ const dcu=0.127e-3*Math.pow(92,(36-S.awg)/39), dex=1.1*dcu, lb=S.lb*1e-3, tpl=Math.max(1,Math.floor(lb/dex)), cap=Math.ceil(S.N/tpl), ri=S.di/2*1e-3;
+  const esp=[]; let n=0, largo=0; for(let j=0;j<cap&&n<S.N;j++){ const r=ri+(j+0.5)*dex, enCapa=Math.min(tpl,S.N-n); for(let i=0;i<enCapa;i++){ esp.push([r,(i+0.5)*lb/enCapa]); } largo+=enCapa*2*Math.PI*r; n+=enCapa; }
+  const R=RHO*largo/(Math.PI*dcu*dcu/4), I=Math.min(S.V/R,S.Il), P=I*I*R, rext=ri+cap*dex;
+  let Bc=0; esp.forEach(e=>{ const z=e[1]-lb/2; Bc+=MU0*1*e[0]*e[0]/(2*Math.pow(e[0]*e[0]+z*z,1.5)); }); // por ampere
+  return {dcu,dex,tpl,cap,esp,largo,R,I,P,rext,Bc:Bc*I,limitada:S.V/R>S.Il}; }
+// K(s): s = separación entre la cara superior de la bobina (z = lb) y la cara inferior del imán
+function acople(esp,s){ const nm=8, am=S.dm/2*1e-3, tm=S.tm*1e-3, lb=S.lb*1e-3, Im=S.Br*tm/MU0/nm, h=2e-6; let K=0;
+  for(let j=0;j<nm;j++){ const zm=lb+s+(j+0.5)*tm/nm; for(const e of esp){ const d=zm-e[1]; K+=(mutua(e[0],am,d+h)-mutua(e[0],am,d-h))/(2*h); } } return Math.abs(K*Im); }
+function calc(){ const b=bobina(), s=S.s*1e-3, K=acople(b.esp,s), mim=7500*Math.PI*(S.dm/2e3)**2*S.tm*1e-3;
+  const xs=[]; for(let i=0;i<=40;i++){ const x=0.2e-3*Math.pow(200,i/40); xs.push([x,acople(b.esp,x)]); } let km=xs[0]; xs.forEach(p=>{ if(p[1]>km[1]) km=p; });
+  return {b,K,F:K*b.I,e:K*S.v,mim,peso:mim*G0,xs,km}; }
+let Q=null;
+function dibujar(){
+  const q=calc(); Q=q; const b=q.b; const g=lienzo($('ck'),330); const Fmax=Math.max(...q.xs.map(p=>p[1]*b.I),q.peso)*1.15||1;
+  const e=ejes(g,{mL:62,mR:70},{x0:0,x1:40,y0:0,y1:Fmax,xl:'separación cara a cara s (mm)',yl:'fuerza (N)',tit:'Fuerza sobre el imán con I = '+(+b.I.toPrecision(3))+' A (eje derecho: K en N/A)',nx:8,ny:5});
+  curva(e,q.xs.map(p=>[p[0]*1e3,p[1]*b.I]),STEEL,2.4); hline(e,q.peso,ORANGE,[6,4],'peso del imán '+(+q.peso.toPrecision(2))+' N'); vline(e,S.s,RED,[3,3]); punto(e,S.s,q.F,RED,5);
+  const c=g.c; c.fillStyle=GREY; c.font='11px Arial'; c.textAlign='left'; c.textBaseline='middle'; [0.25,0.5,0.75,1].forEach(f=>{ const y=e.py+e.h*(1-f); c.fillText((+(f*Fmax/Math.max(b.I,1e-9)).toPrecision(2))+' N/A',e.px+e.w+6,y); });
+  // esquema a escala
+  const g2=lienzo($('cg'),210), c2=g2.c, W=g2.W, lb=S.lb, sc=Math.min(150/(lb+S.s+S.tm+4), (W-80)/(2*Math.max(b.rext*1e3,S.dm/2)+10)), cx=W/2, yb=190, mm=v=>v*sc;
+  c2.fillStyle=NAVY; c2.font='bold 12px Arial'; c2.textAlign='left'; c2.textBaseline='top'; c2.fillText('Corte a escala (eje vertical: eje de la bobina)',8,4);
+  c2.fillStyle='rgba(197,90,17,.35)'; [[-1],[1]].forEach(([sg])=>{ const x0=cx+sg*mm(S.di/2), x1=cx+sg*mm(b.rext*1e3); c2.fillRect(Math.min(x0,x1),yb-mm(lb),Math.abs(x1-x0),mm(lb)); });
+  c2.strokeStyle=GREY; c2.setLineDash([4,3]); c2.beginPath(); c2.moveTo(cx,20); c2.lineTo(cx,yb+6); c2.stroke(); c2.setLineDash([]);
+  const ym=yb-mm(lb+S.s); c2.fillStyle='#5B6B86'; c2.fillRect(cx-mm(S.dm/2),ym-mm(S.tm),mm(S.dm),mm(S.tm)); c2.fillStyle='#fff'; c2.font='bold 11px Arial'; c2.textAlign='center'; c2.textBaseline='middle'; if(mm(S.tm)>12) c2.fillText('imán',cx,ym-mm(S.tm)/2);
+  c2.fillStyle=ORANGE; c2.font='11px Arial'; c2.textAlign='left'; c2.fillText('bobina: '+S.N+' vueltas, '+b.cap+' capa'+(b.cap>1?'s':''),cx+mm(b.rext*1e3)+8,yb-mm(lb)/2);
+  c2.fillStyle=RED; c2.fillText('s = '+S.s+' mm',cx+mm(S.dm/2)+8,ym+mm(S.s)/2);
+  // lecturas
+  const f3=v=>(+v.toPrecision(3));
+  $('ocap').textContent=b.tpl+' · '+b.cap; $('oext').textContent=f3(2*b.rext*1e3)+' mm'; $('olong').textContent=f3(b.largo)+' m'; $('oR').textContent=f3(b.R)+' Ω';
+  $('oI').textContent=f3(b.I)+' A'+(b.limitada?' (límite)':''); $('oP').textContent=f3(b.P)+' W'; $('oP').parentNode.classList.toggle('al',b.P>2);
+  $('oB').textContent=ing(b.Bc,'T'); $('oK').textContent=f3(q.K)+' N/A'; $('oF').textContent=ing(q.F,'N')+' ('+f3(q.F/G0*1e3)+' g)'; $('oFw').textContent=f3(q.F/q.peso);
+  $('oe').textContent=ing(q.e,'V'); $('oKm').textContent=f3(q.km[1])+' N/A a '+f3(q.km[0]*1e3)+' mm';
+  let t=[]; if(b.P>2) t.push('La bobina disipa '+f3(b.P)+' W: se calentará; usar pulsos cortos, bajar la tensión o limitar la corriente.');
+  if(b.limitada) t.push('La fuente trabaja en límite de corriente: '+f3(b.I)+' A.');
+  t.push('Como sensor, un imán que pasa a '+S.v+' m/s a '+S.s+' mm induce unos '+ing(q.e,'V')+' de pico: '+(q.e<1e-3?'señal pequeña; acercar el imán, añadir vueltas o usar la escala más sensible del osciloscopio.':'suficiente para el osciloscopio.'));
+  t.push('El acoplamiento es máximo a '+f3(q.km[0]*1e3)+' mm de separación; más cerca baja porque el imán queda frente al centro hueco de la bobina.');
+  $('olect').textContent=t.join(' ');
+}
+liga(S,UN,dibujar);
+const PRE={C:{di:20,lb:10,awg:30,N:200,V:0,Il:1,dm:28,tm:5,Br:1.25,s:5,v:0.44}, E:{di:30,lb:15,awg:26,N:500,V:12,Il:1,dm:28,tm:5,Br:1.25,s:3,v:0.1}};
+document.querySelectorAll('[data-pre]').forEach(bt=>bt.addEventListener('click',()=>pon(S,UN,PRE[bt.dataset.pre],dibujar)));
+window.addEventListener('resize',dibujar);
+window.__bo={S,calc,mutua,KE,bobina,acople};
+dibujar();
+
+</script>
+<!-- teclado:inicio -->
+<style>
+  .kbnum{width:84px;font:inherit;font-family:var(--serif,Cambria,serif);font-weight:700;font-size:15px;color:var(--orange,#C55A11);text-align:right;
+    border:1px solid var(--line,#d3deee);border-radius:6px;padding:3px 6px;background:var(--card,#fff);font-variant-numeric:tabular-nums}
+  .kbnum:focus{outline:2px solid var(--steel,#4472C4);outline-offset:1px}
+  .kbnum.kbmal{border-color:#B23A3A;background:#fdeeee}
+  .kbunit{min-width:26px;font-size:12.5px;color:var(--grey,#5a5a5a);font-family:var(--sans,Arial,sans-serif)}
+  .kbhid{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .row input[type=range]{min-width:90px!important;flex:1 1 90px}
+  .row label{min-width:0!important;flex:0 1 132px}
+  .kbrow{flex-wrap:nowrap!important}
+  .kbunit:empty{display:none}
+  .kbayuda{font-size:11.5px;color:var(--grey,#5a5a5a);margin:6px 0 0}
+  @media print{.kbnum{border:0}}
+</style>
+<script>
+/* Entrada por teclado: cada deslizador recibe una casilla numérica sincronizada. El valor escrito no queda
+   limitado al paso del deslizador; se valida contra su intervalo (Enter o Tab lo aplican, Esc lo descarta). */
+(function(){
+  var ENTEROS={nf:1};
+  function mapa(id){ try{ if(id==='sfn'&&typeof fnFromSlider==='function') return {s2v:function(s){return Math.round(fnFromSlider(s));},v2s:function(v){return sliderFromFn(v);},min:Math.round(fnFromSlider(0)),max:Math.round(fnFromSlider(1000)),dec:0}; }catch(e){} return null; }
+  function ndec(x){ var s=String(x); var i=s.indexOf('.'); return i<0?0:Math.min(6,s.length-i-1); }
+  function limpio(v,d){ return String(+(+v).toFixed(Math.max(d,0))); }
+  function cablear(r){
+    if(r.dataset.kb) return; r.dataset.kb='1';
+    var mp=mapa(r.id), paso=parseFloat(r.getAttribute('step'))||1, mn=parseFloat(r.min), mx=parseFloat(r.max);
+    if(isNaN(mn)) mn=0; if(isNaN(mx)) mx=100;
+    var d=mp?mp.dec:Math.max(ndec(paso),ndec(mn)), vmin=mp?mp.min:mn, vmax=mp?mp.max:mx;
+    var span=null, s=r.nextElementSibling; if(s&&s.classList&&s.classList.contains('val')) span=s;
+    var n=document.createElement('input'); n.type='text'; n.inputMode='decimal'; n.className='kbnum'; n.autocomplete='off'; n.spellcheck=false;
+    var lab=r.parentNode.querySelector('label'); var nombre=(lab?lab.textContent:(r.getAttribute('aria-label')||r.id)).replace(/\s+/g,' ').trim();
+    n.setAttribute('aria-label',nombre+': escribir el valor');
+    n.title='Escribir un valor entre '+limpio(vmin,6).replace('-','−')+' y '+limpio(vmax,6)+' y pulsar Enter';
+    var u=document.createElement('span'); u.className='kbunit';
+    r.parentNode.insertBefore(n,r.nextSibling); r.parentNode.insertBefore(u,n.nextSibling);
+    if(span) span.classList.add('kbhid');
+    if(r.parentNode.classList.contains('row')) r.parentNode.classList.add('kbrow');
+    if(!mp) r.step='any';
+    function actual(){ return mp?mp.s2v(+r.value):+r.value; }
+    function mostrar(){
+      if(document.activeElement!==n){ n.value=limpio(actual(),6).replace('-','−'); n.classList.remove('kbmal'); }
+      if(span){ var t=span.textContent.replace(/^\s*[−+\-]?[\d.,\s]*/,'').trim(); u.textContent=/^[^\d]{0,12}$/.test(t)?t:''; }
+    }
+    // arrastre con el ratón o las flechas: se conserva el paso original del deslizador
+    r.addEventListener('input',function(e){
+      if(!e.kb&&!mp){ var v=mn+Math.round((+r.value-mn)/paso)*paso; v=Math.min(mx,Math.max(mn,v)); r.value=limpio(v,ndec(paso)+ndec(mn)); }
+    },true);
+    r.addEventListener('input',function(){ mostrar(); });
+    function aplicar(){
+      var v=parseFloat(n.value.replace('−','-').replace(',','.'));
+      if(isNaN(v)){ n.classList.add('kbmal'); n.value=limpio(actual(),6).replace('-','−'); setTimeout(function(){ n.classList.remove('kbmal'); },900); return; }
+      if(ENTEROS[r.id]) v=Math.round(v);
+      if(v<vmin||v>vmax){ n.classList.add('kbmal'); v=Math.min(vmax,Math.max(vmin,v)); } else n.classList.remove('kbmal');
+      r.value=mp?mp.v2s(v):v;
+      var ev=new Event('input',{bubbles:true}); ev.kb=true; r.dispatchEvent(ev);
+      var ev2=new Event('change',{bubbles:true}); ev2.kb=true; r.dispatchEvent(ev2);
+      n.value=limpio(mp?v:+r.value,6).replace('-','−');
+    }
+    n.addEventListener('change',aplicar);
+    n.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ aplicar(); n.select(); } else if(e.key==='Escape'){ n.blur(); mostrar(); } });
+    n.addEventListener('focus',function(){ n.select(); });
+    n.addEventListener('blur',function(){ setTimeout(mostrar,0); });
+    if(span) new MutationObserver(mostrar).observe(span,{childList:true,characterData:true,subtree:true});
+    mostrar();
+  }
+  function todos(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=range]'):[]).forEach(cablear); }
+  function inicio(){
+    todos(document);
+    new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(x){ if(x.nodeType===1){ if(x.matches&&x.matches('input[type=range]')) cablear(x); todos(x); } }); }); }).observe(document.body,{childList:true,subtree:true});
+    // las casillas numéricas ya existentes aceptan coma decimal y no disparan la navegación con flechas
+    document.querySelectorAll('input[type=number]').forEach(function(x){ x.addEventListener('keydown',function(e){ e.stopPropagation(); }); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicio); else inicio();
+})();
+</script>
+<!-- teclado:fin -->
+<!-- contador:inicio -->
+<style>
+  .visitas{max-width:1180px;margin:0 auto;padding:0 18px 26px;font-size:11.5px;color:#7A8699;display:none}
+  .visitas span{display:inline-block;background:#fff;border:1px solid #D3DEEE;border-radius:20px;padding:3px 11px}
+  .visitas b{color:#1F3864;font-weight:700}
+  .visitas a{color:#7A8699;text-decoration:none;margin-left:6px} .visitas a:hover{text-decoration:underline}
+</style>
+<div class="visitas" id="visitas"><span>Esta página: <b id="vis-pag">–</b> visitas · Todo el sitio: <b id="vis-tot">–</b>
+<a href="https://elodiestrupiechonski.goatcounter.com" target="_blank" rel="noopener" title="Estadísticas públicas del sitio (GoatCounter, sin cookies)">estadísticas ↗</a></span></div>
+<script>
+(function(){
+  if(location.protocol!=='http:' && location.protocol!=='https:') return;   // copia local: sin contador ni peticiones
+  var sc=document.createElement('script'); sc.async=true;
+  sc.setAttribute('data-goatcounter','https://elodiestrupiechonski.goatcounter.com/count');
+  sc.src='https://gc.zgo.at/count.js'; document.head.appendChild(sc);
+  var base='https://elodiestrupiechonski.goatcounter.com/counter/';
+  function pide(path){
+    return fetch(base+encodeURIComponent(path).replace(/%2F/g,'/')+'.json',{cache:'no-cache'})
+      .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+  }
+  var p=location.pathname;
+  if(/\/index\.html$/.test(p)) p=p.replace(/index\.html$/,'');
+  Promise.all([pide(p), pide('TOTAL')]).then(function(res){
+    var a=res[0], b=res[1];
+    if(!a && !b) return;
+    document.getElementById('vis-pag').textContent = a ? a.count : '–';
+    document.getElementById('vis-tot').textContent = b ? b.count : '–';
+    document.getElementById('visitas').style.display='block';
+  });
+})();
+</script>
+<!-- contador:fin -->
+<!-- navegacion:inicio -->
+<style>
+  :root{--nv-w:272px}
+  body{margin-top:0!important}
+  @media (min-width:1360px){ body{margin-left:var(--nv-w)!important} }
+  .nvside{position:fixed;top:0;left:0;bottom:0;width:var(--nv-w);z-index:9999;display:flex;flex-direction:column;
+    background:var(--card,#fff);border-right:1px solid var(--line,#e2dcc9);
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:14px;color:var(--ink,#1a1a1a);
+    box-shadow:1px 0 8px rgba(0,0,0,.05);transition:transform .2s ease}
+  .nvside a{text-decoration:none;color:inherit}
+  .nv-cab{padding:14px 16px 10px;border-bottom:1px solid var(--line,#e2dcc9);position:relative}
+  .nv-marca{display:block;font-family:"Century Gothic","Questrial",Arial,sans-serif;font-weight:700;font-size:15px;
+    line-height:1.25;color:var(--navy,var(--ink,#1F3864))}
+  .nv-marca small{display:block;font-weight:400;font-size:12px;color:var(--muted,var(--grey,#5a5a5a));margin-top:2px}
+  .nv-pasos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+  .nv-paso{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font-size:11px;color:var(--muted,var(--grey,#5a5a5a));min-width:0}
+  .nv-paso b{font-size:12.5px;color:var(--ink,#1a1a1a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nv-paso.sig{text-align:right}
+  .nv-paso:hover{background:var(--bg,#f4f1ea)}
+  .nv-paso[aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-busca{margin-top:8px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--line,#e2dcc9);border-radius:8px;
+    font:inherit;background:var(--bg,#f8f6f0);color:inherit}
+  .nv-lista{flex:1;overflow-y:auto;padding:6px 8px 10px}
+  .nv-grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,var(--grey,#5a5a5a));padding:12px 8px 4px}
+  .nv-lista a{display:block;padding:6px 8px 6px 10px;border-radius:6px;border-left:3px solid transparent;line-height:1.3}
+  .nv-lista a small{display:block;font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-lista a:hover{background:var(--bg,#f4f1ea)}
+  .nv-lista a.nv-aqui{background:var(--bg,#f4f1ea);border-left-color:var(--accent,var(--orange,#C1571B));font-weight:700}
+  .nv-nada{padding:10px;font-size:12.5px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-pie{padding:8px 14px;border-top:1px solid var(--line,#e2dcc9);font-size:11px;color:var(--muted,var(--grey,#5a5a5a))}
+  .nv-boton{display:none;position:fixed;top:10px;left:10px;z-index:10000;gap:6px}
+  .nv-boton a,.nv-boton button{display:flex;align-items:center;justify-content:center;height:38px;min-width:38px;padding:0 10px;
+    border:1px solid var(--line,#e2dcc9);border-radius:9px;background:var(--card,#fff);color:var(--ink,#1a1a1a);
+    font:600 14px Arial,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .nv-boton [aria-disabled="true"]{opacity:.3;pointer-events:none}
+  .nv-velo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10001}
+  .nv-cierra{display:none;position:absolute;top:10px;right:10px;width:32px;height:32px;border:1px solid var(--line,#e2dcc9);border-radius:8px;background:var(--card,#fff);color:inherit;font-size:16px;cursor:pointer}
+  @media (max-width:1359px){
+    body{margin-top:56px!important}
+    .nvside{transform:translateX(-102%);width:min(320px,88vw)}
+    .nvside.abierto{transform:none;z-index:10002}
+    .nv-cierra{display:block}
+    .nv-pie{display:none}
+    .nv-boton{display:flex}
+    .nvside.abierto ~ .nv-velo{display:block}
+  }
+  @media print{.nvside,.nv-boton,.nv-velo{display:none} body{margin:0!important}}
+</style>
+<nav class="nvside" id="nvside" aria-label="Exploradores del curso">
+  <div class="nv-cab">
+    <button class="nv-cierra" id="nv-cierra" aria-label="Cerrar el temario">✕</button>
+    <a class="nv-marca" href="index.html">Exploradores de Vibraciones<small>ENES Juriquilla, UNAM · inicio</small></a>
+    <div class="nv-pasos">
+      <a class="nv-paso" id="nv-ant" href="#" aria-label="Explorador anterior">‹ anterior<b id="nv-ant-t">…</b></a>
+      <a class="nv-paso sig" id="nv-sig" href="#" aria-label="Explorador siguiente">siguiente ›<b id="nv-sig-t">…</b></a>
+    </div>
+    <input class="nv-busca" id="nv-busca" type="search" placeholder="Buscar (tecla /)" aria-label="Buscar explorador">
+  </div>
+  <div class="nv-lista" id="nv-lista">
+<div class="nv-grp">Pilares de fundamentos · conocimiento previo</div>
+<a href="edo3_interactivo.html" data-nv="edo3_interactivo.html" data-k="segunda ley de Newton frecuencia natural Frecuencia natural ωn = √(k/m) Energía T ↔ V, resorte equivalente Péndulo y acelerómetro (masa sísmica)">Dinámica de la partícula<small>Pilar 3 · armar la ecuación</small></a>
+<a href="edo_interactivo.html" data-nv="edo_interactivo.html" data-k="ecuaciones diferenciales de segundo orden amortiguamiento Subamortiguado, crítico, sobreamortiguado Inestable = flameo (frontera Re = 0) Respuesta x(t) con condiciones iniciales">EDO lineal de 2.º orden<small>Pilar 2 · resolverla</small></a>
+<a href="complejos_interactivo.html" data-nv="complejos_interactivo.html" data-k="números complejos fasores Formas binómica, polar y de Euler Raíces cuadradas y ecuación auxiliar Fasor: excitación vs. respuesta (desfase θ)">Números complejos<small>Pilar 1 · interpretar las raíces</small></a>
+<div class="nv-grp">Unidad 2 · Sistemas masa-resorte-amortiguador</div>
+<a href="analogias_interactivo.html" data-nv="analogias_interactivo.html" data-k="analogía electromecánica circuito RLC sistemas de segundo orden Analogías fuerza-tensión y fuerza-corriente Escala de impedancia: ω_n y ζ no cambian Chapoteo, paneles y control de actitud">Analogías entre sistemas<small>2.1 y 2.4 · Pilar 14</small></a>
+<a href="coulomb_interactivo.html" data-nv="coulomb_interactivo.html" data-k="fricción de Coulomb vibración libre Banda de reposo = Ff/k Caída de amplitud 4Ff/k por ciclo Conteo de ciclos hasta detenerse">Fricción de Coulomb<small>2.3 (fricción seca) · Pilar 4</small></a>
+<div class="nv-grp">Unidad 3 · Frecuencias naturales, resonancia</div>
+<a href="forzada_interactivo.html" data-nv="forzada_interactivo.html" data-k="respuesta forzada resonancia M = 1/√[(1−r²)²+(2ζr)²] Fase φ y resonancia (r ≈ 1) Aislamiento: aísla si r &gt; √2">Respuesta forzada y resonancia<small>3.1 · Pilar 5</small></a>
+<a href="mediapotencia_interactivo.html" data-nv="mediapotencia_interactivo.html" data-k="método de media potencia factor de calidad Q = 1/(2ζ) = fn/Δf ζ medido = Δf/(2fn) Origen de la asimetría de la curva">Media potencia y factor Q<small>3.1–3.2 · Pilar 6</small></a>
+<div class="nv-grp">Unidad 4 · Normatividad en sistemas aeroespaciales</div>
+<a href="espectro_interactivo.html" data-nv="espectro_interactivo.html" data-k="vibración aleatoria densidad espectral de potencia ecuación de Miles Grms = √(∫W df) y carga de diseño 3σ Miles: √[(π/2)·fn·Q·W(fn)] Escalas en dB (−3, +3, +6) y por qué log">Del espectro a la carga de diseño<small>4.1–4.2 · Pilar 7</small></a>
+<a href="normas.html" data-nv="normas.html" data-k="normas de ensayo GEVS ECSS MIL-STD-810H, GEVS y ECSS: descarga gratuita DO-160 e ISO: de pago, con vista previa Enlaces que se actualizan desde un solo archivo">Dónde consultar las normas<small>4.1 y 4.3 · apoyo</small></a>
+<div class="nv-grp">Unidad 5 · Esfuerzos normales y cortantes directos</div>
+<a href="esfuerzos_interactivo.html" data-nv="esfuerzos_interactivo.html" data-k="esfuerzo normal esfuerzo cortante directo aplastamiento unión atornillada sección neta remache σ = P/A y τ = V/A: cada modo tiene su área Cortante simple y cortante doble Factor de seguridad y carga que inicia la fluencia">Esfuerzos directos en una unión con pernos<small>5.1 y 5.2 · Pilar 17</small></a>
+<a href="mohr_interactivo.html" data-nv="mohr_interactivo.html" data-k="círculo de Mohr criterios de falla σ1, σ2, θp y τmáx en vivo Roseta de galgas 0/45/90 → estado de esfuerzo Tres círculos, von Mises y Tresca">Círculo de Mohr<small>5.3 · Pilar 8</small></a>
+<a href="fatiga_interactivo.html" data-nv="fatiga_interactivo.html" data-k="fatiga regla de Miner Acero con límite, aluminio sin él Esfuerzo medio y concentrador Kf Miner: cuánta vida consume el ensayo">Fatiga: S–N, Haigh y Miner<small>5.4 · Pilar 9</small></a>
+<div class="nv-grp">Unidad 6 · Ruido y amortiguamiento</div>
+<a href="sonido_interactivo.html" data-nv="sonido_interactivo.html" data-k="nivel de presión sonora bandas de octava exposición al ruido Suma energética y ponderación A −6 dB por duplicar la distancia T = 8·2^((90−LA)/3) h">Niveles sonoros y exposición al ruido<small>6.1, 6.2 y 6.4 · Pilar 10</small></a>
+<a href="transmisibilidad_interactivo.html" data-nv="transmisibilidad_interactivo.html" data-k="transmisibilidad aislamiento de vibraciones desbalance rotatorio T_r = 1 en r = √2 para todo ζ Deflexión estática: δ_st = g/ω_n^2 Desbalance rotatorio: F_0 = m_0 e ω^2">Transmisibilidad y aislamiento<small>6.3 · Pilar 13</small></a>
+<a href="perdida_interactivo.html" data-nv="perdida_interactivo.html" data-k="pérdida por transmisión ley de masa frecuencia crítica coincidencia aislamiento acústico fuselaje Ley de masa: +6 dB por duplicar m″ o f Frecuencia crítica: f_c h es constante del material Sobre f_c solo ayuda el amortiguamiento">Pérdida por transmisión de un panel<small>6.3 (vía aérea) · Pilar 18</small></a>
+<a href="anecoica_interactivo.html" data-nv="anecoica_interactivo.html" data-k="cámara anecoica campo libre campo reverberante radio crítico tiempo de reverberación cámara reverberante L_p = L_W + 10 log(Q/4πr² + 4/R) Radio crítico: r_c = √(QR/16π) Cuñas: profundidad de un cuarto de onda">Campo libre y cámara anecoica<small>6.4 · Pilar 19</small></a>
+<div class="nv-grp">Unidad 7 · Pruebas</div>
+<a href="tutorial_phyphox.html" data-nv="tutorial_phyphox.html" data-k="Phyphox acelerómetro del teléfono decremento logarítmico Jupyter Descarga de Phyphox, cuaderno y datos de ejemplo Colab o Visual Studio Code, paso a paso Envolvente de Hilbert y decremento logarítmico">Tutorial: medir con Phyphox y analizar en Python<small>7.1 · Tutorial</small></a>
+<a href="senales_interactivo.html" data-nv="senales_interactivo.html" data-k="muestreo aliasing método de Welch Aliasing: f_a = |f − k·f_s| Δf = 1/T_seg y ε_r ≈ 1/√n_d G_rms como área de la PSD (Parseval)">Laboratorio de señales<small>7.1–7.2 · Pilar 11</small></a>
+<a href="modal_interactivo.html" data-nv="modal_interactivo.html" data-k="análisis modal experimental función de respuesta en frecuencia diagrama de Nyquist Media potencia: ζ = (f_b − f_a)/(2 f_n) Círculo de Nyquist por mínimos cuadrados Resolución necesaria: T ≥ 2/(ζ f_n)">Extracción de parámetros modales<small>7.3 · Pilar 15</small></a>
+<a href="choque_interactivo.html" data-nv="choque_interactivo.html" data-k="ensayo de choque espectro de respuesta al choque SRS semiseno prueba de vibración SRS: máximo de |a(t)| para cada f_n, con Q = 10 Blando: 2π f_n Δv; rígido: A Senoidal, aleatorio y choque; diagnóstico por corrimiento de f_n">Ensayo de choque y espectro de respuesta<small>7.4 · Pilar 16</small></a>
+<div class="nv-grp">Unidad 8 · Sistemas acoplados</div>
+<a href="dosgdl_interactivo.html" data-nv="dosgdl_interactivo.html" data-k="dos grados de libertad absorbedor dinámico Valores propios: ω_1, ω_2 y formas modales Absorbedor dinámico y óptimo de Den Hartog Separación de frecuencias equipo–estructura">Dos grados de libertad y absorbedor<small>8.1–8.3 · Pilar 12</small></a>
+<div class="nv-grp">Apoyo a los proyectos</div>
+<a href="proy_sensores.html" data-nv="proy_sensores.html" data-k="sensores del teléfono acelerómetro micrófono magnetómetro Phyphox aliasing carga de masa Nyquist y alias de cada sensor Señal frente a ruido del acelerómetro Carga de masa del teléfono">¿Mi teléfono puede medirlo?<small>apoyo a los proyectos</small></a>
+<a href="proy_rigidez.html" data-nv="proy_rigidez.html" data-k="rigidez constante del resorte masa añadida viga en voladizo ligas tapete Estática: k = 1/pendiente de δ contra F Masa añadida: recta de 1/f² contra ΔM Voladizo: k = 3EI/L³">Caracterizar la rigidez de un resorte o una placa<small>apoyo a los proyectos</small></a>
+<a href="proy_bobina.html" data-nv="proy_bobina.html" data-k="solenoide bobina imán de neodimio fuerza magnética fem inducida AWG Resistencia y corriente según el calibre AWG F = K I y e = K v con la misma K Potencia disipada y calentamiento">Bobina e imán: fuerza y tensión inducida<small>apoyo a los proyectos</small></a>
+<a href="proy_datos.html" data-nv="proy_datos.html" data-k="transmisibilidad Basquin Miner decremento logarítmico análisis de datos proyecto final A: ajuste de f_n y ζ sobre T_r B: Basquin y Miner C: decremento por regresión">Del dato al resultado: análisis por proyecto<small>apoyo a los proyectos</small></a>
+<div class="nv-grp">Repaso para el examen final</div>
+<a href="autoevaluacion.html" data-nv="autoevaluacion.html" data-k="examen final repaso autoevaluación problemas resueltos práctica Trece problemas, de la señal armónica a los dos grados de libertad Comprobación con 2 % (0.2 dB en niveles) Solución completa al terminar">Autoevaluación para el examen final<small>unidades 1 a 8</small></a>
+<div class="nv-nada" id="nv-nada" style="display:none">Sin coincidencias. Se busca en títulos, temas y palabras clave.</div>
+  </div>
+  <div class="nv-pie">Teclas (fuera de los controles): ← anterior · → siguiente · / buscar · Esc cerrar</div>
+</nav>
+<div class="nv-boton"><button id="nv-abre" aria-controls="nvside" aria-expanded="false">☰ Temario</button>
+  <a id="nv-ant2" href="#" aria-label="Anterior">‹</a><a id="nv-sig2" href="#" aria-label="Siguiente">›</a></div>
+<div class="nv-velo" id="nv-velo"></div>
+<script>
+(function(){
+  var lista=document.getElementById('nv-lista'), side=document.getElementById('nvside');
+  var l=lista.querySelectorAll('a[data-nv]'), orden=[], dat={};
+  for(var i=0;i<l.length;i++){var f=l[i].getAttribute('data-nv');orden.push(f);
+    dat[f]={el:l[i],t:l[i].childNodes[0].textContent.trim()};}
+  var aqui=(location.pathname.split('/').pop()||'index.html'), k=orden.indexOf(aqui);
+  function paso(idA,idT,j){var a=document.getElementById(idA);
+    if(j<0||j>=orden.length){a.setAttribute('aria-disabled','true');a.setAttribute('tabindex','-1');if(idT)document.getElementById(idT).textContent='';return;}
+    a.href=orden[j];a.title=dat[orden[j]].t+(j<k?' (tecla ←)':' (tecla →)');if(idT)document.getElementById(idT).textContent=dat[orden[j]].t;}
+  if(k>=0){dat[aqui].el.className='nv-aqui';dat[aqui].el.setAttribute('aria-current','page');
+    paso('nv-ant','nv-ant-t',k-1);paso('nv-sig','nv-sig-t',k+1);paso('nv-ant2',null,k-1);paso('nv-sig2',null,k+1);
+    setTimeout(function(){var r=dat[aqui].el;lista.scrollTop=r.offsetTop-lista.clientHeight/3;},0);}
+  else{paso('nv-ant','nv-ant-t',-1);paso('nv-sig','nv-sig-t',0);paso('nv-ant2',null,-1);paso('nv-sig2',null,0);}
+  var bus=document.getElementById('nv-busca');
+  function llano(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  bus.addEventListener('input',function(){var q=llano(bus.value), grp=null, vis=0, tot=0;
+    Array.prototype.forEach.call(lista.children,function(c){
+      if(c.classList.contains('nv-grp')){if(grp)grp.style.display=vis?'':'none';grp=c;vis=0;return;}
+      if(!c.getAttribute('data-nv')) return;
+      var ok=!q||llano(c.textContent+' '+(c.getAttribute('data-k')||'')).indexOf(q)>=0;c.style.display=ok?'':'none';if(ok){vis++;tot++;}});
+    if(grp)grp.style.display=vis?'':'none';
+    document.getElementById('nv-nada').style.display=tot?'none':'block';});
+  bus.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){var v=lista.querySelector('a[data-nv]:not([style*="none"])');if(v)location.href=v.href;}
+    if(e.key==='Escape'){bus.value='';bus.dispatchEvent(new Event('input'));bus.blur();cambia(false);}});
+  var abre=document.getElementById('nv-abre'), velo=document.getElementById('nv-velo');
+  function cambia(on){side.classList.toggle('abierto',on);abre.setAttribute('aria-expanded',on?'true':'false');}
+  abre.addEventListener('click',function(){cambia(!side.classList.contains('abierto'));});
+  velo.addEventListener('click',function(){cambia(false);});
+  document.getElementById('nv-cierra').addEventListener('click',function(){cambia(false);});
+  document.addEventListener('keydown',function(e){
+    var t=(e.target.tagName||'').toUpperCase();
+    if(e.key==='Escape'){cambia(false);return;}
+    if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||t==='BUTTON'||t==='A'||t==='SUMMARY'||e.target.isContentEditable||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey) return;
+    if(e.key==='/'){e.preventDefault();if(innerWidth<1360)cambia(true);bus.focus();return;}
+    if(k<0) return;
+    if(e.key==='ArrowLeft'&&k>0) location.href=orden[k-1];
+    if(e.key==='ArrowRight'&&k<orden.length-1) location.href=orden[k+1];
+  });
+})();
+</script>
+<!-- navegacion:fin -->
+</body>
+</html>

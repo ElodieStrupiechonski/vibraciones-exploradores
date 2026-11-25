@@ -2,6 +2,15 @@
 
 La numeración sigue las etiquetas (*tags*) de GitHub, que son las versiones archivadas en Zenodo. El DOI de concepto [10.5281/zenodo.23422993](https://doi.org/10.5281/zenodo.23422993) (citar «todas las versiones») resuelve siempre a la más reciente.
 
+## [1.6] · 2026-11-25 · DOI de versión: se anota al publicar la *release* v1.6 en Zenodo
+
+### Apoyo a los proyectos finales
+- `proy_sensores.html`: qué sensor del teléfono sirve para una vibración dada (acelerómetro, micrófono, magnetómetro, cámara). Revisa muestreo y alias, señal frente a ruido, carga de masa del teléfono montado y resolución en frecuencia; preajustes de los equipos A, B y C.
+- `proy_rigidez.html`: rigidez k por tres caminos: cargas y deflexión, frecuencia con masa añadida (recta de 1/f² contra ΔM, que da también la masa efectiva) y fórmula de la viga en voladizo con masa en la punta. Ajuste por mínimos cuadrados con incertidumbre.
+- `proy_bobina.html`: bobina e imán. Resistencia, corriente y potencia a partir del calibre y la geometría; constante de acoplamiento K(s) por inductancia mutua de espiras coaxiales (integrales elípticas), que da la fuerza F = K I y la fem e = K v; separación de acoplamiento máximo.
+- `proy_datos.html`: tratamiento de los datos de cada equipo: ajuste de f_n y ζ a la transmisibilidad medida (A), curva de vida de Basquin y regla de Miner (B), decremento logarítmico por regresión para tres configuraciones (C). Los datos de ejemplo son inventados y así se indica.
+- `proyectos.py` compara las funciones de cálculo de las cuatro páginas con cálculos independientes en Python: integrales elípticas e inductancia mutua (SciPy y fórmula de Neumann por cuadratura), fuerza por Biot y Savart, viga por elementos finitos, alias por FFT de una señal muestreada, ajustes por mínimos cuadrados.
+
 ## [1.5] · 2026-11-25 · DOI de versión: se anota al publicar la *release* v1.5 en Zenodo
 
 ### Repaso para el examen final
