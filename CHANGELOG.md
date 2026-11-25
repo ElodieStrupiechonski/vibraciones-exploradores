@@ -2,6 +2,12 @@
 
 La numeración sigue las etiquetas (*tags*) de GitHub, que son las versiones archivadas en Zenodo. El DOI de concepto [10.5281/zenodo.23422993](https://doi.org/10.5281/zenodo.23422993) (citar «todas las versiones») resuelve siempre a la más reciente.
 
+## [1.5] · 2026-11-25 · DOI de versión: se anota al publicar la *release* v1.5 en Zenodo
+
+### Repaso para el examen final
+- `autoevaluacion.html`: trece problemas de las unidades 1 a 8 (señal armónica, oscilador libre, decremento logarítmico, respuesta forzada, media potencia, PSD y Miles, unión con pernos, círculo de Mohr, suma de niveles, transmisibilidad, muestreo y aliasing, coherencia y error de la FRF, frecuencias y modos de dos grados de libertad). Datos aleatorios en cada intento, comprobación inmediata con 2 % de tolerancia (0.2 dB en los niveles), solución paso a paso con los números del problema, filtro por unidad y avance guardado sólo en el navegador. Nueva sección «Repaso» en el índice y en el panel lateral.
+- `rev12.py` comprueba cada problema contra un cálculo independiente en Python con varios juegos de datos.
+
 ## [1.4] · 2026-11-20 · DOI de versión: se anota al publicar la *release* v1.4 en Zenodo
 
 Diecinueve exploradores y un tutorial. Cubre los subtemas de las unidades 5 y 6 que el índice señalaba como «sin explorador todavía».

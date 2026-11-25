@@ -1,7 +1,7 @@
 {
  "curso": "Vibraciones",
  "programa": "Licenciatura en Ingeniería Aeroespacial · ENES Juriquilla, UNAM",
- "actualizado": "2026-11-20",
+ "actualizado": "2026-11-25",
  "nota": "Fuente única del panel de navegación, del índice, del mapa del sitio y de los metadatos. Para añadir un explorador: 1) registrarlo en 'paginas', 2) listarlo en la unidad (o en 'fundamentos') en el orden del programa, 3) ejecutar integra2.py.",
  "paginas": {
   "complejos_interactivo.html": {
@@ -454,6 +454,29 @@
     "tiempo de reverberación",
     "cámara reverberante"
    ]
+  },
+  "autoevaluacion.html": {
+   "corto": "Repaso · Autoevaluación",
+   "titulo": "Autoevaluación para el examen final",
+   "enfoque": "PRACTICAR · un problema de cada unidad, con datos nuevos cada vez",
+   "descripcion": "Problemas de las unidades 1 a 8 con datos aleatorios, comprobación inmediata con 2 % de tolerancia y solución paso a paso con los números del problema.",
+   "puntos": [
+    "Trece problemas, de la señal armónica a los dos grados de libertad",
+    "Comprobación con 2 % (0.2 dB en niveles)",
+    "Solución completa al terminar"
+   ],
+   "tema": "unidades 1 a 8",
+   "swatch": [
+    "#1F3864",
+    "#C55A11"
+   ],
+   "claves": [
+    "examen final",
+    "repaso",
+    "autoevaluación",
+    "problemas resueltos",
+    "práctica"
+   ]
   }
  },
  "recorrido": [
@@ -477,7 +500,8 @@
   "senales_interactivo.html",
   "modal_interactivo.html",
   "choque_interactivo.html",
-  "dosgdl_interactivo.html"
+  "dosgdl_interactivo.html",
+  "autoevaluacion.html"
  ],
  "fundamentos": {
   "titulo": "Pilares de fundamentos",
@@ -660,6 +684,12 @@
     "complejos_interactivo.html",
     "interpretar"
    ]
+  ]
+ },
+ "repaso": {
+  "titulo": "Repaso para el examen final",
+  "paginas": [
+   "autoevaluacion.html"
   ]
  }
 }
